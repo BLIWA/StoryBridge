@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "sotrybridge"
-  }
+  },
+  "targets": {
+    "sotrybridge": {
+      "hosting": {
+        "website": [
+          "sotrybridge"
+        ],
+        "cms": [
+          "cms-sotrybridge"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

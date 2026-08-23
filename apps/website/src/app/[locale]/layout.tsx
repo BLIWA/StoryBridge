@@ -7,6 +7,7 @@ import {
   Noto_Naskh_Arabic,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, isRtl } from "@/i18n/routing";
 import "../globals.css";
@@ -64,6 +65,12 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  // Required for static export: pins the locale for this render instead of
+  // resolving it from headers()/cookies() at request time, which would opt
+  // the whole route into dynamic rendering and break `next build`'s
+  // prerendering. See https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing#static-rendering
+  setRequestLocale(locale);
 
   return (
     <html

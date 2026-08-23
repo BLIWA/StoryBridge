@@ -1,9 +1,15 @@
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const PILLAR_KEYS = ["editorial", "translation", "editing", "media"] as const;
 
-export default function HomePage() {
-  const t = useTranslations("Home");
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Home");
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
