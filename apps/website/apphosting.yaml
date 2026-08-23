@@ -1,0 +1,20 @@
+# Firebase App Hosting config for the marketing site.
+# Create the backend once authenticated (see root README):
+#   firebase apphosting:backends:create --project=storybridge
+# and point its root directory at apps/website in this monorepo.
+# Custom domain (the apex/root domain) is attached after the backend exists —
+# see roadmap Phase 09.
+
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: storybridge
+    availability:
+      - BUILD
+      - RUNTIME

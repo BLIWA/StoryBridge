@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "../../../../packages/ui/src/tokens.css";
+
+html,
+body {
+  background: var(--sb-cream);
+  color: var(--sb-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body[dir="rtl"] {
+  font-family: var(--font-sans-ar);
+}
+
+a {
+  color: var(--sb-bronze-deep);
+}
+a:hover {
+  color: var(--sb-bronze);
+}
+
+::selection {
+  background: var(--sb-bronze-tint);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--sb-focus-ring);
+  border-radius: 2px;
+}

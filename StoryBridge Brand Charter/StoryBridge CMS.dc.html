@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#EDE7DE;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+*{box-sizing:border-box;}
+a{color:#002D62;text-decoration:none;}
+a:hover{color:#8F6135;}
+input,textarea,select,button{font-family:'IBM Plex Sans',sans-serif;font-size:14.5px;color:#111;}
+input::placeholder,textarea::placeholder{color:#A8A29A;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#002D62;box-shadow:0 0 0 3px rgba(181,125,73,0.24);}
+textarea{resize:vertical;}
+::selection{background:rgba(181,125,73,0.28);}
+@keyframes cms-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cms-fade{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#EDE7DE;font-family:'IBM Plex Sans',sans-serif;color:#111111">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}"><div style="min-height:100vh;display:grid;grid-template-columns:1.05fr 0.95fr">
+  <div style="position:relative;background:#002D62;overflow:hidden;padding:56px;display:flex;flex-direction:column;justify-content:space-between">
+    <div style="position:absolute;inset:0;pointer-events:none;opacity:0.5"><svg width="100%" height="100%" style="display:block"><defs><pattern id="cmsWeave" width="144" height="72" patternUnits="userSpaceOnUse"><path d="M 0,72 A 36,36 0 0 1 72,72 A 36,36 0 0 1 144,72" style="fill:none;stroke:#FDF8F1;stroke-width:1.1px;opacity:0.16"></path><path d="M -36,36 A 36,36 0 0 1 36,36 A 36,36 0 0 1 108,36 A 36,36 0 0 1 180,36" style="fill:none;stroke:#B57D49;stroke-width:1.1px;opacity:0.4"></path></pattern></defs><rect width="100%" height="100%" fill="url(#cmsWeave)"></rect></svg></div>
+    <div style="position:relative;display:flex;align-items:center;gap:11px">
+      <img src="assets/storybridge-mark.png" alt="StoryBridge" style="height:40px;width:auto;filter:brightness(0) invert(1);opacity:0.92">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;line-height:1;color:#FDF8F1;letter-spacing:-0.015em">StoryBridge</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;line-height:1;color:#B57D49;letter-spacing:0.18em">CONTENT DESK</div>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:24px;max-width:520px">
+      <div style="height:5px;width:180px;background:#B57D49"></div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:52px;line-height:1.06;letter-spacing:-0.022em;color:#FDF8F1">The desk behind the site.</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.65;color:rgba(253,248,241,0.74);text-wrap:pretty">Pages and sections, the Journal, The Bridge, and every message that comes through the contact form — edited and published from one place, in three languages.</div>
+    </div>
+    <div style="position:relative;display:flex;gap:36px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(253,248,241,0.5)">
+      <div>Tunis · Tunisia</div>
+      <div>AR · FR · EN</div>
+    </div>
+  </div>
+
+  <div style="background:#FDF8F1;padding:56px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+    <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:26px;animation:cms-rise .5s cubic-bezier(.2,.7,.2,1) both">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Staff access</div>
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:36px;line-height:1.1;color:#002D62;letter-spacing:-0.02em">Sign in</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:13px;font-weight:500;color:#3E4650">Work email</span>
+          <input type="email" value="{{ email }}" onChange="{{ setEmail }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:13px 14px;transition:box-shadow .16s ease">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;color:#3E4650">Password<span style="color:#8F6135;cursor:pointer;font-weight:500">Forgot?</span></span>
+          <input type="password" value="{{ pass }}" onChange="{{ setPass }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:13px 14px;letter-spacing:0.12em;transition:box-shadow .16s ease">
+        </label>
+      </div>
+      <div onClick="{{ submitLogin }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px;font-weight:600;font-size:15px;text-align:center;cursor:pointer;transition:all .16s ease" style-hover="background:#001838;box-shadow:0 2px 10px rgba(0,24,56,0.2)">Continue</div>
+      <div style="display:flex;align-items:center;gap:14px"><div style="flex:1;height:1px;background:#E6E0D8"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;color:#A8A29A">OR</span><div style="flex:1;height:1px;background:#E6E0D8"></div></div>
+      <div onClick="{{ submitLogin }}" style="border:1.5px solid #B57D49;color:#8F6135;border-radius:4px;padding:13.5px;font-weight:600;font-size:14.5px;text-align:center;cursor:pointer" style-hover="background:#F8F1E8">Email me a sign-in link</div>
+      <div style="border-top:1px solid #E6E0D8;padding-top:18px;font-size:12.5px;line-height:1.7;color:#8A8378">Access is limited to StoryBridge staff and named contributors. Every sign-in is logged, and second-factor confirmation is required on new devices.</div>
+    </div>
+  </div>
+</div></sc-if>
+
+<sc-if value="{{ isCode }}" hint-placeholder-val="{{ false }}"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;background:#EDE7DE">
+  <div style="width:100%;max-width:470px;background:#FDF8F1;border:1px solid #E6E0D8;border-radius:10px;padding:44px;display:flex;flex-direction:column;gap:24px;box-shadow:0 2px 4px rgba(0,24,56,0.05),0 18px 48px rgba(0,24,56,0.09);animation:cms-rise .45s cubic-bezier(.2,.7,.2,1) both">
+    <div style="height:5px;width:120px;background:#B57D49"></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1.15;color:#002D62;letter-spacing:-0.018em">Confirm it's you</div>
+      <div style="font-size:14.5px;line-height:1.7;color:#3E4650">We sent a six-digit code to <span style="color:#002D62;font-weight:600">{{ email }}</span>. It expires in ten minutes.</div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <input value="{{ c0 }}" onChange="{{ setC0 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+      <input value="{{ c1 }}" onChange="{{ setC1 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+      <input value="{{ c2 }}" onChange="{{ setC2 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+      <input value="{{ c3 }}" onChange="{{ setC3 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+      <input value="{{ c4 }}" onChange="{{ setC4 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+      <input value="{{ c5 }}" onChange="{{ setC5 }}" maxlength="1" inputmode="numeric" style="flex:1 1 0;width:0;min-width:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:14px 0;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF">
+    </div>
+    <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Trust this device for 30 days</label>
+    <div onClick="{{ verify }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px;font-weight:600;font-size:15px;text-align:center;cursor:pointer" style-hover="background:#001838">Verify and enter</div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:#8F6135">
+      <span style="cursor:pointer">Resend code</span>
+      <span onClick="{{ backToLogin }}" style="cursor:pointer;color:#5A6472">Use a different account</span>
+    </div>
+  </div>
+</div></sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}"><div style="display:flex;min-height:100vh;align-items:stretch">
+
+  <div style="width:{{ sbWidth }};flex:none;background:#002D62;color:#FDF8F1;display:flex;flex-direction:column;position:sticky;top:0;align-self:flex-start;height:100vh;transition:width .2s cubic-bezier(.2,.7,.2,1)">
+    <div style="padding:{{ brandPad }};border-bottom:1px solid rgba(253,248,241,0.14);display:flex;align-items:center;justify-content:{{ brandJustify }};gap:10px;min-height:79px;overflow:hidden">
+      <img src="assets/storybridge-mark.png" alt="" style="display:{{ logoDisp }};height:32px;width:auto;filter:brightness(0) invert(1);opacity:0.9;flex:none">
+      <div style="display:{{ labelDisp }};flex-direction:column;gap:2px;min-width:0">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:18px;line-height:1;color:#FDF8F1;white-space:nowrap">StoryBridge</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;line-height:1;color:#B57D49;letter-spacing:0.16em;white-space:nowrap">CONTENT DESK</div>
+      </div>
+      <div onClick="{{ toggleSidebar }}" title="{{ collapseTitle }}" style="margin-inline-start:{{ toggleMargin }};flex:none;width:{{ toggleSize }};height:32px;border-radius:4px;border:1px solid rgba(253,248,241,0.24);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(253,248,241,0.75)" style-hover="background:rgba(253,248,241,0.12);color:#FDF8F1">{{ collapseGlyph }}</div>
+    </div>
+
+    <div style="padding:18px 12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;overflow-x:hidden;flex:1">
+      <div style="display:{{ labelDisp }};font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:rgba(253,248,241,0.4);padding:6px 10px 8px;white-space:nowrap">WORKSPACE</div>
+      <div onClick="{{ goDash }}" title="Overview" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navDashBg }};color:{{ navDashFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">¶</span><span style="display:{{ labelDisp }}">Overview</span>
+      </div>
+      <div onClick="{{ goArticles }}" title="Journal" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navArtBg }};color:{{ navArtFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">§</span><span style="display:{{ labelDisp }}">Journal</span>
+        <span style="display:{{ labelDisp }};margin-inline-start:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:rgba(181,125,73,0.3);color:#EFD8BE;padding:2px 7px;border-radius:3px">{{ openCount }}</span>
+      </div>
+      <div onClick="{{ goPages }}" title="Pages & sections" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navPagesBg }};color:{{ navPagesFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">†</span><span style="display:{{ labelDisp }}">Pages &amp; sections</span>
+      </div>
+      <div onClick="{{ goIssues }}" title="The Bridge" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navNewsBg }};color:{{ navNewsFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">✉</span><span style="display:{{ labelDisp }}">The Bridge</span>
+      </div>
+      <div onClick="{{ goInbox }}" title="Contact" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navInboxBg }};color:{{ navInboxFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">«</span><span style="display:{{ labelDisp }}">Contact</span>
+        <span style="display:{{ labelDisp }};margin-inline-start:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#B57D49;color:#25150A;padding:2px 7px;border-radius:3px;font-weight:500">{{ newCount }}</span>
+      </div>
+      <div style="height:1px;background:rgba(253,248,241,0.12);margin:14px 10px"></div>
+      <div style="display:{{ labelDisp }};font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:rgba(253,248,241,0.4);padding:0 10px 8px;white-space:nowrap">ADMINISTRATION</div>
+      <div onClick="{{ goSettings }}" title="Settings & access" style="display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:4px;cursor:pointer;font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;background:{{ navSetBg }};color:{{ navSetFg }}">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;width:16px;text-align:center;color:#B57D49;flex:none">⁂</span><span style="display:{{ labelDisp }}">Settings &amp; access</span>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(253,248,241,0.14);padding:16px 18px;display:flex;align-items:center;gap:11px;overflow:hidden">
+      <div style="width:34px;height:34px;border-radius:999px;flex:none;background-image:repeating-linear-gradient(135deg,#B57D49 0 5px,#8F6135 5px 10px)"></div>
+      <div style="display:{{ labelDisp }};flex-direction:column;gap:2px;min-width:0;flex:1">
+        <div style="font-size:13.5px;font-weight:600;color:#FDF8F1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.1em;color:rgba(253,248,241,0.55);text-transform:uppercase">{{ userRole }}</div>
+      </div>
+      <div onClick="{{ signOut }}" title="Sign out" style="display:{{ labelDisp }};font-size:12px;color:rgba(253,248,241,0.6);cursor:pointer;flex:none" style-hover="color:#B57D49">Exit</div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-width:1120px;display:flex;flex-direction:column">
+    <div style="position:sticky;top:0;z-index:20;background:#FDF8F1;border-bottom:1px solid #D8D1C7;padding:0 32px;height:70px;display:flex;align-items:center;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#8A8378">{{ crumb }}</div>
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;line-height:1;color:#002D62;letter-spacing:-0.012em">{{ viewTitle }}</div>
+      </div>
+      <input placeholder="Search articles, pages, messages…" style="margin-inline-start:auto;width:280px;border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:9px 12px;font-size:13.5px">
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472;border:1px solid #D8D1C7;border-radius:4px;padding:8px 11px;background:#FFFFFF">LIVE<span style="width:7px;height:7px;border-radius:999px;background:#3A6B55;display:inline-block"></span></div>
+      <div style="font-size:13.5px;font-weight:600;color:#8F6135;cursor:pointer;white-space:nowrap">View site ↗</div>
+    </div>
+
+    <div style="flex:1;padding:30px 32px 56px;display:flex;flex-direction:column;gap:26px">
+
+      <sc-if value="{{ vDash }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:26px;animation:cms-fade .3s ease both">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Published pieces</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:40px;line-height:1;color:#002D62;font-weight:600">24</div>
+            <div style="font-size:13px;color:#5A6472">3 this month · 11 EN · 8 AR · 5 FR</div>
+          </div>
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">In the pipeline</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:40px;line-height:1;color:#002D62;font-weight:600">{{ openCount }}</div>
+            <div style="font-size:13px;color:#5A6472">2 drafts · 1 in review · 1 scheduled</div>
+          </div>
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Bridge subscribers</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:40px;line-height:1;color:#002D62;font-weight:600">1,904</div>
+            <div style="font-size:13px;color:#3A6B55;font-weight:500">+86 in August</div>
+          </div>
+          <div style="background:#002D62;border:1px solid #002D62;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#B57D49">Unanswered enquiries</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:40px;line-height:1;color:#FDF8F1;font-weight:600">{{ newCount }}</div>
+            <div onClick="{{ goInbox }}" style="font-size:13px;color:#DEC5A9;cursor:pointer;font-weight:500">Open the inbox →</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:24px;align-items:start">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="padding:20px 24px;border-bottom:1px solid #E6E0D8;display:flex;align-items:baseline;gap:12px">
+              <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Needs a decision</div>
+              <div style="font-size:13px;color:#8A8378;margin-inline-start:auto">Oldest first</div>
+            </div>
+            <sc-for list="{{ queue }}" as="q" hint-placeholder-count="3">
+              <div style="padding:18px 24px;border-bottom:1px solid #EFE9E1;display:flex;gap:16px;align-items:center">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 8px;border-radius:3px;flex:none;background:{{ q.bg }};color:{{ q.fg }}">{{ q.kind }}</div>
+                <div style="display:flex;flex-direction:column;gap:4px;min-width:220px;flex:1">
+                  <div style="font-family:'Source Serif 4',serif;font-size:17px;color:#002D62;line-height:1.35">{{ q.title }}</div>
+                  <div style="font-size:13px;color:#5A6472">{{ q.meta }}</div>
+                </div>
+                <div onClick="{{ q.act }}" style="flex:none;font-size:13.5px;font-weight:600;color:#8F6135;cursor:pointer;border:1px solid #DEC5A9;border-radius:4px;padding:8px 14px" style-hover="background:#F8F1E8">{{ q.cta }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px">
+              <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#002D62">The Bridge · No. 08</div>
+              <div style="font-size:14px;line-height:1.65;color:#3E4650">Drafted, three of four sections written. Goes out on 1 September.</div>
+              <div style="height:8px;background:#E8E3DD;border-radius:999px;overflow:hidden"><div style="width:72%;height:100%;background:#B57D49"></div></div>
+              <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378"><span>72% READY</span><span>1,904 RECIPIENTS</span></div>
+              <div onClick="{{ goIssues }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:12px;text-align:center;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#001838">Continue the issue</div>
+            </div>
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Recent activity</div>
+              <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px;align-items:baseline;border-top:1px solid #EFE9E1;padding-top:12px">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#A8A29A;flex:none;width:52px">{{ a.when }}</div>
+                  <div style="font-size:13.5px;line-height:1.6;color:#3E4650">{{ a.text }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div></sc-if>
+
+      <sc-if value="{{ vArticles }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:20px;animation:cms-fade .3s ease both">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <sc-for list="{{ statusTabs }}" as="t" hint-placeholder-count="5">
+            <div onClick="{{ t.pick }}" style="font-size:13.5px;font-weight:500;padding:8px 14px;border-radius:999px;cursor:pointer;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }} <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:0.7">{{ t.count }}</span></div>
+          </sc-for>
+          <div onClick="{{ newArticle }}" style="margin-inline-start:auto;background:#002D62;color:#FDF8F1;border-radius:4px;padding:11px 20px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#001838">New article</div>
+        </div>
+
+        <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:minmax(260px,1fr) 110px 130px 120px 120px;gap:16px;padding:13px 24px;border-bottom:1px solid #E6E0D8;background:#F6F1EA;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">
+            <div>Title</div><div>Language</div><div>Author</div><div>Status</div><div>Date</div>
+          </div>
+          <sc-for list="{{ visibleArticles }}" as="a" hint-placeholder-count="5">
+            <div onClick="{{ a.open }}" style="display:grid;grid-template-columns:minmax(260px,1fr) 110px 130px 120px 120px;gap:16px;padding:17px 24px;border-bottom:1px solid #EFE9E1;cursor:pointer;align-items:center" style-hover="background:#F8F4EE">
+              <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                <div style="font-family:'Source Serif 4',serif;font-size:17.5px;color:#002D62;line-height:1.3">{{ a.title }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A8A29A">/journal/{{ a.slug }} · {{ a.words }} words</div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#5A6472">{{ a.lang }}</div>
+              <div style="font-size:13.5px;color:#3E4650">{{ a.author }}</div>
+              <div><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:3px;background:{{ a.bg }};color:{{ a.fg }}">{{ a.status }}</span></div>
+              <div style="font-size:13px;color:#5A6472">{{ a.date }}</div>
+            </div>
+          </sc-for>
+          <div style="padding:14px 24px;display:flex;justify-content:space-between;font-size:12.5px;color:#8A8378"><span>{{ articleCountLabel }}</span><span>Bulk actions available on selection</span></div>
+        </div>
+      </div></sc-if>
+
+      <sc-if value="{{ vArticle }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:20px;animation:cms-fade .3s ease both">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div onClick="{{ goArticles }}" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8F6135;cursor:pointer">← All articles</div>
+          <div style="font-size:13px;color:#8A8378;margin-inline-start:auto">{{ savedLabel }}</div>
+          <div onClick="{{ saveDraft }}" style="border:1px solid #D8D1C7;background:#FDF8F1;border-radius:4px;padding:10px 18px;font-size:14px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Save draft</div>
+          <div onClick="{{ preview }}" style="border:1px solid #D8D1C7;background:#FDF8F1;border-radius:4px;padding:10px 18px;font-size:14px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Preview</div>
+          <sc-if value="{{ canPublish }}" hint-placeholder-val="{{ true }}"><div onClick="{{ publish }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:11px 22px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#001838">Publish now</div></sc-if>
+          <sc-if value="{{ mustReview }}" hint-placeholder-val="{{ false }}"><div onClick="{{ sendToReview }}" style="background:#8F6135;color:#FDF8F1;border-radius:4px;padding:11px 22px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#5F4123">Send to review</div></sc-if>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 330px;gap:24px;align-items:start">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px">
+            <input value="{{ draftTitle }}" onChange="{{ setTitle }}" placeholder="Headline" style="border:none;border-bottom:1px solid #E6E0D8;background:transparent;padding:0 0 14px;font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;letter-spacing:-0.02em;line-height:1.15">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Slug</span><input value="{{ draftSlug }}" onChange="{{ setSlug }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Section</span><input value="{{ draftCat }}" onChange="{{ setCat }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"></label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Standfirst</span><textarea onChange="{{ setExcerpt }}" value="{{ draftExcerpt }}" rows="2" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:12px;font-family:'Source Serif 4',serif;font-size:16.5px;line-height:1.6"></textarea></label>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Body</span><div style="height:1px;flex:1;background:#E6E0D8"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A8A29A">{{ draftWords }} words</span></div>
+              <div style="display:flex;gap:6px;border:1px solid #D8D1C7;border-bottom:none;border-radius:4px 4px 0 0;background:#F6F1EA;padding:8px 10px">
+                <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:14px;color:#3E4650;padding:3px 8px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">B</div>
+                <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:14px;color:#3E4650;padding:3px 9px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">I</div>
+                <div style="font-family:'Source Serif 4',serif;font-size:13px;color:#3E4650;padding:3px 8px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">H2</div>
+                <div style="font-family:'Source Serif 4',serif;font-size:13px;color:#3E4650;padding:3px 8px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">“ ”</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3E4650;padding:4px 8px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">link</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3E4650;padding:4px 8px;cursor:pointer;border-radius:3px" style-hover="background:#E8E3DD">image</div>
+                <div style="margin-inline-start:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135;padding:4px 8px;cursor:pointer">AR / FR / EN</div>
+              </div>
+              <textarea onChange="{{ setBody }}" value="{{ draftBody }}" rows="16" style="border:1px solid #D8D1C7;border-radius:0 0 4px 4px;background:#FFFFFF;padding:20px;font-family:'Source Serif 4',serif;font-size:17px;line-height:1.75"></textarea>
+            </div>
+            <div style="border:1px dashed #D8D1C7;border-radius:6px;background-image:repeating-linear-gradient(135deg,#F6F1EA 0 8px,#EFE9E1 8px 16px);height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378">Lead image</div>
+              <div style="font-size:13px;color:#8A8378">Drop a file or pick from the media library</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:16px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Publishing</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#3E4650">Status<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:3px;background:{{ draftBg }};color:{{ draftFg }}">{{ draftStatus }}</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#3E4650">Author<span style="color:#002D62;font-weight:500">{{ draftAuthor }}</span></div>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Publish date</span><input value="{{ draftDate }}" onChange="{{ setDate }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px"></label>
+              <div style="border-top:1px solid #E6E0D8;padding-top:14px;font-size:12.5px;line-height:1.65;color:#8A8378">{{ workflowNote }}</div>
+            </div>
+
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Language versions</div>
+              <sc-for list="{{ langVersions }}" as="l" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:10px;border-top:1px solid #EFE9E1;padding-top:12px">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#002D62;width:28px">{{ l.code }}</div>
+                  <div style="font-size:13.5px;color:#3E4650;flex:1">{{ l.state }}</div>
+                  <div style="font-size:13px;font-weight:600;color:#8F6135;cursor:pointer">{{ l.cta }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Placement</div>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Feature on the Journal index</label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Show in the home page teaser</label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" style="width:16px;height:16px;accent-color:#002D62">Include in the next Bridge issue</label>
+            </div>
+
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Search appearance</div>
+              <div style="font-family:'Source Serif 4',serif;font-size:16px;color:#002D62;line-height:1.35">{{ draftTitle }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#3A6B55">storybridge.tn/journal/{{ draftSlug }}</div>
+              <div style="font-size:13px;line-height:1.6;color:#5A6472">{{ draftExcerpt }}</div>
+            </div>
+          </div>
+        </div>
+      </div></sc-if>
+
+      <sc-if value="{{ vPages }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:216px minmax(0,1fr);gap:20px;align-items:start;animation:cms-fade .3s ease both">
+        <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+          <div style="padding:16px 18px;border-bottom:1px solid #E6E0D8;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Site pages</div>
+          <sc-for list="{{ pageList }}" as="p" hint-placeholder-count="9">
+            <div onClick="{{ p.pick }}" style="padding:13px 18px;border-bottom:1px solid #EFE9E1;cursor:pointer;display:flex;flex-direction:column;gap:3px;background:{{ p.bg }}">
+              <div style="font-size:14.5px;font-weight:500;color:{{ p.fg }}">{{ p.name }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#A8A29A">{{ p.path }} · {{ p.count }} sections</div>
+            </div>
+          </sc-for>
+          <div style="padding:14px 18px;font-size:13.5px;font-weight:600;color:#8F6135;cursor:pointer">+ Add a page</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:26px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1">
+              <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;letter-spacing:-0.015em">{{ currentName }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A8378">storybridge.tn{{ currentPath }} · last edited {{ currentEdited }}</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div style="border:1px solid #D8D1C7;border-radius:4px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer;background:#FFFFFF" style-hover="background:#F1EBE3">Reorder</div>
+              <div style="border:1px solid #D8D1C7;border-radius:4px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer;background:#FFFFFF" style-hover="background:#F1EBE3">Add section</div>
+              <div onClick="{{ publishPage }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:10px 20px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#001838">{{ pagePublishLabel }}</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:minmax(300px,0.85fr) minmax(460px,1.15fr);gap:20px;align-items:start">
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+              <sc-for list="{{ sections }}" as="s" hint-placeholder-count="6">
+                <div onClick="{{ s.pick }}" style="padding:16px 20px;border-bottom:1px solid #EFE9E1;display:flex;align-items:center;gap:14px;cursor:pointer;background:{{ s.bg }}">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#C9C2B8;flex:none">⣿</div>
+                  <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1">
+                    <div style="font-size:15px;font-weight:500;color:#002D62">{{ s.name }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#A8A29A">{{ s.type }} · {{ s.edited }}</div>
+                  </div>
+                  <sc-if value="{{ s.on }}" hint-placeholder-val="{{ true }}"><div onClick="{{ s.toggle }}" style="flex:none;display:flex;align-items:center;gap:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#3A6B55">LIVE</span><div style="width:38px;height:22px;border-radius:999px;background:#3A6B55;display:flex;align-items:center;justify-content:flex-end;padding:3px"><div style="width:16px;height:16px;border-radius:999px;background:#FDF8F1"></div></div></div></sc-if>
+                  <sc-if value="{{ s.off }}" hint-placeholder-val="{{ false }}"><div onClick="{{ s.toggle }}" style="flex:none;display:flex;align-items:center;gap:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#A8A29A">HIDDEN</span><div style="width:38px;height:22px;border-radius:999px;background:#D8D1C7;display:flex;align-items:center;padding:3px"><div style="width:16px;height:16px;border-radius:999px;background:#FDF8F1"></div></div></div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:30px;display:flex;flex-direction:column;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Editing section</div>
+                <div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62">{{ secName }}</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 150px;gap:14px">
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Heading</span><input value="{{ secHeading }}" onChange="{{ setSecHeading }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:12px 13px;font-family:'Source Serif 4',serif;font-size:16px"></label>
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Layout</span><select style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:12px 10px;font-size:13.5px"><option>Default</option><option>Full bleed</option><option>Two column</option><option>Compact</option></select></label>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Eyebrow</span><input value="{{ secEyebrow }}" onChange="{{ setSecEyebrow }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 13px;font-family:'IBM Plex Mono',monospace;font-size:12.5px"></label>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Body copy</span><textarea onChange="{{ setSecBody }}" value="{{ secBody }}" rows="9" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:14px;font-family:'Source Serif 4',serif;font-size:16px;line-height:1.7"></textarea></label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Button label</span><input value="{{ secCta }}" onChange="{{ setSecCta }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-size:13.5px"></label>
+                <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Links to</span><input value="{{ secHref }}" onChange="{{ setSecHref }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-family:'IBM Plex Mono',monospace;font-size:12.5px"></label>
+              </div>
+              <div style="border-top:1px solid #E6E0D8;padding-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Shown in</div>
+                <div style="display:flex;gap:8px">
+                  <div style="border:1px solid #002D62;background:#EDF1F6;color:#002D62;border-radius:4px;padding:7px 13px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;cursor:pointer">EN</div>
+                  <div style="border:1px solid #D8D1C7;color:#5A6472;border-radius:4px;padding:7px 13px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;cursor:pointer;background:#FFFFFF">FR</div>
+                  <div style="border:1px solid #002D62;background:#EDF1F6;color:#002D62;border-radius:4px;padding:7px 13px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;cursor:pointer">AR</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Options</div>
+                <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:15px;height:15px;accent-color:#002D62">Show on mobile</label>
+                <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" style="width:15px;height:15px;accent-color:#002D62">Tinted background</label>
+                <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:15px;height:15px;accent-color:#002D62">Include in page nav</label>
+              </div>
+              </div>
+              <div onClick="{{ saveSection }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:12px;text-align:center;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#001838">Save section</div>
+              <div style="font-size:12.5px;color:#8A8378;text-align:center">{{ sectionNote }}</div>
+            </div>
+          </div>
+        </div>
+      </div></sc-if>
+
+      <sc-if value="{{ vIssues }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:20px;animation:cms-fade .3s ease both">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div onClick="{{ tabIssues }}" style="font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;background:{{ tabIssuesBg }};color:{{ tabIssuesFg }};border:1px solid {{ tabIssuesBd }}">Issues</div>
+          <div onClick="{{ tabSubs }}" style="font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;background:{{ tabSubsBg }};color:{{ tabSubsFg }};border:1px solid {{ tabSubsBd }}">Subscribers <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;opacity:0.75">1,904</span></div>
+        </div>
+
+        <sc-if value="{{ onIssues }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="padding:18px 24px;border-bottom:1px solid #E6E0D8;display:flex;align-items:baseline"><div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">The Bridge · archive</div><div style="margin-inline-start:auto;font-size:13px;color:#8A8378">Monthly since February</div></div>
+            <sc-for list="{{ issues }}" as="i" hint-placeholder-count="4">
+              <div style="padding:18px 24px;border-bottom:1px solid #EFE9E1;display:grid;grid-template-columns:60px minmax(220px,1fr) 120px 150px;gap:16px;align-items:center">
+                <div style="font-family:'Source Serif 4',serif;font-size:26px;color:#B57D49;font-weight:600">{{ i.no }}</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="font-family:'Source Serif 4',serif;font-size:17px;color:#002D62;line-height:1.3">{{ i.subject }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A8A29A">{{ i.date }} · {{ i.audience }}</div>
+                </div>
+                <div><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:3px;background:{{ i.bg }};color:{{ i.fg }}">{{ i.status }}</span></div>
+                <div style="font-size:13px;color:#3E4650">{{ i.stats }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Compose · No. 08</div>
+              <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">September letter</div>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Subject line</span><input value="{{ subject }}" onChange="{{ setSubject }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"></label>
+            <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Preview text</span><input value="{{ preheader }}" onChange="{{ setPreheader }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-size:13.5px"></label>
+            <div style="display:flex;flex-direction:column;gap:11px;border-top:1px solid #E6E0D8;padding-top:16px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Included pieces</div>
+              <sc-for list="{{ picks }}" as="p" hint-placeholder-count="4">
+                <div onClick="{{ p.toggle }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13.5px;line-height:1.5;color:#3E4650">
+                  <sc-if value="{{ p.on }}" hint-placeholder-val="{{ true }}"><div style="width:17px;height:17px;border-radius:3px;background:#002D62;color:#FDF8F1;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px">✓</div></sc-if>
+                  <sc-if value="{{ p.off }}" hint-placeholder-val="{{ false }}"><div style="width:17px;height:17px;border-radius:3px;border:1px solid #C9C2B8;background:#FFFFFF;flex:none;margin-top:1px"></div></sc-if>
+                  <span>{{ p.title }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:7px;border-top:1px solid #E6E0D8;padding-top:16px"><span style="font-size:13px;color:#3E4650">Audience</span><select value="{{ audience }}" onChange="{{ setAudience }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"><option>All subscribers · 1,904</option><option>English · 1,048</option><option>Français · 512</option><option>العربية · 344</option><option>Clients only · 87</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Send at</span><input value="{{ sendAt }}" onChange="{{ setSendAt }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px"></label>
+            <div style="display:flex;gap:10px">
+              <div onClick="{{ sendTest }}" style="flex:1;border:1px solid #D8D1C7;background:#FFFFFF;border-radius:4px;padding:12px;text-align:center;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Send test</div>
+              <div onClick="{{ schedule }}" style="flex:1;background:#002D62;color:#FDF8F1;border-radius:4px;padding:12px;text-align:center;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#001838">Schedule</div>
+            </div>
+            <div style="font-size:12.5px;line-height:1.6;color:#8A8378;text-align:center">{{ issueNote }}</div>
+          </div>
+        </div></sc-if>
+
+        <sc-if value="{{ onSubs }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Active</div><div style="font-family:'Source Serif 4',serif;font-size:32px;color:#002D62;font-weight:600">1,904</div></div>
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Open rate</div><div style="font-family:'Source Serif 4',serif;font-size:32px;color:#002D62;font-weight:600">48.2%</div></div>
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Unsubscribes</div><div style="font-family:'Source Serif 4',serif;font-size:32px;color:#002D62;font-weight:600">6</div></div>
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Growth in Aug</div><div style="font-family:'Source Serif 4',serif;font-size:32px;color:#3A6B55;font-weight:600">+86</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <sc-for list="{{ segments }}" as="g" hint-placeholder-count="4">
+              <div onClick="{{ g.pick }}" style="font-size:13.5px;font-weight:500;padding:8px 14px;border-radius:999px;cursor:pointer;border:1px solid {{ g.bd }};background:{{ g.bg }};color:{{ g.fg }}">{{ g.label }}</div>
+            </sc-for>
+            <div style="margin-inline-start:auto;display:flex;gap:10px">
+              <div style="border:1px solid #D8D1C7;background:#FDF8F1;border-radius:4px;padding:10px 16px;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Export CSV</div>
+              <div style="border:1px solid #D8D1C7;background:#FDF8F1;border-radius:4px;padding:10px 16px;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Add subscriber</div>
+            </div>
+          </div>
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:minmax(240px,1.4fr) minmax(140px,1fr) 100px 120px 120px;gap:16px;padding:13px 24px;border-bottom:1px solid #E6E0D8;background:#F6F1EA;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378"><div>Email</div><div>Name</div><div>Lang</div><div>Source</div><div>Joined</div></div>
+            <sc-for list="{{ visibleSubs }}" as="s" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:minmax(240px,1.4fr) minmax(140px,1fr) 100px 120px 120px;gap:16px;padding:15px 24px;border-bottom:1px solid #EFE9E1;align-items:center" style-hover="background:#F8F4EE">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#002D62">{{ s.email }}</div>
+                <div style="font-size:13.5px;color:#3E4650">{{ s.name }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#5A6472">{{ s.lang }}</div>
+                <div style="font-size:13px;color:#5A6472">{{ s.source }}</div>
+                <div style="font-size:13px;color:#5A6472">{{ s.joined }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div></sc-if>
+      </div></sc-if>
+
+      <sc-if value="{{ vInbox }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:20px;animation:cms-fade .3s ease both">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div onClick="{{ tabMsgs }}" style="font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;background:{{ tabMsgsBg }};color:{{ tabMsgsFg }};border:1px solid {{ tabMsgsBd }}">Submissions</div>
+          <div onClick="{{ tabForm }}" style="font-size:14px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;background:{{ tabFormBg }};color:{{ tabFormFg }};border:1px solid {{ tabFormBd }}">Form &amp; routing</div>
+        </div>
+
+        <sc-if value="{{ onMsgs }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:400px 1fr;gap:24px;align-items:start">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="padding:14px 18px;border-bottom:1px solid #E6E0D8;display:flex;gap:8px">
+              <sc-for list="{{ msgFilters }}" as="f" hint-placeholder-count="3">
+                <div onClick="{{ f.pick }}" style="font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:999px;cursor:pointer;border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</div>
+              </sc-for>
+            </div>
+            <sc-for list="{{ visibleMsgs }}" as="m" hint-placeholder-count="5">
+              <div onClick="{{ m.pick }}" style="padding:16px 18px;border-bottom:1px solid #EFE9E1;cursor:pointer;display:flex;flex-direction:column;gap:6px;background:{{ m.bg }};border-inline-start:3px solid {{ m.mark }}">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+                  <div style="font-size:14.5px;font-weight:600;color:#002D62">{{ m.name }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#A8A29A;flex:none">{{ m.when }}</div>
+                </div>
+                <div style="font-size:13px;color:#8F6135">{{ m.org }} · {{ m.service }}</div>
+                <div style="font-size:13px;line-height:1.55;color:#5A6472;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.preview }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:30px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;border-bottom:1px solid #E6E0D8;padding-bottom:20px">
+              <div style="display:flex;flex-direction:column;gap:7px;min-width:0;flex:1">
+                <div style="font-family:'Source Serif 4',serif;font-size:27px;font-weight:600;color:#002D62;letter-spacing:-0.015em">{{ selName }}</div>
+                <div style="font-size:14px;color:#3E4650">{{ selOrg }} · <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">{{ selEmail }}</span></div>
+              </div>
+              <div style="display:flex;gap:9px;align-items:center">
+                <div onClick="{{ markReplied }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#001838">Mark replied</div>
+                <div onClick="{{ archiveMsg }}" style="border:1px solid #D8D1C7;background:#FFFFFF;border-radius:4px;padding:10px 18px;font-size:13.5px;font-weight:600;color:#002D62;cursor:pointer" style-hover="background:#F1EBE3">Archive</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+              <div style="display:flex;flex-direction:column;gap:5px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378">Service</div><div style="font-size:14px;color:#002D62">{{ selService }}</div></div>
+              <div style="display:flex;flex-direction:column;gap:5px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378">Languages</div><div style="font-size:14px;color:#002D62">{{ selLangs }}</div></div>
+              <div style="display:flex;flex-direction:column;gap:5px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378">Deadline</div><div style="font-size:14px;color:#002D62">{{ selDeadline }}</div></div>
+              <div style="display:flex;flex-direction:column;gap:5px"><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378">Status</div><div><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;border-radius:3px;background:{{ selBg }};color:{{ selFg }}">{{ selStatus }}</span></div></div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E6E0D8;border-radius:6px;padding:24px;font-family:'Source Serif 4',serif;font-size:16.5px;line-height:1.75;color:#111;text-wrap:pretty">{{ selBody }}</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Reply from {{ userName }}</div>
+              <textarea onChange="{{ setReply }}" value="{{ reply }}" rows="5" placeholder="Write a reply — it sends from hello@storybridge.tn and is filed against this enquiry." style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:14px;font-family:'Source Serif 4',serif;font-size:16px;line-height:1.7"></textarea>
+              <div style="display:flex;gap:10px;align-items:center">
+                <div onClick="{{ sendReply }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:12px 22px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#001838">Send reply</div>
+                <div style="border:1px solid #DEC5A9;color:#8F6135;border-radius:4px;padding:11px 18px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#F8F1E8">Insert quote template</div>
+                <div style="margin-inline-start:auto;font-size:13px;color:#8A8378">{{ replyNote }}</div>
+              </div>
+            </div>
+          </div>
+        </div></sc-if>
+
+        <sc-if value="{{ onForm }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="padding:18px 24px;border-bottom:1px solid #E6E0D8;display:flex;align-items:baseline"><div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Contact form fields</div><div style="margin-inline-start:auto;font-size:13px;color:#8A8378">Drag to reorder</div></div>
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
+              <div style="padding:15px 24px;border-bottom:1px solid #EFE9E1;display:flex;align-items:center;gap:14px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#C9C2B8">⣿</div>
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:500;color:#002D62">{{ f.label }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#A8A29A">{{ f.type }}</div>
+                </div>
+                <div onClick="{{ f.toggleReq }}" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 10px;border-radius:3px;cursor:pointer;background:{{ f.reqBg }};color:{{ f.reqFg }}">{{ f.reqLabel }}</div>
+                <sc-if value="{{ f.on }}" hint-placeholder-val="{{ true }}"><div onClick="{{ f.toggleOn }}" style="width:38px;height:22px;border-radius:999px;background:#3A6B55;display:flex;align-items:center;justify-content:flex-end;padding:3px;cursor:pointer;flex:none"><div style="width:16px;height:16px;border-radius:999px;background:#FDF8F1"></div></div></sc-if>
+                <sc-if value="{{ f.off }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.toggleOn }}" style="width:38px;height:22px;border-radius:999px;background:#D8D1C7;display:flex;align-items:center;padding:3px;cursor:pointer;flex:none"><div style="width:16px;height:16px;border-radius:999px;background:#FDF8F1"></div></div></sc-if>
+              </div>
+            </sc-for>
+            <div style="padding:15px 24px;font-size:13.5px;font-weight:600;color:#8F6135;cursor:pointer">+ Add a field</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Routing</div>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Send submissions to</span><input value="{{ routeTo }}" onChange="{{ setRouteTo }}" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Assign new enquiries to</span><select style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"><option>Assia Touati</option><option>Imen Bliwa</option><option>Round robin</option></select></label>
+              <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Reply target</span><select style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"><option>Within 24 hours</option><option>Within 48 hours</option><option>Two working days</option></select></label>
+            </div>
+            <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Protection &amp; consent</div>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Honeypot and rate limiting</label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Autoresponder in the sender's language</label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Consent line before submit</label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" style="width:16px;height:16px;accent-color:#002D62">Add subscribers to The Bridge on submit</label>
+              <label style="display:flex;flex-direction:column;gap:7px;border-top:1px solid #E6E0D8;padding-top:14px"><span style="font-size:13px;color:#3E4650">Thank-you message</span><textarea onChange="{{ setThanks }}" value="{{ thanks }}" rows="3" style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px;font-family:'Source Serif 4',serif;font-size:15px;line-height:1.6"></textarea></label>
+              <div onClick="{{ saveForm }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:12px;text-align:center;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#001838">Save form</div>
+              <div style="font-size:12.5px;color:#8A8378;text-align:center">{{ formNote }}</div>
+            </div>
+          </div>
+        </div></sc-if>
+      </div></sc-if>
+
+      <sc-if value="{{ vSettings }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;animation:cms-fade .3s ease both">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden">
+            <div style="padding:18px 24px;border-bottom:1px solid #E6E0D8;display:flex;align-items:baseline"><div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">People &amp; permissions</div><div style="margin-inline-start:auto;font-size:13.5px;font-weight:600;color:#8F6135;cursor:pointer">Invite someone</div></div>
+            <sc-for list="{{ users }}" as="u" hint-placeholder-count="4">
+              <div style="padding:17px 24px;border-bottom:1px solid #EFE9E1;display:grid;grid-template-columns:minmax(220px,1fr) 170px 130px 90px;gap:16px;align-items:center">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:34px;height:34px;border-radius:999px;flex:none;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 5px,#EFE1D2 5px 10px);border:1px solid #D8D1C7"></div>
+                  <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="font-size:14.5px;font-weight:600;color:#002D62">{{ u.name }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#A8A29A">{{ u.email }}</div></div>
+                </div>
+                <div style="font-size:13.5px;color:#3E4650">{{ u.role }}</div>
+                <div style="font-size:13px;color:#5A6472">{{ u.scope }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:{{ u.mfaFg }}">{{ u.mfa }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:18px">
+            <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">What each role can touch</div>
+            <div style="display:grid;grid-template-columns:minmax(200px,1.2fr) repeat(4,minmax(70px,1fr));gap:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8378;border-bottom:1px solid #E6E0D8;padding-bottom:10px"><div>Capability</div><div>Owner</div><div>Chief</div><div>Journalist</div><div>Contributor</div></div>
+            <sc-for list="{{ matrix }}" as="r" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:minmax(200px,1.2fr) repeat(4,minmax(70px,1fr));gap:12px;align-items:center;font-size:13.5px;color:#3E4650;border-bottom:1px solid #EFE9E1;padding-bottom:11px">
+                <div>{{ r.cap }}</div><div style="color:{{ r.c1f }}">{{ r.c1 }}</div><div style="color:{{ r.c2f }}">{{ r.c2 }}</div><div style="color:{{ r.c3f }}">{{ r.c3 }}</div><div style="color:{{ r.c4f }}">{{ r.c4 }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:15px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Security</div>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Require a second factor for all staff</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Sign out inactive sessions after 12 hours</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" style="width:16px;height:16px;accent-color:#002D62">Allow contributor access from outside Tunisia</label>
+            <div style="border-top:1px solid #E6E0D8;padding-top:14px;display:flex;flex-direction:column;gap:9px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8378">Recent sign-ins</div>
+              <div style="font-size:13px;color:#5A6472;line-height:1.7">Assia Touati · Tunis · today, 09:12<br>Imen Bliwa · Tunis · yesterday, 18:40<br>Contributor · Marseille · 19 Aug, 11:02</div>
+            </div>
+          </div>
+          <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:15px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Site</div>
+            <label style="display:flex;flex-direction:column;gap:7px"><span style="font-size:13px;color:#3E4650">Default language</span><select style="border:1px solid #D8D1C7;border-radius:4px;background:#FFFFFF;padding:11px 12px"><option>English</option><option>Français</option><option>العربية</option></select></label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Publish the Arabic version of the site</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px;accent-color:#002D62">Publish the French version of the site</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3E4650;cursor:pointer"><input type="checkbox" style="width:16px;height:16px;accent-color:#002D62">Maintenance notice on every page</label>
+            <div style="border-top:1px solid #E6E0D8;padding-top:14px;font-size:12.5px;line-height:1.65;color:#8A8378">Changes to language visibility take effect at the next publish.</div>
+          </div>
+        </div>
+      </div></sc-if>
+
+    </div>
+  </div>
+</div></sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;skipAuth&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Access&quot;},&quot;defaultRole&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;chief&quot;,&quot;journalist&quot;],&quot;default&quot;:&quot;chief&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Access&quot;},&quot;articleWorkflow&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;review&quot;,&quot;direct&quot;],&quot;default&quot;:&quot;review&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Workflow&quot;}}">
+class Component extends DCLogic {
+  state = {
+    stage: 'login', role: null, email: 'assia@storybridge.tn', pass: 'newsroom-2026',
+    code: ['','','','','',''],
+    view: 'dash', tab: 'a', collapsed: false,
+    editingId: 'a3', draft: null, savedLabel: 'All changes saved · 09:14',
+    statusFilter: 'All', pageKey: 'home', secId: null, sectionNote: 'Section changes go live on publish.',
+    subject: 'The Bridge · No. 08 — What a brief is for',
+    preheader: 'Plus: three Arabic headlines we argued about for an hour.',
+    audience: 'All subscribers · 1,904', sendAt: '01 Sep 2026 · 09:00 CET',
+    issueNote: 'Draft saved. Nothing is sent until you schedule it.',
+    picksOn: { p1: true, p2: true, p3: false, p4: true },
+    subFilter: 'All', msgFilter: 'New', msgId: 'm1', reply: '',
+    replyNote: 'Sends from hello@storybridge.tn',
+    routeTo: 'hello@storybridge.tn', thanks: 'Thank you — we read every enquiry ourselves and reply within one working day.',
+    formNote: 'Live on /contact in EN, FR and AR.',
+    articles: [
+      { id:'a1', title:'What a newsroom taught us about client work', slug:'newsroom-client-work', lang:'EN', cat:'Editorial', author:'Assia Touati', status:'Published', date:'12 Aug 2026', words:1240, excerpt:'Deadlines, sources, second readers — the habits that survive the move from the newsroom to a brief.', body:'The first thing a newsroom teaches you is that a deadline is not a suggestion.\n\nThe second is that nothing goes out unread. Every piece we publish for a client passes a second editor, the same way copy passed the desk.\n\nWhat changed when we started StoryBridge was not the standard. It was the brief.' },
+      { id:'a2', title:'Translating a brand voice into Arabic without flattening it', slug:'arabic-brand-voice', lang:'AR · EN', cat:'Translation', author:'Imen Bliwa', status:'Published', date:'28 Jul 2026', words:1610, excerpt:'Most Arabic brand copy reads translated because it was. Here is the difference between transferring words and carrying a voice.', body:'A brand voice is a set of decisions: how formal, how warm, how much distance from the reader.\n\nRun those decisions through a dictionary and you get sentences that are correct and dead.' },
+      { id:'a3', title:'Le brief, ce document qu’on saute trop souvent', slug:'le-brief', lang:'FR', cat:'Editorial', author:'Imen Bliwa', status:'In review', date:'20 Aug 2026', words:980, excerpt:'Un bon brief coûte une heure. Son absence coûte trois versions.', body:'Personne n’aime écrire un brief. Tout le monde aime en avoir un.\n\nUn brief utile tient sur une page : à qui on parle, ce qu’on veut que cette personne fasse, et ce qu’on ne dira pas.\n\nLe reste — le ton, la longueur, les exemples — se décide en dix minutes une fois ces trois lignes posées.' },
+      { id:'a4', title:'الصحافة الميدانية في تونس: ما يبقى بعد الخبر', slug:'field-reporting-tunis', lang:'AR', cat:'Media', author:'Assia Touati', status:'Draft', date:'22 Aug 2026', words:640, excerpt:'ما الذي يبقى من التغطية بعد أن ينتهي الخبر ويغادر الجميع؟', body:'كل تغطية ميدانية تترك شيئًا لا يدخل في الخبر.' },
+      { id:'a5', title:'Why we still write to a brief, not a word count', slug:'brief-not-word-count', lang:'EN', cat:'Editorial', author:'Assia Touati', status:'Scheduled', date:'30 Aug 2026', words:1120, excerpt:'A word count tells a writer when to stop. A brief tells them why to start.', body:'Word counts are a procurement habit, not an editorial one.' },
+      { id:'a6', title:'Six questions we ask before writing a single line', slug:'six-questions', lang:'EN', cat:'How we work', author:'Imen Bliwa', status:'Draft', date:'18 Aug 2026', words:410, excerpt:'The intake call, written down.', body:'Who is this for? What should change in their head? Who signs off?' }
+    ],
+    pages: {
+      home: { name:'Home', path:'/', edited:'today, 09:12', sections:[
+        { id:'h1', name:'Hero — Journalistic standards', type:'Hero', edited:'today', on:true, heading:'Journalistic standards, applied to your content.', body:'StoryBridge Content & Media is a communications and multilingual content company founded by two journalists and editors who met in the newsroom and never stopped building ideas together.', cta:'Request a quote', href:'/contact' },
+        { id:'h2', name:'Proof strip — four service lines', type:'Grid', edited:'12 Aug', on:true, heading:'Four lines of work, one desk', body:'Content and editorial, translation and localisation, editing and rewriting, media and journalism.', cta:'', href:'' },
+        { id:'h3', name:'How we work — seven steps', type:'Editorial', edited:'09 Aug', on:true, heading:'We work the way a newsroom works', body:'Brief, angle, research, draft, second reader, delivery, and we stay involved after publication.', cta:'See how we work', href:'/how-we-work' },
+        { id:'h4', name:'Founders note', type:'Editorial', edited:'02 Aug', on:true, heading:'Founded by Assia Touati and Imen Bliwa', body:'An editor-in-chief and a journalist-translator, ten years and one newsroom apart.', cta:'Meet the founders', href:'/founders' },
+        { id:'h5', name:'From the Journal — three teasers', type:'Feed', edited:'today', on:true, heading:'From the Journal', body:'Our own writing, published in the open — the shortest way to judge whether we can write yours.', cta:'All pieces', href:'/journal' },
+        { id:'h6', name:'The Bridge signup', type:'Form', edited:'28 Jul', on:true, heading:'One letter a month, worth the open.', body:'Language, media and the Maghreb — what we are reading and what we are arguing about.', cta:'Subscribe', href:'/newsletter' },
+        { id:'h7', name:'Client logos', type:'Grid', edited:'15 Jul', on:false, heading:'Trusted by', body:'Hidden until three clients have agreed to be named.', cta:'', href:'' }
+      ]},
+      who: { name:'Who We Are', path:'/who-we-are', edited:'19 Aug', sections:[
+        { id:'w1', name:'Page header', type:'Hero', edited:'19 Aug', on:true, heading:'Two journalists, one desk.', body:'StoryBridge was founded in Tunis by two women who spent a decade in newsrooms before building this.', cta:'', href:'' },
+        { id:'w2', name:'The company in three paragraphs', type:'Editorial', edited:'19 Aug', on:true, heading:'What we are', body:'A boutique editorial house: small on purpose, senior on every file.', cta:'', href:'' },
+        { id:'w3', name:'Values — four cards', type:'Grid', edited:'11 Aug', on:true, heading:'What we hold to', body:'Accuracy, context, tone, and the reader’s time.', cta:'', href:'' },
+        { id:'w4', name:'Languages we work in', type:'Grid', edited:'11 Aug', on:true, heading:'Arabic, French, English', body:'Written natively in all three, not translated into two.', cta:'', href:'' }
+      ]},
+      founders: { name:'Founders', path:'/founders', edited:'14 Aug', sections:[
+        { id:'f1', name:'Page header', type:'Hero', edited:'14 Aug', on:true, heading:'The two of us', body:'An editor-in-chief and a journalist-translator.', cta:'', href:'' },
+        { id:'f2', name:'Assia Touati', type:'Profile', edited:'14 Aug', on:true, heading:'Assia Touati', body:'Editor-in-chief. Ten years of desk work across Tunisian and regional titles.', cta:'', href:'' },
+        { id:'f3', name:'Imen Bliwa', type:'Profile', edited:'14 Aug', on:true, heading:'Imen Bliwa', body:'Journalist and translator. Field reporting, international media, Arabic–English–French.', cta:'', href:'' },
+        { id:'f4', name:'How we met', type:'Editorial', edited:'02 Aug', on:true, heading:'One newsroom, two chairs apart', body:'The story of the desk this company came from.', cta:'', href:'' }
+      ]},
+      how: { name:'How We Work', path:'/how-we-work', edited:'09 Aug', sections:[
+        { id:'x1', name:'Page header', type:'Hero', edited:'09 Aug', on:true, heading:'We work the way a newsroom works.', body:'Seven steps, from brief to after publication.', cta:'', href:'' },
+        { id:'x2', name:'Steps 01–07', type:'Editorial', edited:'09 Aug', on:true, heading:'The seven steps', body:'Brief, angle, research, draft, second reader, delivery, follow-through.', cta:'', href:'' },
+        { id:'x3', name:'Turnaround table', type:'Table', edited:'22 Jul', on:true, heading:'What things take', body:'Typical turnaround by format and language pair.', cta:'', href:'' },
+        { id:'x4', name:'CTA — start a brief', type:'CTA', edited:'22 Jul', on:true, heading:'Start with a brief, not a word count.', body:'Tell us who it is for and what should change.', cta:'Request a quote', href:'/contact' }
+      ]},
+      services: { name:'Services', path:'/services', edited:'16 Aug', sections:[
+        { id:'s1', name:'Page header', type:'Hero', edited:'16 Aug', on:true, heading:'Four lines of work', body:'Content and editorial, translation, editing, media.', cta:'', href:'' },
+        { id:'s2', name:'Content & Editorial', type:'Service', edited:'16 Aug', on:true, heading:'Content & Editorial', body:'Articles, website copy, interviews, newsletters, social and branded content, reports.', cta:'', href:'' },
+        { id:'s3', name:'Translation & Localisation', type:'Service', edited:'16 Aug', on:true, heading:'Translation & Localisation', body:'Arabic, French and English — meaning, context, tone and audience.', cta:'', href:'' },
+        { id:'s4', name:'Editing & Rewriting', type:'Service', edited:'16 Aug', on:true, heading:'Editing & Rewriting', body:'Review, proofreading and rewriting that keeps the purpose and the voice.', cta:'', href:'' },
+        { id:'s5', name:'Media & Journalism', type:'Service', edited:'16 Aug', on:true, heading:'Media & Journalism', body:'Reporting, media content, communications material and field support.', cta:'', href:'' }
+      ]},
+      pricing: { name:'Packages', path:'/packages', edited:'07 Aug', sections:[
+        { id:'p1', name:'Page header', type:'Hero', edited:'07 Aug', on:true, heading:'Priced by the work, not the word.', body:'Three packages and a retainer.', cta:'', href:'' },
+        { id:'p2', name:'Article Pack', type:'Package', edited:'07 Aug', on:true, heading:'Article Pack', body:'Four, eight or twelve researched articles on a publishing schedule.', cta:'Request a quote', href:'/contact' },
+        { id:'p3', name:'Localisation Pack', type:'Package', edited:'07 Aug', on:true, heading:'Localisation Pack', body:'A site or campaign carried into a second and third language.', cta:'Request a quote', href:'/contact' },
+        { id:'p4', name:'Editorial retainer', type:'Package', edited:'07 Aug', on:true, heading:'Editorial retainer', body:'A monthly desk: planning, writing, editing, publishing.', cta:'Request a quote', href:'/contact' },
+        { id:'p5', name:'Price bands', type:'Table', edited:'07 Aug', on:false, heading:'Indicative bands', body:'Hidden until the autumn rate card is agreed.', cta:'', href:'' }
+      ]},
+      work: { name:'Work', path:'/work', edited:'21 Aug', sections:[
+        { id:'k1', name:'Page header', type:'Hero', edited:'21 Aug', on:true, heading:'Selected work', body:'Published once the client has agreed to be named.', cta:'', href:'' },
+        { id:'k2', name:'Case study placeholders', type:'Grid', edited:'21 Aug', on:true, heading:'Three cases in preparation', body:'Sector, brief, languages and outcome for each.', cta:'', href:'' },
+        { id:'k3', name:'Journal fallback', type:'CTA', edited:'21 Aug', on:true, heading:'In the meantime, read the Journal', body:'The fastest way to judge the writing.', cta:'Read the Journal', href:'/journal' }
+      ]},
+      journal: { name:'Journal', path:'/journal', edited:'today, 08:50', sections:[
+        { id:'j1', name:'Page header', type:'Hero', edited:'today', on:true, heading:'The Journal', body:'Language, media and the Maghreb — written by us.', cta:'', href:'' },
+        { id:'j2', name:'Featured piece', type:'Feed', edited:'today', on:true, heading:'Featured', body:'Pinned above the index.', cta:'', href:'' },
+        { id:'j3', name:'Index — all pieces', type:'Feed', edited:'today', on:true, heading:'All pieces', body:'Filtered by language and section.', cta:'', href:'' },
+        { id:'j4', name:'Bridge signup strip', type:'Form', edited:'28 Jul', on:true, heading:'Take the monthly letter', body:'One letter a month, worth the open.', cta:'Subscribe', href:'/newsletter' }
+      ]},
+      contact: { name:'Contact', path:'/contact', edited:'today, 07:40', sections:[
+        { id:'c1', name:'Page header', type:'Hero', edited:'today', on:true, heading:'Tell us who it is for.', body:'A brief, a deadline, and the languages you need.', cta:'', href:'' },
+        { id:'c2', name:'Enquiry form', type:'Form', edited:'today', on:true, heading:'Request a quote', body:'Seven fields, three required. Replies within one working day.', cta:'Send', href:'' },
+        { id:'c3', name:'Studio details', type:'Editorial', edited:'02 Aug', on:true, heading:'Tunis, Tunisia', body:'hello@storybridge.tn · working hours 09:00–18:00 CET.', cta:'', href:'' }
+      ]}
+    },
+    issues: [
+      { id:'i8', no:'08', subject:'What a brief is for', date:'Scheduled 01 Sep 2026', audience:'All subscribers', status:'Draft', stats:'—' },
+      { id:'i7', no:'07', subject:'Language and the Maghreb', date:'Sent 01 Aug 2026', audience:'1,842 recipients', status:'Sent', stats:'48.2% open · 9.1% click' },
+      { id:'i6', no:'06', subject:'The second reader', date:'Sent 01 Jul 2026', audience:'1,776 recipients', status:'Sent', stats:'44.8% open · 7.4% click' },
+      { id:'i5', no:'05', subject:'Three headlines, three languages', date:'Sent 01 Jun 2026', audience:'1,703 recipients', status:'Sent', stats:'51.0% open · 11.2% click' }
+    ],
+    subs: [
+      { email:'nadia.karoui@fondation-tn.org', name:'Nadia Karoui', lang:'FR', source:'Journal', joined:'21 Aug 2026' },
+      { email:'m.benslama@medtech.tn', name:'Mehdi Ben Slama', lang:'EN', source:'Contact form', joined:'18 Aug 2026' },
+      { email:'sarra@atelier-sud.tn', name:'Sarra Hamdi', lang:'AR', source:'Home page', joined:'14 Aug 2026' },
+      { email:'l.moreau@ong-mediterranee.fr', name:'Laure Moreau', lang:'FR', source:'Journal', joined:'11 Aug 2026' },
+      { email:'y.trabelsi@gmail.com', name:'Yassine Trabelsi', lang:'EN', source:'Newsletter page', joined:'09 Aug 2026' },
+      { email:'contact@dar-elkitab.tn', name:'Dar El Kitab', lang:'AR', source:'Referral', joined:'04 Aug 2026' }
+    ],
+    messages: [
+      { id:'m1', name:'Mehdi Ben Slama', org:'MedTech Tunisie', email:'m.benslama@medtech.tn', service:'Translation & Localisation', langs:'FR → AR, EN', deadline:'15 Sep 2026', when:'2d ago', status:'New', body:'We are relaunching our site in three languages in September. The French exists; the Arabic and English do not. Around 14 pages plus a product sheet. We would rather pay for someone who understands the sector than for volume — the last agency gave us Arabic nobody in Tunis would say out loud. Can you look at the French and tell us what you would change before translating anything?' },
+      { id:'m2', name:'Nadia Karoui', org:'Fondation Ibn Rushd', email:'nadia.karoui@fondation-tn.org', service:'Content & Editorial', langs:'FR, AR', deadline:'Rolling', when:'3d ago', status:'New', body:'We publish a monthly bulletin for our network and it currently reads like minutes. We are looking for an editorial retainer: planning, writing two pieces a month, and editing what our team submits. Are you taking retainers for the autumn?' },
+      { id:'m3', name:'Laure Moreau', org:'ONG Méditerranée', email:'l.moreau@ong-mediterranee.fr', service:'Media & Journalism', langs:'FR, EN', deadline:'02 Sep 2026', when:'4d ago', status:'New', body:'We need field coverage of a programme in Kairouan in early September — reporting, two written pieces and photo coordination. Is that something you take on?' },
+      { id:'m4', name:'Sarra Hamdi', org:'Atelier Sud', email:'sarra@atelier-sud.tn', service:'Editing & Rewriting', langs:'AR', deadline:'29 Aug 2026', when:'1w ago', status:'Replied', body:'أرسلت لكم نص الصفحة الرئيسية. نحتاج مراجعة وإعادة صياغة مع الحفاظ على النبرة.' },
+      { id:'m5', name:'Yassine Trabelsi', org:'Independent', email:'y.trabelsi@gmail.com', service:'Content & Editorial', langs:'EN', deadline:'—', when:'2w ago', status:'Archived', body:'Asking about internships or contributor work for the Journal.' }
+    ],
+    fields: [
+      { id:'q1', label:'Full name', type:'Short text', required:true, on:true },
+      { id:'q2', label:'Work email', type:'Email', required:true, on:true },
+      { id:'q3', label:'Company or organisation', type:'Short text', required:false, on:true },
+      { id:'q4', label:'Service needed', type:'Select · 4 options', required:true, on:true },
+      { id:'q5', label:'Languages', type:'Checkboxes · AR / FR / EN', required:false, on:true },
+      { id:'q6', label:'Deadline', type:'Date', required:false, on:true },
+      { id:'q7', label:'Tell us about the work', type:'Long text', required:true, on:true },
+      { id:'q8', label:'Budget range', type:'Select · 5 bands', required:false, on:false }
+    ]
+  };
+
+  st(id, patch) {
+    this.setState((s) => ({ [id]: patch }));
+  }
+
+  pill(status) {
+    const m = {
+      'Published': ['#E4EEE8', '#245C43'], 'Sent': ['#E4EEE8', '#245C43'],
+      'Draft': ['#EDE9E2', '#5A6472'], 'In review': ['#F6EADB', '#8F6135'],
+      'Scheduled': ['#E5EBF3', '#002D62'], 'New': ['#F6EADB', '#8F6135'],
+      'Replied': ['#E4EEE8', '#245C43'], 'Archived': ['#EDE9E2', '#5A6472']
+    };
+    return m[status] || ['#EDE9E2', '#5A6472'];
+  }
+
+  role() { return this.state.role || (this.props.defaultRole ?? 'chief'); }
+  currentDraft() {
+    if (this.state.draft) return this.state.draft;
+    const a = this.state.articles.find((x) => x.id === this.state.editingId);
+    return a || this.state.articles[0];
+  }
+  patchDraft(patch) {
+    this.setState((s) => ({ draft: Object.assign({}, s.draft || this.currentDraft(), patch), savedLabel: 'Unsaved changes' }));
+  }
+  currentPage() { return this.state.pages[this.state.pageKey]; }
+  currentSection() {
+    const p = this.currentPage();
+    return p.sections.find((s) => s.id === this.state.secId) || p.sections[0];
+  }
+  patchSection(patch) {
+    const key = this.state.pageKey, id = this.currentSection().id;
+    this.setState((s) => {
+      const pages = Object.assign({}, s.pages);
+      const page = Object.assign({}, pages[key]);
+      page.sections = page.sections.map((sec) => sec.id === id ? Object.assign({}, sec, patch) : sec);
+      pages[key] = page;
+      return { pages, sectionNote: 'Edited — not published yet.' };
+    });
+  }
+  go(view) { return () => { this.setState({ view }); if (typeof window !== 'undefined') window.scrollTo({ top: 0 }); }; }
+  tabChip(on) {
+    return on ? { bg: '#002D62', fg: '#FDF8F1', bd: '#002D62' } : { bg: '#FDF8F1', fg: '#3E4650', bd: '#D8D1C7' };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const skip = this.props.skipAuth ?? false;
+    const stage = skip && s.stage === 'login' ? 'app' : s.stage;
+    const role = this.role();
+    const chief = role === 'chief';
+    const workflow = this.props.articleWorkflow ?? 'review';
+    const draft = this.currentDraft();
+    const dPill = this.pill(draft.status);
+    const canPublish = chief || workflow === 'direct';
+
+    const statuses = ['All', 'Draft', 'In review', 'Scheduled', 'Published'];
+    const counts = {};
+    statuses.forEach((k) => { counts[k] = k === 'All' ? s.articles.length : s.articles.filter((a) => a.status === k).length; });
+    const openCount = s.articles.filter((a) => a.status !== 'Published').length;
+    const newCount = s.messages.filter((m) => m.status === 'New').length;
+
+    const visibleArticles = s.articles
+      .filter((a) => s.statusFilter === 'All' || a.status === s.statusFilter)
+      .map((a) => {
+        const c = this.pill(a.status);
+        return Object.assign({}, a, { bg: c[0], fg: c[1], open: () => this.setState({ view: 'article', editingId: a.id, draft: null, savedLabel: 'All changes saved · 09:14' }) });
+      });
+
+    const page = this.currentPage();
+    const sec = this.currentSection();
+    const msgs = s.messages.filter((m) => s.msgFilter === 'All' || m.status === s.msgFilter);
+    const sel = s.messages.find((m) => m.id === s.msgId) || msgs[0] || s.messages[0];
+    const selPill = this.pill(sel.status);
+    const nav = (v) => v === s.view
+      ? { bg: 'rgba(253,248,241,0.12)', fg: '#FDF8F1' }
+      : { bg: 'transparent', fg: 'rgba(253,248,241,0.7)' };
+    const nDash = nav('dash'), nArt = (s.view === 'articles' || s.view === 'article') ? nav('articles') : nav('x-articles');
+    const nArt2 = (s.view === 'articles' || s.view === 'article') ? { bg: 'rgba(253,248,241,0.12)', fg: '#FDF8F1' } : { bg: 'transparent', fg: 'rgba(253,248,241,0.7)' };
+    const nPages = nav('pages'), nNews = nav('issues'), nInbox = nav('inbox'), nSet = nav('settings');
+    const titles = { dash: 'Overview', articles: 'The Journal', article: draft.title, pages: 'Pages & sections', issues: 'The Bridge', inbox: 'Contact', settings: 'Settings & access' };
+    const crumbs = { dash: 'Content desk · Tuesday 23 August 2026', articles: 'Content desk · Journal', article: 'Journal · editing', pages: 'Content desk · site structure', issues: 'Content desk · newsletter', inbox: 'Content desk · enquiries', settings: 'Content desk · administration' };
+    const words = String(draft.body || '').split(/\s+/).filter(Boolean).length;
+
+    return {
+      isLogin: stage === 'login', isCode: stage === 'code', isApp: stage === 'app',
+      email: s.email, pass: s.pass,
+      setEmail: (e) => this.setState({ email: e.target.value }),
+      setPass: (e) => this.setState({ pass: e.target.value }),
+      pickChief: () => this.setState({ role: 'chief', email: 'assia@storybridge.tn' }),
+      pickJourno: () => this.setState({ role: 'journalist', email: 'imen@storybridge.tn' }),
+      chiefBg: chief ? '#002D62' : '#FFFFFF', chiefFg: chief ? '#FDF8F1' : '#3E4650',
+      journoBg: chief ? '#FFFFFF' : '#002D62', journoFg: chief ? '#3E4650' : '#FDF8F1',
+      roleBlurb: chief ? 'Assia Touati · full access, including publishing and people.' : 'Imen Bliwa · writes and edits; publishing goes through review.',
+      submitLogin: () => this.setState({ stage: 'code' }),
+      backToLogin: () => this.setState({ stage: 'login' }),
+      verify: () => this.setState({ stage: 'app', view: 'dash' }),
+      c0: s.code[0], c1: s.code[1], c2: s.code[2], c3: s.code[3], c4: s.code[4], c5: s.code[5],
+      setC0: (e) => this.setCode(0, e.target.value), setC1: (e) => this.setCode(1, e.target.value),
+      setC2: (e) => this.setCode(2, e.target.value), setC3: (e) => this.setCode(3, e.target.value),
+      setC4: (e) => this.setCode(4, e.target.value), setC5: (e) => this.setCode(5, e.target.value),
+
+      sbWidth: s.collapsed ? '72px' : '250px',
+      labelDisp: s.collapsed ? 'none' : 'flex',
+      collapseGlyph: s.collapsed ? '»' : '«',
+      brandPad: s.collapsed ? '22px 12px' : '22px 14px 22px 20px',
+      brandJustify: s.collapsed ? 'center' : 'flex-start',
+      logoDisp: s.collapsed ? 'none' : 'block',
+      toggleMargin: s.collapsed ? '0' : 'auto',
+      toggleSize: s.collapsed ? '44px' : '26px',
+      collapseTitle: s.collapsed ? 'Expand the sidebar' : 'Collapse the sidebar',
+      toggleSidebar: () => this.setState((st) => ({ collapsed: !st.collapsed })),
+      userName: chief ? 'Assia Touati' : 'Imen Bliwa',
+      userRole: chief ? 'Editor-in-chief' : 'Journalist',
+      signOut: () => this.setState({ stage: 'login', view: 'dash' }),
+      openCount, newCount,
+      crumb: crumbs[s.view], viewTitle: titles[s.view],
+      navDashBg: nDash.bg, navDashFg: nDash.fg,
+      navArtBg: nArt2.bg, navArtFg: nArt2.fg,
+      navPagesBg: nPages.bg, navPagesFg: nPages.fg,
+      navNewsBg: nNews.bg, navNewsFg: nNews.fg,
+      navInboxBg: nInbox.bg, navInboxFg: nInbox.fg,
+      navSetBg: nSet.bg, navSetFg: nSet.fg,
+      goDash: this.go('dash'), goArticles: this.go('articles'), goPages: this.go('pages'),
+      goIssues: this.go('issues'), goInbox: this.go('inbox'), goSettings: this.go('settings'),
+      vDash: s.view === 'dash', vArticles: s.view === 'articles', vArticle: s.view === 'article',
+      vPages: s.view === 'pages', vIssues: s.view === 'issues', vInbox: s.view === 'inbox',
+      vSettings: s.view === 'settings',
+
+      queue: [
+        { kind: 'Review', bg: '#F6EADB', fg: '#8F6135', title: 'Le brief, ce document qu’on saute trop souvent', meta: 'Imen Bliwa · submitted 20 Aug · FR · 980 words', cta: chief ? 'Read and decide' : 'Open', act: () => this.setState({ view: 'article', editingId: 'a3', draft: null }) },
+        { kind: 'Enquiry', bg: '#F6EADB', fg: '#8F6135', title: 'MedTech Tunisie — three-language relaunch', meta: 'Unanswered for two days · FR → AR, EN · deadline 15 Sep', cta: 'Reply', act: () => this.setState({ view: 'inbox', tab: 'm', msgId: 'm1' }) },
+        { kind: 'Letter', bg: '#E5EBF3', fg: '#002D62', title: 'The Bridge No. 08 — one section still missing', meta: 'Scheduled for 01 Sep · 1,904 recipients', cta: 'Continue', act: this.go('issues') },
+        { kind: 'Page', bg: '#EDE9E2', fg: '#5A6472', title: 'Packages — price bands still hidden', meta: 'Section off since 15 Jul · waiting on the autumn rate card', cta: 'Open page', act: () => this.setState({ view: 'pages', pageKey: 'pricing', secId: 'p5' }) }
+      ],
+      activity: [
+        { when: '09:12', text: 'Assia published “What a newsroom taught us about client work”.' },
+        { when: '08:50', text: 'Journal index reordered — featured piece pinned.' },
+        { when: 'Yest.', text: 'Imen submitted a French piece for review.' },
+        { when: 'Yest.', text: 'Contact form: budget range field switched off.' },
+        { when: '21 Aug', text: '12 new Bridge subscribers from the Journal.' }
+      ],
+
+      statusTabs: statuses.map((k) => {
+        const on = s.statusFilter === k;
+        return { label: k, count: counts[k], pick: () => this.setState({ statusFilter: k }), bg: on ? '#002D62' : '#FDF8F1', fg: on ? '#FDF8F1' : '#3E4650', bd: on ? '#002D62' : '#D8D1C7' };
+      }),
+      visibleArticles,
+      articleCountLabel: visibleArticles.length + ' of ' + s.articles.length + ' pieces',
+      newArticle: () => this.setState({ view: 'article', draft: { id: 'new', title: 'Untitled piece', slug: 'untitled-piece', lang: 'EN', cat: 'Editorial', author: chief ? 'Assia Touati' : 'Imen Bliwa', status: 'Draft', date: '23 Aug 2026', words: 0, excerpt: '', body: '' }, savedLabel: 'Not saved yet' }),
+
+      draftTitle: draft.title, draftSlug: draft.slug, draftCat: draft.cat, draftExcerpt: draft.excerpt,
+      draftBody: draft.body, draftStatus: draft.status, draftAuthor: draft.author, draftDate: draft.date,
+      draftBg: dPill[0], draftFg: dPill[1], draftWords: words,
+      setTitle: (e) => this.patchDraft({ title: e.target.value }),
+      setSlug: (e) => this.patchDraft({ slug: e.target.value }),
+      setCat: (e) => this.patchDraft({ cat: e.target.value }),
+      setExcerpt: (e) => this.patchDraft({ excerpt: e.target.value }),
+      setBody: (e) => this.patchDraft({ body: e.target.value }),
+      setDate: (e) => this.patchDraft({ date: e.target.value }),
+      saveDraft: () => this.commitDraft(draft.status, 'Draft saved · just now'),
+      preview: () => this.setState({ savedLabel: 'Preview opened in a new tab' }),
+      publish: () => this.commitDraft('Published', 'Published · live on /journal'),
+      sendToReview: () => this.commitDraft('In review', 'Sent to Assia for review'),
+      canPublish, mustReview: !canPublish,
+      savedLabel: s.savedLabel,
+      workflowNote: canPublish ? 'You can publish directly. Every publish is logged against your name.' : 'Journalists submit for review; the editor-in-chief publishes. Change this under Settings & access.',
+      langVersions: [
+        { code: 'EN', state: draft.lang.indexOf('EN') > -1 ? 'This version' : 'Not started', cta: draft.lang.indexOf('EN') > -1 ? 'Editing' : 'Create' },
+        { code: 'FR', state: draft.lang.indexOf('FR') > -1 ? 'This version' : 'Not started', cta: draft.lang.indexOf('FR') > -1 ? 'Editing' : 'Create' },
+        { code: 'AR', state: draft.lang.indexOf('AR') > -1 ? 'Linked translation' : 'Not started', cta: draft.lang.indexOf('AR') > -1 ? 'Open' : 'Create' }
+      ],
+
+      pageList: Object.keys(s.pages).map((k) => {
+        const p = s.pages[k], on = k === s.pageKey;
+        return { name: p.name, path: p.path, count: p.sections.length, pick: () => this.setState({ pageKey: k, secId: null }), bg: on ? '#EDF1F6' : 'transparent', fg: on ? '#002D62' : '#3E4650' };
+      }),
+      currentName: page.name, currentPath: page.path, currentEdited: page.edited,
+      sections: page.sections.map((x) => ({
+        name: x.name, type: x.type, edited: x.edited, on: x.on, off: !x.on,
+        bg: x.id === sec.id ? '#F4EEE6' : 'transparent',
+        pick: () => this.setState({ secId: x.id }),
+        toggle: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleSection(x.id); }
+      })),
+      secName: sec.name, secHeading: sec.heading,
+      secEyebrow: sec.eyebrow ?? sec.type,
+      setSecEyebrow: (e) => this.patchSection({ eyebrow: e.target.value }), secBody: sec.body, secCta: sec.cta, secHref: sec.href,
+      setSecHeading: (e) => this.patchSection({ heading: e.target.value }),
+      setSecBody: (e) => this.patchSection({ body: e.target.value }),
+      setSecCta: (e) => this.patchSection({ cta: e.target.value }),
+      setSecHref: (e) => this.patchSection({ href: e.target.value }),
+      saveSection: () => this.setState({ sectionNote: 'Saved. Publish the page to push it live.' }),
+      sectionNote: s.sectionNote,
+      publishPage: () => this.setState({ sectionNote: 'Page published — ' + page.name + ' is live.' }),
+      pagePublishLabel: chief ? 'Publish page' : 'Submit page',
+
+      onIssues: s.tab !== 's', onSubs: s.tab === 's',
+      tabIssues: () => this.setState({ tab: 'a' }), tabSubs: () => this.setState({ tab: 's' }),
+      tabIssuesBg: this.tabChip(s.tab !== 's').bg, tabIssuesFg: this.tabChip(s.tab !== 's').fg, tabIssuesBd: this.tabChip(s.tab !== 's').bd,
+      tabSubsBg: this.tabChip(s.tab === 's').bg, tabSubsFg: this.tabChip(s.tab === 's').fg, tabSubsBd: this.tabChip(s.tab === 's').bd,
+      issues: s.issues.map((i) => { const c = this.pill(i.status); return Object.assign({}, i, { bg: c[0], fg: c[1] }); }),
+      subject: s.subject, preheader: s.preheader, audience: s.audience, sendAt: s.sendAt, issueNote: s.issueNote,
+      setSubject: (e) => this.setState({ subject: e.target.value, issueNote: 'Unsaved changes to No. 08' }),
+      setPreheader: (e) => this.setState({ preheader: e.target.value, issueNote: 'Unsaved changes to No. 08' }),
+      setAudience: (e) => this.setState({ audience: e.target.value }),
+      setSendAt: (e) => this.setState({ sendAt: e.target.value }),
+      sendTest: () => this.setState({ issueNote: 'Test sent to the two of us.' }),
+      schedule: () => this.setState({ issueNote: 'Scheduled — goes out ' + s.sendAt + '.' }),
+      picks: [
+        { id: 'p1', title: 'Why we still write to a brief, not a word count' },
+        { id: 'p2', title: 'Translating a brand voice into Arabic without flattening it' },
+        { id: 'p3', title: 'Le brief, ce document qu’on saute trop souvent (FR)' },
+        { id: 'p4', title: 'Three headlines we argued about for an hour' }
+      ].map((p) => ({ title: p.title, on: !!s.picksOn[p.id], off: !s.picksOn[p.id], toggle: () => this.setState((st) => ({ picksOn: Object.assign({}, st.picksOn, { [p.id]: !st.picksOn[p.id] }), issueNote: 'Unsaved changes to No. 08' })) })),
+      segments: ['All', 'EN', 'FR', 'AR'].map((g) => {
+        const on = s.subFilter === g;
+        return { label: g === 'All' ? 'All subscribers' : g, pick: () => this.setState({ subFilter: g }), bg: on ? '#002D62' : '#FDF8F1', fg: on ? '#FDF8F1' : '#3E4650', bd: on ? '#002D62' : '#D8D1C7' };
+      }),
+      visibleSubs: s.subs.filter((x) => s.subFilter === 'All' || x.lang === s.subFilter),
+
+      onMsgs: s.tab !== 'f2', onForm: s.tab === 'f2',
+      tabMsgs: () => this.setState({ tab: 'm' }), tabForm: () => this.setState({ tab: 'f2' }),
+      tabMsgsBg: this.tabChip(s.tab !== 'f2').bg, tabMsgsFg: this.tabChip(s.tab !== 'f2').fg, tabMsgsBd: this.tabChip(s.tab !== 'f2').bd,
+      tabFormBg: this.tabChip(s.tab === 'f2').bg, tabFormFg: this.tabChip(s.tab === 'f2').fg, tabFormBd: this.tabChip(s.tab === 'f2').bd,
+      msgFilters: ['New', 'Replied', 'Archived', 'All'].map((f) => {
+        const on = s.msgFilter === f;
+        return { label: f, pick: () => this.setState({ msgFilter: f }), bg: on ? '#002D62' : '#FFFFFF', fg: on ? '#FDF8F1' : '#3E4650', bd: on ? '#002D62' : '#D8D1C7' };
+      }),
+      visibleMsgs: msgs.map((m) => ({
+        name: m.name, org: m.org, service: m.service, when: m.when,
+        preview: m.body.slice(0, 64) + '…',
+        bg: m.id === sel.id ? '#F4EEE6' : 'transparent',
+        mark: m.status === 'New' ? '#B57D49' : 'transparent',
+        pick: () => this.setState({ msgId: m.id, reply: '', replyNote: 'Sends from hello@storybridge.tn' })
+      })),
+      selName: sel.name, selOrg: sel.org, selEmail: sel.email, selService: sel.service,
+      selLangs: sel.langs, selDeadline: sel.deadline, selBody: sel.body, selStatus: sel.status,
+      selBg: selPill[0], selFg: selPill[1],
+      reply: s.reply, replyNote: s.replyNote,
+      setReply: (e) => this.setState({ reply: e.target.value }),
+      sendReply: () => this.setMsgStatus(sel.id, 'Replied', 'Reply sent to ' + sel.email),
+      markReplied: () => this.setMsgStatus(sel.id, 'Replied', 'Filed as replied'),
+      archiveMsg: () => this.setMsgStatus(sel.id, 'Archived', 'Archived — searchable, out of the inbox'),
+      fields: s.fields.map((f) => ({
+        label: f.label, type: f.type, on: f.on, off: !f.on,
+        reqLabel: f.required ? 'Required' : 'Optional',
+        reqBg: f.required ? '#E5EBF3' : '#EDE9E2', reqFg: f.required ? '#002D62' : '#5A6472',
+        toggleReq: () => this.patchField(f.id, { required: !f.required }),
+        toggleOn: () => this.patchField(f.id, { on: !f.on })
+      })),
+      routeTo: s.routeTo, thanks: s.thanks, formNote: s.formNote,
+      setRouteTo: (e) => this.setState({ routeTo: e.target.value, formNote: 'Unsaved changes' }),
+      setThanks: (e) => this.setState({ thanks: e.target.value, formNote: 'Unsaved changes' }),
+      saveForm: () => this.setState({ formNote: 'Form saved and live on /contact.' }),
+
+      users: [
+        { name: 'Assia Touati', email: 'assia@storybridge.tn', role: 'Owner · Editor-in-chief', scope: 'Everything', mfa: 'MFA ON', mfaFg: '#245C43' },
+        { name: 'Imen Bliwa', email: 'imen@storybridge.tn', role: 'Journalist · Translator', scope: 'Journal, Bridge', mfa: 'MFA ON', mfaFg: '#245C43' },
+        { name: 'Rim Gharbi', email: 'rim@storybridge.tn', role: 'Contributor', scope: 'Own drafts', mfa: 'MFA OFF', mfaFg: '#8F6135' },
+        { name: 'Studio Nord', email: 'design@studionord.tn', role: 'Media only', scope: 'Media library', mfa: 'MFA ON', mfaFg: '#245C43' }
+      ],
+      matrix: [
+        { cap: 'Write and edit drafts', c1: 'Yes', c2: 'Yes', c3: 'Yes', c4: 'Own only', c1f: '#245C43', c2f: '#245C43', c3f: '#245C43', c4f: '#8F6135' },
+        { cap: 'Publish to the site', c1: 'Yes', c2: 'Yes', c3: 'On approval', c4: 'No', c1f: '#245C43', c2f: '#245C43', c3f: '#8F6135', c4f: '#A8A29A' },
+        { cap: 'Edit pages and sections', c1: 'Yes', c2: 'Yes', c3: 'No', c4: 'No', c1f: '#245C43', c2f: '#245C43', c3f: '#A8A29A', c4f: '#A8A29A' },
+        { cap: 'Send The Bridge', c1: 'Yes', c2: 'Yes', c3: 'Test only', c4: 'No', c1f: '#245C43', c2f: '#245C43', c3f: '#8F6135', c4f: '#A8A29A' },
+        { cap: 'Read and answer enquiries', c1: 'Yes', c2: 'Yes', c3: 'Assigned', c4: 'No', c1f: '#245C43', c2f: '#245C43', c3f: '#8F6135', c4f: '#A8A29A' },
+        { cap: 'Manage people and access', c1: 'Yes', c2: 'Yes', c3: 'No', c4: 'No', c1f: '#245C43', c2f: '#245C43', c3f: '#A8A29A', c4f: '#A8A29A' }
+      ]
+    };
+  }
+
+  setCode(i, v) {
+    const val = String(v).replace(/[^0-9]/g, '').slice(0, 1);
+    this.setState((s) => { const code = s.code.slice(); code[i] = val; return { code }; });
+  }
+
+  commitDraft(status, note) {
+    const d = Object.assign({}, this.currentDraft(), { status });
+    this.setState((s) => {
+      const exists = s.articles.some((a) => a.id === d.id);
+      const withId = exists ? d : Object.assign({}, d, { id: 'a' + (s.articles.length + 1) });
+      const articles = exists ? s.articles.map((a) => a.id === d.id ? withId : a) : [withId].concat(s.articles);
+      return { articles, draft: withId, editingId: withId.id, savedLabel: note };
+    });
+  }
+
+  toggleSection(id) {
+    const key = this.state.pageKey;
+    this.setState((s) => {
+      const pages = Object.assign({}, s.pages);
+      const page = Object.assign({}, pages[key]);
+      page.sections = page.sections.map((x) => x.id === id ? Object.assign({}, x, { on: !x.on }) : x);
+      pages[key] = page;
+      return { pages, sectionNote: 'Visibility changed — publish the page to apply it.' };
+    });
+  }
+
+  patchField(id, patch) {
+    this.setState((s) => ({
+      fields: s.fields.map((f) => f.id === id ? Object.assign({}, f, patch) : f),
+      formNote: 'Unsaved changes'
+    }));
+  }
+}
+
+</script>
+</body>
+</html>

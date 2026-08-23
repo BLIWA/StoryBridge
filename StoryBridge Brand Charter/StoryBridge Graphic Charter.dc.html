@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#E4DED6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+a{color:#002D62;text-decoration:none;}
+a:hover{color:#B57D49;}
+*{box-sizing:border-box;}
+</style>
+</helmet>
+
+<div style="width:2400px;margin:0 auto;background:#FDF8F1;padding:80px 88px 96px;font-family:'IBM Plex Sans',sans-serif;color:#111111">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:64px;padding-bottom:28px;border-bottom:2px solid #002D62">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#8F6135">Brand Identity &amp; Graphic Charter — v2.0</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:76px;line-height:0.98;letter-spacing:-0.02em;color:#002D62">StoryBridge Content &amp; Media</div>
+      <div style="font-size:18px;line-height:1.5;color:#5A6472;max-width:900px;text-wrap:pretty">Journalistic values applied to multilingual content. Editorial, translation and media — Tunis, Tunisia. Arabic · English · French. This board is the single source of truth for the website UI build.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:18px;flex:none">
+      <div style="display:flex;align-items:center;gap:18px">
+        <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:78px;width:auto;flex:none">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:52px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+          <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:20px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+        </div>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378;letter-spacing:0.04em">storybridge.tn · issued 08.2026</div>
+    </div>
+  </div>
+  <div style="height:6px;background:#B57D49;width:220px;margin-bottom:72px"></div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-bottom:88px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Positioning</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:24px;line-height:1.35;color:#002D62;text-wrap:pretty">A boutique editorial house, not a digital-marketing studio.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Personality</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <div style="border:1px solid #002D62;color:#002D62;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;white-space:nowrap">Editorial</div>
+        <div style="border:1px solid #002D62;color:#002D62;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;white-space:nowrap">Trustworthy</div>
+        <div style="border:1px solid #002D62;color:#002D62;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;white-space:nowrap">Warm</div>
+        <div style="border:1px solid #B57D49;color:#8F6135;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;white-space:nowrap">Senior</div>
+        <div style="border:1px solid #B57D49;color:#8F6135;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:500;white-space:nowrap">Craftsman-like</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Design principles</div>
+      <div style="font-size:15px;line-height:1.6;color:#3E4650">Type before ornament. Generous white space. One accent, used sparingly. Every layout must survive mirroring.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Voice</div>
+      <div style="font-size:15px;line-height:1.6;color:#3E4650">Plain, precise, bylined. We say <span style="color:#002D62;font-weight:500">“we edit”</span>, never <span style="color:#8F6135;font-weight:500">“we leverage”</span>. Equal register in all three languages.</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">01</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">Logo system</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">Master artwork supplied by the client; the flat two-comma reduction is derived from it for one-ink, monochrome and small-size use.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:24px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;height:230px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;align-items:center;gap:14px">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:62px;width:auto;flex:none">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:41px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:16px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#002D62">Primary lockup</div>
+      <div style="font-size:13px;line-height:1.5;color:#5A6472">On Content Cream. The default in every medium.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;height:230px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;align-items:center;gap:14px">
+          <img src="assets/mark-002d62.png" alt="StoryBridge mark" style="height:62px;width:57.2px;flex:none">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:41px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:16px;line-height:1;color:#002D62;letter-spacing:0.15em">Content &amp; Media</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#002D62">Monochrome navy</div>
+      <div style="font-size:13px;line-height:1.5;color:#5A6472">100% Deep Narrative Navy, one ink. The default single-colour lockup: stamps, embossing, engraving, newspaper listings.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;height:230px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;align-items:center;gap:14px">
+          <img src="assets/mark-8f6135.png" alt="StoryBridge mark" style="height:62px;width:57.2px;flex:none">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:41px;line-height:1;color:#8F6135;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:16px;line-height:1;color:#8F6135;letter-spacing:0.15em">Content &amp; Media</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#002D62">Monochrome bronze</div>
+      <div style="font-size:13px;line-height:1.5;color:#5A6472">100% Bronze Byline. Foil, letterpress, hot-stamp and single-colour print on uncoated stock.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#FFFFFF;border:1px solid #E6E0D8;border-radius:8px;height:230px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;align-items:center;gap:14px">
+          <img src="assets/mark-1c1b19.png" alt="StoryBridge mark" style="height:62px;width:57.2px;flex:none">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:41px;line-height:1;color:#1C1B19;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:16px;line-height:1;color:#1C1B19;letter-spacing:0.15em">Content &amp; Media</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#002D62">Monochrome black</div>
+      <div style="font-size:13px;line-height:1.5;color:#5A6472">100% black for contracts, invoices, scans, faxes and any document that must survive photocopying.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.5fr;gap:24px;margin-bottom:24px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Icon-only mark</div>
+      <div style="display:flex;align-items:flex-end;gap:32px">
+        <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:96px;width:auto;flex:none">
+        <img src="assets/mark-002d62.png" alt="StoryBridge mark" style="height:96px;width:88.6px;flex:none">
+        <div style="width:96px;height:96px;border-radius:999px;background:#FDF8F1;border:1px solid #D8D1C7;display:flex;align-items:center;justify-content:center;flex:none">
+          <img src="assets/mark-002d62.png" alt="StoryBridge mark" style="height:58px;width:53.6px;flex:none">
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.55;color:#5A6472">Master artwork (left) for anything 40px and up; the two-comma reduction for one-ink, monochrome and small sizes. Never set the mark alone on first contact with a new audience — pair it with the wordmark at least once.</div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Clear space</div>
+      <div style="display:flex;align-items:center;gap:28px">
+        <div style="position:relative;padding:40px;background:#F6F0E7;border-radius:4px">
+          <div style="position:absolute;inset:0;border:1px dashed #B57D49;border-radius:4px"></div>
+          <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">x</div>
+          <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">x</div>
+          <div style="display:flex;align-items:center;gap:10px;outline:1px solid rgba(0,45,98,0.25)">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:44px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:29px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+              <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:11px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:13px;line-height:1.6;color:#5A6472"><span style="color:#002D62;font-weight:600">x = 50% of mark height.</span><br>No type, rule, image edge or fold may enter the x-margin on any side. On the web this is the header's minimum padding.</div>
+      </div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Minimum sizes</div>
+      <div style="display:flex;align-items:flex-end;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+          <div style="display:flex;align-items:center;gap:10px">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:40px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:26px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+              <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:10px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+            </div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">full lockup · 160px / 36mm</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+          <div style="display:flex;align-items:center;gap:7px">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:26px;width:auto;flex:none">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:19px;line-height:1;color:#002D62;letter-spacing:-0.01em">StoryBridge</div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">reduced · 112px / 24mm</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:24px;width:auto;flex:none">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">mark · 24px / 6mm</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.55;color:#5A6472">Below 112px the tagline is dropped — it becomes illegible before the wordmark does. Below 24px use the monochrome mark inside a cream circle with a navy keyline.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:88px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#F6F0E7;border:1px solid #E6E0D8;border-radius:8px;height:150px;display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:46px;width:auto;flex:none">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1;color:#002D62">StoryBridge</div>
+        </div>
+        <div style="position:absolute;top:12px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:#2F6B4F">DO</div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#3E4650">Hold the horizontal lockup and its built-in proportions.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#F6F0E7;border:1px solid #E6E0D8;border-radius:8px;height:150px;display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="display:flex;align-items:center;gap:12px;transform:skewX(-12deg) scaleY(1.3)">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:46px;width:auto;flex:none">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1;color:#002D62">StoryBridge</div>
+        </div>
+        <div style="position:absolute;top:12px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:#A5342E">DON'T</div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#3E4650">Never stretch, skew, rotate or condense the lockup.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#F6F0E7;border:1px solid #E6E0D8;border-radius:8px;height:150px;display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="assets/mark-a5342e.png" alt="StoryBridge mark" style="height:46px;width:42.5px;flex:none">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1;color:#2F6B4F">StoryBridge</div>
+        </div>
+        <div style="position:absolute;top:12px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:#A5342E">DON'T</div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#3E4650">Never recolour outside navy, bronze, cream. Signal colours are for UI states only.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border-radius:8px;height:150px;display:flex;align-items:center;justify-content:center;position:relative;background-image:repeating-linear-gradient(45deg,#B57D49 0 10px,#002D62 10px 20px)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:46px;width:auto;flex:none">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1;color:#002D62">StoryBridge</div>
+        </div>
+        <div style="position:absolute;top:12px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:#FDF8F1">DON'T</div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#3E4650">Never place on a busy field or patterned ground. Set a solid panel first.</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">02</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">Colour system</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">CMYK given for SWOP coated stock; always proof against a printed sheet before a run.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:32px">
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#002D62;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Narrative Navy</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #002D62<br>RGB 0 · 45 · 98
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 100 · 78 · 24 · 12</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Primary. Structure, headlines, footers, primary buttons. ~30% of any surface.</div>
+      </div>
+    </div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#001838;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Deep Narrative Navy</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #001838<br>RGB 0 · 24 · 56
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 100 · 84 · 40 · 48</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Dark-mode canvas, card backs, hover state of navy. Never for body type.</div>
+      </div>
+    </div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#B57D49;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Craftsman Bronze</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #B57D49<br>RGB 181 · 125 · 73
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 26 · 51 · 76 · 5</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Accent only — rules, tagline, active states, large figures. Max ~8% of a surface.</div>
+      </div>
+    </div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#8F6135;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Bronze Deep</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #8F6135<br>RGB 143 · 97 · 53
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 30 · 58 · 88 · 21</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Derived. The accessible bronze for body-size text and links on cream (5.1:1).</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:32px">
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#FDF8F1;height:150px;border-bottom:1px solid #E6E0D8"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Content Cream</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #FDF8F1<br>RGB 253 · 248 · 241
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 1 · 2 · 6 · 0</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">The base. Page background in light mode, ~60% of any surface. Never pure white.</div>
+      </div>
+    </div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#E8E3DD;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Narrative Light</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #E8E3DD<br>RGB 232 · 227 · 221
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 8 · 8 · 11 · 0</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Section fills, table zebra, disabled surfaces, dividers at #D8D1C7.</div>
+      </div>
+    </div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #E6E0D8">
+      <div style="background:#111111;height:150px"></div>
+      <div style="padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;background:#FDF8F1">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62">Typography Black</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:#3E4650">HEX #111111<br>RGB 17 · 17 · 17
+          <sc-if value="{{ showPrintValues }}" hint-placeholder-val="{{ true }}"><span><br>CMYK 0 · 0 · 0 · 95</span></sc-if>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#5A6472;padding-top:4px">Long-form body copy at 16px+. Muted text steps down to #3E4650 / #5A6472.</div>
+      </div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Signal colours · UI only</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:4px;background:#2F6B4F;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3E4650">#2F6B4F · success</div></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:4px;background:#C08A2E;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3E4650">#C08A2E · warning</div></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:4px;background:#A5342E;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3E4650">#A5342E · error</div></div>
+      </div>
+      <div style="font-size:13px;line-height:1.5;color:#5A6472">Desaturated to sit beside bronze. Never in marketing layouts or the logo.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Tint &amp; shade ramps</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;font-weight:600;color:#002D62">Navy</div>
+        <div style="display:flex;height:56px;border-radius:4px;overflow:hidden">
+          <div style="flex:1;background:#001838;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">900</div>
+          <div style="flex:1;background:#002144;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">800</div>
+          <div style="flex:1;background:#002D62;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">700</div>
+          <div style="flex:1;background:#33578A;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">500</div>
+          <div style="flex:1;background:#7F96B4;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#001838">300</div>
+          <div style="flex:1;background:#CCD5E0;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#001838">100</div>
+          <div style="flex:1;background:#EDF1F6;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#001838">50</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;font-weight:600;color:#002D62">Bronze</div>
+        <div style="display:flex;height:56px;border-radius:4px;overflow:hidden">
+          <div style="flex:1;background:#5F4123;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">900</div>
+          <div style="flex:1;background:#8F6135;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">700</div>
+          <div style="flex:1;background:#B57D49;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#FDF8F1">500</div>
+          <div style="flex:1;background:#C99D74;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3E2C18">400</div>
+          <div style="flex:1;background:#DEC5A9;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3E2C18">300</div>
+          <div style="flex:1;background:#EFE1D2;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3E2C18">100</div>
+          <div style="flex:1;background:#F8F1E8;display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3E2C18">50</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:600;color:#002D62">Usage ratio</div>
+        <div style="display:flex;height:36px;border-radius:4px;overflow:hidden">
+          <div style="flex:60;background:#FDF8F1;border:1px solid #E6E0D8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#3E4650">CREAM 60%</div>
+          <div style="flex:30;background:#002D62;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#FDF8F1">NAVY 30%</div>
+          <div style="flex:8;background:#B57D49;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#FDF8F1">8%</div>
+          <div style="flex:2;background:#E8E3DD"></div>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Accessible pairings · WCAG 2.2</div>
+      <div style="display:grid;grid-template-columns:1.6fr 0.6fr 0.7fr 1.5fr;gap:0;font-size:13px">
+        <div style="padding:10px 8px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Foreground on background</div>
+        <div style="padding:10px 8px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Ratio</div>
+        <div style="padding:10px 8px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Level</div>
+        <div style="padding:10px 8px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Use for</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Navy on Cream</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">12.8:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AAA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Headlines, body, links</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Black on Cream</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">17.9:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AAA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Long-form article body</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Cream on Deep Navy</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">16.7:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AAA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Dark mode, footers</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Navy on Narrative Light</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">10.6:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AAA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Filled sections, tables</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Bronze on Deep Navy</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">5.1:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Dark-mode accents, tagline</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Bronze Deep on Cream</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">5.1:1</div>
+        <div style="padding:10px 8px;color:#2F6B4F;font-weight:600;border-bottom:1px solid #EDE7DE">AA</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">Bronze text at body size</div>
+
+        <div style="padding:10px 8px;color:#3E4650;border-bottom:1px solid #EDE7DE">Bronze #B57D49 on Cream</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650;border-bottom:1px solid #EDE7DE">3.3:1</div>
+        <div style="padding:10px 8px;color:#C08A2E;font-weight:600;border-bottom:1px solid #EDE7DE">AA large</div>
+        <div style="padding:10px 8px;color:#5A6472;border-bottom:1px solid #EDE7DE">24px+ only · rules · icons</div>
+
+        <div style="padding:10px 8px;color:#3E4650">Bronze on Narrative Light</div>
+        <div style="padding:10px 8px;font-family:'IBM Plex Mono',monospace;color:#3E4650">2.7:1</div>
+        <div style="padding:10px 8px;color:#A5342E;font-weight:600">Fail</div>
+        <div style="padding:10px 8px;color:#5A6472">Never. Use Bronze Deep instead.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:88px"></div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">03</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">Typography — Latin &amp; Arabic</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">Four faces, two scripts, one voice. All available as web fonts and desktop licences.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Latin display · headlines &amp; wordmark</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378">400 · 600 · 700 · italic</div>
+      </div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:56px;line-height:1;color:#002D62;letter-spacing:-0.02em">Source Serif 4</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:23px;line-height:1.35;color:#111111;letter-spacing:0.005em">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 &amp; “ ” « » — ¶ §</div>
+      <div style="font-family:'Source Serif 4',serif;font-style:italic;font-weight:400;font-size:26px;line-height:1.4;color:#002D62">“Un métier, pas une prestation.”</div>
+      <div style="font-size:14px;line-height:1.6;color:#5A6472">Chosen for its newsprint lineage and its full Latin-Extended coverage — French accents and Maghrebi transliteration set without substitution. Optical sizing on; never track below −0.02em.</div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Latin text · body, UI, captions</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378">400 · 500 · 600</div>
+      </div>
+      <div style="font-weight:600;font-size:56px;line-height:1;color:#002D62;letter-spacing:-0.015em">IBM Plex Sans</div>
+      <div style="font-weight:400;font-size:21px;line-height:1.4;color:#111111">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 &amp; @ % € — → ✓</div>
+      <div style="font-weight:500;font-size:22px;line-height:1.4;color:#002D62">Interfaces, forms and fine print.</div>
+      <div style="font-size:14px;line-height:1.6;color:#5A6472">Grotesque with a subtle mechanical warmth that agrees with the serif. Its Arabic sibling shares metrics and weight names, which is why the two scripts can share one type scale.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:18px;background:#FBF6EE">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Arabic display · headlines</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378">400 · 700</div>
+      </div>
+      <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:56px;line-height:1.5;color:#002D62;direction:rtl">نوتو نسخ عربي</div>
+      <div style="font-family:'Noto Naskh Arabic',serif;font-weight:400;font-size:30px;line-height:1.9;color:#111111;direction:rtl">أ ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي<br>٠١٢٣٤٥٦٧٨٩ ، ؛ ؟ «»</div>
+      <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:26px;line-height:1.8;color:#002D62;direction:rtl">قيم الصحافة في خدمة المحتوى</div>
+      <div style="font-size:14px;line-height:1.6;color:#5A6472">A naskh with calligraphic contrast — the Arabic counterpart of a text serif, so headlines carry the same editorial authority as the Latin. Use for H1–H4 and pull quotes.</div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:18px;background:#FBF6EE">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Arabic text · body &amp; UI</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378">400 · 500 · 600</div>
+      </div>
+      <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-weight:600;font-size:52px;line-height:1.5;color:#002D62;direction:rtl">آي بي إم بلكس</div>
+      <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-weight:400;font-size:26px;line-height:1.9;color:#111111;direction:rtl">أ ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي<br>٠١٢٣٤٥٦٧٨٩ — 0123456789</div>
+      <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-weight:500;font-size:22px;line-height:1.8;color:#002D62;direction:rtl">الواجهات والنماذج والتفاصيل الدقيقة.</div>
+      <div style="font-size:14px;line-height:1.6;color:#5A6472">Metric-compatible with IBM Plex Sans, so a mixed-script page needs no per-language overrides beyond size and leading.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:32px;margin-bottom:88px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Type scale · 1.25 major third, 16px root</div>
+      <div style="display:grid;grid-template-columns:1.15fr 2.4fr 1.55fr 1.1fr;gap:0;align-items:center">
+        <div style="padding:10px 10px;font-size:12px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Token</div>
+        <div style="padding:10px 10px;font-size:12px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Latin specimen</div>
+        <div style="padding:10px 10px;font-size:12px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Spec</div>
+        <div style="padding:10px 10px;font-size:12px;font-weight:600;color:#002D62;border-bottom:1px solid #D8D1C7">Arabic override</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h1</div>
+        <div style="padding:12px 10px;font-family:'Source Serif 4',serif;font-weight:600;font-size:60px;line-height:1.05;letter-spacing:-0.02em;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Serif 600 · 60/63 · −0.02em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">64/96 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h2</div>
+        <div style="padding:12px 10px;font-family:'Source Serif 4',serif;font-weight:600;font-size:48px;line-height:1.1;letter-spacing:-0.015em;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Serif 600 · 48/53 · −0.015em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">51/77 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h3</div>
+        <div style="padding:12px 10px;font-family:'Source Serif 4',serif;font-weight:600;font-size:36px;line-height:1.15;letter-spacing:-0.01em;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Serif 600 · 36/41 · −0.01em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">38/61 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h4</div>
+        <div style="padding:12px 10px;font-family:'Source Serif 4',serif;font-weight:600;font-size:28px;line-height:1.25;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Serif 600 · 28/35 · 0em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">30/48 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h5</div>
+        <div style="padding:12px 10px;font-weight:600;font-size:22px;line-height:1.35;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 600 · 22/30 · 0em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">23/37 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">h6</div>
+        <div style="padding:12px 10px;font-weight:600;font-size:18px;line-height:1.4;letter-spacing:0.01em;color:#002D62;border-bottom:1px solid #EDE7DE">Bylines matter</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 600 · 18/25 · 0.01em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">19/31 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">overline</div>
+        <div style="padding:12px 10px;font-weight:600;font-size:12px;line-height:1.2;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;border-bottom:1px solid #EDE7DE">Section label</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 600 · 12/14 · 0.18em · caps</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#A5342E;border-bottom:1px solid #EDE7DE">no caps, no tracking</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">body-lg</div>
+        <div style="padding:12px 10px;font-size:18px;line-height:1.65;color:#111111;border-bottom:1px solid #EDE7DE">We edit, translate and place stories.</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 400 · 18/30</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">19/34</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">body</div>
+        <div style="padding:12px 10px;font-size:16px;line-height:1.65;color:#111111;border-bottom:1px solid #EDE7DE">We edit, translate and place stories.</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 400 · 16/26</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">17/31</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">body-sm</div>
+        <div style="padding:12px 10px;font-size:14px;line-height:1.6;color:#3E4650;border-bottom:1px solid #EDE7DE">We edit, translate and place stories.</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 400 · 14/22</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">15/27</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135;border-bottom:1px solid #EDE7DE">button</div>
+        <div style="padding:12px 10px;border-bottom:1px solid #EDE7DE"><span style="font-weight:600;font-size:15px;letter-spacing:0.02em;color:#002D62">Request a quote</span></div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">Sans 600 · 15/15 · 0.02em</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472;border-bottom:1px solid #EDE7DE">16/24 · 0em</div>
+
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">caption</div>
+        <div style="padding:12px 10px;font-size:12px;line-height:1.45;color:#5A6472">Photo: StoryBridge archive, Tunis</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472">Sans 400 · 12/17</div>
+        <div style="padding:12px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#5A6472">13/21</div>
+      </div>
+      <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:13px;line-height:1.6;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:14px">Arabic overrides are mechanical: <span style="font-family:'IBM Plex Mono',monospace;color:#002D62">size × 1.06</span>, <span style="font-family:'IBM Plex Mono',monospace;color:#002D62">line-height × 1.22</span>, tracking reset to 0. Measure caps at 68–78 characters in Latin, 60–68 in Arabic.</div>
+      </sc-if>
+    </div>
+
+    <div style="border:1px solid #002D62;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:22px;background:#F4F7FA">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">RTL layout rules</div>
+      <div style="display:flex;flex-direction:column;gap:16px;font-size:14px;line-height:1.6;color:#3E4650">
+        <div><span style="font-weight:600;color:#002D62">Mirror the layout, not the mark.</span> Set <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">dir="rtl"</span> on <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">&lt;html&gt;</span>; the comma glyph is never flipped — it is a mark, not an arrow.</div>
+        <div><span style="font-weight:600;color:#002D62">Lockup flips side, keeps order.</span> The mark sits to the <em>right</em> of the Arabic wordmark, same gap (0.28× mark height), same baseline alignment.</div>
+        <div><span style="font-weight:600;color:#002D62">Logical properties only.</span> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">margin-inline-start</span>, <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">padding-inline</span>, <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8F6135">border-inline-end</span>. No <span style="font-family:'IBM Plex Mono',monospace;font-size:13px">left/right</span> in the stylesheet.</div>
+        <div><span style="font-weight:600;color:#002D62">Mirror directional icons</span> (arrows, chevrons, progress). Never mirror logos, clocks, media controls or Latin-bearing badges.</div>
+        <div><span style="font-weight:600;color:#002D62">No synthetic styling.</span> Arabic takes no italics, no uppercase, no letter-spacing, no small caps — emphasise with weight 600 or bronze colour.</div>
+        <div><span style="font-weight:600;color:#002D62">Numerals.</span> Eastern Arabic (٠١٢) in editorial body; Western (012) in tables, prices, phone numbers and UI. Never mix within one sentence.</div>
+        <div><span style="font-weight:600;color:#002D62">Punctuation.</span> Arabic comma ، and question mark ؟. Guillemets « » across all three languages — they are our quotation mark.</div>
+      </div>
+      <div style="border-top:1px solid #CBD5E1;padding-top:20px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Arabic lockup</div>
+        <div style="background:#FDF8F1;border:1px solid #E6E0D8;border-radius:4px;padding:26px;display:flex;justify-content:center">
+          <div style="display:flex;align-items:center;gap:14px;direction:rtl">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:56px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start">
+              <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:34px;line-height:1.2;color:#002D62">ستوري بريدج</div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-weight:400;font-size:16px;line-height:1.2;color:#B57D49">المحتوى والإعلام</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:13px;line-height:1.55;color:#5A6472">In bilingual contexts the Latin lockup leads and the Arabic wordmark sits beneath it, separated by a hairline bronze rule — never side by side at equal weight.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">04</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">Iconography &amp; pattern language</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">Our icons are punctuation. The trade is written down, so the marks of writing are the marks of the brand.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:32px;margin-bottom:32px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Service pillars · icon set</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px">
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <div style="width:76px;height:76px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:38px;line-height:1;color:#002D62">¶</span></div>
+          <div style="font-weight:600;font-size:16px;color:#002D62;line-height:1.3">Content &amp; Editorial</div>
+          <div style="font-size:13px;line-height:1.5;color:#5A6472">Contenu &amp; Édition<br><span style="font-family:'Noto Naskh Arabic',serif;font-size:15px;direction:rtl;display:inline-block">المحتوى والتحرير</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <div style="width:76px;height:76px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:3px;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">A</span><span style="font-size:22px;line-height:1;color:#B57D49">/</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:26px;line-height:1;color:#002D62">ع</span></div>
+          <div style="font-weight:600;font-size:16px;color:#002D62;line-height:1.3">Translation &amp; Localization</div>
+          <div style="font-size:13px;line-height:1.5;color:#5A6472">Traduction &amp; Localisation<br><span style="font-family:'Noto Naskh Arabic',serif;font-size:15px;direction:rtl;display:inline-block">الترجمة والتوطين</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <div style="width:76px;height:76px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:36px;line-height:1;color:#002D62">§</span></div>
+          <div style="font-weight:600;font-size:16px;color:#002D62;line-height:1.3">Editing &amp; Writing</div>
+          <div style="font-size:13px;line-height:1.5;color:#5A6472">Rédaction &amp; Relecture<br><span style="font-family:'Noto Naskh Arabic',serif;font-size:15px;direction:rtl;display:inline-block">التدقيق والكتابة</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <div style="width:76px;height:76px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:34px;line-height:1;color:#002D62">«»</span></div>
+          <div style="font-weight:600;font-size:16px;color:#002D62;line-height:1.3">Media &amp; Press</div>
+          <div style="font-size:13px;line-height:1.5;color:#5A6472">Médias &amp; Presse<br><span style="font-family:'Noto Naskh Arabic',serif;font-size:15px;direction:rtl;display:inline-block">الإعلام والصحافة</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:32px;align-items:center;border-top:1px solid #EDE7DE;padding-top:22px">
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">¶</span></div>
+          <div style="width:52px;height:52px;border:1.5px solid #B57D49;background:#F8F1E8;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#8F6135">¶</span></div>
+          <div style="width:52px;height:52px;background:#002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#B57D49">¶</span></div>
+          <div style="width:52px;height:52px;border:1.5px solid #C9D2DE;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#A8B3C2">¶</span></div>
+        </div>
+        <div style="font-size:13px;line-height:1.6;color:#5A6472">Rest · hover · active · disabled. <span style="color:#002D62;font-weight:600">Spec:</span> 24px glyph on a 76px ring (or 20/52 compact), 1.5px stroke, glyph set in the display serif at 0.46× ring height, optically centred — punctuation sits high, so nudge +2% down.</div>
+      </div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Pattern A · Flowing Narrative Weave</div>
+      <div style="height:192px;border-radius:4px;background:#FDF8F1;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveA" width="96" height="48" patternUnits="userSpaceOnUse"><path d="M 0,48 A 24,24 0 0 1 48,48 A 24,24 0 0 1 96,48" style="fill:none;stroke:#002D62;stroke-width:1.5px"></path><path d="M -24,24 A 24,24 0 0 1 24,24 A 24,24 0 0 1 72,24 A 24,24 0 0 1 120,24" style="fill:none;stroke:#B57D49;stroke-width:1.5px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveA)"></rect></svg></div>
+      </div>
+      <div style="display:flex;gap:16px">
+        <div style="flex:1;height:96px;border-radius:4px;background:#001838;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveB" width="64" height="32" patternUnits="userSpaceOnUse"><path d="M 0,32 A 16,16 0 0 1 32,32 A 16,16 0 0 1 64,32" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -16,16 A 16,16 0 0 1 16,16 A 16,16 0 0 1 48,16 A 16,16 0 0 1 80,16" style="fill:none;stroke:#DEC5A9;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveB)"></rect></svg></div>
+        </div>
+        <div style="flex:1;height:96px;border-radius:4px;background:#B57D49;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveC" width="48" height="24" patternUnits="userSpaceOnUse"><path d="M 0,24 A 12,12 0 0 1 24,24 A 12,12 0 0 1 48,24" style="fill:none;stroke:#002D62;stroke-width:1.1px"></path><path d="M -12,12 A 12,12 0 0 1 12,12 A 12,12 0 0 1 36,12 A 12,12 0 0 1 60,12" style="fill:none;stroke:#001838;stroke-width:1.1px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveC)"></rect></svg></div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472">Overlapping arcs — one story handed to the next. Tile is 2:1 — 96 × 48px at full size, never below 48px tall. Max 45% opacity behind type; full strength only on covers, card backs and folder interiors. Size panels to a whole number of tiles so no arc row is cut.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:32px;margin-bottom:88px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Pattern B · Quotation Field</div>
+      <div style="height:200px;border-radius:4px;background:#001838;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="quoteB1" width="80" height="80" patternUnits="userSpaceOnUse"><text x="5" y="50" font-family="'Source Serif 4',serif" font-size="56" fill="#FDF8F1" opacity="0.9">&#8220;</text><text x="42" y="80" font-family="'Source Serif 4',serif" font-size="56" fill="#B57D49" opacity="1">&#8221;</text></pattern></defs><rect width="100%" height="100%" fill="url(#quoteB1)"></rect></svg></div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472">Opening and closing curly quotes set in Source Serif, alternating on an offset grid — the sentence never closes, it is handed on. Tile is square: 80 × 80px with a 56px glyph. Scale the tile, never the glyph&rsquo;s proportion to it.</div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Pattern B · light &amp; small tile</div>
+      <div style="height:96px;border-radius:4px;background:#FDF8F1;position:relative;overflow:hidden;border:1px solid #E6E0D8">
+        <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="quoteB2" width="56" height="56" patternUnits="userSpaceOnUse"><text x="3" y="36" font-family="'Source Serif 4',serif" font-size="40" fill="#002D62" opacity="0.55">&#8220;</text><text x="29" y="56" font-family="'Source Serif 4',serif" font-size="40" fill="#B57D49" opacity="0.55">&#8221;</text></pattern></defs><rect width="100%" height="100%" fill="url(#quoteB2)"></rect></svg></div>
+      </div>
+      <div style="height:76px;border-radius:4px;background:#E8E3DD;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;opacity:{{ patternIntensity }}"><svg width="100%" height="100%" style="display:block"><defs><pattern id="quoteB3" width="34" height="34" patternUnits="userSpaceOnUse"><text x="2" y="22" font-family="'Source Serif 4',serif" font-size="24" fill="#002D62" opacity="0.3">&#8220;</text><text x="18" y="34" font-family="'Source Serif 4',serif" font-size="24" fill="#002D62" opacity="0.3">&#8221;</text></pattern></defs><rect width="100%" height="100%" fill="url(#quoteB3)"></rect></svg></div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472">Small tile at 30% for section dividers, table headers and endpapers. Never below a 34px tile — the glyph loses its curl. Only one pattern per composition: A and B never share a surface.</div>
+    </div>
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Editorial imagery</div>
+      <div style="height:200px;border-radius:4px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 8px,#F4EFE7 8px 16px);display:flex;align-items:center;justify-content:center;border:1px solid #E6E0D8">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8378;background:#FDF8F1;padding:8px 14px;border-radius:2px">reportage photo · 3:2 · b/w or warm-neutral grade</div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472">Documentary, available light, people at work. No stock handshakes, no gradient overlays. A 6% navy multiply layer unifies mixed sources.</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">05</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">UI design tokens</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">Hand these values straight to the website build. Hover the buttons below — the states are live.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:32px;margin-bottom:32px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Spacing · 4px base</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-1</div><div style="height:14px;width:4px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">4</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-2</div><div style="height:14px;width:8px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">8</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-3</div><div style="height:14px;width:12px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">12</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-4</div><div style="height:14px;width:16px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">16</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-6</div><div style="height:14px;width:24px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">24</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-8</div><div style="height:14px;width:32px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">32</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-12</div><div style="height:14px;width:48px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">48</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-16</div><div style="height:14px;width:64px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">64</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-24</div><div style="height:14px;width:96px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">96</div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;width:52px">sp-32</div><div style="height:14px;width:128px;background:#002D62"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5A6472">128</div></div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:14px">Section rhythm: 96 desktop / 48 mobile. Card padding 32. Grid gutter 32, 12 columns, 1320 max content width.</div>
+    </div>
+
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Corner radius</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:0"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">0 · rules</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:2px"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">2 · inputs</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:4px"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">4 · buttons</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:8px"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">8 · cards</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:16px"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">16 · media</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:74px;height:56px;background:#E8E3DD;border:1.5px solid #002D62;border-radius:999px"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">full · pills</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;padding-top:6px">Elevation</div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:center;gap:18px"><div style="width:96px;height:52px;background:#FDF8F1;border:1px solid #E6E0D8;border-radius:8px;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;color:#5A6472">e0 · flat<br>1px #E6E0D8 border</div></div>
+        <div style="display:flex;align-items:center;gap:18px"><div style="width:96px;height:52px;background:#FDF8F1;border-radius:8px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;color:#5A6472">e1 · resting card<br>0 1px 2px / 0 2px 8px</div></div>
+        <div style="display:flex;align-items:center;gap:18px"><div style="width:96px;height:52px;background:#FDF8F1;border-radius:8px;box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08);flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;color:#5A6472">e2 · hover / dropdown<br>0 2px 4px / 0 8px 24px</div></div>
+        <div style="display:flex;align-items:center;gap:18px"><div style="width:96px;height:52px;background:#FDF8F1;border-radius:8px;box-shadow:0 4px 8px rgba(0,24,56,0.08),0 24px 48px rgba(0,24,56,0.12);flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;color:#5A6472">e3 · modal / dialog<br>0 4px 8px / 0 24px 48px</div></div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:14px">Shadows are navy-tinted, never neutral black. In dark mode swap to <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#002D62">rgba(0,0,0,0.45)</span> plus a <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#002D62">1px inset rgba(253,248,241,0.08)</span> hairline.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:32px">
+      <div style="border:1px solid #E6E0D8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:22px;background:#FDF8F1">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Buttons · light mode</div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:14px 26px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="background:#001838;box-shadow:0 2px 8px rgba(0,24,56,0.18)" style-active="background:#001233;transform:translateY(1px)">Request a quote</div>
+          <div style="background:transparent;color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:12.5px 24.5px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="background:#F8F1E8;color:#5F4123" style-active="background:#EFE1D2">See our work</div>
+          <div style="color:#002D62;border-radius:4px;padding:14px 14px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;border-bottom:1.5px solid transparent;transition:all .16s ease" style-hover="color:#8F6135;border-bottom-color:#B57D49">Read the journal →</div>
+          <div style="background:rgba(0,45,98,0.10);color:rgba(0,45,98,0.38);border-radius:4px;padding:14px 26px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:not-allowed">Disabled</div>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:14px">primary&nbsp;&nbsp;bg #002D62 → hover #001838 → active #001233<br>secondary&nbsp;border #B57D49 · text #8F6135 → hover bg #F8F1E8<br>height 48 · radius 4 · pad 14/26 · focus ring 2px #B57D49 + 2px offset</div>
+      </div>
+      <div style="border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:22px;background:#001838;border:1px solid rgba(253,248,241,0.12)">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">Buttons · dark mode</div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          <div style="background:#B57D49;color:#001838;border-radius:4px;padding:14px 26px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="background:#C99D74" style-active="background:#8F6135;transform:translateY(1px)">Request a quote</div>
+          <div style="background:transparent;color:#FDF8F1;border:1.5px solid rgba(253,248,241,0.45);border-radius:4px;padding:12.5px 24.5px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="border-color:#FDF8F1;background:rgba(253,248,241,0.08)" style-active="background:rgba(253,248,241,0.14)">See our work</div>
+          <div style="color:#B57D49;border-radius:4px;padding:14px 14px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;border-bottom:1.5px solid transparent;transition:all .16s ease" style-hover="color:#DEC5A9;border-bottom-color:#DEC5A9">Read the journal →</div>
+          <div style="background:rgba(253,248,241,0.08);color:rgba(253,248,241,0.32);border-radius:4px;padding:14px 26px;white-space:nowrap;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:not-allowed">Disabled</div>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;color:rgba(253,248,241,0.62);border-top:1px solid rgba(253,248,241,0.14);padding-top:14px">Bronze becomes the primary fill on navy — navy-on-navy has no affordance.<br>focus ring 2px #FDF8F1 + 2px offset</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:88px">
+    <div style="border:1px solid #E6E0D8;border-radius:8px;padding:36px;background:#FDF8F1;display:flex;flex-direction:column;gap:28px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Forms &amp; cards · light mode</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#002D62">Full name</div>
+          <div style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#8A8378;background:#FFFFFF">Amina Trabelsi</div>
+          <div style="font-size:12px;color:#8A8378">Default · border #D8D1C7</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#002D62">Work email</div>
+          <div style="border:1.5px solid #002D62;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF;box-shadow:0 0 0 3px rgba(181,125,73,0.28)">amina@revue.tn</div>
+          <div style="font-size:12px;color:#8A8378">Focus · navy border + bronze ring</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#002D62">Deadline</div>
+          <div style="border:1.5px solid #A5342E;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FDF6F5">32 / 08 / 2026</div>
+          <div style="font-size:12px;color:#A5342E">Enter a valid date · dd/mm/yyyy</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#8A8378">Invoice reference</div>
+          <div style="border:1.5px solid #E8E3DD;border-radius:2px;padding:13px 14px;font-size:15px;color:#A8A29A;background:#F4F1EC">Issued after acceptance</div>
+          <div style="font-size:12px;color:#8A8378">Disabled · not editable</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <div style="background:#FDF8F1;border-radius:8px;padding:26px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:14px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">§</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62;line-height:1.25">Editing &amp; Writing</div>
+          <div style="font-size:14px;line-height:1.6;color:#3E4650">Substantive edits, fact-checks and rewrites — the desk work behind a publishable piece.</div>
+          <div style="font-size:14px;font-weight:600;color:#8F6135">Learn more →</div>
+        </div>
+        <div style="background:#002D62;border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:0.45"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveD" width="72" height="36" patternUnits="userSpaceOnUse"><path d="M 0,36 A 18,18 0 0 1 36,36 A 18,18 0 0 1 72,36" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -18,18 A 18,18 0 0 1 18,18 A 18,18 0 0 1 54,18 A 18,18 0 0 1 90,18" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveD)"></rect></svg></div>
+          <div style="position:relative;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">Featured</div>
+          <div style="position:relative;font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#FDF8F1;line-height:1.25">Trilingual newsroom style guide</div>
+          <div style="position:relative;font-size:14px;line-height:1.6;color:rgba(253,248,241,0.78)">A 60-page reference we built for a regional broadcaster in AR, EN and FR.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:1px solid rgba(253,248,241,0.12);border-radius:8px;padding:36px;background:#001838;display:flex;flex-direction:column;gap:28px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">Forms &amp; cards · dark mode</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#FDF8F1">Full name</div>
+          <div style="border:1.5px solid rgba(253,248,241,0.24);border-radius:2px;padding:13px 14px;font-size:15px;color:rgba(253,248,241,0.55);background:#072448">Amina Trabelsi</div>
+          <div style="font-size:12px;color:rgba(253,248,241,0.52)">Default · surface #072448</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#FDF8F1">Work email</div>
+          <div style="border:1.5px solid #B57D49;border-radius:2px;padding:13px 14px;font-size:15px;color:#FDF8F1;background:#072448;box-shadow:0 0 0 3px rgba(181,125,73,0.3)">amina@revue.tn</div>
+          <div style="font-size:12px;color:rgba(253,248,241,0.52)">Focus · bronze border + ring</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:#FDF8F1">Deadline</div>
+          <div style="border:1.5px solid #D8776F;border-radius:2px;padding:13px 14px;font-size:15px;color:#FDF8F1;background:#2A1616">32 / 08 / 2026</div>
+          <div style="font-size:12px;color:#D8776F">Enter a valid date · dd/mm/yyyy</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:600;color:rgba(253,248,241,0.45)">Invoice reference</div>
+          <div style="border:1.5px solid rgba(253,248,241,0.10);border-radius:2px;padding:13px 14px;font-size:15px;color:rgba(253,248,241,0.28);background:#031B39">Issued after acceptance</div>
+          <div style="font-size:12px;color:rgba(253,248,241,0.40)">Disabled · not editable</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <div style="background:#072448;border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 2px 4px rgba(0,0,0,0.4);border:1px solid rgba(253,248,241,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #B57D49;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#B57D49">§</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#FDF8F1;line-height:1.25">Editing &amp; Writing</div>
+          <div style="font-size:14px;line-height:1.6;color:rgba(253,248,241,0.74)">Substantive edits, fact-checks and rewrites — the desk work behind a publishable piece.</div>
+          <div style="font-size:14px;font-weight:600;color:#B57D49">Learn more →</div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Featured</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#002D62;line-height:1.25">Trilingual newsroom style guide</div>
+          <div style="font-size:14px;line-height:1.6;color:#3E4650">One cream card per dark section, maximum — it is the emphasis, not the texture.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #D8D1C7;padding-bottom:14px;margin-bottom:36px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#8F6135">06</div>
+    <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.01em">Applications</div>
+    <div style="font-size:15px;color:#5A6472;margin-left:auto">Print stationery and the homepage, proved in both reading directions.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 0.85fr;gap:32px;margin-bottom:48px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Business card · 85 × 55 mm</div>
+      <div style="background:#FDF8F1;border-radius:4px;box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08);width:100%;aspect-ratio:85/55;padding:30px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:11px">
+          <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:42px;width:auto;flex:none">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:27px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:10.5px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#111111;line-height:1.2">Amine Ben Salah</div>
+            <div style="font-size:12px;color:#5A6472;line-height:1.45">Co-founder · Editorial Director<br><span style="font-family:'Noto Naskh Arabic',serif;font-size:13px">شريك مؤسس · مدير التحرير</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;text-align:right;font-size:11px;color:#3E4650;line-height:1.5">
+            <div>+216 71 234 567</div>
+            <div>amine@storybridge.tn</div>
+            <div style="color:#8F6135">storybridge.tn</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#001838;border-radius:4px;box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08);width:100%;aspect-ratio:85/55;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
+        <div style="position:absolute;inset:0;opacity:0.75"><svg width="100%" height="100%" style="display:block"><defs><pattern id="quoteB4" width="64" height="64" patternUnits="userSpaceOnUse"><text x="4" y="40" font-family="'Source Serif 4',serif" font-size="44" fill="#FDF8F1" opacity="0.45">&#8220;</text><text x="33" y="64" font-family="'Source Serif 4',serif" font-size="44" fill="#B57D49" opacity="0.7">&#8221;</text></pattern></defs><rect width="100%" height="100%" fill="url(#quoteB4)"></rect></svg></div>
+        <div style="position:relative;background:#001838;padding:22px 34px;display:flex;flex-direction:column;align-items:center;gap:10px">
+          <img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:52px;width:48.0px;flex:none">
+          <div style="font-family:'Source Serif 4',serif;font-size:12px;letter-spacing:0.2em;color:#B57D49;text-transform:uppercase">Tunis · AR / EN / FR</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.55;color:#5A6472">Colorplan Natural 350gsm, bronze foil on the monochrome mark. Contact block always ends flush with the trim-safe margin (5mm).</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Letterhead · A4</div>
+      <div style="background:#FDF8F1;box-shadow:0 4px 8px rgba(0,24,56,0.08),0 24px 48px rgba(0,24,56,0.12);width:100%;aspect-ratio:210/297;padding:46px 48px;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+          <div style="display:flex;align-items:center;gap:11px">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:44px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:28px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+              <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:11px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+            </div>
+          </div>
+          <div style="text-align:right;font-size:10px;line-height:1.6;color:#5A6472">14, rue de Marseille<br>1000 Tunis, Tunisie<br>+216 71 234 567<br><span style="color:#8F6135">storybridge.tn</span></div>
+        </div>
+        <div style="height:2px;background:#B57D49;width:64px;margin-top:26px"></div>
+        <div style="margin-top:38px;display:flex;flex-direction:column;gap:22px">
+          <div style="font-size:11px;color:#5A6472">Tunis, 22 August 2026</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:600;color:#002D62">Editorial services — proposal</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="height:7px;background:#E8E3DD;width:100%"></div>
+            <div style="height:7px;background:#E8E3DD;width:96%"></div>
+            <div style="height:7px;background:#E8E3DD;width:99%"></div>
+            <div style="height:7px;background:#E8E3DD;width:62%"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="height:7px;background:#E8E3DD;width:98%"></div>
+            <div style="height:7px;background:#E8E3DD;width:94%"></div>
+            <div style="height:7px;background:#E8E3DD;width:100%"></div>
+            <div style="height:7px;background:#E8E3DD;width:78%"></div>
+            <div style="height:7px;background:#E8E3DD;width:41%"></div>
+          </div>
+        </div>
+        <div style="margin-top:auto;border-top:1px solid #E8E3DD;padding-top:14px;display:flex;justify-content:space-between;font-size:9px;color:#8A8378;letter-spacing:0.04em">
+          <div>StoryBridge SARL · RNE 1234567A</div>
+          <div>1 / 2</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.55;color:#5A6472">Type area inset 24mm; the bronze rule marks the start of the text block. Arabic letterhead mirrors the whole sheet — lockup right, contact block left.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Digital marks</div>
+      <div style="border:1px solid #E6E0D8;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:24px;background:#FDF8F1">
+        <div style="display:flex;align-items:flex-end;gap:22px">
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:88px;height:88px;border-radius:16px;background:#001838;display:flex;align-items:center;justify-content:center"><img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:52px;width:48.0px;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">app 88</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:56px;height:56px;border-radius:999px;background:#FDF8F1;border:1px solid #E6E0D8;display:flex;align-items:center;justify-content:center"><img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:34px;width:auto;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">avatar 56</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:32px;height:32px;border-radius:4px;background:#001838;display:flex;align-items:center;justify-content:center"><img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:19px;width:17.5px;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">favicon 32</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:16px;height:16px;border-radius:2px;background:#001838;display:flex;align-items:center;justify-content:center"><img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:10px;width:9.2px;flex:none"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">16</div></div>
+        </div>
+        <div style="font-size:13px;line-height:1.6;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:18px">Below 40px the master&rsquo;s gradients and inner highlight turn to mud — switch to the flat two-comma reduction and ship a hand-tuned SVG per size, never a scaled one.</div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #EDE7DE;padding-top:18px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Email signature</div>
+          <div style="border-left:2px solid #B57D49;padding-left:16px;display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:14px;font-weight:600;color:#002D62">Amine Ben Salah</div>
+            <div style="font-size:12px;color:#5A6472">Co-founder · Editorial Director</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:14px;font-weight:600;color:#002D62;padding-top:5px">StoryBridge <span style="font-weight:400;font-size:11px;letter-spacing:0.12em;color:#B57D49">Content &amp; Media</span></div>
+            <div style="font-size:12px;color:#3E4650">+216 71 234 567 · <span style="color:#8F6135">storybridge.tn</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Homepage · LTR (EN / FR)</div>
+      <div style="border-radius:8px;overflow:hidden;box-shadow:0 4px 8px rgba(0,24,56,0.08),0 24px 48px rgba(0,24,56,0.12);background:#FDF8F1">
+        <div style="background:#E8E3DD;padding:11px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #D8D1C7">
+          <div style="display:flex;gap:6px"><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div></div>
+          <div style="flex:1;background:#FDF8F1;border-radius:999px;padding:5px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">storybridge.tn/en</div>
+        </div>
+        <div style="padding:22px 34px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid #EDE7DE">
+          <div style="display:flex;align-items:center;gap:10px">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:34px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+              <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:8.5px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:26px;font-size:13px;font-weight:500;color:#002D62">
+            <div>About</div><div>Services</div><div>Work</div><div>Journal</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">AR · EN · FR</div>
+            <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:10px 18px;white-space:nowrap;font-weight:600;font-size:13px;letter-spacing:0.02em">Request a quote</div>
+          </div>
+        </div>
+        <div style="padding:56px 34px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:34px;align-items:center">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Tunis · Arabic / English / French</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:44px;line-height:1.05;letter-spacing:-0.02em;color:#002D62;text-wrap:pretty">Journalistic values, applied to multilingual content.</div>
+            <div style="font-size:15px;line-height:1.65;color:#3E4650;max-width:440px">Founded by two journalists. We edit, translate and place work that has to hold up in three languages — and in front of an editor.</div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:13px 24px;white-space:nowrap;font-weight:600;font-size:14px;letter-spacing:0.02em">Request a quote</div>
+              <div style="border:1.5px solid #B57D49;color:#8F6135;border-radius:4px;padding:11.5px 22.5px;white-space:nowrap;font-weight:600;font-size:14px;letter-spacing:0.02em">See our work</div>
+            </div>
+          </div>
+          <div style="aspect-ratio:3/4;border-radius:8px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 8px,#F4EFE7 8px 16px);display:flex;align-items:center;justify-content:center;border:1px solid #E6E0D8">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378;background:#FDF8F1;padding:7px 12px;border-radius:2px">founders portrait · 3:4</div>
+          </div>
+        </div>
+        <div style="padding:44px 34px 52px;background:#F6F0E7;display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <div style="font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:#002D62">What we do</div>
+            <div style="font-size:13px;font-weight:600;color:#8F6135">All services →</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1;color:#002D62">¶</span></div>
+              <div style="font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#002D62;line-height:1.25">Content &amp; Editorial</div>
+              <div style="font-size:12px;line-height:1.55;color:#5A6472">Strategy, commissioning, long-form production.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:2px"><span style="font-family:'Source Serif 4',serif;font-size:14px;line-height:1;color:#002D62">A</span><span style="font-size:12px;line-height:1;color:#B57D49">/</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:14px;line-height:1;color:#002D62">ع</span></div>
+              <div style="font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#002D62;line-height:1.25">Translation &amp; Localization</div>
+              <div style="font-size:12px;line-height:1.55;color:#5A6472">AR · EN · FR, translated by journalists.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1;color:#002D62">§</span></div>
+              <div style="font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#002D62;line-height:1.25">Editing &amp; Writing</div>
+              <div style="font-size:12px;line-height:1.55;color:#5A6472">Substantive edits, fact-checks, rewrites.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:18px;line-height:1;color:#002D62">«»</span></div>
+              <div style="font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#002D62;line-height:1.25">Media &amp; Press</div>
+              <div style="font-size:12px;line-height:1.55;color:#5A6472">Press relations, media training, placement.</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#001838;padding:36px 34px;display:flex;flex-direction:column;gap:26px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:0.32"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveE" width="80" height="40" patternUnits="userSpaceOnUse"><path d="M 0,40 A 20,20 0 0 1 40,40 A 20,20 0 0 1 80,40" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -20,20 A 20,20 0 0 1 20,20 A 20,20 0 0 1 60,20 A 20,20 0 0 1 100,20" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveE)"></rect></svg></div>
+          <div style="position:relative;display:flex;justify-content:space-between;gap:34px">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:30px;width:27.7px;flex:none">
+                <div style="display:flex;flex-direction:column;gap:1px">
+                  <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:19px;line-height:1;color:#FDF8F1;letter-spacing:-0.015em">StoryBridge</div>
+                  <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:7.5px;line-height:1;color:#B57D49;letter-spacing:0.15em">Content &amp; Media</div>
+                </div>
+              </div>
+              <div style="font-size:11px;line-height:1.6;color:rgba(253,248,241,0.62)">14, rue de Marseille<br>1000 Tunis, Tunisie</div>
+            </div>
+            <div style="display:flex;gap:44px;font-size:11px;line-height:2;color:rgba(253,248,241,0.72)">
+              <div><div style="color:#B57D49;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;padding-bottom:6px">Services</div>Editorial<br>Translation<br>Media</div>
+              <div><div style="color:#B57D49;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;font-size:10px;padding-bottom:6px">Agency</div>About<br>Journal<br>Contact</div>
+            </div>
+          </div>
+          <div style="position:relative;border-top:1px solid rgba(253,248,241,0.14);padding-top:16px;display:flex;justify-content:space-between;font-size:10px;color:rgba(253,248,241,0.5)">
+            <div>© 2026 StoryBridge SARL</div>
+            <div>عربي · English · Français</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Homepage · RTL (العربية) — fully mirrored</div>
+      <div style="border-radius:8px;overflow:hidden;box-shadow:0 4px 8px rgba(0,24,56,0.08),0 24px 48px rgba(0,24,56,0.12);background:#FDF8F1;direction:rtl">
+        <div style="background:#E8E3DD;padding:11px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #D8D1C7">
+          <div style="display:flex;gap:6px"><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div><div style="width:10px;height:10px;border-radius:999px;background:#C9C2B8"></div></div>
+          <div style="flex:1;background:#FDF8F1;border-radius:999px;padding:5px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378;direction:ltr;text-align:right">storybridge.tn/ar</div>
+        </div>
+        <div style="padding:22px 34px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid #EDE7DE">
+          <div style="display:flex;align-items:center;gap:10px">
+            <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:34px;width:auto;flex:none">
+            <div style="display:flex;flex-direction:column;gap:2px;align-items:flex-start">
+              <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:20px;line-height:1.15;color:#002D62">ستوري بريدج</div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-weight:400;font-size:10px;line-height:1.15;color:#B57D49">المحتوى والإعلام</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:24px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:13px;font-weight:500;color:#002D62">
+            <div>من نحن</div><div>الخدمات</div><div>أعمالنا</div><div>مقالات</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378;direction:ltr">AR · EN · FR</div>
+            <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:10px 18px;white-space:nowrap;font-weight:600;font-size:13px">اطلب عرض سعر</div>
+          </div>
+        </div>
+        <div style="padding:56px 34px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:34px;align-items:center">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;font-weight:600;color:#8F6135">تونس · العربية / الإنجليزية / الفرنسية</div>
+            <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:40px;line-height:1.5;color:#002D62;text-wrap:pretty">قِيَم الصحافة في خدمة المحتوى متعدّد اللغات.</div>
+            <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:15px;line-height:1.95;color:#3E4650;max-width:460px">أسّسها صحافيان. نُحرّر ونُترجم وننشر أعمالًا تصمد في ثلاث لغات — وأمام أي محرّر.</div>
+            <div style="display:flex;gap:12px;align-items:center;font-family:'IBM Plex Sans Arabic',sans-serif">
+              <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:13px 24px;white-space:nowrap;font-weight:600;font-size:14px">اطلب عرض سعر</div>
+              <div style="border:1.5px solid #B57D49;color:#8F6135;border-radius:4px;padding:11.5px 22.5px;white-space:nowrap;font-weight:600;font-size:14px">تعرّف على أعمالنا</div>
+            </div>
+          </div>
+          <div style="aspect-ratio:3/4;border-radius:8px;background-image:repeating-linear-gradient(45deg,#E8E3DD 0 8px,#F4EFE7 8px 16px);display:flex;align-items:center;justify-content:center;border:1px solid #E6E0D8">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378;background:#FDF8F1;padding:7px 12px;border-radius:2px;direction:ltr">founders portrait · 3:4</div>
+          </div>
+        </div>
+        <div style="padding:44px 34px 52px;background:#F6F0E7;display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <div style="font-family:'Noto Naskh Arabic',serif;font-size:26px;font-weight:700;line-height:1.5;color:#002D62">ماذا نفعل</div>
+            <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:13px;font-weight:600;color:#8F6135">جميع الخدمات ←</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1;color:#002D62">¶</span></div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-size:16px;font-weight:700;color:#002D62;line-height:1.5">المحتوى والتحرير</div>
+              <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;line-height:1.85;color:#5A6472">الاستراتيجية والتكليف وإنتاج المواد الطويلة.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:2px;direction:ltr"><span style="font-family:'Source Serif 4',serif;font-size:14px;line-height:1;color:#002D62">A</span><span style="font-size:12px;line-height:1;color:#B57D49">/</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:14px;line-height:1;color:#002D62">ع</span></div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-size:16px;font-weight:700;color:#002D62;line-height:1.5">الترجمة والتوطين</div>
+              <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;line-height:1.85;color:#5A6472">عربي · إنجليزي · فرنسي، بأقلام صحافيين.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1;color:#002D62">§</span></div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-size:16px;font-weight:700;color:#002D62;line-height:1.5">التدقيق والكتابة</div>
+              <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;line-height:1.85;color:#5A6472">تحرير جوهري وتحقّق من الوقائع وإعادة صياغة.</div>
+            </div>
+            <div style="background:#FDF8F1;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+              <div style="width:40px;height:40px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:18px;line-height:1;color:#002D62">«»</span></div>
+              <div style="font-family:'Noto Naskh Arabic',serif;font-size:16px;font-weight:700;color:#002D62;line-height:1.5">الإعلام والصحافة</div>
+              <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:12px;line-height:1.85;color:#5A6472">العلاقات الصحافية والتدريب والنشر.</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#001838;padding:36px 34px;display:flex;flex-direction:column;gap:26px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:0.32"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveF" width="80" height="40" patternUnits="userSpaceOnUse"><path d="M 0,40 A 20,20 0 0 1 40,40 A 20,20 0 0 1 80,40" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -20,20 A 20,20 0 0 1 20,20 A 20,20 0 0 1 60,20 A 20,20 0 0 1 100,20" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveF)"></rect></svg></div>
+          <div style="position:relative;display:flex;justify-content:space-between;gap:34px">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <img src="assets/mark-fdf8f1.png" alt="StoryBridge mark" style="height:30px;width:27.7px;flex:none">
+                <div style="display:flex;flex-direction:column;gap:1px;align-items:flex-start">
+                  <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:17px;line-height:1.2;color:#FDF8F1">ستوري بريدج</div>
+                  <div style="font-family:'Noto Naskh Arabic',serif;font-weight:400;font-size:9px;line-height:1.2;color:#B57D49">المحتوى والإعلام</div>
+                </div>
+              </div>
+              <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:11px;line-height:1.9;color:rgba(253,248,241,0.62)">١٤ نهج مرسيليا<br>١٠٠٠ تونس، تونس</div>
+            </div>
+            <div style="display:flex;gap:44px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:11px;line-height:2.2;color:rgba(253,248,241,0.72)">
+              <div><div style="color:#B57D49;font-weight:600;font-size:10px;padding-bottom:6px">الخدمات</div>التحرير<br>الترجمة<br>الإعلام</div>
+              <div><div style="color:#B57D49;font-weight:600;font-size:10px;padding-bottom:6px">الوكالة</div>من نحن<br>مقالات<br>اتصل بنا</div>
+            </div>
+          </div>
+          <div style="position:relative;border-top:1px solid rgba(253,248,241,0.14);padding-top:16px;display:flex;justify-content:space-between;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:10px;color:rgba(253,248,241,0.5)">
+            <div>© ٢٠٢٦ ستوري بريدج</div>
+            <div>عربي · English · Français</div>
+          </div>
+        </div>
+      </div>
+      <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:13px;line-height:1.6;color:#5A6472;border-top:1px solid #EDE7DE;padding-top:14px">Everything mirrors: logo to the right, nav to the left, cards fill right-to-left, the “all services” arrow reverses to ←. The URL string stays LTR. Arabic headline leading opens to 1.5 so ascenders and diacritics clear.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="margin-top:88px;border-top:2px solid #002D62;padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:32px">
+    <div style="font-size:13px;color:#5A6472">StoryBridge Content &amp; Media · Brand Identity &amp; Graphic Charter v2.0 · Colour values corrected and derived from the approved hex set · Tunis, August 2026</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="assets/storybridge-mark.png" alt="StoryBridge mark" style="height:26px;width:auto;flex:none">
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:18px;line-height:1;color:#002D62">StoryBridge</div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showPrintValues&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Charter options&quot;},&quot;showAnnotations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Charter options&quot;},&quot;patternIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.55,&quot;min&quot;:0.15,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Charter options&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showPrintValues: this.props.showPrintValues ?? true,
+      showAnnotations: this.props.showAnnotations ?? true,
+      patternIntensity: this.props.patternIntensity ?? 0.55
+    };
+  }
+}
+</script>
+</body>
+</html>

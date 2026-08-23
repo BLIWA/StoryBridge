@@ -1,0 +1,30 @@
+{
+  "Nav": {
+    "home": "Accueil",
+    "whoWeAre": "Qui sommes-nous",
+    "founders": "Fondatrices",
+    "howWeWork": "Notre méthode",
+    "services": "Services",
+    "journal": "Le Journal",
+    "caseStudies": "Études de cas",
+    "pricing": "Tarifs",
+    "contact": "Contact",
+    "cta": "Demander un devis"
+  },
+  "Home": {
+    "eyebrow": "Tunis · Arabe · Anglais · Français",
+    "title": "Contenu. Traduction. Édition. Médias.",
+    "subtitle": "Un pont entre les idées et les publics.",
+    "about": "StoryBridge Content & Media est une entreprise de communication et de contenu multilingue fondée par deux journalistes et éditrices qui se sont rencontrées en salle de rédaction et n'ont jamais cessé de construire des idées ensemble. Nous combinons journalisme, expertise éditoriale et communication multilingue pour aider entreprises, organisations et médias à créer, traduire et communiquer un contenu porteur de sens en arabe, en anglais et en français.",
+    "ctaPrimary": "Demander un devis",
+    "ctaSecondary": "Découvrir notre méthode",
+    "pillarsEyebrow": "Ce que nous faisons",
+    "pillars": {
+      "editorial": { "title": "Contenu & Éditorial", "body": "Articles, contenu de site web, contenu réseaux sociaux, contenu de marque et matériel éditorial." },
+      "translation": { "title": "Traduction & Localisation", "body": "Traduction arabe, anglaise et française, avec attention au sens, au contexte, au ton et au public." },
+      "editing": { "title": "Édition & Rédaction", "body": "Édition, relecture, réécriture et amélioration de contenus existants tout en préservant leur objectif et leur voix." },
+      "media": { "title": "Médias & Relations presse", "body": "Couverture presse, contenu journalistique, accompagnement média et supports de communication." }
+    },
+    "tagline": "Écouter. Comprendre. Préparer. Aller là où se trouve l'histoire. Créer. Traduire. Éditer. Livrer."
+  }
+}

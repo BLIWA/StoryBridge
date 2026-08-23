@@ -1,0 +1,30 @@
+{
+  "Nav": {
+    "home": "Home",
+    "whoWeAre": "Who We Are",
+    "founders": "Founders",
+    "howWeWork": "How We Work",
+    "services": "Services",
+    "journal": "The Journal",
+    "caseStudies": "Case Studies",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "cta": "Request a quote"
+  },
+  "Home": {
+    "eyebrow": "Tunis · Arabic · English · French",
+    "title": "Content. Translation. Editorial. Media.",
+    "subtitle": "One bridge between ideas and audiences.",
+    "about": "StoryBridge Content & Media is a communications and multilingual content company founded by two journalists and editors who met in the newsroom and never stopped building ideas together. We combine journalism, editorial expertise and multilingual communication to help businesses, organizations and media platforms create, translate and communicate meaningful content across Arabic, English and French.",
+    "ctaPrimary": "Request a quote",
+    "ctaSecondary": "See how we work",
+    "pillarsEyebrow": "What we do",
+    "pillars": {
+      "editorial": { "title": "Content & Editorial", "body": "Articles, website content, social-media content, branded content and editorial material." },
+      "translation": { "title": "Translation & Localization", "body": "Arabic, English and French translation, with attention to meaning, context, tone and audience." },
+      "editing": { "title": "Editing & Writing", "body": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice." },
+      "media": { "title": "Media & Press Services", "body": "Press coverage, journalistic content, media-related support and communication materials." }
+    },
+    "tagline": "Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver."
+  }
+}

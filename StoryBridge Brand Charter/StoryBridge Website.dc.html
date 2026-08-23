@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#E4DED6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+*{box-sizing:border-box;}
+a{color:#002D62;text-decoration:none;}
+a:hover{color:#8F6135;}
+input,textarea,select,button{font-family:'IBM Plex Sans',sans-serif;}
+input::placeholder,textarea::placeholder{color:#A8A29A;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#002D62;box-shadow:0 0 0 3px rgba(181,125,73,0.28);}
+</style>
+</helmet>
+
+<div dir="{{ dir }}" style="background:#FDF8F1;font-family:'IBM Plex Sans',sans-serif;color:#111111;min-height:100vh">
+
+  <div style="position:sticky;top:0;z-index:50;background:#FDF8F1;border-bottom:1px solid #D8D1C7">
+    <div style="max-width:1320px;margin:0 auto;padding:14px 40px;min-height:84px;display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px">
+      <div onClick="{{ goHome }}" style="display:flex;align-items:center;gap:11px;cursor:pointer;flex:none">
+        <img src="assets/storybridge-mark.png" alt="StoryBridge" style="height:42px;width:auto;flex:none">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:25px;line-height:1;color:#002D62;letter-spacing:-0.015em">StoryBridge</div>
+          <div style="font-family:'Source Serif 4',serif;font-weight:400;font-size:9.5px;line-height:1;color:#B57D49;letter-spacing:0.15em">CONTENT &amp; MEDIA</div>
+        </div>
+      </div>
+
+      <sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px 19px;margin-inline-start:auto;flex:1 1 auto;justify-content:flex-end;min-width:0">
+        <div onClick="{{ goHome }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Home<sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goWho }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Who We Are<sc-if value="{{ isWho }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goFounders }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Founders<sc-if value="{{ isFounders }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goHow }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">How We Work<sc-if value="{{ isHow }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goServices }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Services<sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goPricing }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Packages<sc-if value="{{ isPricing }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goWork }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Work<sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goJournal }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Journal<sc-if value="{{ isJournalish }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+        <div onClick="{{ goContact }}" style="display:flex;flex-direction:column;gap:5px;cursor:pointer;font-size:14.5px;font-weight:500;color:#002D62;white-space:nowrap" style-hover="color:#8F6135">Contact<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}"><div style="height:2px;background:#B57D49"></div></sc-if></div>
+      </div></sc-if>
+
+      <sc-if value="{{ isAr }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:24px;margin-inline-start:auto;font-family:'IBM Plex Sans Arabic',sans-serif">
+        <div style="font-size:15px;font-weight:500;color:#002D62;white-space:nowrap;display:flex;flex-direction:column;gap:5px">الرئيسية<div style="height:2px;background:#B57D49"></div></div>
+        <div style="font-size:15px;font-weight:500;color:#5A6472;white-space:nowrap">من نحن</div>
+        <div style="font-size:15px;font-weight:500;color:#5A6472;white-space:nowrap">كيف نعمل</div>
+        <div style="font-size:15px;font-weight:500;color:#5A6472;white-space:nowrap">خدماتنا</div>
+        <div style="font-size:15px;font-weight:500;color:#5A6472;white-space:nowrap">اتصل بنا</div>
+      </div></sc-if>
+
+      <div style="display:flex;align-items:center;gap:14px;flex:none">
+        <div style="display:flex;border:1px solid #D8D1C7;border-radius:4px;overflow:hidden">
+          <div onClick="{{ setEn }}" style="padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;cursor:pointer;color:#5A6472" style-hover="color:#002D62">EN</div>
+          <div onClick="{{ setFr }}" style="padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;cursor:pointer;color:#5A6472;border-inline-start:1px solid #D8D1C7" style-hover="color:#002D62">FR</div>
+          <div onClick="{{ setAr }}" style="padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;cursor:pointer;color:#5A6472;border-inline-start:1px solid #D8D1C7" style-hover="color:#002D62">AR</div>
+        </div>
+        <div onClick="{{ goContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:13px 22px;font-weight:600;font-size:14.5px;letter-spacing:0.02em;cursor:pointer;white-space:nowrap;transition:all .16s ease" style-hover="background:#001838;box-shadow:0 2px 8px rgba(0,24,56,0.18)">Request a quote</div>
+      </div>
+    </div>
+    <sc-if value="{{ isAr }}" hint-placeholder-val="{{ false }}"><div style="background:#EFE1D2;border-top:1px solid #DEC5A9"><div style="max-width:1320px;margin:0 auto;padding:9px 40px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;color:#8F6135">ARABIC RTL DEMO · HOME PAGE · النسخة العربية للصفحة الرئيسية</div></div></sc-if>
+  </div>
+
+  <sc-if value="{{ isArHome }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Sans Arabic',sans-serif">
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 64px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;color:#8F6135">تونس · عربي · إنجليزي · فرنسي</div>
+        <div style="font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:60px;line-height:1.35;color:#002D62">معايير الصحافة، في خدمة محتواك.</div>
+        <div style="font-size:19px;line-height:1.95;color:#3E4650;max-width:560px">ستوري بريدج للمحتوى والإعلام شركة اتصال ومحتوى متعدد اللغات، أسّستها صحفيتان ومحررتان التقتا في غرفة الأخبار ولم تتوقفا عن بناء الأفكار معًا.</div>
+        <div style="display:flex;gap:14px;align-items:center">
+          <div style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:14px 26px;font-weight:600;font-size:15px;cursor:pointer;transition:all .16s ease" style-hover="background:#001838">اطلب عرض سعر</div>
+          <div style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:12.5px 24px;font-weight:600;font-size:15px;cursor:pointer;transition:all .16s ease" style-hover="background:#F8F1E8">كيف نعمل ←</div>
+        </div>
+        <div style="border-top:1px solid #D8D1C7;padding-top:18px;font-size:15px;color:#5A6472;line-height:1.8">تأسست على يد <span style="color:#002D62;font-weight:600">آسيا التواتي</span> و<span style="color:#002D62;font-weight:600">إيمان بلواء</span> — محررة وصحفية، أكثر من عشر سنوات في الصحافة والترجمة والإعلام الدولي.</div>
+      </div>
+      <div style="border:1px solid #E6E0D8;border-radius:8px;background:#FFFFFF;padding:36px;display:flex;flex-direction:column;gap:22px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#8F6135">رسالة واحدة · ثلاث لغات</div>
+        <div style="font-family:'Noto Naskh Arabic',serif;font-size:27px;line-height:1.7;color:#002D62">نبني الجسر بين الفكرة والجمهور الذي كُتبت من أجله.</div>
+        <div style="height:1px;background:#E6E0D8"></div>
+        <div dir="ltr" style="font-family:'Source Serif 4',serif;font-size:22px;line-height:1.5;color:#3E4650">Nous bâtissons le pont entre une idée et le public auquel elle s'adresse.</div>
+        <div style="height:1px;background:#E6E0D8"></div>
+        <div dir="ltr" style="font-family:'Source Serif 4',serif;font-size:22px;line-height:1.5;color:#3E4650">We build the bridge between an idea and the audience it was written for.</div>
+      </div>
+    </div>
+    <div style="background:#E8E3DD;border-block:1px solid #D8D1C7"><div style="max-width:1320px;margin:0 auto;padding:56px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:36px">
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="font-family:'Noto Naskh Arabic',serif;font-size:28px;color:#B57D49">¶</div><div style="font-family:'Noto Naskh Arabic',serif;font-size:23px;font-weight:700;color:#002D62">المحتوى والتحرير</div><div style="font-size:15px;line-height:1.9;color:#3E4650">مقالات، محتوى المواقع، محتوى الشبكات الاجتماعية والمواد التحريرية.</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="font-family:'Noto Naskh Arabic',serif;font-size:28px;color:#B57D49">« »</div><div style="font-family:'Noto Naskh Arabic',serif;font-size:23px;font-weight:700;color:#002D62">الترجمة والتوطين</div><div style="font-size:15px;line-height:1.9;color:#3E4650">عربي، إنجليزي وفرنسي — بانتباه إلى المعنى والسياق والنبرة والجمهور.</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="font-family:'Noto Naskh Arabic',serif;font-size:28px;color:#B57D49">§</div><div style="font-family:'Noto Naskh Arabic',serif;font-size:23px;font-weight:700;color:#002D62">التحرير والكتابة</div><div style="font-size:15px;line-height:1.9;color:#3E4650">مراجعة، تدقيق وإعادة صياغة مع الحفاظ على الغرض والصوت.</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="font-family:'Noto Naskh Arabic',serif;font-size:28px;color:#B57D49">†</div><div style="font-family:'Noto Naskh Arabic',serif;font-size:23px;font-weight:700;color:#002D62">الإعلام والصحافة</div><div style="font-size:15px;line-height:1.9;color:#3E4650">تغطية صحفية، محتوى إعلامي ومواد اتصال ودعم ميداني.</div></div>
+    </div></div>
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 88px;display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+      <div style="font-family:'Noto Naskh Arabic',serif;font-size:38px;line-height:1.5;color:#002D62;max-width:900px">اللغة أكثر من ترجمة. الأمر يتعلق بإيصال الرسالة الصحيحة إلى الأشخاص المناسبين بالطريقة المناسبة.</div>
+      <div onClick="{{ setEn }}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#8F6135;cursor:pointer;border-bottom:1px solid #DEC5A9;padding-bottom:3px">← BACK TO ENGLISH SITE</div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ isEnHome }}" hint-placeholder-val="{{ true }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:84px 40px 72px;display:grid;grid-template-columns:1.12fr 0.88fr;gap:72px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Tunis · Arabic · English · French</div>
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:70px;line-height:1.04;letter-spacing:-0.022em;color:#002D62;text-wrap:balance">Journalistic standards, applied to your content.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:21px;line-height:1.62;color:#3E4650;max-width:600px;text-wrap:pretty">StoryBridge Content &amp; Media is a communications and multilingual content company founded by two journalists and editors who met in the newsroom and never stopped building ideas together.</div>
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+          <div onClick="{{ goContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px 28px;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="background:#001838;box-shadow:0 2px 8px rgba(0,24,56,0.18)">Request a quote</div>
+          <div onClick="{{ goHow }}" style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:13.5px 26px;font-weight:600;font-size:15px;letter-spacing:0.02em;cursor:pointer;transition:all .16s ease" style-hover="background:#F8F1E8;color:#5F4123">See how we work</div>
+        </div>
+        <div style="border-top:1px solid #D8D1C7;padding-top:20px;display:flex;gap:14px;align-items:center">
+          <div style="width:46px;height:46px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div>
+          <div style="width:46px;height:46px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none;margin-inline-start:-20px"></div>
+          <div style="font-size:15px;line-height:1.6;color:#5A6472">Founded by <span onClick="{{ goFounders }}" style="color:#002D62;font-weight:600;cursor:pointer;border-bottom:1px solid #DEC5A9">Assia Touati</span> and <span onClick="{{ goFounders }}" style="color:#002D62;font-weight:600;cursor:pointer;border-bottom:1px solid #DEC5A9">Imen Bliwa</span> — an editor-in-chief and a journalist-translator, ten years and one newsroom apart.</div>
+        </div>
+      </div>
+      <sc-if value="{{ heroMasthead }}" hint-placeholder-val="{{ true }}"><div style="border:1px solid #E6E0D8;border-radius:8px;background:#FFFFFF;padding:38px;display:flex;flex-direction:column;gap:24px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #002D62;padding-bottom:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">One message · three languages</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">AR · FR · EN</div>
+        </div>
+        <div dir="rtl" style="font-family:'Noto Naskh Arabic',serif;font-size:27px;line-height:1.7;color:#002D62">نبني الجسر بين الفكرة والجمهور الذي كُتبت من أجله.</div>
+        <div style="height:1px;background:#E6E0D8"></div>
+        <div style="font-family:'Source Serif 4',serif;font-size:23px;line-height:1.5;color:#3E4650">Nous bâtissons le pont entre une idée et le public auquel elle s'adresse.</div>
+        <div style="height:1px;background:#E6E0D8"></div>
+        <div style="font-family:'Source Serif 4',serif;font-size:23px;line-height:1.5;color:#3E4650">We build the bridge between an idea and the audience it was written for.</div>
+        <div onClick="{{ setAr }}" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.12em;color:#8F6135;cursor:pointer;border-top:1px solid #E6E0D8;padding-top:16px" style-hover="color:#002D62">READ THIS PAGE IN ARABIC →</div>
+      </div></sc-if>
+      <sc-if value="{{ heroPortrait }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:14px">
+        <div style="aspect-ratio:4/5;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:18px">
+          <div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">photo — the two founders, working</div>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A8378;line-height:1.6">Assia Touati and Imen Bliwa, Tunis. Replace with a real portrait.</div>
+      </div></sc-if>
+    </div>
+
+    <div style="background:#E8E3DD;border-block:1px solid #D8D1C7"><div style="max-width:1320px;margin:0 auto;padding:44px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px 0">
+      <div style="padding-inline-end:32px;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Newsroom-trained</div><div style="font-size:15px;line-height:1.6;color:#3E4650">A decade-plus in journalism, translation and international media.</div></div>
+      <div style="padding-inline:32px;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Maghrebi Arabic</div><div style="font-size:15px;line-height:1.6;color:#3E4650">North African nuance — not Gulf-centric MSA dropped on a Tunisian audience.</div></div>
+      <div style="padding-inline:32px;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Visible desk process</div><div style="font-size:15px;line-height:1.6;color:#3E4650">Brief → native writer → editor → QA. You see every stage.</div></div>
+      <div style="padding-inline-start:32px;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">One contact</div><div style="font-size:15px;line-height:1.6;color:#3E4650">A single project manager per assignment, start to delivery.</div></div>
+    </div></div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:88px 40px">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:40px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:40px;line-height:1;color:#002D62;letter-spacing:-0.015em">What we do</div>
+        <div onClick="{{ goServices }}" style="margin-inline-start:auto;font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;white-space:nowrap" style-hover="color:#002D62">All services and packages →</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px">
+        <div onClick="{{ goServices }}" style="background:#FDF8F1;border-radius:8px;padding:30px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:15px;cursor:pointer;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">¶</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;color:#002D62;line-height:1.25">Content &amp; Editorial</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Articles, website copy, social and branded content — written to a brief, not to a word count.</div>
+          <div style="font-size:14px;font-weight:600;color:#8F6135;margin-top:auto">Learn more →</div>
+        </div>
+        <div onClick="{{ goServices }}" style="background:#FDF8F1;border-radius:8px;padding:30px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:15px;cursor:pointer;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:24px;line-height:1;color:#002D62">« »</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;color:#002D62;line-height:1.25">Translation &amp; Localization</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Arabic, English and French — context, culture and tone carried across, not just words.</div>
+          <div style="font-size:14px;font-weight:600;color:#8F6135;margin-top:auto">Learn more →</div>
+        </div>
+        <div onClick="{{ goServices }}" style="background:#FDF8F1;border-radius:8px;padding:30px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:15px;cursor:pointer;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">§</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;color:#002D62;line-height:1.25">Editing &amp; Writing</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Editing, proofreading and rewriting that preserves the purpose and the voice already there.</div>
+          <div style="font-size:14px;font-weight:600;color:#8F6135;margin-top:auto">Learn more →</div>
+        </div>
+        <div onClick="{{ goServices }}" style="background:#FDF8F1;border-radius:8px;padding:30px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:15px;cursor:pointer;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+          <div style="width:52px;height:52px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:26px;line-height:1;color:#002D62">†</span></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;color:#002D62;line-height:1.25">Media &amp; Press</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Press coverage, journalistic content, field reporting and fixing — we go where the story is.</div>
+          <div style="font-size:14px;font-weight:600;color:#8F6135;margin-top:auto">Learn more →</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#001838;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;opacity:0.4"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveHome" width="72" height="36" patternUnits="userSpaceOnUse"><path d="M 0,36 A 18,18 0 0 1 36,36 A 18,18 0 0 1 72,36" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -18,18 A 18,18 0 0 1 18,18 A 18,18 0 0 1 54,18 A 18,18 0 0 1 90,18" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveHome)"></rect></svg></div>
+      <div style="position:relative;max-width:1320px;margin:0 auto;padding:80px 40px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:72px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">The desk process</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:42px;line-height:1.12;color:#FDF8F1;letter-spacing:-0.015em">Every piece passes four sets of hands before it reaches you.</div>
+          <div style="font-size:16px;line-height:1.7;color:rgba(253,248,241,0.78)">The same workflow a newsroom runs on. Nothing is delivered straight from the writer — and you always know which stage the work is at.</div>
+          <div onClick="{{ goHow }}" style="font-weight:600;font-size:15px;color:#B57D49;cursor:pointer;border-bottom:1.5px solid transparent;align-self:flex-start;transition:all .16s ease" style-hover="color:#DEC5A9;border-bottom-color:#DEC5A9">Read the full method →</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <div style="background:#072448;border:1px solid rgba(253,248,241,0.10);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B57D49">01</div><div style="font-family:'Source Serif 4',serif;font-size:19px;color:#FDF8F1">Brief</div><div style="font-size:13.5px;line-height:1.6;color:rgba(253,248,241,0.7)">We ask before we write.</div></div>
+          <div style="background:#072448;border:1px solid rgba(253,248,241,0.10);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B57D49">02</div><div style="font-family:'Source Serif 4',serif;font-size:19px;color:#FDF8F1">Native writer</div><div style="font-size:13.5px;line-height:1.6;color:rgba(253,248,241,0.7)">First language, every time.</div></div>
+          <div style="background:#072448;border:1px solid rgba(253,248,241,0.10);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B57D49">03</div><div style="font-family:'Source Serif 4',serif;font-size:19px;color:#FDF8F1">Editor</div><div style="font-size:13.5px;line-height:1.6;color:rgba(253,248,241,0.7)">Structure, accuracy, tone.</div></div>
+          <div style="background:#072448;border:1px solid rgba(253,248,241,0.10);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B57D49">04</div><div style="font-family:'Source Serif 4',serif;font-size:19px;color:#FDF8F1">QA</div><div style="font-size:13.5px;line-height:1.6;color:rgba(253,248,241,0.7)">Facts, names, numbers, links.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:88px 40px">
+      <div style="display:grid;grid-template-columns:0.85fr 1.15fr;gap:72px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Why StoryBridge</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:40px;line-height:1.15;color:#002D62;letter-spacing:-0.015em">Because language is more than translation.</div>
+          <div onClick="{{ goWho }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;align-self:flex-start" style-hover="color:#002D62">Read our story →</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px;border-inline-start:2px solid #B57D49;padding-inline-start:40px">
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;line-height:1.55;color:#111111;text-wrap:pretty">A good translation does not simply move words from one language to another. A good article does not simply fill a page. And good communication is not simply about saying more.</div>
+          <div style="font-family:'Source Serif 4',serif;font-style:italic;font-weight:600;font-size:26px;line-height:1.45;color:#002D62">It is about making the right message reach the right people in the right way. That is the bridge we want to build.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#E8E3DD;border-block:1px solid #D8D1C7"><div style="max-width:1320px;margin:0 auto;padding:80px 40px">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:36px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.015em">From the Journal</div>
+        <div style="font-size:14.5px;color:#5A6472">Our own writing, published in the open — the shortest way to judge whether we can write yours.</div>
+        <div onClick="{{ goJournal }}" style="margin-inline-start:auto;font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;white-space:nowrap" style-hover="color:#002D62">All pieces →</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:32px">
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E4DED6 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Translation · 6 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">Why your Arabic copy sounds foreign in Tunis</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Gulf-standard Arabic is not a neutral default. What Maghrebi audiences actually hear.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E4DED6 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Craft · 8 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">The brief is the deliverable</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Most content fails before a word is written. A newsroom fix for a marketing problem.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E4DED6 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Field · 5 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">What a fixer actually does</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Access, contacts, permissions, timing — the invisible work behind a shoot that runs.</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:88px 40px">
+      <div style="background:#002D62;border-radius:8px;padding:56px;display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">The Bridge · monthly</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:38px;line-height:1.15;color:#FDF8F1;letter-spacing:-0.015em">One letter a month on language, media and the Maghreb.</div>
+          <div style="font-size:16px;line-height:1.7;color:rgba(253,248,241,0.78)">Written by us, in the same voice we write for clients. It is also the easiest way to see how we work before you hire us.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:12px">
+            <input type="email" placeholder="you@company.com" style="flex:1;border:1.5px solid rgba(253,248,241,0.24);border-radius:2px;padding:14px 15px;font-size:15px;color:#FDF8F1;background:#072448">
+            <div onClick="{{ subscribe }}" style="background:#B57D49;color:#001838;border-radius:4px;padding:14px 26px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;transition:all .16s ease" style-hover="background:#C99D74">Subscribe</div>
+          </div>
+          <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:#B57D49;font-weight:500">Thank you — the next issue lands in your inbox.</div></sc-if>
+          <div style="font-size:13px;line-height:1.6;color:rgba(253,248,241,0.55)">Monthly. No pitches, no drip sequence. <span onClick="{{ goNewsletter }}" style="color:#B57D49;cursor:pointer;font-weight:500">See past issues →</span></div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showWho }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">Who we are</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:1000px;text-wrap:balance">Born from a friendship, a shared newsroom, and years of turning ideas into stories.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:56px 40px 88px;display:grid;grid-template-columns:1fr 320px;gap:72px;align-items:start">
+      <div style="max-width:720px;display:flex;flex-direction:column;gap:26px">
+        <div style="font-family:'Source Serif 4',serif;font-size:24px;line-height:1.55;color:#002D62;font-weight:600">We are Assia Touati and Imen Bliwa, two best friends who first met through work. What began as a professional relationship quickly became a friendship built around a shared passion for journalism, communication, language, and good storytelling.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">Imen is a journalist, translator and researcher working across Arabic, English and French, with more than a decade of experience in journalism, translation and international media. Her work has taken her across different subjects, audiences and formats, from journalistic reporting and research to translation and content development.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">Assia is an open-minded editor-in-chief with a strong editorial instinct and a talent for turning ideas into clear, engaging and meaningful content. Her experience in editorial work brings another essential perspective: understanding the audience, shaping the message and making content work as part of a larger product.</div>
+        <div style="border-inline-start:2px solid #B57D49;padding-inline-start:32px;margin:12px 0"><div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:26px;line-height:1.5;color:#002D62;text-wrap:pretty">We first worked together at a magazine where we experienced something particularly valuable: building a successful media product from the inside.</div></div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">We learned how an idea becomes a story, how stories become a product, and how strong editorial work, communication and teamwork can create something people actually connect with.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111">Then our professional paths took us in different directions.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111">But our friendship didn't.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">We kept meeting at one of our favorite coffee places, at our offices, or simply whenever we had time to sit down and talk. We talked about our work, the media industry, businesses, communication, languages and all the things we thought could be done differently. And eventually, one idea kept coming back:</div>
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:34px;line-height:1.3;color:#002D62;letter-spacing:-0.015em">Why not build something together?</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111">That idea became StoryBridge Content &amp; Media.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:110px">
+        <div style="aspect-ratio:4/5;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">photo — the coffee place</div></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.65;color:#8A8378">Where StoryBridge was argued into existence, one afternoon at a time.</div>
+        <div style="border:1px solid #E6E0D8;border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px;background:#FDF8F1">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Founded</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:20px;color:#002D62">Tunis, Tunisia</div>
+          <div style="font-size:14px;line-height:1.65;color:#5A6472">Working across Arabic, English and French, locally and internationally.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#E8E3DD;border-block:1px solid #D8D1C7"><div style="max-width:1320px;margin:0 auto;padding:80px 40px">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:40px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:40px;line-height:1;color:#002D62;letter-spacing:-0.015em">What we do</div>
+        <div style="font-size:15px;color:#5A6472;max-width:520px;line-height:1.6">A strategic communications and multilingual content company, built around four core areas.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px">
+        <div style="background:#FDF8F1;border-radius:8px;padding:34px;display:flex;gap:24px;align-items:flex-start">
+          <div style="width:56px;height:56px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:27px;line-height:1;color:#002D62">¶</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Source Serif 4',serif;font-size:25px;font-weight:600;color:#002D62">Content &amp; Editorial</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">Articles, website content, social-media content, branded content and editorial material.</div></div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:34px;display:flex;gap:24px;align-items:flex-start">
+          <div style="width:56px;height:56px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:25px;line-height:1;color:#002D62">« »</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Source Serif 4',serif;font-size:25px;font-weight:600;color:#002D62">Translation &amp; Localization</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">Arabic, English and French translation, with attention to meaning, context, tone and audience.</div></div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:34px;display:flex;gap:24px;align-items:flex-start">
+          <div style="width:56px;height:56px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:27px;line-height:1;color:#002D62">§</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Source Serif 4',serif;font-size:25px;font-weight:600;color:#002D62">Editing &amp; Writing</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice.</div></div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:34px;display:flex;gap:24px;align-items:flex-start">
+          <div style="width:56px;height:56px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none"><span style="font-family:'Source Serif 4',serif;font-size:27px;line-height:1;color:#002D62">†</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Source Serif 4',serif;font-size:25px;font-weight:600;color:#002D62">Media &amp; Press Services</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">Press coverage, journalistic content, media-related support and communication materials.</div></div>
+        </div>
+      </div>
+    </div></div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:88px 40px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:72px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">Why StoryBridge Content &amp; Media?</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:42px;line-height:1.12;color:#002D62;letter-spacing:-0.018em">Because language is more than translation.</div>
+        <div onClick="{{ goContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px 28px;font-weight:600;font-size:15px;cursor:pointer;align-self:flex-start;margin-top:8px;transition:all .16s ease" style-hover="background:#001838">Start a conversation</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;border-inline-start:2px solid #B57D49;padding-inline-start:40px">
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;line-height:1.65;color:#111111;text-wrap:pretty">A good translation does not simply move words from one language to another. A good article does not simply fill a page. And good communication is not simply about saying more.</div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-weight:600;font-size:28px;line-height:1.45;color:#002D62;text-wrap:pretty">It is about making the right message reach the right people in the right way. That is the bridge we want to build.</div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showFounders }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">The founders</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:900px">Two bylines behind every brief.</div>
+      <div style="font-size:18px;line-height:1.7;color:#5A6472;max-width:680px;margin-top:20px">StoryBridge is not a marketplace with a logo on top. The people who scope your work are the people who edit it.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:64px 40px 0;display:grid;grid-template-columns:400px 1fr;gap:72px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:14px;position:sticky;top:110px">
+        <div style="aspect-ratio:4/5;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">portrait — Assia Touati</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #D8D1C7;padding-top:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Languages</div>
+          <div style="font-size:14.5px;color:#3E4650">Arabic · French · English</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #D8D1C7;padding-top:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Contact</div>
+          <div style="font-size:14.5px;color:#3E4650">assia@storybridge.tn · LinkedIn</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B57D49;border:1px dashed #DEC5A9;border-radius:2px;padding:5px 8px;align-self:flex-start;margin-top:4px">placeholder</div>
+        </div>
+      </div>
+      <div style="max-width:680px;display:flex;flex-direction:column;gap:24px">
+        <div style="border-bottom:2px solid #002D62;padding-bottom:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:52px;line-height:1;color:#002D62;letter-spacing:-0.02em">Assia Touati</div>
+          <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;color:#8F6135">Co-founder · Editor-in-chief</div>
+        </div>
+        <div style="font-family:'Source Serif 4',serif;font-size:21px;line-height:1.65;color:#002D62;font-weight:600;text-wrap:pretty">An open-minded editor-in-chief with a strong editorial instinct and a talent for turning ideas into clear, engaging and meaningful content.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">Assia's experience in editorial work brings the perspective a piece of content usually lacks: understanding the audience, shaping the message, and making the work function as part of a larger product rather than as an isolated deliverable. She decides what a story is before anyone starts writing it, and she is the last reader before it goes out.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">She and Imen met at a magazine, where they built a media product from the inside — learning how an idea becomes a story, and how stories become something people actually connect with. That experience is the operating model StoryBridge runs on today.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid #D8D1C7;padding-top:24px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">On the desk</div>
+            <div style="font-size:15px;line-height:1.7;color:#3E4650">Editorial direction · commissioning · structural editing · audience and message strategy · content as product</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Selected credits</div>
+            <div style="font-size:15px;line-height:1.7;color:#3E4650">Magazine and outlet names, titles held, notable products launched.</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B57D49;border:1px dashed #DEC5A9;border-radius:2px;padding:5px 8px;align-self:flex-start">placeholder — real credits to come</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 0"><div style="height:1px;background:#D8D1C7"></div></div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:64px 40px 88px;display:grid;grid-template-columns:400px 1fr;gap:72px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:14px;position:sticky;top:110px">
+        <div style="aspect-ratio:4/5;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">portrait — Imen Bliwa</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #D8D1C7;padding-top:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Languages</div>
+          <div style="font-size:14.5px;color:#3E4650">Arabic · English · French</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #D8D1C7;padding-top:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Contact</div>
+          <div style="font-size:14.5px;color:#3E4650">imen@storybridge.tn · LinkedIn</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B57D49;border:1px dashed #DEC5A9;border-radius:2px;padding:5px 8px;align-self:flex-start;margin-top:4px">placeholder</div>
+        </div>
+      </div>
+      <div style="max-width:680px;display:flex;flex-direction:column;gap:24px">
+        <div style="border-bottom:2px solid #002D62;padding-bottom:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:52px;line-height:1;color:#002D62;letter-spacing:-0.02em">Imen Bliwa</div>
+          <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;color:#8F6135">Co-founder · Journalist, translator, researcher</div>
+        </div>
+        <div style="font-family:'Source Serif 4',serif;font-size:21px;line-height:1.65;color:#002D62;font-weight:600;text-wrap:pretty">A journalist, translator and researcher working across Arabic, English and French, with more than a decade in journalism, translation and international media.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">Imen's work has moved across subjects, audiences and formats — reporting and research, translation, content development, and the field work that sits behind all of it. She knows what it takes to get access, find the right contacts and come back with the material a story actually needs.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:19px;line-height:1.78;color:#111111;text-wrap:pretty">That range is why StoryBridge can take an assignment from a first conversation to a finished piece in three languages without handing it to strangers halfway through.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid #D8D1C7;padding-top:24px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">On the desk</div>
+            <div style="font-size:15px;line-height:1.7;color:#3E4650">Reporting · interviews · AR/EN/FR translation · research · fixing and field production</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Selected credits</div>
+            <div style="font-size:15px;line-height:1.7;color:#3E4650">Outlets published in, international media worked with, notable assignments.</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B57D49;border:1px dashed #DEC5A9;border-radius:2px;padding:5px 8px;align-self:flex-start">placeholder — real credits to come</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showHow }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">How we work</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:900px">From the first idea to the final story.</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:21px;line-height:1.7;color:#3E4650;max-width:720px;margin-top:22px;text-wrap:pretty">Good content doesn't start with a keyboard. It starts with listening, understanding, asking the right questions and knowing where to look.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:64px 40px 40px">
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">01</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We listen first</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Every assignment starts with a conversation. We want to understand what you need, who you are speaking to, what you want to achieve and what the story is really about.</div></div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;line-height:1.55;color:#002D62;border-inline-start:2px solid #DEC5A9;padding-inline-start:28px">We ask questions before we start producing. The better we understand the brief, the better we can tell the story.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">02</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We build the right approach</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Not every story needs the same treatment. We bring together the right people, skills, languages and tools for each assignment.</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-inline-start:2px solid #DEC5A9;padding-inline-start:28px">
+          <div style="font-size:15.5px;line-height:1.7;color:#3E4650">Some require research and interviews.</div>
+          <div style="font-size:15.5px;line-height:1.7;color:#3E4650">Some require a journalist on the ground.</div>
+          <div style="font-size:15.5px;line-height:1.7;color:#3E4650">Some need a strong editor.</div>
+          <div style="font-size:15.5px;line-height:1.7;color:#3E4650">Some need translation that understands context, not just words.</div>
+          <div style="font-size:15.5px;line-height:1.7;color:#002D62;font-weight:500">Others need all of it at once.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">03</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We go beyond the desk</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Some stories cannot be told from behind a screen. When the assignment requires it, we are there — reporting, interviews, events, press coverage, research, fixing and multimedia content.</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Our experience in field journalism means we understand the realities of working on location: finding contacts, navigating the environment, arranging access and getting the material needed to tell the story properly.</div></div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">photo — on assignment, field</div></div>
+          <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;line-height:1.5;color:#002D62">We don't just tell you what is happening. We go and find out.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">04</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We create with purpose</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Whether we are writing an article, creating digital content, editing a text or producing communication material, we focus on clarity, accuracy, tone and audience.</div></div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;line-height:1.55;color:#002D62;border-inline-start:2px solid #DEC5A9;padding-inline-start:28px">We don't believe in filling space. Every piece of content needs a reason to exist.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">05</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We connect languages and cultures</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Translation, for us, is not simply replacing one word with another. We consider context, culture, tone, audience and purpose so the message feels natural in its new language while keeping the meaning and intention of the original.</div></div>
+        <div style="border:1px solid #E6E0D8;border-radius:8px;background:#FFFFFF;padding:28px;display:flex;flex-direction:column;gap:16px">
+          <div dir="rtl" style="font-family:'Noto Naskh Arabic',serif;font-size:24px;line-height:1.7;color:#002D62">العربية</div>
+          <div style="height:1px;background:#E6E0D8"></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;color:#002D62">Français</div>
+          <div style="height:1px;background:#E6E0D8"></div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;color:#002D62">English</div>
+          <div style="font-size:14px;line-height:1.65;color:#5A6472;border-top:1px solid #E6E0D8;padding-top:14px">Maghrebi Arabic nuance where it matters — not Gulf-standard MSA applied by default.</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-top:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">06</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">We deliver</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Content is often needed on time, not eventually. Once the work is agreed, we set the scope, timeline and deliverables clearly and keep communication open throughout the assignment.</div><div style="font-size:16px;line-height:1.75;color:#3E4650">For urgent or field-based work, our experience allows us to respond quickly and work under pressure without losing sight of quality.</div></div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;line-height:1.55;color:#002D62;border-inline-start:2px solid #DEC5A9;padding-inline-start:28px">We show up. We do the work. We deliver.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:48px;border-block:1px solid #D8D1C7;padding:40px 0;align-items:start">
+        <div style="font-family:'Source Serif 4',serif;font-size:56px;line-height:0.9;color:#B57D49;font-weight:600">07</div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#002D62;line-height:1.15">And we stay involved</div><div style="font-size:16px;line-height:1.75;color:#3E4650">For clients who need more than a one-off assignment, we can become an ongoing content and media partner — regular articles and translations, social content, editorial support, media coverage and field assignments on a recurring basis.</div></div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:22px;line-height:1.55;color:#002D62;border-inline-start:2px solid #DEC5A9;padding-inline-start:28px">Because the best work often comes from knowing the client, understanding their voice and building trust over time.</div>
+      </div>
+    </div>
+
+    <div style="background:#001838;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;opacity:0.35"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveHow" width="72" height="36" patternUnits="userSpaceOnUse"><path d="M 0,36 A 18,18 0 0 1 36,36 A 18,18 0 0 1 72,36" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -18,18 A 18,18 0 0 1 18,18 A 18,18 0 0 1 54,18 A 18,18 0 0 1 90,18" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveHow)"></rect></svg></div>
+      <div style="position:relative;max-width:1100px;margin:0 auto;padding:88px 40px;display:flex;flex-direction:column;gap:28px;align-items:center;text-align:center">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">Our approach is simple</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:44px;line-height:1.35;color:#FDF8F1;letter-spacing:-0.015em;text-wrap:balance">Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver.</div>
+        <div style="font-family:'Source Serif 4',serif;font-style:italic;font-size:24px;color:#B57D49">And when the next story comes, we're already there.</div>
+        <div onClick="{{ goContact }}" style="background:#B57D49;color:#001838;border-radius:4px;padding:15px 30px;font-weight:600;font-size:15px;cursor:pointer;margin-top:8px;transition:all .16s ease" style-hover="background:#C99D74">Bring us a brief</div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showServices }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">Services</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:960px">Four desks, one editorial standard.</div>
+      <div style="font-size:18px;line-height:1.7;color:#5A6472;max-width:700px;margin-top:20px">Whether you need an article, an interview, a translation, event coverage, research or a fixer on the ground — we adapt the approach to what the story requires.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:60px 40px 0;display:flex;flex-direction:column;gap:0">
+      <div style="display:grid;grid-template-columns:88px 1fr 1.15fr;gap:48px;border-top:1px solid #D8D1C7;padding:44px 0;align-items:start">
+        <div style="width:64px;height:64px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:30px;line-height:1;color:#002D62">¶</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;line-height:1.1">Content &amp; Editorial</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Articles, website content, social-media content, branded content and editorial material — written to a brief, researched properly, and edited before you ever see it.</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Feature and news articles</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Website and landing copy</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Interviews and profiles</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Newsletters, written and managed</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Social and branded content</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Reports and editorial material</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:88px 1fr 1.15fr;gap:48px;border-top:1px solid #D8D1C7;padding:44px 0;align-items:start">
+        <div style="width:64px;height:64px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:27px;line-height:1;color:#002D62">« »</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;line-height:1.1">Translation &amp; Localization</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Arabic, English and French — with attention to meaning, context, tone and audience. Maghrebi Arabic where the audience is Maghrebi.</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">AR ⇄ EN ⇄ FR translation</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Website and app localization</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Transcreation for campaigns</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Subtitles and transcripts</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Bilingual style guides</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Review of existing translations</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:88px 1fr 1.15fr;gap:48px;border-top:1px solid #D8D1C7;padding:44px 0;align-items:start">
+        <div style="width:64px;height:64px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:30px;line-height:1;color:#002D62">§</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;line-height:1.1">Editing &amp; Writing</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice. The desk work behind a publishable piece.</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Structural and line editing</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Proofreading and fact-checking</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Rewrites and restructuring</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Non-native English polish</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">House style development</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Editorial review of drafts</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:88px 1fr 1.15fr;gap:48px;border-block:1px solid #D8D1C7;padding:44px 0;align-items:start">
+        <div style="width:64px;height:64px;border:1.5px solid #002D62;border-radius:999px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Source Serif 4',serif;font-size:30px;line-height:1;color:#002D62">†</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px"><div style="font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;line-height:1.1">Media &amp; Press Services</div><div style="font-size:16px;line-height:1.75;color:#3E4650">Press coverage, journalistic content, media support and communication materials — including work on the ground when the assignment requires it.</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 28px">
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Press releases and media kits</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Distribution to regional media</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Event and conference coverage</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Fixing and field production</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Research and background briefs</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650;border-inline-start:2px solid #DEC5A9;padding-inline-start:16px">Interviews and multimedia</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#E8E3DD;border-bottom:1px solid #D8D1C7;margin-top:80px"><div style="max-width:1320px;margin:0 auto;padding:80px 40px">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:40px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1;color:#002D62;letter-spacing:-0.015em">The workflow, in the open</div>
+        <div style="font-size:15px;color:#5A6472;max-width:560px;line-height:1.6">No piece goes out on one person's judgement. You can see which stage your work is at, at any point.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#FDF8F1;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)">
+        <div style="padding:34px;display:flex;flex-direction:column;gap:12px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:#8F6135">STAGE 01</div><div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#002D62">Brief</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">A conversation, then a written brief you sign off on: audience, purpose, scope, tone, deadline.</div></div>
+        <div style="padding:34px;display:flex;flex-direction:column;gap:12px;border-inline-start:1px solid #E6E0D8"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:#8F6135">STAGE 02</div><div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#002D62">Native writer</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">Written or translated by someone working into their first language. Never the other way round.</div></div>
+        <div style="padding:34px;display:flex;flex-direction:column;gap:12px;border-inline-start:1px solid #E6E0D8"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:#8F6135">STAGE 03</div><div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#002D62">Editor</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">A second pair of eyes on structure, accuracy, tone and audience fit — a real edit, not a spellcheck.</div></div>
+        <div style="padding:34px;display:flex;flex-direction:column;gap:12px;border-inline-start:1px solid #E6E0D8"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;color:#8F6135">STAGE 04</div><div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#002D62">QA &amp; delivery</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">Names, figures, links, terminology and formatting checked against the brief before it reaches you.</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px">
+        <div style="background:#002D62;border-radius:8px;padding:34px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">One point of contact</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:#FDF8F1;line-height:1.25">A single project manager per assignment.</div>
+          <div style="font-size:15px;line-height:1.7;color:rgba(253,248,241,0.78)">One person owns your brief from first call to final file. No relay of account handlers, no repeating yourself, no wondering who to email.</div>
+        </div>
+        <div style="border:1px solid #D8D1C7;border-radius:8px;padding:34px;display:flex;flex-direction:column;gap:12px;background:#FDF8F1">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Working languages</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:#002D62;line-height:1.25">Arabic, English, French — in any direction.</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650">Including the Maghrebi register that Gulf-centric suppliers miss, and the French that North African institutions actually use.</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:44px"><div onClick="{{ goPricing }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px 30px;font-weight:600;font-size:15px;cursor:pointer;transition:all .16s ease" style-hover="background:#001838">See the packages →</div></div>
+    </div></div>
+  </div></sc-if>
+
+  <sc-if value="{{ showPricing }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">Packages</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:960px">Named packages, scoped before we start.</div>
+      <div style="font-size:18px;line-height:1.7;color:#5A6472;max-width:720px;margin-top:20px">Every package below is quoted against your brief — length, research depth, languages and turnaround change the number, so we give you a real one rather than a headline rate you'd have to argue with later.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:60px 40px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:32px">
+      <div style="background:#FDF8F1;border-radius:8px;padding:34px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Content &amp; Editorial</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;line-height:1.15">Article Pack</div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650">A run of researched articles — four, eight or twelve — commissioned, written, edited and delivered on a publishing schedule.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E6E0D8;padding-top:16px">
+          <div style="font-size:14.5px;color:#3E4650">Brief and angle development</div>
+          <div style="font-size:14.5px;color:#3E4650">Research and interviews as needed</div>
+          <div style="font-size:14.5px;color:#3E4650">Full edit and QA on each piece</div>
+          <div style="font-size:14.5px;color:#3E4650">One language, or all three</div>
+        </div>
+        <sc-if value="{{ showBands }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;background:#F8F1E8;border-radius:2px;padding:10px 12px">indicative · $80–250 per article</div></sc-if>
+        <div onClick="{{ goContact }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;margin-top:auto" style-hover="color:#002D62">Request a quote →</div>
+      </div>
+      <div style="background:#FDF8F1;border-radius:8px;padding:34px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Content &amp; Editorial</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;line-height:1.15">Website Content</div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650">Every page of a site written from scratch or rewritten — structure, voice and hierarchy included, not just words in boxes.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E6E0D8;padding-top:16px">
+          <div style="font-size:14.5px;color:#3E4650">Page-by-page content plan</div>
+          <div style="font-size:14.5px;color:#3E4650">Home, about, services, contact</div>
+          <div style="font-size:14.5px;color:#3E4650">Tone-of-voice note for future pages</div>
+          <div style="font-size:14.5px;color:#3E4650">Trilingual versions available</div>
+        </div>
+        <div onClick="{{ goContact }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;margin-top:auto" style-hover="color:#002D62">Request a quote →</div>
+      </div>
+      <div style="background:#FDF8F1;border-radius:8px;padding:34px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Media &amp; Press</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;line-height:1.15">Press Release + Distribution</div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650">Written the way a newsroom wants to receive it, then sent to the regional media that would actually run it.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E6E0D8;padding-top:16px">
+          <div style="font-size:14.5px;color:#3E4650">Release drafted in AR / FR / EN</div>
+          <div style="font-size:14.5px;color:#3E4650">Media list built for the story</div>
+          <div style="font-size:14.5px;color:#3E4650">Distribution and follow-up</div>
+          <div style="font-size:14.5px;color:#3E4650">Coverage report</div>
+        </div>
+        <sc-if value="{{ showBands }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;background:#F8F1E8;border-radius:2px;padding:10px 12px">indicative · retainers $1,000–3,000 / month</div></sc-if>
+        <div onClick="{{ goContact }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;margin-top:auto" style-hover="color:#002D62">Request a quote →</div>
+      </div>
+      <div style="background:#FDF8F1;border-radius:8px;padding:34px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Translation</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;line-height:1.15">Localization</div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650">Your existing material carried into Arabic, French or English so it reads as though it was written there.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E6E0D8;padding-top:16px">
+          <div style="font-size:14.5px;color:#3E4650">Translation by a native writer</div>
+          <div style="font-size:14.5px;color:#3E4650">Editor review against the source</div>
+          <div style="font-size:14.5px;color:#3E4650">Terminology and glossary kept</div>
+          <div style="font-size:14.5px;color:#3E4650">Maghrebi register on request</div>
+        </div>
+        <sc-if value="{{ showBands }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;background:#F8F1E8;border-radius:2px;padding:10px 12px">indicative · $0.06–0.12 per word</div></sc-if>
+        <div onClick="{{ goContact }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;margin-top:auto" style-hover="color:#002D62">Request a quote →</div>
+      </div>
+      <div style="background:#FDF8F1;border-radius:8px;padding:34px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s ease" style-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Editing</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#002D62;line-height:1.15">Editorial Polish</div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650">You wrote it. We make it publishable — structure, accuracy and tone, with your voice left intact.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E6E0D8;padding-top:16px">
+          <div style="font-size:14.5px;color:#3E4650">Structural and line edit</div>
+          <div style="font-size:14.5px;color:#3E4650">Fact and consistency check</div>
+          <div style="font-size:14.5px;color:#3E4650">Tracked changes and a short note</div>
+          <div style="font-size:14.5px;color:#3E4650">Per project or per batch</div>
+        </div>
+        <sc-if value="{{ showBands }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;background:#F8F1E8;border-radius:2px;padding:10px 12px">indicative · $0.02–0.05 per word</div></sc-if>
+        <div onClick="{{ goContact }}" style="font-size:14.5px;font-weight:600;color:#8F6135;cursor:pointer;margin-top:auto" style-hover="color:#002D62">Request a quote →</div>
+      </div>
+      <div style="background:#002D62;border-radius:8px;padding:34px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;opacity:0.4"><svg width="100%" height="100%" style="display:block"><defs><pattern id="weaveLaunch" width="72" height="36" patternUnits="userSpaceOnUse"><path d="M 0,36 A 18,18 0 0 1 36,36 A 18,18 0 0 1 72,36" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path><path d="M -18,18 A 18,18 0 0 1 18,18 A 18,18 0 0 1 54,18 A 18,18 0 0 1 90,18" style="fill:none;stroke:#B57D49;stroke-width:1.2px"></path></pattern></defs><rect width="100%" height="100%" fill="url(#weaveLaunch)"></rect></svg></div>
+        <div style="position:relative;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">All four desks · bundled</div>
+        <div style="position:relative;font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#FDF8F1;line-height:1.15">Launch Package</div>
+        <div style="position:relative;font-size:15px;line-height:1.7;color:rgba(253,248,241,0.8)">For a product, campaign or organisation going public: content, translation, press release and distribution, run as one assignment by one manager.</div>
+        <div style="position:relative;display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(253,248,241,0.18);padding-top:16px">
+          <div style="font-size:14.5px;color:rgba(253,248,241,0.85)">Core content set, written</div>
+          <div style="font-size:14.5px;color:rgba(253,248,241,0.85)">Trilingual versions</div>
+          <div style="font-size:14.5px;color:rgba(253,248,241,0.85)">Press release + media distribution</div>
+          <div style="font-size:14.5px;color:rgba(253,248,241,0.85)">Coverage report and follow-through</div>
+        </div>
+        <div onClick="{{ goContact }}" style="position:relative;background:#B57D49;color:#001838;border-radius:4px;padding:13px 22px;font-weight:600;font-size:14.5px;cursor:pointer;align-self:flex-start;margin-top:6px;transition:all .16s ease" style-hover="background:#C99D74">Request a quote</div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 88px">
+      <div style="border:1px solid #D8D1C7;border-radius:8px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:56px;background:#E8E3DD">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">How quoting works</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:32px;line-height:1.2;color:#002D62;letter-spacing:-0.015em">A written scope before any invoice.</div>
+          <div style="font-size:15.5px;line-height:1.75;color:#3E4650">Send us the brief — or a rough version of it. We come back within two working days with scope, deliverables, timeline and a fixed price. Nothing starts until you approve it, and the price doesn't move unless the brief does.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:16px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8F6135;flex:none;width:24px">01</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">You send a brief, a link, or a rough idea.</div></div>
+          <div style="display:flex;gap:16px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8F6135;flex:none;width:24px">02</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">We ask the questions that change the price — length, research, languages, deadline.</div></div>
+          <div style="display:flex;gap:16px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8F6135;flex:none;width:24px">03</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">You get a written scope and a fixed quote within two working days.</div></div>
+          <div style="display:flex;gap:16px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8F6135;flex:none;width:24px">04</div><div style="font-size:15.5px;line-height:1.7;color:#3E4650">One project manager runs it from there.</div></div>
+          <div onClick="{{ goContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px 28px;font-weight:600;font-size:15px;cursor:pointer;align-self:flex-start;margin-top:8px;transition:all .16s ease" style-hover="background:#001838">Send us a brief</div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showWork }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">Selected work</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:900px">The brief, the work, the result.</div>
+      <div style="font-size:18px;line-height:1.7;color:#5A6472;max-width:700px;margin-top:20px">Case studies are published once a client agrees to be named. The structure below is what each one will follow.</div>
+      <div style="display:inline-flex;align-items:center;gap:10px;margin-top:22px;border:1px dashed #DEC5A9;border-radius:4px;padding:10px 14px;background:#F8F1E8">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#8F6135">PLACEHOLDER CONTENT — REPLACE WITH REAL CLIENT WORK</div>
+      </div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <sc-if value="{{ caseLive }}" hint-placeholder-val="{{ true }}"><div style="max-width:1320px;margin:0 auto;padding:60px 40px 0;display:flex;flex-direction:column;gap:44px">
+      <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;border-top:1px solid #D8D1C7;padding-top:44px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Localization · AR / FR / EN</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:36px;font-weight:600;color:#002D62;line-height:1.15">Client name — trilingual site relaunch</div>
+          <div style="font-size:16px;line-height:1.75;color:#3E4650">One paragraph on the brief: what the client needed, in what languages, against what deadline, and what was wrong with what they had.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid #D8D1C7;padding-top:20px">
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">SCOPE</div><div style="font-size:14.5px;color:#3E4650">pages · words</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">LANGUAGES</div><div style="font-size:14.5px;color:#3E4650">AR · FR · EN</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">DELIVERED</div><div style="font-size:14.5px;color:#3E4650">timeline</div></div>
+          </div>
+        </div>
+        <div style="aspect-ratio:4/3;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — the work, 4:3</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:0.9fr 1.1fr;gap:48px;align-items:center;border-top:1px solid #D8D1C7;padding-top:44px">
+        <div style="aspect-ratio:4/3;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — the work, 4:3</div></div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Media &amp; press · field</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:36px;font-weight:600;color:#002D62;line-height:1.15">Client name — conference coverage and press distribution</div>
+          <div style="font-size:16px;line-height:1.75;color:#3E4650">One paragraph on what happened on the ground: access arranged, interviews secured, material produced, and where the coverage landed.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid #D8D1C7;padding-top:20px">
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">SCOPE</div><div style="font-size:14.5px;color:#3E4650">days on site</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">OUTPUT</div><div style="font-size:14.5px;color:#3E4650">pieces · interviews</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">PICKUP</div><div style="font-size:14.5px;color:#3E4650">outlets</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;border-block:1px solid #D8D1C7;padding:44px 0">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Content &amp; editorial · ongoing</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:36px;font-weight:600;color:#002D62;line-height:1.15">Client name — monthly editorial partnership</div>
+          <div style="font-size:16px;line-height:1.75;color:#3E4650">One paragraph on the recurring model: what ships each month, who it reaches, and what changed after twelve months of it.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid #D8D1C7;padding-top:20px">
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">CADENCE</div><div style="font-size:14.5px;color:#3E4650">per month</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">LANGUAGES</div><div style="font-size:14.5px;color:#3E4650">AR · EN</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">RUNNING</div><div style="font-size:14.5px;color:#3E4650">since —</div></div>
+          </div>
+        </div>
+        <div style="aspect-ratio:4/3;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:16px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — the work, 4:3</div></div>
+      </div>
+    </div></sc-if>
+
+    <sc-if value="{{ caseSoon }}" hint-placeholder-val="{{ false }}"><div style="max-width:1320px;margin:0 auto;padding:60px 40px 0">
+      <div style="border:1px dashed #D8D1C7;border-radius:8px;padding:72px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;background:#E8E3DD">
+        <div style="font-family:'Source Serif 4',serif;font-size:34px;color:#002D62;line-height:1.2">Case studies are on their way.</div>
+        <div style="font-size:16px;line-height:1.7;color:#3E4650;max-width:520px">We publish work once the client has agreed to be named. In the meantime, the Journal is the fastest way to judge the writing.</div>
+        <div onClick="{{ goJournal }}" style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:13px 26px;font-weight:600;font-size:15px;cursor:pointer;margin-top:8px" style-hover="background:#F8F1E8">Read the Journal</div>
+      </div>
+    </div></sc-if>
+
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 88px">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:36px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:34px;line-height:1;color:#002D62;letter-spacing:-0.015em">What clients say</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#B57D49;margin-inline-start:auto">PLACEHOLDER</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:32px">
+        <div style="background:#FDF8F1;border-radius:8px;padding:32px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:18px">
+          <div style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1.6;color:#111111">A two-sentence quote from the client about what working with StoryBridge was actually like.</div>
+          <div style="display:flex;gap:12px;align-items:center;border-top:1px solid #E6E0D8;padding-top:16px"><div style="width:40px;height:40px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:14.5px;font-weight:600;color:#002D62">Name</div><div style="font-size:13px;color:#5A6472">Role, organisation</div></div></div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:32px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:18px">
+          <div style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1.6;color:#111111">A two-sentence quote naming the specific problem we solved, not a generic compliment.</div>
+          <div style="display:flex;gap:12px;align-items:center;border-top:1px solid #E6E0D8;padding-top:16px"><div style="width:40px;height:40px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:14.5px;font-weight:600;color:#002D62">Name</div><div style="font-size:13px;color:#5A6472">Role, organisation</div></div></div>
+        </div>
+        <div style="background:#FDF8F1;border-radius:8px;padding:32px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:18px">
+          <div style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1.6;color:#111111">A two-sentence quote from a returning client — retention is the strongest signal we have.</div>
+          <div style="display:flex;gap:12px;align-items:center;border-top:1px solid #E6E0D8;padding-top:16px"><div style="width:40px;height:40px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:14.5px;font-weight:600;color:#002D62">Name</div><div style="font-size:13px;color:#5A6472">Role, organisation</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showJournal }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:48px;border-bottom:3px solid #002D62;padding-bottom:20px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">The StoryBridge Journal</div>
+          <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1;letter-spacing:-0.022em;color:#002D62">Notes from the desk</div>
+        </div>
+        <div style="font-size:15.5px;line-height:1.7;color:#5A6472;max-width:420px;text-align:end">We publish what we know about language, media and the Maghreb — partly because it is useful, partly because it is the fastest way for you to judge whether we can write.</div>
+      </div>
+      <div style="display:flex;gap:20px;padding:18px 0;border-bottom:1px solid #D8D1C7;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase">
+        <div style="color:#002D62;border-bottom:2px solid #B57D49;padding-bottom:4px;cursor:pointer">All</div>
+        <div style="color:#5A6472;cursor:pointer" style-hover="color:#002D62">Translation</div>
+        <div style="color:#5A6472;cursor:pointer" style-hover="color:#002D62">Editorial craft</div>
+        <div style="color:#5A6472;cursor:pointer" style-hover="color:#002D62">Field &amp; media</div>
+        <div style="color:#5A6472;cursor:pointer" style-hover="color:#002D62">The Maghreb</div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:48px 40px 0;display:grid;grid-template-columns:1.25fr 0.75fr;gap:56px;align-items:start">
+      <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:20px;cursor:pointer">
+        <div style="aspect-ratio:16/9;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 12px,#EFE1D2 12px 24px);display:flex;align-items:flex-end;padding:18px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">lead image — 16:9</div></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Translation · 6 min read · March 2026</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:46px;font-weight:600;line-height:1.1;color:#002D62;letter-spacing:-0.02em;text-wrap:balance">Why your Arabic copy sounds foreign in Tunis</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1.65;color:#3E4650;max-width:640px">Most Arabic content aimed at North Africa is written for a Gulf ear and translated by people who have never had to sell anything in Tunis, Algiers or Casablanca. Here is what that costs you.</div>
+        <div style="display:flex;gap:10px;align-items:center"><div style="width:34px;height:34px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div><div style="font-size:14px;color:#5A6472">By <span style="color:#002D62;font-weight:600">Imen Bliwa</span></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:10px;padding-bottom:24px;border-bottom:1px solid #D8D1C7;cursor:pointer">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Editorial craft · 8 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">The brief is the deliverable</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Most content fails before a word is written. A newsroom fix for a marketing problem.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:10px;padding:24px 0;border-bottom:1px solid #D8D1C7;cursor:pointer">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Field &amp; media · 5 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">What a fixer actually does</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Access, contacts, permissions, timing — the invisible work behind a shoot that runs.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:10px;padding:24px 0;border-bottom:1px solid #D8D1C7;cursor:pointer">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">The Maghreb · 7 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">Three languages, one press release</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">How a Tunisian announcement should read differently in Arabic, French and English.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:10px;padding:24px 0;cursor:pointer">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Editorial craft · 4 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;line-height:1.25;color:#002D62">Every piece needs a reason to exist</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">On refusing to fill space, and what to publish instead.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:64px 40px 88px">
+      <div style="border-top:1px solid #D8D1C7;padding-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:32px">
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Translation · 9 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;line-height:1.25;color:#002D62">Machine translation is a first draft, at best</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Where it saves you money, and the four places it quietly costs you a client.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">The Maghreb · 6 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;line-height:1.25;color:#002D62">Who actually reads French in North Africa</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">Audience data against assumption, and what it means for your language split.</div>
+        </div>
+        <div onClick="{{ goPost }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px);display:flex;align-items:flex-end;padding:14px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#5A6472">image — 3:2</div></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Field &amp; media · 10 min</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:23px;font-weight:600;line-height:1.25;color:#002D62">Covering an event you didn't organise</div>
+          <div style="font-size:14.5px;line-height:1.65;color:#3E4650">A working method for press coverage when you control none of the schedule.</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:48px"><div style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:13px 28px;font-weight:600;font-size:15px;cursor:pointer" style-hover="background:#F8F1E8">Load older pieces</div></div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showPost }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:40px 40px 0">
+      <div onClick="{{ goJournal }}" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8F6135;cursor:pointer">← The Journal</div>
+    </div>
+    <div style="max-width:760px;margin:0 auto;padding:44px 40px 0;display:flex;flex-direction:column;gap:22px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8F6135">Translation · 6 min read</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:54px;line-height:1.06;letter-spacing:-0.022em;color:#002D62;text-wrap:balance">Why your Arabic copy sounds foreign in Tunis</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:22px;line-height:1.6;color:#3E4650;text-wrap:pretty">Most Arabic content aimed at North Africa is written for a Gulf ear. Your readers notice — even when they can't tell you why.</div>
+      <div style="display:flex;gap:14px;align-items:center;border-block:1px solid #D8D1C7;padding:18px 0">
+        <div style="width:44px;height:44px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:15px;color:#002D62;font-weight:600">Imen Bliwa</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A8378">Co-founder · 14 March 2026</div></div>
+        <div style="margin-inline-start:auto;display:flex;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#8F6135"><div style="border:1px solid #DEC5A9;border-radius:2px;padding:6px 10px;cursor:pointer">AR</div><div style="border:1px solid #DEC5A9;border-radius:2px;padding:6px 10px;cursor:pointer">FR</div></div>
+      </div>
+    </div>
+    <div style="max-width:1000px;margin:0 auto;padding:36px 40px 0">
+      <div style="aspect-ratio:16/9;border-radius:8px;border:1px solid #D8D1C7;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 12px,#EFE1D2 12px 24px);display:flex;align-items:flex-end;padding:18px"><div style="background:#FDF8F1;border:1px solid #D8D1C7;border-radius:2px;padding:7px 11px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A6472">lead image — 16:9</div></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8A8378;padding-top:12px">Caption line — where the photograph was taken and who took it.</div>
+    </div>
+    <div style="max-width:760px;margin:0 auto;padding:44px 40px 0;display:flex;flex-direction:column;gap:26px">
+      <div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.8;color:#111111;text-wrap:pretty"><span style="float:inline-start;font-family:'Source Serif 4',serif;font-size:76px;line-height:0.82;font-weight:600;color:#002D62;padding-inline-end:12px;padding-top:6px">T</span>here is a version of Arabic that lives on brochures, in press releases and across half the region's websites. It is grammatically correct. It is also unmistakably borrowed — the register of a Gulf agency, applied to an audience in Tunis, Algiers or Casablanca that speaks and reads differently.</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.8;color:#111111;text-wrap:pretty">Modern Standard Arabic is a real, shared language, and there are contexts where it is exactly right. The problem is not MSA itself. The problem is treating it as a neutral default, and assuming that a translator who has never worked with a North African audience will land the same way as one who has.</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1.25;color:#002D62;letter-spacing:-0.015em;padding-top:14px">What readers actually notice</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.8;color:#111111;text-wrap:pretty">Rarely the grammar. Almost always the vocabulary choices, the sentence rhythm, and the assumptions underneath: what needs explaining, what can be taken for granted, which institutions get named, which examples ring true. A Tunisian reader will finish the paragraph and come away with the impression that it was not written for them — without necessarily being able to point to the word that gave it away.</div>
+      <div style="border-inline-start:3px solid #B57D49;padding-inline-start:32px;margin:10px 0"><div style="font-family:'Source Serif 4',serif;font-style:italic;font-weight:600;font-size:27px;line-height:1.45;color:#002D62;text-wrap:pretty">Translation is not replacing one word with another. It is carrying context, culture, tone, audience and purpose across, so the message feels native in its new language.</div></div>
+      <div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.8;color:#111111;text-wrap:pretty">This is the part that no glossary and no machine solves for you. It is a judgement call made by someone who knows the audience, checked by an editor who also knows the audience — which is why we run every translation through both, in that order.</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1.25;color:#002D62;letter-spacing:-0.015em;padding-top:14px">Three questions before you commission anything in Arabic</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:18px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;flex:none;width:22px">01</div><div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.75;color:#111111">Where does the reader live, and what do they read on an ordinary day?</div></div>
+        <div style="display:flex;gap:18px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;flex:none;width:22px">02</div><div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.75;color:#111111">Is this a formal document, or is it meant to persuade someone?</div></div>
+        <div style="display:flex;gap:18px;align-items:baseline"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8F6135;flex:none;width:22px">03</div><div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.75;color:#111111">Who is going to read the Arabic back before it publishes — and are they from the audience?</div></div>
+      </div>
+      <div style="font-family:'Source Serif 4',serif;font-size:19.5px;line-height:1.8;color:#111111;text-wrap:pretty">If the answer to the third one is nobody, that is the gap. It is also the cheapest one to close.</div>
+      <div style="border-top:1px solid #D8D1C7;padding-top:24px;display:flex;gap:16px;align-items:center;margin-top:14px">
+        <div style="width:52px;height:52px;border-radius:999px;background-image:repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px);border:1px solid #D8D1C7;flex:none"></div>
+        <div style="font-size:15px;line-height:1.7;color:#3E4650"><span style="color:#002D62;font-weight:600">Imen Bliwa</span> is a journalist, translator and researcher working across Arabic, English and French, and a co-founder of StoryBridge Content &amp; Media.</div>
+      </div>
+    </div>
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 88px">
+      <div style="background:#002D62;border-radius:8px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.18em;text-transform:uppercase;color:#B57D49">The Bridge · monthly</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:32px;line-height:1.2;color:#FDF8F1;letter-spacing:-0.015em">Get the next one in your inbox.</div>
+        </div>
+        <div style="display:flex;gap:12px">
+          <input type="email" placeholder="you@company.com" style="flex:1;border:1.5px solid rgba(253,248,241,0.24);border-radius:2px;padding:14px 15px;font-size:15px;color:#FDF8F1;background:#072448">
+          <div onClick="{{ subscribe }}" style="background:#B57D49;color:#001838;border-radius:4px;padding:14px 26px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap" style-hover="background:#C99D74">Subscribe</div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showNewsletter }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0;display:grid;grid-template-columns:1.1fr 0.9fr;gap:72px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135">The Bridge · monthly newsletter</div>
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:62px;line-height:1.05;letter-spacing:-0.022em;color:#002D62">One letter a month, worth the open.</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:20px;line-height:1.7;color:#3E4650;max-width:600px;text-wrap:pretty">Language, media and the Maghreb — what we are reading, what we are arguing about on the desk, and one piece of craft you can use. Written by us, in the voice we write for clients.</div>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:520px">
+          <div style="display:flex;gap:12px">
+            <input type="email" placeholder="you@company.com" style="flex:1;border:1.5px solid #D8D1C7;border-radius:2px;padding:14px 15px;font-size:15px;color:#111111;background:#FFFFFF">
+            <div onClick="{{ subscribe }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:14px 26px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;transition:all .16s ease" style-hover="background:#001838">Subscribe</div>
+          </div>
+          <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:#2F6B4F;font-weight:500">Thank you — you'll get the next issue.</div></sc-if>
+          <div style="font-size:13.5px;color:#5A6472">Monthly. Unsubscribe in one click. We never sell the list.</div>
+        </div>
+      </div>
+      <div style="border:1px solid #E6E0D8;border-radius:8px;background:#FFFFFF;padding:34px;display:flex;flex-direction:column;gap:20px;box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #002D62;padding-bottom:12px">
+          <div style="font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:#002D62">The Bridge</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8378">ISSUE 07</div>
+        </div>
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;line-height:1.35;color:#002D62;font-weight:600">The word that cost a campaign its audience</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:16.5px;line-height:1.7;color:#3E4650">Three paragraphs on one translation decision, why it went wrong, and the twenty-second check that would have caught it.</div>
+        <div style="height:1px;background:#E6E0D8"></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8F6135">ALSO IN THIS ISSUE</div>
+          <div style="font-size:14.5px;line-height:1.7;color:#3E4650">— Reading list: four pieces on Maghrebi media</div>
+          <div style="font-size:14.5px;line-height:1.7;color:#3E4650">— From the desk: how we scope a trilingual brief</div>
+          <div style="font-size:14.5px;line-height:1.7;color:#3E4650">— One question from a reader, answered</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:80px 40px 0">
+      <div style="display:flex;align-items:baseline;gap:24px;border-bottom:2px solid #002D62;padding-bottom:14px;margin-bottom:36px">
+        <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:36px;line-height:1;color:#002D62;letter-spacing:-0.015em">Past issues</div>
+        <div style="font-size:14.5px;color:#5A6472">Read a few before you subscribe. That is rather the point.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+        <div style="padding:24px 28px 24px 0;border-bottom:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 06 · FEBRUARY</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">When the client is also the source</div></div>
+        <div style="padding:24px 28px;border-bottom:1px solid #D8D1C7;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 05 · JANUARY</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">A style guide is a business document</div></div>
+        <div style="padding:24px 0 24px 28px;border-bottom:1px solid #D8D1C7;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 04 · DECEMBER</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">The year in Maghrebi media</div></div>
+        <div style="padding:24px 28px 24px 0;border-bottom:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 03 · NOVEMBER</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">Interviews people actually finish</div></div>
+        <div style="padding:24px 28px;border-bottom:1px solid #D8D1C7;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 02 · OCTOBER</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">Against the content calendar</div></div>
+        <div style="padding:24px 0 24px 28px;border-bottom:1px solid #D8D1C7;border-inline-start:1px solid #D8D1C7;display:flex;flex-direction:column;gap:8px;cursor:pointer"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8F6135">ISSUE 01 · SEPTEMBER</div><div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#002D62;line-height:1.3">Why we started StoryBridge</div></div>
+      </div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 88px">
+      <div style="background:#E8E3DD;border:1px solid #D8D1C7;border-radius:8px;padding:48px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:56px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Newsletters as a service</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:34px;line-height:1.2;color:#002D62;letter-spacing:-0.015em">We can run yours too.</div>
+          <div style="font-size:15.5px;line-height:1.75;color:#3E4650">The Bridge is the demonstration. Newsletter writing and management is part of our Content &amp; Editorial line — for companies who want a letter their subscribers actually read.</div>
+          <div onClick="{{ goContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:14px 26px;font-weight:600;font-size:15px;cursor:pointer;align-self:flex-start;margin-top:8px;transition:all .16s ease" style-hover="background:#001838">Talk to us about it</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#002D62">Editorial plan</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">A calendar with a reason behind each issue, not a slot to fill.</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#002D62">Writing and editing</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">Drafted, edited and proofed on the same four-stage workflow.</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#002D62">Trilingual versions</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">One issue, three languages, one register per audience.</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#002D62">Send and report</div><div style="font-size:14.5px;line-height:1.7;color:#3E4650">Scheduled, sent, and read back against what performed.</div></div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <sc-if value="{{ showContact }}" hint-placeholder-val="{{ false }}"><div>
+    <div style="max-width:1320px;margin:0 auto;padding:76px 40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8F6135;margin-bottom:20px">Contact</div>
+      <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:64px;line-height:1.05;letter-spacing:-0.022em;color:#002D62;max-width:900px">Tell us what the story is.</div>
+      <div style="font-size:18px;line-height:1.7;color:#5A6472;max-width:660px;margin-top:20px">A rough idea is enough to start. We reply within two working days with questions, scope and a fixed quote — and one project manager who stays with you from there.</div>
+      <div style="height:5px;background:#B57D49;width:180px;margin:34px 0 0"></div>
+    </div>
+
+    <div style="max-width:1320px;margin:0 auto;padding:56px 40px 88px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:72px;align-items:start">
+      <div style="background:#FDF8F1;border-radius:8px;padding:40px;box-shadow:0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05);display:flex;flex-direction:column;gap:24px">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:24px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">Full name</div><input type="text" placeholder="Your name" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"></div>
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">Work email</div><input type="email" placeholder="you@company.com" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"></div>
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">Organisation</div><input type="text" placeholder="Company or outlet" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"></div>
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">What do you need?</div><select style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"><option>Content &amp; editorial</option><option>Translation &amp; localization</option><option>Editing &amp; writing</option><option>Media &amp; press</option><option>Launch package</option><option>Not sure yet</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">Languages</div><input type="text" placeholder="e.g. Arabic and French" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"></div>
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">Deadline</div><input type="text" placeholder="dd / mm / yyyy" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:600;color:#002D62">The brief</div><textarea rows="6" placeholder="What is it, who is it for, and what would make it a success?" style="border:1.5px solid #D8D1C7;border-radius:2px;padding:13px 14px;font-size:15px;color:#111111;background:#FFFFFF;line-height:1.6;resize:vertical"></textarea></div>
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+            <div onClick="{{ sendContact }}" style="background:#002D62;color:#FDF8F1;border-radius:4px;padding:15px 30px;font-weight:600;font-size:15px;cursor:pointer;transition:all .16s ease" style-hover="background:#001838;box-shadow:0 2px 8px rgba(0,24,56,0.18)">Send the brief</div>
+            <div style="font-size:13.5px;line-height:1.6;color:#5A6472;max-width:320px">We reply within two working days. Everything you send stays between us.</div>
+          </div>
+        </div></sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:14px;padding:40px 0">
+          <div style="font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:#002D62;line-height:1.2">Thank you — it's with us.</div>
+          <div style="font-size:16px;line-height:1.75;color:#3E4650;max-width:520px">One of us will read it today and come back within two working days with questions and a quote. If it's urgent, say so in a reply and we'll move.</div>
+        </div></sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:12px;border-bottom:1px solid #D8D1C7;padding-bottom:24px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Direct</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;color:#002D62">hello@storybridge.tn</div>
+          <div style="font-size:15px;line-height:1.7;color:#3E4650">Tunis, Tunisia · working with clients locally and internationally.</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#B57D49;border:1px dashed #DEC5A9;border-radius:2px;padding:6px 9px;align-self:flex-start">placeholder — add real address, phone, LinkedIn</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-bottom:1px solid #D8D1C7;padding-bottom:24px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">One point of contact</div>
+          <div style="font-size:15.5px;line-height:1.75;color:#3E4650">Whoever answers this form stays on your assignment. A single project manager owns the brief from the first call to the final file — no relay, no repeating yourself.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-bottom:1px solid #D8D1C7;padding-bottom:24px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Working languages</div>
+          <div style="font-size:15.5px;line-height:1.75;color:#3E4650">Write to us in Arabic, French or English. We answer in the language you used.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8F6135">Not ready for a brief?</div>
+          <div style="font-size:15.5px;line-height:1.75;color:#3E4650">Read the Journal, or take the monthly letter. Both are a fair sample of how we write.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
+            <div onClick="{{ goJournal }}" style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:11px 20px;font-weight:600;font-size:14.5px;cursor:pointer" style-hover="background:#F8F1E8">The Journal</div>
+            <div onClick="{{ goNewsletter }}" style="color:#8F6135;border:1.5px solid #B57D49;border-radius:4px;padding:11px 20px;font-weight:600;font-size:14.5px;cursor:pointer" style-hover="background:#F8F1E8">The Bridge</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></sc-if>
+
+  <div style="background:#001838;color:#FDF8F1">
+    <div style="max-width:1320px;margin:0 auto;padding:72px 40px 36px;display:grid;grid-template-columns:1.3fr 0.7fr 0.7fr 1fr;gap:48px">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:center;gap:11px">
+          <img src="assets/mark-fdf8f1.png" alt="StoryBridge" style="height:40px;width:auto;flex:none">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:25px;line-height:1;color:#FDF8F1;letter-spacing:-0.015em">StoryBridge</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:9.5px;line-height:1;color:#B57D49;letter-spacing:0.15em">CONTENT &amp; MEDIA</div>
+          </div>
+        </div>
+        <div style="font-size:14.5px;line-height:1.7;color:rgba(253,248,241,0.72);max-width:340px">Content. Translation. Editorial. Media. One bridge between ideas and audiences.</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.9;color:rgba(253,248,241,0.5)">العربية · FRANÇAIS · ENGLISH</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">Company</div>
+        <div onClick="{{ goWho }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Who we are</div>
+        <div onClick="{{ goFounders }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Founders</div>
+        <div onClick="{{ goHow }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">How we work</div>
+        <div onClick="{{ goWork }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Selected work</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">Work with us</div>
+        <div onClick="{{ goServices }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Services</div>
+        <div onClick="{{ goPricing }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Packages</div>
+        <div onClick="{{ goNewsletter }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Newsletter</div>
+        <div onClick="{{ goJournal }}" style="font-size:14.5px;color:rgba(253,248,241,0.8);cursor:pointer" style-hover="color:#FDF8F1">Journal</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#B57D49">Contact</div>
+        <div style="font-size:14.5px;line-height:1.7;color:rgba(253,248,241,0.8)">hello@storybridge.tn</div>
+        <div style="font-size:14.5px;line-height:1.7;color:rgba(253,248,241,0.8)">Tunis, Tunisia</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#B57D49;border:1px dashed rgba(181,125,73,0.5);border-radius:2px;padding:6px 9px;align-self:flex-start">placeholder — real details to come</div>
+      </div>
+    </div>
+    <div style="max-width:1320px;margin:0 auto;padding:0 40px"><div style="border-top:1px solid rgba(253,248,241,0.14);padding:22px 0 40px;display:flex;justify-content:space-between;gap:24px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(253,248,241,0.5)">
+      <div>© 2026 StoryBridge Content &amp; Media</div>
+      <div>Strategic communications · Content · Translation · Media</div>
+    </div></div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;masthead&quot;,&quot;portrait&quot;],&quot;default&quot;:&quot;masthead&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Home&quot;},&quot;showPricingBands&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Packages&quot;},&quot;caseStudyMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;placeholders&quot;,&quot;coming-soon&quot;],&quot;default&quot;:&quot;placeholders&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Work&quot;}}">
+class Component extends DCLogic {
+  state = { page: 'home', lang: 'en', subscribed: false, sent: false };
+
+  go(page) {
+    return () => {
+      this.setState({ page, lang: 'en' });
+      if (typeof window !== 'undefined') window.scrollTo({ top: 0 });
+    };
+  }
+
+  renderVals() {
+    const p = this.state.page;
+    const ar = this.state.lang === 'ar';
+    const hero = this.props.heroVariant ?? 'masthead';
+    return {
+      dir: ar ? 'rtl' : 'ltr',
+      isEn: !ar, isAr: ar,
+      isArHome: ar,
+      isEnHome: !ar && p === 'home',
+      isHome: p === 'home', isWho: p === 'who', isFounders: p === 'founders',
+      isHow: p === 'how', isServices: p === 'services', isPricing: p === 'pricing',
+      isWork: p === 'work', isJournal: p === 'journal', isPost: p === 'post',
+      isNewsletter: p === 'newsletter', isContact: p === 'contact',
+      isJournalish: p === 'journal' || p === 'post' || p === 'newsletter',
+      showWho: !ar && p === 'who', showFounders: !ar && p === 'founders',
+      showHow: !ar && p === 'how', showServices: !ar && p === 'services',
+      showPricing: !ar && p === 'pricing', showWork: !ar && p === 'work',
+      showJournal: !ar && p === 'journal', showPost: !ar && p === 'post',
+      showNewsletter: !ar && p === 'newsletter', showContact: !ar && p === 'contact',
+      heroMasthead: hero === 'masthead', heroPortrait: hero === 'portrait',
+      showBands: this.props.showPricingBands ?? false,
+      hideBands: !(this.props.showPricingBands ?? false),
+      caseLive: (this.props.caseStudyMode ?? 'placeholders') === 'placeholders',
+      caseSoon: (this.props.caseStudyMode ?? 'placeholders') === 'coming-soon',
+      goHome: this.go('home'), goWho: this.go('who'), goFounders: this.go('founders'),
+      goHow: this.go('how'), goServices: this.go('services'), goPricing: this.go('pricing'),
+      goWork: this.go('work'), goJournal: this.go('journal'), goPost: this.go('post'),
+      goNewsletter: this.go('newsletter'), goContact: this.go('contact'),
+      setEn: () => this.setState({ lang: 'en' }),
+      setFr: () => this.setState({ lang: 'en' }),
+      setAr: () => { this.setState({ lang: 'ar', page: 'home' }); if (typeof window !== 'undefined') window.scrollTo({ top: 0 }); },
+      subscribe: () => this.setState({ subscribed: true }),
+      subscribed: this.state.subscribed,
+      sendContact: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ sent: true }); },
+      sent: this.state.sent, notSent: !this.state.sent
+    };
+  }
+}
+</script>
+</body>
+</html>

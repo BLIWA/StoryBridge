@@ -1,0 +1,138 @@
+/*
+ * StoryBridge design tokens — ported from "StoryBridge Graphic Charter.dc.html".
+ * Single source of truth for both apps/website and apps/cms.
+ * Do not hand-edit colors/type here without checking the Charter board first.
+ */
+
+:root {
+  /* Surfaces */
+  --sb-cream: #fdf8f1;   /* Content Cream — default background, 60% of any layout */
+  --sb-narrative-light: #f4f1ec; /* filled sections, tables */
+  --sb-card: #ffffff;
+
+  /* Ink */
+  --sb-ink: #111111;        /* long-form article body — 17.9:1 on cream, AAA */
+  --sb-ink-soft: #3e4650;   /* secondary body text */
+  --sb-ink-mute: #5a6472;   /* captions, meta */
+
+  /* Navy — headlines, links, primary UI */
+  --sb-navy: #002d62;       /* 12.8:1 on cream, AAA — headlines, body, links */
+  --sb-navy-hover: #001838;
+  --sb-navy-active: #001233;
+  --sb-navy-deep: #002144;  /* dark-mode canvas / card backs */
+
+  /* Bronze — the one accent, used sparingly */
+  --sb-bronze: #b57d49;         /* 5.1:1 on deep navy, AA — dark-mode accents, tagline */
+  --sb-bronze-deep: #8f6135;    /* 5.1:1 on cream, AA — bronze text at body size */
+  --sb-bronze-tint: #efe1d2;    /* pills, hover fills */
+  --sb-bronze-300: #dec5a9;
+
+  /* Hairlines */
+  --sb-rule: #d8d1c7;
+  --sb-rule-soft: #ede7de;
+  --sb-hairline: #e6e0d8;
+
+  /* Semantic */
+  --sb-green: #2f6b4f;   /* success / AAA marker */
+  --sb-red: #a5342e;     /* error / destructive */
+
+  /* Shape & motion */
+  --sb-radius: 4px;
+  --sb-radius-lg: 8px;
+  --sb-shadow: 0 2px 8px rgba(0, 24, 56, 0.18); /* navy-tinted, never neutral black */
+  --sb-focus-ring: 0 0 0 2px var(--sb-cream), 0 0 0 4px var(--sb-bronze);
+  --sb-ease: all 0.16s ease;
+}
+
+/* Dark mode — the Charter's documented "on Deep Navy" system, not an inverted guess */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sb-cream: #002144;
+    --sb-narrative-light: #001838;
+    --sb-card: #031b39;
+
+    --sb-ink: #fdf8f1;        /* cream on deep navy — 16.7:1, AAA */
+    --sb-ink-soft: #d8d1c7;
+    --sb-ink-mute: #a8b3c2;
+
+    --sb-navy: #fdf8f1;
+    --sb-navy-hover: #ffffff;
+    --sb-navy-active: #efe1d2;
+    --sb-navy-deep: #fdf8f1;
+
+    --sb-bronze: #dec5a9;
+    --sb-bronze-deep: #dec5a9;
+    --sb-bronze-tint: rgba(222, 197, 169, 0.12);
+    --sb-bronze-300: #b57d49;
+
+    --sb-rule: rgba(253, 248, 241, 0.16);
+    --sb-rule-soft: rgba(253, 248, 241, 0.08);
+    --sb-hairline: rgba(253, 248, 241, 0.14);
+
+    --sb-green: #7cc9a0;
+    --sb-red: #e39a93;
+
+    --sb-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    --sb-focus-ring: 0 0 0 2px var(--sb-cream), 0 0 0 4px var(--sb-bronze);
+  }
+}
+:root[data-theme="dark"] {
+  --sb-cream: #002144;
+  --sb-narrative-light: #001838;
+  --sb-card: #031b39;
+  --sb-ink: #fdf8f1;
+  --sb-ink-soft: #d8d1c7;
+  --sb-ink-mute: #a8b3c2;
+  --sb-navy: #fdf8f1;
+  --sb-navy-hover: #ffffff;
+  --sb-navy-active: #efe1d2;
+  --sb-navy-deep: #fdf8f1;
+  --sb-bronze: #dec5a9;
+  --sb-bronze-deep: #dec5a9;
+  --sb-bronze-tint: rgba(222, 197, 169, 0.12);
+  --sb-bronze-300: #b57d49;
+  --sb-rule: rgba(253, 248, 241, 0.16);
+  --sb-rule-soft: rgba(253, 248, 241, 0.08);
+  --sb-hairline: rgba(253, 248, 241, 0.14);
+  --sb-green: #7cc9a0;
+  --sb-red: #e39a93;
+  --sb-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* Tailwind v4 theme mapping — generates bg-cream, text-navy, font-serif, etc. */
+@theme inline {
+  --color-cream: var(--sb-cream);
+  --color-narrative-light: var(--sb-narrative-light);
+  --color-card: var(--sb-card);
+
+  --color-ink: var(--sb-ink);
+  --color-ink-soft: var(--sb-ink-soft);
+  --color-ink-mute: var(--sb-ink-mute);
+
+  --color-navy: var(--sb-navy);
+  --color-navy-hover: var(--sb-navy-hover);
+  --color-navy-active: var(--sb-navy-active);
+  --color-navy-deep: var(--sb-navy-deep);
+
+  --color-bronze: var(--sb-bronze);
+  --color-bronze-deep: var(--sb-bronze-deep);
+  --color-bronze-tint: var(--sb-bronze-tint);
+  --color-bronze-300: var(--sb-bronze-300);
+
+  --color-rule: var(--sb-rule);
+  --color-rule-soft: var(--sb-rule-soft);
+  --color-hairline: var(--sb-hairline);
+
+  --color-success: var(--sb-green);
+  --color-danger: var(--sb-red);
+
+  --radius-sb: var(--sb-radius);
+  --radius-sb-lg: var(--sb-radius-lg);
+
+  /* Fonts — declared as CSS vars here, bound to next/font in each app's layout */
+  --font-serif: var(--font-source-serif), "Source Serif 4", Georgia, serif;
+  --font-sans: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  --font-sans-ar: var(--font-plex-sans-arabic), "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-naskh: var(--font-naskh-arabic), "Noto Naskh Arabic", serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+}

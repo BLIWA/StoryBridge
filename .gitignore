@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# turbo
+.turbo/
+
+# env
+.env
+.env*.local
+!.env.example
+
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*.tsbuildinfo
+
+# misc
+.DS_Store
+*.log
+.vscode/
+.idea/
