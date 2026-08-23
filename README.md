@@ -4,7 +4,11 @@ Website + CMS for StoryBridge Content & Media. Full build plan, architecture rat
 
 **→ [Roadmap & Open Questions](https://claude.ai/code/artifact/a1b752c4-215f-4508-a2a8-7a09287cba5a)**
 
-This repo is at **Phase 01 (infrastructure scaffold)**: the monorepo, both Next.js apps, shared design tokens, and Firebase project files exist and build cleanly. Nothing is deployed and no Firebase resources have been created yet — see "What's not done yet" below.
+**Live now:**
+- Website — https://sotrybridge.web.app (redirects `/` → `/en`; `/fr`, `/ar` also live, RTL for Arabic)
+- CMS — https://cms-sotrybridge.web.app (sign-in screen; `noindex`)
+
+This repo is past Phase 01 (infrastructure scaffold) and has a first deploy live via classic Firebase Hosting static export — see "Hosting: static export today, App Hosting later" below for why. See "What's not done yet" for everything still ahead.
 
 ## Locked decisions
 
@@ -39,16 +43,18 @@ pnpm dev:cms         # → http://localhost:3001
 
 `apps/cms` needs `.env.local` (copy `.env.example`) with real Firebase web-app config before sign-in actually works — see [apps/cms/README.md](apps/cms/README.md).
 
-## Why Firebase App Hosting, not classic Hosting
+## Hosting: static export today, App Hosting later
 
-The site needs real SSR (Phase 00 decision), so this repo targets **Firebase App Hosting**, not `firebase.json`'s classic `hosting` key (that's for static files / rewrites to Cloud Functions, the older pattern). Each app carries its own `apphosting.yaml`. Two backends will exist in the one `sotrybridge` project — one per app, per your "separate hosting, subdomain" instruction:
+Both apps currently build with `output: "export"` and deploy as static files to classic Firebase Hosting — two sites in the one `sotrybridge` project, mapped via `.firebaserc` targets (`website` → `sotrybridge`, `cms` → `cms-sotrybridge`):
 
 ```bash
-firebase apphosting:backends:create --project=sotrybridge   # run once per app, rootDir apps/website
-firebase apphosting:backends:create --project=sotrybridge   # again, rootDir apps/cms
+pnpm build                              # writes apps/{website,cms}/out
+firebase deploy --only hosting --project sotrybridge
 ```
 
-Custom domains (root domain → website backend, `cms.[domain]` → cms backend) get attached after each backend exists — that's Phase 09, and needs the real domain and DNS access (open question).
+This was the pragmatic call for the first deploy: the requested URLs are `*.web.app`, which is what classic Hosting gives you (App Hosting backends get a different default domain shape), and static Hosting needs no Blaze plan — nothing in either app requires a server yet, so there was no reason to put billing on the table just to get something live.
+
+**`apphosting.yaml` is still in the repo for both apps** — real SSR via Firebase App Hosting remains the Phase 09 plan, revisited once something actually needs a server (ISR'd Journal posts, for instance) or once Blaze billing is a deliberate decision rather than a side effect of a first deploy. Custom domains (root domain → website, `cms.[domain]` → cms) get attached at that point too, once there's a real domain and DNS access (open question).
 
 ## What's not done yet
 
