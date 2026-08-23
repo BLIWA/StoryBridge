@@ -9,7 +9,10 @@ import {
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing, isRtl } from "@/i18n/routing";
+import { routing, isRtl, type AppLocale } from "@/i18n/routing";
+import { SiteHeader } from "@/components/chrome/site-header";
+import { SiteFooter } from "@/components/chrome/site-footer";
+import { DesignFx } from "@/components/fx/design-fx";
 import "../globals.css";
 
 const sourceSerif = Source_Serif_4({
@@ -47,7 +50,7 @@ const notoNaskh = Noto_Naskh_Arabic({
 export const metadata: Metadata = {
   title: "StoryBridge Content & Media",
   description:
-    "Strategic communications and multilingual content — Arabic, English and French. Journalism, editorial and translation from Tunis.",
+    "Journalistic standards, applied to your content. A boutique editorial house in Tunis — content, translation, editorial and media across Arabic, English and French.",
 };
 
 export function generateStaticParams() {
@@ -65,21 +68,30 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
-  // Required for static export: pins the locale for this render instead of
-  // resolving it from headers()/cookies() at request time, which would opt
-  // the whole route into dynamic rendering and break `next build`'s
-  // prerendering. See https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing#static-rendering
   setRequestLocale(locale);
+  const rtl = isRtl(locale);
 
   return (
     <html
       lang={locale}
-      dir={isRtl(locale) ? "rtl" : "ltr"}
+      dir={rtl ? "rtl" : "ltr"}
       className={`${sourceSerif.variable} ${plexSans.variable} ${plexSansArabic.variable} ${plexMono.variable} ${notoNaskh.variable}`}
     >
-      <body dir={isRtl(locale) ? "rtl" : "ltr"}>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body
+        dir={rtl ? "rtl" : "ltr"}
+        style={{
+          background: "#FDF8F1",
+          fontFamily: rtl ? "'IBM Plex Sans Arabic',sans-serif" : "'IBM Plex Sans',sans-serif",
+          color: "#111111",
+          minHeight: "100vh",
+        }}
+      >
+        <NextIntlClientProvider>
+          <DesignFx />
+          <SiteHeader locale={locale as AppLocale} />
+          {children}
+          <SiteFooter />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
