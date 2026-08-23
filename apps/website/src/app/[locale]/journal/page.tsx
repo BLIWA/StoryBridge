@@ -1,0 +1,238 @@
+import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { PageHeroBackdrop } from "@/components/fx/backdrops";
+import { JOURNAL_INDEX, JOURNAL_SECTIONS } from "@/content/journal";
+import { routing } from "@/i18n/routing";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+const kicker = {
+  fontFamily: "'IBM Plex Mono',monospace",
+  fontSize: "11px",
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "#8F6135",
+} as const;
+
+export default async function JournalPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const [lead, ...rest] = JOURNAL_INDEX;
+
+  return (
+    <>
+      {/* Masthead */}
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          background: "#FDF8F1",
+          borderBottom: "1px solid #E6E0D8",
+        }}
+      >
+        <PageHeroBackdrop id="wpgJournal" variant="quotes" glyph="“" />
+        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "66px 40px 40px" }}>
+          <div
+            data-a
+            style={{
+              height: "6px",
+              width: "180px",
+              background: "#B57D49",
+              transformOrigin: "left",
+              animation: "sb-wipe .8s cubic-bezier(.2,.7,.2,1) .1s both",
+              marginBottom: "26px",
+            }}
+          />
+          <div
+            data-a
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "20px",
+              flexWrap: "wrap",
+              animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .24s both",
+            }}
+          >
+            <h1
+              style={{
+                fontFamily: "'Source Serif 4',serif",
+                fontWeight: 600,
+                fontSize: "64px",
+                lineHeight: "1.05",
+                letterSpacing: "-0.022em",
+                color: "#002D62",
+                margin: 0,
+              }}
+            >
+              The StoryBridge Journal
+            </h1>
+            <div
+              style={{
+                fontFamily: "'Source Serif 4',serif",
+                fontStyle: "italic",
+                fontSize: "22px",
+                color: "#8F6135",
+              }}
+            >
+              Notes from the desk
+            </div>
+          </div>
+          <div
+            data-a
+            style={{
+              fontSize: "18px",
+              lineHeight: "1.7",
+              color: "#5A6472",
+              maxWidth: "760px",
+              marginTop: "20px",
+              animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .36s both",
+            }}
+          >
+            We publish what we know about language, media and the Maghreb — partly because it is useful,
+            partly because it is the fastest way for you to judge whether we can write.
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "22px",
+              flexWrap: "wrap",
+              marginTop: "32px",
+              borderTop: "1px solid #D8D1C7",
+              paddingTop: "18px",
+            }}
+          >
+            {JOURNAL_SECTIONS.map((s, i) => (
+              <div
+                key={s}
+                data-hover={i === 0 ? undefined : "color:#002D62"}
+                style={{
+                  fontSize: "14.5px",
+                  fontWeight: i === 0 ? 600 : 500,
+                  color: i === 0 ? "#002D62" : "#5A6472",
+                  borderBottom: i === 0 ? "2px solid #B57D49" : "2px solid transparent",
+                  paddingBottom: "6px",
+                }}
+              >
+                {s}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "56px 40px 96px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "56px", alignItems: "start" }}>
+          {/* Lead story */}
+          <Link href={`/journal/${lead.slug}`} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div
+              style={{
+                aspectRatio: "16/9",
+                borderRadius: "8px",
+                border: "1px solid #D8D1C7",
+                backgroundImage: "repeating-linear-gradient(135deg,#E4DED6 0 11px,#EFE1D2 11px 22px)",
+                display: "flex",
+                alignItems: "flex-end",
+                padding: "16px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#FDF8F1",
+                  border: "1px solid #D8D1C7",
+                  borderRadius: "2px",
+                  padding: "6px 10px",
+                  fontFamily: "'IBM Plex Mono',monospace",
+                  fontSize: "10.5px",
+                  color: "#5A6472",
+                }}
+              >
+                lead image — 16:9
+              </div>
+            </div>
+            <div style={kicker}>
+              {lead.section} · {lead.readTime} · {lead.date}
+            </div>
+            <div
+              style={{
+                fontFamily: "'Source Serif 4',serif",
+                fontSize: "40px",
+                fontWeight: 600,
+                lineHeight: "1.15",
+                color: "#002D62",
+                letterSpacing: "-0.015em",
+                textWrap: "balance",
+              }}
+            >
+              {lead.title}
+            </div>
+            <div style={{ fontSize: "17px", lineHeight: "1.7", color: "#3E4650", textWrap: "pretty" }}>
+              {lead.standfirst}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                alignItems: "center",
+                borderTop: "1px solid #D8D1C7",
+                paddingTop: "16px",
+              }}
+            >
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "999px",
+                  backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 6px,#EFE1D2 6px 12px)",
+                  border: "1px solid #D8D1C7",
+                  flex: "none",
+                }}
+              />
+              <div style={{ fontSize: "14.5px", color: "#5A6472" }}>
+                By <span style={{ color: "#002D62", fontWeight: 600 }}>{lead.author}</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Secondary list */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {rest.map((p, i) => (
+              <Link
+                key={p.slug}
+                href={`/journal/${p.slug}`}
+                data-hover="background:#FDF8F1"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "9px",
+                  padding: "22px 0",
+                  borderTop: i === 0 ? undefined : "1px solid #D8D1C7",
+                  transition: "background .16s ease",
+                }}
+              >
+                <div style={kicker}>
+                  {p.section} · {p.readTime}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Source Serif 4',serif",
+                    fontSize: "23px",
+                    fontWeight: 600,
+                    lineHeight: "1.25",
+                    color: "#002D62",
+                  }}
+                >
+                  {p.title}
+                </div>
+                <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>{p.standfirst}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

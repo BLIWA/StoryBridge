@@ -1,0 +1,257 @@
+import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { PageHero } from "@/components/chrome/page-hero";
+import { ArcWeaveDark } from "@/components/fx/backdrops";
+import { PACKAGES, LAUNCH_PACKAGE, QUOTE_STEPS, SHOW_PRICE_BANDS } from "@/content/services";
+import { routing } from "@/i18n/routing";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+const deskLabel = {
+  fontFamily: "'IBM Plex Mono',monospace",
+  fontSize: "11px",
+  letterSpacing: "0.16em",
+  textTransform: "uppercase",
+  color: "#8F6135",
+} as const;
+
+const cardShadow = "0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)";
+
+export default async function PackagesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  return (
+    <>
+      <PageHero
+        backdropId="wpg4"
+        variant="arcs"
+        glyph="“"
+        eyebrow="Packages"
+        title="Named packages, scoped before we start."
+        titleMaxWidth="960px"
+        standfirst="Every package below is quoted against your brief — length, research depth, languages and turnaround change the number, so we give you a real one rather than a headline rate you'd have to argue with later."
+      />
+
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px 40px 0" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "28px" }}>
+          {PACKAGES.map((p) => (
+            <div
+              key={p.name}
+              data-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)"
+              style={{
+                background: "#FDF8F1",
+                borderRadius: "8px",
+                padding: "32px",
+                boxShadow: cardShadow,
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                transition: "box-shadow .18s ease",
+              }}
+            >
+              <div style={deskLabel}>{p.desk}</div>
+              <div
+                style={{
+                  fontFamily: "'Source Serif 4',serif",
+                  fontSize: "28px",
+                  fontWeight: 600,
+                  color: "#002D62",
+                  lineHeight: "1.15",
+                }}
+              >
+                {p.name}
+              </div>
+              <div style={{ fontSize: "15px", lineHeight: "1.7", color: "#3E4650" }}>{p.body}</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginTop: "4px" }}>
+                {p.items.map((item) => (
+                  <div
+                    key={item}
+                    style={{
+                      fontSize: "14.5px",
+                      lineHeight: "1.6",
+                      color: "#3E4650",
+                      borderInlineStart: "2px solid #DEC5A9",
+                      paddingInlineStart: "14px",
+                    }}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+              {SHOW_PRICE_BANDS && "band" in p && p.band && (
+                <div
+                  style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: "12px",
+                    color: "#8F6135",
+                    background: "#F8F1E8",
+                    borderRadius: "2px",
+                    padding: "10px 12px",
+                  }}
+                >
+                  {p.band}
+                </div>
+              )}
+              <Link
+                href="/contact"
+                data-hover="color:#002D62"
+                style={{
+                  fontSize: "14.5px",
+                  fontWeight: 600,
+                  color: "#8F6135",
+                  marginTop: "auto",
+                  paddingTop: "6px",
+                }}
+              >
+                Request a quote →
+              </Link>
+            </div>
+          ))}
+
+          {/* Launch Package — the bundled, navy, full-width-feeling card */}
+          <div
+            style={{
+              background: "#002D62",
+              borderRadius: "8px",
+              padding: "32px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "14px",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              data-parallax="-20"
+              style={{ position: "absolute", inset: "-30% 0", opacity: 0.3, pointerEvents: "none", willChange: "transform" }}
+            >
+              <ArcWeaveDark id="weaveLaunch" />
+            </div>
+            <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "14px", height: "100%" }}>
+              <div style={{ ...deskLabel, color: "#B57D49" }}>{LAUNCH_PACKAGE.eyebrow}</div>
+              <div
+                style={{
+                  fontFamily: "'Source Serif 4',serif",
+                  fontSize: "28px",
+                  fontWeight: 600,
+                  color: "#FDF8F1",
+                  lineHeight: "1.15",
+                }}
+              >
+                {LAUNCH_PACKAGE.name}
+              </div>
+              <div style={{ fontSize: "15px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
+                {LAUNCH_PACKAGE.body}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginTop: "4px" }}>
+                {LAUNCH_PACKAGE.items.map((item) => (
+                  <div
+                    key={item}
+                    style={{
+                      fontSize: "14.5px",
+                      lineHeight: "1.6",
+                      color: "rgba(253,248,241,0.85)",
+                      borderInlineStart: "2px solid #B57D49",
+                      paddingInlineStart: "14px",
+                    }}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/contact"
+                data-hover="background:#C99D74"
+                style={{
+                  background: "#B57D49",
+                  color: "#001838",
+                  borderRadius: "4px",
+                  padding: "13px 24px",
+                  fontWeight: 600,
+                  fontSize: "15px",
+                  alignSelf: "flex-start",
+                  marginTop: "auto",
+                  transition: "all .16s ease",
+                }}
+              >
+                Request a quote
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* How quoting works */}
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px 40px 96px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "0.9fr 1.1fr",
+            gap: "56px",
+            alignItems: "start",
+            borderTop: "2px solid #002D62",
+            paddingTop: "40px",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ ...deskLabel, fontSize: "11.5px", letterSpacing: "0.18em" }}>How quoting works</div>
+            <div
+              style={{
+                fontFamily: "'Source Serif 4',serif",
+                fontSize: "38px",
+                fontWeight: 600,
+                lineHeight: "1.15",
+                color: "#002D62",
+                letterSpacing: "-0.015em",
+              }}
+            >
+              A written scope before any invoice.
+            </div>
+            <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
+              Send us the brief — or a rough version of it. We come back within two working days with scope,
+              deliverables, timeline and a fixed price. Nothing starts until you approve it, and the price
+              doesn&apos;t move unless the brief does.
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+            {QUOTE_STEPS.map((s) => (
+              <div key={s.n} style={{ display: "flex", gap: "20px", alignItems: "baseline" }}>
+                <div
+                  style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: "13px",
+                    color: "#B57D49",
+                    flex: "none",
+                  }}
+                >
+                  {s.n}
+                </div>
+                <div style={{ fontSize: "16px", lineHeight: "1.7", color: "#3E4650" }}>{s.body}</div>
+              </div>
+            ))}
+            <Link
+              href="/contact"
+              data-hover="background:#001838"
+              style={{
+                background: "#002D62",
+                color: "#FDF8F1",
+                borderRadius: "4px",
+                padding: "15px 30px",
+                fontWeight: 600,
+                fontSize: "15px",
+                alignSelf: "flex-start",
+                marginTop: "10px",
+                transition: "all .16s ease",
+              }}
+            >
+              Send us a brief
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -84,7 +84,24 @@ export const JOURNAL_POSTS = [
   },
 ] as const;
 
-export const PROCESS_STEPS = [
+/**
+ * The seven steps from How.md. The board gives each step a different right-hand
+ * column — a pull quote, a list, a photo, or the three-language card — so the
+ * optional fields below are what the page switches on.
+ */
+export type ProcessStep = {
+  n: string;
+  title: string;
+  body: string;
+  body2?: string;
+  aside?: string;
+  list?: readonly string[];
+  listLast?: string;
+  photo?: string;
+  languageCard?: boolean;
+};
+
+export const PROCESS_STEPS: readonly ProcessStep[] = [
   {
     n: "01",
     title: "We listen first",
