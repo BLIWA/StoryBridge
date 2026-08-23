@@ -33,3 +33,12 @@ export function getFirebase() {
 
 // Safe to construct without a live config — it holds no network state.
 export const googleProvider = new GoogleAuthProvider();
+
+/**
+ * True once the web app's config is present. The CMS renders its full UI
+ * either way, but auth calls can't work without it, so the sign-in screen
+ * says so plainly rather than failing with a Firebase error code.
+ */
+export function isFirebaseConfigured(): boolean {
+  return Boolean(firebaseConfig.apiKey && firebaseConfig.appId);
+}

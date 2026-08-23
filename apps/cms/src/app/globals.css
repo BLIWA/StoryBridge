@@ -1,31 +1,89 @@
 @import "tailwindcss";
 @import "../../../../packages/ui/src/tokens.css";
 
+/* Ported from "StoryBridge CMS.dc.html" — the board is the spec. */
+
 html,
 body {
-  background: var(--sb-narrative-light);
-  color: var(--sb-ink);
-}
-
-body {
-  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  background: #ede7de;
+  color: #111111;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 a {
-  color: var(--sb-bronze-deep);
+  color: #002d62;
+  text-decoration: none;
 }
 a:hover {
-  color: var(--sb-bronze);
+  color: #8f6135;
 }
 
-::selection {
-  background: var(--sb-bronze-tint);
+input,
+textarea,
+select,
+button {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 14.5px;
+  color: #111;
 }
-
-:focus-visible {
+input::placeholder,
+textarea::placeholder {
+  color: #a8a29a;
+}
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
-  box-shadow: var(--sb-focus-ring);
+  border-color: #002d62;
+  box-shadow: 0 0 0 3px rgba(181, 125, 73, 0.24);
+}
+textarea {
+  resize: vertical;
+}
+::selection {
+  background: rgba(181, 125, 73, 0.28);
+}
+
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible {
+  outline: 2px solid #b57d49;
+  outline-offset: 2px;
   border-radius: 2px;
+}
+
+@keyframes cms-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cms-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
 }
