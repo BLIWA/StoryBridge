@@ -4,7 +4,7 @@ import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 // Values come from the Firebase console (Project settings → General → Your apps)
-// once the "storybridge" project's web app is registered. See ../../.env.example.
+// once the "sotrybridge" project's web app is registered. See ../../.env.example.
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

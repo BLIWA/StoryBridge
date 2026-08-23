@@ -41,12 +41,11 @@ pnpm dev:cms         # → http://localhost:3001
 
 ## Why Firebase App Hosting, not classic Hosting
 
-The site needs real SSR (Phase 00 decision), so this repo targets **Firebase App Hosting**, not `firebase.json`'s classic `hosting` key (that's for static files / rewrites to Cloud Functions, the older pattern). Each app carries its own `apphosting.yaml`. Two backends will exist in the one `storybridge` project — one per app, per your "separate hosting, subdomain" instruction:
+The site needs real SSR (Phase 00 decision), so this repo targets **Firebase App Hosting**, not `firebase.json`'s classic `hosting` key (that's for static files / rewrites to Cloud Functions, the older pattern). Each app carries its own `apphosting.yaml`. Two backends will exist in the one `sotrybridge` project — one per app, per your "separate hosting, subdomain" instruction:
 
 ```bash
-firebase login                      # this environment's login has expired — do this first
-firebase apphosting:backends:create --project=storybridge   # run once per app, rootDir apps/website
-firebase apphosting:backends:create --project=storybridge   # again, rootDir apps/cms
+firebase apphosting:backends:create --project=sotrybridge   # run once per app, rootDir apps/website
+firebase apphosting:backends:create --project=sotrybridge   # again, rootDir apps/cms
 ```
 
 Custom domains (root domain → website backend, `cms.[domain]` → cms backend) get attached after each backend exists — that's Phase 09, and needs the real domain and DNS access (open question).
