@@ -1,13 +1,16 @@
 {
   "Nav": {
+    "wordmark": "CONTENU & MÉDIAS",
+    "primary": "Principal",
+    "language": "Langue",
     "home": "Accueil",
     "whoWeAre": "Qui sommes-nous",
     "founders": "Fondatrices",
     "howWeWork": "Notre méthode",
     "services": "Services",
+    "packages": "Formules",
+    "work": "Réalisations",
     "journal": "Le Journal",
-    "caseStudies": "Études de cas",
-    "pricing": "Tarifs",
     "contact": "Contact",
     "cta": "Demander un devis"
   },
@@ -20,11 +23,52 @@
     "ctaSecondary": "Découvrir notre méthode",
     "pillarsEyebrow": "Ce que nous faisons",
     "pillars": {
-      "editorial": { "title": "Contenu & Éditorial", "body": "Articles, contenu de site web, contenu réseaux sociaux, contenu de marque et matériel éditorial." },
-      "translation": { "title": "Traduction & Localisation", "body": "Traduction arabe, anglaise et française, avec attention au sens, au contexte, au ton et au public." },
-      "editing": { "title": "Édition & Rédaction", "body": "Édition, relecture, réécriture et amélioration de contenus existants tout en préservant leur objectif et leur voix." },
-      "media": { "title": "Médias & Relations presse", "body": "Couverture presse, contenu journalistique, accompagnement média et supports de communication." }
+      "editorial": {
+        "title": "Contenu & Éditorial",
+        "body": "Articles, contenu de site web, contenu réseaux sociaux, contenu de marque et matériel éditorial."
+      },
+      "translation": {
+        "title": "Traduction & Localisation",
+        "body": "Traduction arabe, anglaise et française, avec attention au sens, au contexte, au ton et au public."
+      },
+      "editing": {
+        "title": "Édition & Rédaction",
+        "body": "Édition, relecture, réécriture et amélioration de contenus existants tout en préservant leur objectif et leur voix."
+      },
+      "media": {
+        "title": "Médias & Relations presse",
+        "body": "Couverture presse, contenu journalistique, accompagnement média et supports de communication."
+      }
     },
     "tagline": "Écouter. Comprendre. Préparer. Aller là où se trouve l'histoire. Créer. Traduire. Éditer. Livrer."
+  },
+  "Footer": {
+    "wordmark": "CONTENU & MÉDIAS",
+    "blurb": "Contenu. Traduction. Édition. Médias. Un pont entre les idées et leurs publics.",
+    "languages": "العربية · FRANÇAIS · ENGLISH",
+    "columns": {
+      "company": {
+        "title": "L'agence",
+        "whoWeAre": "Qui sommes-nous",
+        "founders": "Fondatrices",
+        "howWeWork": "Notre méthode",
+        "selectedWork": "Réalisations"
+      },
+      "workWithUs": {
+        "title": "Travailler avec nous",
+        "services": "Services",
+        "packages": "Formules",
+        "newsletter": "Newsletter",
+        "journal": "Le Journal"
+      }
+    },
+    "contact": "Contact",
+    "city": "Tunis, Tunisie",
+    "detailsPending": "provisoire — coordonnées définitives à venir",
+    "copyright": "© {year} StoryBridge Content & Media",
+    "disciplines": "Communication stratégique · Contenu · Traduction · Médias"
+  },
+  "Common": {
+    "draftTranslation": "Traduction provisoire — cette page n'a pas encore été relue par notre traductrice."
   }
 }

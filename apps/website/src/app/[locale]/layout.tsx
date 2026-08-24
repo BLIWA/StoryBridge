@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { routing, isRtl, type AppLocale } from "@/i18n/routing";
 import { SiteHeader } from "@/components/chrome/site-header";
 import { SiteFooter } from "@/components/chrome/site-footer";
+import { TranslationNotice } from "@/components/chrome/translation-notice";
 import { DesignFx } from "@/components/fx/design-fx";
 import "../globals.css";
 
@@ -89,7 +90,8 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <DesignFx />
           <SiteHeader locale={locale as AppLocale} />
-          {children}
+          <TranslationNotice locale={locale} />
+          <main id="main">{children}</main>
           <SiteFooter />
         </NextIntlClientProvider>
       </body>

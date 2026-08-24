@@ -1,25 +1,26 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 /** Footer from "StoryBridge Website v2.dc.html" — dark navy, bronze weave behind. */
 
 const COLUMNS = [
   {
-    title: "Company",
+    key: "company",
     links: [
-      { href: "/who-we-are", label: "Who we are" },
-      { href: "/founders", label: "Founders" },
-      { href: "/how-we-work", label: "How we work" },
-      { href: "/work", label: "Selected work" },
+      { href: "/who-we-are", key: "whoWeAre" },
+      { href: "/founders", key: "founders" },
+      { href: "/how-we-work", key: "howWeWork" },
+      { href: "/work", key: "selectedWork" },
     ],
   },
   {
-    title: "Work with us",
+    key: "workWithUs",
     links: [
-      { href: "/services", label: "Services" },
-      { href: "/packages", label: "Packages" },
-      { href: "/newsletter", label: "Newsletter" },
-      { href: "/journal", label: "Journal" },
+      { href: "/services", key: "services" },
+      { href: "/packages", key: "packages" },
+      { href: "/newsletter", key: "newsletter" },
+      { href: "/journal", key: "journal" },
     ],
   },
 ] as const;
@@ -33,6 +34,8 @@ const labelStyle = {
 } as const;
 
 export function SiteFooter() {
+  const t = useTranslations("Footer");
+
   return (
     <div style={{ background: "#001838", color: "#FDF8F1", position: "relative", overflow: "hidden" }}>
       <div
@@ -104,7 +107,7 @@ export function SiteFooter() {
                   letterSpacing: "0.15em",
                 }}
               >
-                CONTENT &amp; MEDIA
+                {t("wordmark")}
               </div>
             </div>
           </div>
@@ -116,7 +119,7 @@ export function SiteFooter() {
               maxWidth: "340px",
             }}
           >
-            Content. Translation. Editorial. Media. One bridge between ideas and audiences.
+            {t("blurb")}
           </div>
           <div
             style={{
@@ -126,13 +129,13 @@ export function SiteFooter() {
               color: "rgba(253,248,241,0.5)",
             }}
           >
-            العربية · FRANÇAIS · ENGLISH
+            {t("languages")}
           </div>
         </div>
 
         {COLUMNS.map((col) => (
-          <div key={col.title} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <div style={labelStyle}>{col.title}</div>
+          <div key={col.key} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={labelStyle}>{t(`columns.${col.key}.title`)}</div>
             {col.links.map((l) => (
               <Link
                 key={l.href}
@@ -140,19 +143,19 @@ export function SiteFooter() {
                 data-hover="color:#FDF8F1"
                 style={{ fontSize: "14.5px", color: "rgba(253,248,241,0.8)" }}
               >
-                {l.label}
+                {t(`columns.${col.key}.${l.key}`)}
               </Link>
             ))}
           </div>
         ))}
 
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          <div style={labelStyle}>Contact</div>
+          <div style={labelStyle}>{t("contact")}</div>
           <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
             hello@storybridge.tn
           </div>
           <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
-            Tunis, Tunisia
+            {t("city")}
           </div>
           <div
             style={{
@@ -166,7 +169,7 @@ export function SiteFooter() {
               alignSelf: "flex-start",
             }}
           >
-            placeholder — real details to come
+            {t("detailsPending")}
           </div>
         </div>
       </div>
@@ -184,8 +187,8 @@ export function SiteFooter() {
             color: "rgba(253,248,241,0.5)",
           }}
         >
-          <div>© 2026 StoryBridge Content &amp; Media</div>
-          <div>Strategic communications · Content · Translation · Media</div>
+          <div>{t("copyright", { year: 2026 })}</div>
+          <div>{t("disciplines")}</div>
         </div>
       </div>
     </div>

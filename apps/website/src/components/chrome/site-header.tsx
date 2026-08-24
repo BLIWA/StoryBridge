@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Link } from "@/i18n/navigation";
-import type { AppLocale } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { routing, type AppLocale } from "@/i18n/routing";
 
 /**
  * Sticky masthead from "StoryBridge Website v2.dc.html".
@@ -12,27 +12,23 @@ import type { AppLocale } from "@/i18n/routing";
  */
 
 const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/who-we-are", label: "Who We Are" },
-  { href: "/founders", label: "Founders" },
-  { href: "/how-we-work", label: "How We Work" },
-  { href: "/services", label: "Services" },
-  { href: "/packages", label: "Packages" },
-  { href: "/work", label: "Work" },
-  { href: "/journal", label: "Journal" },
-  { href: "/contact", label: "Contact" },
-] as const;
-
-const AR_NAV = [
-  { href: "/", label: "الرئيسية" },
-  { href: "/who-we-are", label: "من نحن" },
-  { href: "/how-we-work", label: "كيف نعمل" },
-  { href: "/services", label: "خدماتنا" },
-  { href: "/contact", label: "اتصل بنا" },
+  { href: "/", key: "home" },
+  { href: "/who-we-are", key: "whoWeAre" },
+  { href: "/founders", key: "founders" },
+  { href: "/how-we-work", key: "howWeWork" },
+  { href: "/services", key: "services" },
+  { href: "/packages", key: "packages" },
+  { href: "/work", key: "work" },
+  { href: "/journal", key: "journal" },
+  { href: "/contact", key: "contact" },
 ] as const;
 
 export function SiteHeader({ locale }: { locale: AppLocale }) {
+  // From @/i18n/navigation, not next/navigation: this one is locale-aware and
+  // returns "/services" rather than "/en/services", which is what the hrefs
+  // below are written against.
   const pathname = usePathname();
+  const t = useTranslations("Nav");
   const isAr = locale === "ar";
 
   // "Journal" stays lit on the post and newsletter routes, as on the board.
@@ -98,12 +94,13 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
                 letterSpacing: "0.15em",
               }}
             >
-              CONTENT &amp; MEDIA
+              {t("wordmark")}
             </div>
           </div>
         </Link>
 
         <nav
+          aria-label={t("primary")}
           style={{
             display: "flex",
             alignItems: "center",
@@ -116,12 +113,13 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
             ...(isAr ? { fontFamily: "'IBM Plex Sans Arabic',sans-serif" } : null),
           }}
         >
-          {(isAr ? AR_NAV : NAV).map((item) => {
+          {NAV.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 data-hover="color:#8F6135"
                 style={{
                   display: "flex",
@@ -129,11 +127,11 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
                   gap: "5px",
                   fontSize: isAr ? "15px" : "14.5px",
                   fontWeight: 500,
-                  color: active || !isAr ? "#002D62" : "#5A6472",
+                  color: active ? "#002D62" : "#5A6472",
                   whiteSpace: "nowrap",
                 }}
               >
-                {item.label}
+                {t(item.key)}
                 {active && <div style={{ height: "2px", background: "#B57D49" }} />}
               </Link>
             );
@@ -142,6 +140,8 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
 
         <div style={{ display: "flex", alignItems: "center", gap: "14px", flex: "none" }}>
           <div
+            aria-label={t("language")}
+            role="group"
             style={{
               display: "flex",
               border: "1px solid #D8D1C7",
@@ -149,11 +149,15 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
               overflow: "hidden",
             }}
           >
-            {(["en", "fr", "ar"] as const).map((code, i) => (
+            {routing.locales.map((code, i) => (
               <Link
                 key={code}
-                href="/"
+                // Stay on the page you are reading. The switcher used to send
+                // every locale change back to the home page.
+                href={pathname}
                 locale={code}
+                hrefLang={code}
+                aria-current={locale === code ? "true" : undefined}
                 data-hover="color:#002D62"
                 style={{
                   padding: "7px 11px",
@@ -184,28 +188,10 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
               transition: "all .16s ease",
             }}
           >
-            {isAr ? "اطلب عرض سعر" : "Request a quote"}
+            {t("cta")}
           </Link>
         </div>
       </div>
-
-      {isAr && (
-        <div style={{ background: "#EFE1D2", borderTop: "1px solid #DEC5A9" }}>
-          <div
-            style={{
-              maxWidth: "1320px",
-              margin: "0 auto",
-              padding: "9px 40px",
-              fontFamily: "'IBM Plex Mono',monospace",
-              fontSize: "11.5px",
-              letterSpacing: "0.06em",
-              color: "#8F6135",
-            }}
-          >
-            النسخة العربية · الصفحة الرئيسية
-          </div>
-        </div>
-      )}
     </div>
   );
 }

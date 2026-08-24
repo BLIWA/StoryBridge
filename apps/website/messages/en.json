@@ -1,13 +1,16 @@
 {
   "Nav": {
+    "wordmark": "CONTENT & MEDIA",
+    "primary": "Primary",
+    "language": "Language",
     "home": "Home",
     "whoWeAre": "Who We Are",
     "founders": "Founders",
     "howWeWork": "How We Work",
     "services": "Services",
-    "journal": "The Journal",
-    "caseStudies": "Case Studies",
-    "pricing": "Pricing",
+    "packages": "Packages",
+    "work": "Work",
+    "journal": "Journal",
     "contact": "Contact",
     "cta": "Request a quote"
   },
@@ -20,11 +23,52 @@
     "ctaSecondary": "See how we work",
     "pillarsEyebrow": "What we do",
     "pillars": {
-      "editorial": { "title": "Content & Editorial", "body": "Articles, website content, social-media content, branded content and editorial material." },
-      "translation": { "title": "Translation & Localization", "body": "Arabic, English and French translation, with attention to meaning, context, tone and audience." },
-      "editing": { "title": "Editing & Writing", "body": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice." },
-      "media": { "title": "Media & Press Services", "body": "Press coverage, journalistic content, media-related support and communication materials." }
+      "editorial": {
+        "title": "Content & Editorial",
+        "body": "Articles, website content, social-media content, branded content and editorial material."
+      },
+      "translation": {
+        "title": "Translation & Localization",
+        "body": "Arabic, English and French translation, with attention to meaning, context, tone and audience."
+      },
+      "editing": {
+        "title": "Editing & Writing",
+        "body": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice."
+      },
+      "media": {
+        "title": "Media & Press Services",
+        "body": "Press coverage, journalistic content, media-related support and communication materials."
+      }
     },
     "tagline": "Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver."
+  },
+  "Footer": {
+    "wordmark": "CONTENT & MEDIA",
+    "blurb": "Content. Translation. Editorial. Media. One bridge between ideas and audiences.",
+    "languages": "العربية · FRANÇAIS · ENGLISH",
+    "columns": {
+      "company": {
+        "title": "Company",
+        "whoWeAre": "Who we are",
+        "founders": "Founders",
+        "howWeWork": "How we work",
+        "selectedWork": "Selected work"
+      },
+      "workWithUs": {
+        "title": "Work with us",
+        "services": "Services",
+        "packages": "Packages",
+        "newsletter": "Newsletter",
+        "journal": "Journal"
+      }
+    },
+    "contact": "Contact",
+    "city": "Tunis, Tunisia",
+    "detailsPending": "placeholder — real details to come",
+    "copyright": "© {year} StoryBridge Content & Media",
+    "disciplines": "Strategic communications · Content · Translation · Media"
+  },
+  "Common": {
+    "draftTranslation": "Draft translation — this page has not yet been reviewed by our translator."
   }
 }
