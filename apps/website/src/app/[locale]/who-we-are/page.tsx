@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { QuoteTile } from "@/components/fx/backdrops";
@@ -20,6 +20,8 @@ const body = {
 export default async function WhoWeArePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("WhoWeAre");
+  const pillar = await getTranslations("Pillars");
 
   return (
     <>
@@ -27,8 +29,8 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
         backdropId="wpg0"
         variant="quotes"
         glyph="“"
-        eyebrow="Who we are"
-        title="Born from a friendship, a shared newsroom, and years of turning ideas into stories."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
         titleMaxWidth="1000px"
       />
 
@@ -53,21 +55,13 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               fontWeight: 600,
             }}
           >
-            We are Assia Touati and Imen Bliwa, two best friends who first met through work. What began as a
-            professional relationship quickly became a friendship built around a shared passion for
-            journalism, communication, language, and good storytelling.
+            {t("intro")}
           </div>
           <div style={body}>
-            Imen is a journalist, translator and researcher working across Arabic, English and French, with
-            more than a decade of experience in journalism, translation and international media. Her work has
-            taken her across different subjects, audiences and formats, from journalistic reporting and
-            research to translation and content development.
+            {t("imen")}
           </div>
           <div style={body}>
-            Assia is an open-minded editor-in-chief with a strong editorial instinct and a talent for turning
-            ideas into clear, engaging and meaningful content. Her experience in editorial work brings another
-            essential perspective: understanding the audience, shaping the message and making content work as
-            part of a larger product.
+            {t("assia")}
           </div>
           <div style={{ borderInlineStart: "2px solid #B57D49", paddingInlineStart: "32px", margin: "12px 0" }}>
             <div
@@ -80,21 +74,16 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
                 textWrap: "pretty",
               }}
             >
-              We first worked together at a magazine where we experienced something particularly valuable:
-              building a successful media product from the inside.
+              {t("magazine")}
             </div>
           </div>
           <div style={body}>
-            We learned how an idea becomes a story, how stories become a product, and how strong editorial
-            work, communication and teamwork can create something people actually connect with.
+            {t("learned")}
           </div>
           <div style={body}>Then our professional paths took us in different directions.</div>
           <div style={body}>But our friendship didn&apos;t.</div>
           <div style={body}>
-            We kept meeting at one of our favorite coffee places, at our offices, or simply whenever we had
-            time to sit down and talk. We talked about our work, the media industry, businesses,
-            communication, languages and all the things we thought could be done differently. And eventually,
-            one idea kept coming back:
+            {t("meetings")}
           </div>
           <div
             style={{
@@ -106,7 +95,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               letterSpacing: "-0.015em",
             }}
           >
-            Why not build something together?
+            {t("theIdea")}
           </div>
           <div style={{ ...body, textWrap: undefined }}>That idea became StoryBridge Content &amp; Media.</div>
         </div>
@@ -134,7 +123,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
                 color: "#5A6472",
               }}
             >
-              photo — the coffee place
+              {t("photoCaption")}
             </div>
           </div>
           <div
@@ -145,7 +134,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               color: "#8A8378",
             }}
           >
-            Where StoryBridge was argued into existence, one afternoon at a time.
+            {t("photoNote")}
           </div>
           <div
             style={{
@@ -167,13 +156,13 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
                 color: "#8F6135",
               }}
             >
-              Founded
+              {t("foundedLabel")}
             </div>
             <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "20px", color: "#002D62" }}>
-              Tunis, Tunisia
+              {t("foundedCity")}
             </div>
             <div style={{ fontSize: "14px", lineHeight: "1.65", color: "#5A6472" }}>
-              Working across Arabic, English and French, locally and internationally.
+              {t("foundedNote")}
             </div>
           </div>
         </aside>
@@ -209,16 +198,16 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
                 letterSpacing: "-0.015em",
               }}
             >
-              What we do
+              {t("whatWeDo")}
             </div>
             <div style={{ fontSize: "15px", color: "#5A6472", maxWidth: "520px", lineHeight: 1.6 }}>
-              A strategic communications and multilingual content company, built around four core areas.
+              {t("whatWeDoNote")}
             </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "32px" }}>
             {PILLARS.map((p) => (
               <div
-                key={p.title}
+                key={p.id}
                 style={{
                   background: "#FDF8F1",
                   borderRadius: "8px",
@@ -255,9 +244,9 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
                       color: "#002D62",
                     }}
                   >
-                    {"longTitle" in p ? p.longTitle : p.title}
+                    {pillar.has(`${p.id}.longTitle`) ? pillar(`${p.id}.longTitle`) : pillar(`${p.id}.title`)}
                   </div>
-                  <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>{p.long}</div>
+                  <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>{pillar(`${p.id}.long`)}</div>
                 </div>
               </div>
             ))}
@@ -287,7 +276,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               color: "#8F6135",
             }}
           >
-            Why StoryBridge Content &amp; Media?
+            {t("whyEyebrow")}
           </div>
           <div
             style={{
@@ -298,7 +287,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               letterSpacing: "-0.018em",
             }}
           >
-            Because language is more than translation.
+            {t("whyTitle")}
           </div>
           <Link
             href="/contact"
@@ -315,7 +304,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               transition: "all .16s ease",
             }}
           >
-            Start a conversation
+            {t("whyCta")}
           </Link>
         </div>
         <div
@@ -336,8 +325,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               textWrap: "pretty",
             }}
           >
-            A good translation does not simply move words from one language to another. A good article does
-            not simply fill a page. And good communication is not simply about saying more.
+            {t("whyQuote")}
           </div>
           <div
             style={{
@@ -350,8 +338,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               textWrap: "pretty",
             }}
           >
-            It is about making the right message reach the right people in the right way. That is the bridge
-            we want to build.
+            {t("whyQuoteEmphasis")}
           </div>
         </div>
       </div>

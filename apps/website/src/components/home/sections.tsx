@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArcWeaveDark, QuoteTile } from "@/components/fx/backdrops";
 import { PILLARS, TRUST_SIGNALS, DESK_STAGES, JOURNAL_POSTS } from "@/content/site";
@@ -13,6 +14,8 @@ const mono = {
 
 /** Trust strip — four rules-separated columns on Narrative Light. */
 export function TrustStrip() {
+  const t = useTranslations("Home.trust");
+
   return (
     <div style={{ background: "#E8E3DD", borderBlock: "1px solid #D8D1C7", position: "relative", overflow: "hidden" }}>
       <div
@@ -32,9 +35,9 @@ export function TrustStrip() {
           gap: "28px 0",
         }}
       >
-        {TRUST_SIGNALS.map((s, i) => (
+        {TRUST_SIGNALS.map((id, i) => (
           <div
-            key={s.label}
+            key={id}
             style={{
               paddingInlineEnd: i === TRUST_SIGNALS.length - 1 ? undefined : "32px",
               paddingInlineStart: i === 0 ? undefined : "32px",
@@ -44,8 +47,8 @@ export function TrustStrip() {
               gap: "8px",
             }}
           >
-            <div style={mono}>{s.label}</div>
-            <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#3E4650" }}>{s.body}</div>
+            <div style={mono}>{t(`${id}.label`)}</div>
+            <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#3E4650" }}>{t(`${id}.body`)}</div>
           </div>
         ))}
       </div>
@@ -120,13 +123,16 @@ export function SectionHead({
 
 /** "What we do" — four service cards with typographic marks. */
 export function WhatWeDo() {
+  const t = useTranslations("Home.whatWeDo");
+  const p = useTranslations("Pillars");
+
   return (
     <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
-      <SectionHead n="01" title="What we do" linkHref="/services" linkLabel="All services and packages →" />
+      <SectionHead n="01" title={t("title")} linkHref="/services" linkLabel={t("allServices")} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: "28px" }}>
-        {PILLARS.map((p) => (
+        {PILLARS.map((pillar) => (
           <Link
-            key={p.title}
+            key={pillar.id}
             href="/services"
             data-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)"
             style={{
@@ -152,7 +158,7 @@ export function WhatWeDo() {
               }}
             >
               <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: "26px", lineHeight: 1, color: "#002D62" }}>
-                {p.mark}
+                {pillar.mark}
               </span>
             </div>
             <div
@@ -164,10 +170,14 @@ export function WhatWeDo() {
                 lineHeight: "1.25",
               }}
             >
-              {p.title}
+              {p(`${pillar.id}.title`)}
             </div>
-            <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>{p.short}</div>
-            <div style={{ fontSize: "14px", fontWeight: 600, color: "#8F6135", marginTop: "auto" }}>Learn more →</div>
+            <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>
+              {p(`${pillar.id}.short`)}
+            </div>
+            <div style={{ fontSize: "14px", fontWeight: 600, color: "#8F6135", marginTop: "auto" }}>
+              {t("learnMore")}
+            </div>
           </Link>
         ))}
       </div>
@@ -177,6 +187,8 @@ export function WhatWeDo() {
 
 /** Dark navy band — the four-stage desk process. */
 export function DeskProcess() {
+  const t = useTranslations("Home.desk");
+
   return (
     <div style={{ background: "#001838", position: "relative", overflow: "hidden" }}>
       <div
@@ -199,7 +211,7 @@ export function DeskProcess() {
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em", color: "#B57D49" }}>
-            02 · The desk process
+            {t("eyebrow")}
           </div>
           <div
             style={{
@@ -210,11 +222,10 @@ export function DeskProcess() {
               letterSpacing: "-0.015em",
             }}
           >
-            Every piece passes four sets of hands before it reaches you.
+            {t("title")}
           </div>
           <div style={{ fontSize: "16px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-            The same workflow a newsroom runs on. Nothing is delivered straight from the writer — and you
-            always know which stage the work is at.
+            {t("body")}
           </div>
           <Link
             href="/how-we-work"
@@ -228,13 +239,13 @@ export function DeskProcess() {
               transition: "all .16s ease",
             }}
           >
-            Read the full method →
+            {t("link")}
           </Link>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "16px" }}>
-          {DESK_STAGES.map((s) => (
+          {DESK_STAGES.map((stage) => (
             <div
-              key={s.n}
+              key={stage.id}
               style={{
                 background: "#072448",
                 border: "1px solid rgba(253,248,241,0.10)",
@@ -245,9 +256,13 @@ export function DeskProcess() {
                 gap: "10px",
               }}
             >
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#B57D49" }}>{s.n}</div>
-              <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "19px", color: "#FDF8F1" }}>{s.title}</div>
-              <div style={{ fontSize: "13.5px", lineHeight: "1.6", color: "rgba(253,248,241,0.7)" }}>{s.body}</div>
+              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#B57D49" }}>{stage.n}</div>
+              <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "19px", color: "#FDF8F1" }}>
+                {t(`stages.${stage.id}.title`)}
+              </div>
+              <div style={{ fontSize: "13.5px", lineHeight: "1.6", color: "rgba(253,248,241,0.7)" }}>
+                {t(`stages.${stage.id}.body`)}
+              </div>
             </div>
           ))}
         </div>
@@ -258,6 +273,8 @@ export function DeskProcess() {
 
 /** "Why StoryBridge" — bronze-ruled pull quote. */
 export function WhyStoryBridge() {
+  const t = useTranslations("Home.why");
+
   return (
     <div style={{ position: "relative", overflow: "hidden" }}>
       <div
@@ -280,7 +297,7 @@ export function WhyStoryBridge() {
       <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: "72px", alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-            <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em" }}>03 · Why StoryBridge</div>
+            <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em" }}>{t("eyebrow")}</div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -290,14 +307,14 @@ export function WhyStoryBridge() {
                 letterSpacing: "-0.015em",
               }}
             >
-              Because language is more than translation.
+              {t("title")}
             </div>
             <Link
               href="/who-we-are"
               data-hover="color:#002D62"
               style={{ fontSize: "14.5px", fontWeight: 600, color: "#8F6135", alignSelf: "flex-start" }}
             >
-              Read our story →
+              {t("link")}
             </Link>
           </div>
           <div
@@ -318,8 +335,7 @@ export function WhyStoryBridge() {
                 textWrap: "pretty",
               }}
             >
-              A good translation does not simply move words from one language to another. A good article does
-              not simply fill a page. And good communication is not simply about saying more.
+              {t("quote")}
             </div>
             <div
               style={{
@@ -331,8 +347,7 @@ export function WhyStoryBridge() {
                 color: "#002D62",
               }}
             >
-              It is about making the right message reach the right people in the right way. That is the bridge
-              we want to build.
+              {t("quoteEmphasis")}
             </div>
           </div>
         </div>
@@ -343,6 +358,9 @@ export function WhyStoryBridge() {
 
 /** "From the Journal" — three cards. */
 export function FromTheJournal() {
+  const t = useTranslations("Home.journal");
+  const post = useTranslations("JournalPosts");
+
   return (
     <div style={{ background: "#E8E3DD", borderBlock: "1px solid #D8D1C7", position: "relative", overflow: "hidden" }}>
       <div
@@ -354,11 +372,11 @@ export function FromTheJournal() {
       <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px 40px" }}>
         <SectionHead
           n="04"
-          title="From the Journal"
+          title={t("title")}
           fontSize="38px"
-          note="Our own writing, published in the open — the shortest way to judge whether we can write yours."
+          note={t("note")}
           linkHref="/journal"
-          linkLabel="All pieces →"
+          linkLabel={t("all")}
         />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(290px,1fr))", gap: "32px" }}>
           {JOURNAL_POSTS.map((p) => (
@@ -389,10 +407,12 @@ export function FromTheJournal() {
                     color: "#5A6472",
                   }}
                 >
-                  image — 3:2
+                  {t("imagePlaceholder")}
                 </div>
               </div>
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>{p.kicker}</div>
+              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>
+                {post(`${p.slug}.kicker`)}
+              </div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -402,9 +422,11 @@ export function FromTheJournal() {
                   color: "#002D62",
                 }}
               >
-                {p.title}
+                {post(`${p.slug}.title`)}
               </div>
-              <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>{p.standfirst}</div>
+              <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>
+                {post(`${p.slug}.standfirst`)}
+              </div>
             </Link>
           ))}
         </div>
@@ -415,6 +437,8 @@ export function FromTheJournal() {
 
 /** Navy newsletter CTA block. */
 export function NewsletterCta() {
+  const t = useTranslations("Home.newsletterCta");
+
   return (
     <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
       <div
@@ -430,7 +454,7 @@ export function NewsletterCta() {
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em", color: "#B57D49" }}>
-            The Bridge · monthly
+            {t("eyebrow")}
           </div>
           <div
             style={{
@@ -441,11 +465,10 @@ export function NewsletterCta() {
               letterSpacing: "-0.015em",
             }}
           >
-            One letter a month on language, media and the Maghreb.
+            {t("title")}
           </div>
           <div style={{ fontSize: "16px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-            Written by us, in the same voice we write for clients. It is also the easiest way to see how we
-            work before you hire us.
+            {t("body")}
           </div>
         </div>
         <NewsletterSignup />

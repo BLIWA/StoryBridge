@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArcWeave, BridgeArcs } from "@/components/fx/backdrops";
 
@@ -8,6 +9,8 @@ import { ArcWeave, BridgeArcs } from "@/components/fx/backdrops";
  * (masthead|portrait) prop; this ships the board's defaults — arcs + masthead.
  */
 export function HomeHero() {
+  const t = useTranslations("Home.hero");
+
   return (
     <div style={{ position: "relative", overflow: "hidden", background: "#FDF8F1" }}>
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
@@ -66,9 +69,9 @@ export function HomeHero() {
             color: "#8A8378",
           }}
         >
-          <div>Tunis · Tunisia</div>
-          <div>Editorial · Translation · Media</div>
-          <div>AR · FR · EN</div>
+          <div>{t("dateline.place")}</div>
+          <div>{t("dateline.disciplines")}</div>
+          <div>{t("dateline.languages")}</div>
         </div>
       </div>
 
@@ -106,7 +109,7 @@ export function HomeHero() {
               animation: "sb-rise .7s cubic-bezier(.2,.7,.2,1) .22s both",
             }}
           >
-            A boutique editorial house · Tunis
+            {t("eyebrow")}
           </div>
           <h1
             style={{
@@ -120,12 +123,12 @@ export function HomeHero() {
             }}
           >
             <div data-a style={{ animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .34s both" }}>
-              Journalistic standards,
+              {t("titleLead")}
             </div>
             <div data-a style={{ animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .48s both" }}>
-              applied to{" "}
+              {t("titleApplied")}{" "}
               <span style={{ position: "relative", display: "inline-block" }}>
-                <span style={{ position: "relative", zIndex: 1 }}>your content.</span>
+                <span style={{ position: "relative", zIndex: 1 }}>{t("titleHighlight")}</span>
                 <span
                   data-a
                   style={{
@@ -153,9 +156,7 @@ export function HomeHero() {
               animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .62s both",
             }}
           >
-            StoryBridge Content &amp; Media is a communications and multilingual content company founded
-            by two journalists and editors who met in the newsroom and never stopped building ideas
-            together.
+            {t("intro")}
           </div>
           <div
             data-a
@@ -181,7 +182,7 @@ export function HomeHero() {
                 transition: "all .16s ease",
               }}
             >
-              Request a quote
+              {t("ctaPrimary")}
             </Link>
             <Link
               href="/how-we-work"
@@ -197,7 +198,7 @@ export function HomeHero() {
                 transition: "all .16s ease",
               }}
             >
-              See how we work
+              {t("ctaSecondary")}
             </Link>
           </div>
           <div
@@ -233,21 +234,16 @@ export function HomeHero() {
               }}
             />
             <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#5A6472" }}>
-              Founded by{" "}
-              <Link
-                href="/founders"
-                style={{ color: "#002D62", fontWeight: 600, borderBottom: "1px solid #DEC5A9" }}
-              >
-                Assia Touati
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/founders"
-                style={{ color: "#002D62", fontWeight: 600, borderBottom: "1px solid #DEC5A9" }}
-              >
-                Imen Bliwa
-              </Link>{" "}
-              — an editor-in-chief and a journalist-translator, ten years and one newsroom apart.
+              {t.rich("foundedBy", {
+                founder: (chunks) => (
+                  <Link
+                    href="/founders"
+                    style={{ color: "#002D62", fontWeight: 600, borderBottom: "1px solid #DEC5A9" }}
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
             </div>
           </div>
         </div>
@@ -296,7 +292,7 @@ export function HomeHero() {
                 color: "#8F6135",
               }}
             >
-              One message · three languages
+              {t("mastheadLabel")}
             </div>
             <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "21px", lineHeight: 1, color: "#B57D49" }}>
               &#182;
@@ -373,7 +369,7 @@ export function HomeHero() {
               paddingTop: "16px",
             }}
           >
-            READ THIS PAGE IN ARABIC →
+            {t("readInArabic")}
           </Link>
         </div>
       </div>
@@ -399,7 +395,7 @@ export function HomeHero() {
             animation: "sb-fade 1s ease 1.7s both",
           }}
         >
-          SCROLL
+          {t("scroll")}
         </div>
         <div
           data-a

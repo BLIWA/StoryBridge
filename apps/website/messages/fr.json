@@ -15,32 +15,89 @@
     "cta": "Demander un devis"
   },
   "Home": {
-    "eyebrow": "Tunis · Arabe · Anglais · Français",
-    "title": "Contenu. Traduction. Édition. Médias.",
-    "subtitle": "Un pont entre les idées et les publics.",
-    "about": "StoryBridge Content & Media est une entreprise de communication et de contenu multilingue fondée par deux journalistes et éditrices qui se sont rencontrées en salle de rédaction et n'ont jamais cessé de construire des idées ensemble. Nous combinons journalisme, expertise éditoriale et communication multilingue pour aider entreprises, organisations et médias à créer, traduire et communiquer un contenu porteur de sens en arabe, en anglais et en français.",
-    "ctaPrimary": "Demander un devis",
-    "ctaSecondary": "Découvrir notre méthode",
-    "pillarsEyebrow": "Ce que nous faisons",
-    "pillars": {
-      "editorial": {
-        "title": "Contenu & Éditorial",
-        "body": "Articles, contenu de site web, contenu réseaux sociaux, contenu de marque et matériel éditorial."
+    "hero": {
+      "dateline": {
+        "place": "Tunis · Tunisie",
+        "disciplines": "Édition · Traduction · Médias",
+        "languages": "AR · FR · EN"
       },
-      "translation": {
-        "title": "Traduction & Localisation",
-        "body": "Traduction arabe, anglaise et française, avec attention au sens, au contexte, au ton et au public."
+      "eyebrow": "Une maison d'édition indépendante · Tunis",
+      "titleLead": "Des exigences de journalistes,",
+      "titleApplied": "appliquées à",
+      "titleHighlight": "vos contenus.",
+      "intro": "StoryBridge Content & Media est une agence de communication et de contenu multilingue fondée par deux journalistes et rédactrices en chef qui se sont rencontrées en salle de rédaction et n'ont jamais cessé de construire des idées ensemble.",
+      "ctaPrimary": "Demander un devis",
+      "ctaSecondary": "Découvrir notre méthode",
+      "foundedBy": "Fondée par <founder>Assia Touati</founder> et <founder>Imen Bliwa</founder> — une rédactrice en chef et une journaliste-traductrice, dix ans et une salle de rédaction d'écart.",
+      "mastheadLabel": "Un message · trois langues",
+      "readInArabic": "LIRE CETTE PAGE EN ARABE →",
+      "scroll": "DÉFILER"
+    },
+    "trust": {
+      "newsroom": {
+        "label": "Formées en rédaction",
+        "body": "Plus de dix ans de journalisme, de traduction et de médias internationaux."
       },
-      "editing": {
-        "title": "Édition & Rédaction",
-        "body": "Édition, relecture, réécriture et amélioration de contenus existants tout en préservant leur objectif et leur voix."
+      "maghrebi": {
+        "label": "Arabe maghrébin",
+        "body": "La nuance nord-africaine — pas un arabe standard du Golfe plaqué sur un public tunisien."
       },
-      "media": {
-        "title": "Médias & Relations presse",
-        "body": "Couverture presse, contenu journalistique, accompagnement média et supports de communication."
+      "process": {
+        "label": "Processus visible",
+        "body": "Brief → rédacteur natif → éditeur → contrôle qualité. Vous voyez chaque étape."
+      },
+      "contact": {
+        "label": "Un seul interlocuteur",
+        "body": "Une cheffe de projet unique par mission, du début à la livraison."
       }
     },
-    "tagline": "Écouter. Comprendre. Préparer. Aller là où se trouve l'histoire. Créer. Traduire. Éditer. Livrer."
+    "whatWeDo": {
+      "title": "Ce que nous faisons",
+      "allServices": "Tous les services et formules →",
+      "learnMore": "En savoir plus →"
+    },
+    "desk": {
+      "eyebrow": "02 · Le processus",
+      "title": "Chaque texte passe entre quatre paires de mains avant de vous parvenir.",
+      "body": "Le circuit d'une salle de rédaction. Rien n'est livré directement par le rédacteur — et vous savez toujours où en est le travail.",
+      "link": "Lire la méthode complète →",
+      "stages": {
+        "brief": {
+          "title": "Brief",
+          "body": "Nous demandons avant d'écrire."
+        },
+        "writer": {
+          "title": "Rédacteur natif",
+          "body": "Langue maternelle, à chaque fois."
+        },
+        "editor": {
+          "title": "Éditeur",
+          "body": "Structure, exactitude, ton."
+        },
+        "qa": {
+          "title": "Contrôle qualité",
+          "body": "Faits, noms, chiffres, liens."
+        }
+      }
+    },
+    "why": {
+      "eyebrow": "03 · Pourquoi StoryBridge",
+      "title": "Parce que la langue est plus que de la traduction.",
+      "link": "Lire notre histoire →",
+      "quote": "Une bonne traduction ne se contente pas de faire passer des mots d'une langue à l'autre. Un bon article ne se contente pas de remplir une page. Et une bonne communication ne consiste pas à en dire plus.",
+      "quoteEmphasis": "Il s'agit de faire parvenir le bon message aux bonnes personnes, de la bonne manière. C'est le pont que nous voulons bâtir."
+    },
+    "journal": {
+      "title": "Dans Le Journal",
+      "note": "Nos propres textes, publiés en clair — le moyen le plus court de juger si nous saurons écrire les vôtres.",
+      "all": "Tous les articles →",
+      "imagePlaceholder": "image — 3:2"
+    },
+    "newsletterCta": {
+      "eyebrow": "The Bridge · mensuel",
+      "title": "Une lettre par mois sur la langue, les médias et le Maghreb.",
+      "body": "Écrite par nous, dans la voix même que nous écrivons pour nos clients. C'est aussi le moyen le plus simple de voir comment nous travaillons avant de nous confier un projet."
+    }
   },
   "Footer": {
     "wordmark": "CONTENU & MÉDIAS",
@@ -70,5 +127,123 @@
   },
   "Common": {
     "draftTranslation": "Traduction provisoire — cette page n'a pas encore été relue par notre traductrice."
+  },
+  "Pillars": {
+    "editorial": {
+      "title": "Contenu & Édition",
+      "short": "Articles, contenus web, réseaux sociaux et contenus de marque — écrits pour un brief, pas pour un quota de mots.",
+      "long": "Articles, contenus de sites web, contenus pour réseaux sociaux, contenus de marque et matériel éditorial."
+    },
+    "translation": {
+      "title": "Traduction & Localisation",
+      "short": "Arabe, anglais et français — le contexte, la culture et le ton passent aussi, pas seulement les mots.",
+      "long": "Traduction arabe, anglaise et française, attentive au sens, au contexte, au ton et au public."
+    },
+    "editing": {
+      "title": "Révision & Rédaction",
+      "short": "Révision, relecture et réécriture qui préservent l'intention et la voix déjà présentes.",
+      "long": "Révision, relecture, réécriture et amélioration de contenus existants, en préservant leur intention et leur voix."
+    },
+    "media": {
+      "title": "Médias & Presse",
+      "longTitle": "Services médias & presse",
+      "short": "Couverture presse, contenus journalistiques, reportage de terrain et fixing — nous allons là où est le sujet.",
+      "long": "Couverture presse, contenus journalistiques, accompagnement médias et supports de communication."
+    }
+  },
+  "JournalPosts": {
+    "arabic-copy-sounds-foreign-in-tunis": {
+      "kicker": "Traduction · 6 min",
+      "title": "Pourquoi vos textes en arabe sonnent étrangers à Tunis",
+      "standfirst": "L'arabe standard du Golfe n'est pas un défaut neutre. Ce que le public maghrébin entend vraiment."
+    },
+    "the-brief-is-the-deliverable": {
+      "kicker": "Métier · 8 min",
+      "title": "Le brief est le livrable",
+      "standfirst": "La plupart des contenus échouent avant le premier mot. Une solution de salle de rédaction à un problème marketing."
+    },
+    "what-a-fixer-actually-does": {
+      "kicker": "Terrain · 5 min",
+      "title": "Ce que fait vraiment un fixeur",
+      "standfirst": "Accès, contacts, autorisations, timing — le travail invisible derrière un tournage qui se déroule bien."
+    }
+  },
+  "WhoWeAre": {
+    "eyebrow": "Qui sommes-nous",
+    "title": "Née d'une amitié, d'une salle de rédaction partagée et d'années passées à transformer des idées en histoires.",
+    "intro": "Nous sommes Assia Touati et Imen Bliwa, deux amies proches qui se sont d'abord rencontrées par le travail. Ce qui a commencé comme une relation professionnelle est vite devenu une amitié bâtie sur une passion commune pour le journalisme, la communication, la langue et l'art de raconter.",
+    "imen": "Imen est journaliste, traductrice et chercheuse, elle travaille en arabe, en anglais et en français, avec plus de dix ans d'expérience dans le journalisme, la traduction et les médias internationaux. Son travail l'a menée à travers des sujets, des publics et des formats très divers, du reportage et de la recherche à la traduction et au développement de contenus.",
+    "assia": "Assia est une rédactrice en chef ouverte, dotée d'un instinct éditorial affûté et d'un talent pour transformer des idées en contenus clairs, engageants et utiles. Son expérience éditoriale apporte une autre perspective essentielle : comprendre le public, façonner le message et faire fonctionner le contenu au sein d'un produit plus large.",
+    "magazine": "Nous avons d'abord travaillé ensemble dans un magazine, où nous avons vécu quelque chose de particulièrement précieux : construire un produit média qui marche, de l'intérieur.",
+    "learned": "Nous avons appris comment une idée devient une histoire, comment les histoires deviennent un produit, et comment un travail éditorial solide, la communication et le travail d'équipe peuvent créer quelque chose qui touche vraiment les gens.",
+    "meetings": "Nous avons continué à nous retrouver dans l'un de nos cafés préférés, dans nos bureaux, ou simplement dès que nous avions le temps de nous asseoir et de parler. Nous parlions de notre travail, du secteur des médias, des entreprises, de la communication, des langues et de tout ce qui, selon nous, pouvait se faire autrement. Et une idée revenait sans cesse :",
+    "theIdea": "Et si nous construisions quelque chose ensemble ?",
+    "photoCaption": "photo — le café",
+    "photoNote": "Là où StoryBridge s'est discutée jusqu'à exister, un après-midi après l'autre.",
+    "foundedLabel": "Fondée à",
+    "foundedCity": "Tunis, Tunisie",
+    "foundedNote": "Nous travaillons en arabe, en anglais et en français, localement et à l'international.",
+    "whatWeDo": "Ce que nous faisons",
+    "whatWeDoNote": "Une agence de communication stratégique et de contenu multilingue, construite autour de quatre pôles.",
+    "whyEyebrow": "Pourquoi StoryBridge Content & Media ?",
+    "whyTitle": "Parce que la langue est plus que de la traduction.",
+    "whyCta": "Entamer la conversation",
+    "whyQuote": "Une bonne traduction ne se contente pas de faire passer des mots d'une langue à l'autre. Un bon article ne se contente pas de remplir une page. Et une bonne communication ne consiste pas à en dire plus.",
+    "whyQuoteEmphasis": "Il s'agit de faire parvenir le bon message aux bonnes personnes, de la bonne manière. C'est le pont que nous voulons bâtir."
+  },
+  "HowWeWork": {
+    "eyebrow": "Notre méthode",
+    "title": "De la première idée à l'histoire finale.",
+    "standfirst": "Un bon contenu ne commence pas devant un clavier. Il commence par écouter, comprendre, poser les bonnes questions et savoir où chercher.",
+    "languageCardNote": "La nuance de l'arabe maghrébin là où elle compte — pas un arabe standard du Golfe appliqué par défaut.",
+    "closingEyebrow": "Notre approche est simple",
+    "tagline": "Écouter. Comprendre. Préparer. Aller là où est l'histoire. Créer. Traduire. Éditer. Livrer.",
+    "closingNote": "Et quand la prochaine histoire arrive, nous y sommes déjà.",
+    "closingCta": "Confiez-nous un brief",
+    "steps": {
+      "listen": {
+        "title": "Nous écoutons d'abord",
+        "body": "Chaque mission commence par une conversation. Nous voulons comprendre ce dont vous avez besoin, à qui vous vous adressez, ce que vous voulez obtenir et de quoi il est vraiment question.",
+        "aside": "Nous posons des questions avant de produire. Mieux nous comprenons le brief, mieux nous racontons l'histoire."
+      },
+      "approach": {
+        "title": "Nous construisons la bonne approche",
+        "body": "Toutes les histoires n'appellent pas le même traitement. Nous réunissons les bonnes personnes, compétences, langues et outils pour chaque mission.",
+        "list": [
+          "Certaines demandent de la recherche et des entretiens.",
+          "Certaines demandent un journaliste sur le terrain.",
+          "Certaines ont besoin d'un éditeur solide.",
+          "Certaines ont besoin d'une traduction qui comprend le contexte, pas seulement les mots."
+        ],
+        "listLast": "D'autres ont besoin de tout cela à la fois."
+      },
+      "field": {
+        "title": "Nous sortons du bureau",
+        "body": "Certaines histoires ne se racontent pas derrière un écran. Quand la mission l'exige, nous sommes là — reportage, entretiens, événements, couverture presse, recherche, fixing et contenus multimédias.",
+        "body2": "Notre expérience du journalisme de terrain nous fait comprendre les réalités du travail sur place : trouver des contacts, s'orienter dans un environnement, organiser les accès et obtenir la matière nécessaire pour raconter l'histoire correctement.",
+        "photo": "photo — en reportage, terrain",
+        "aside": "Nous ne nous contentons pas de vous dire ce qui se passe. Nous allons le vérifier."
+      },
+      "purpose": {
+        "title": "Nous créons avec une intention",
+        "body": "Que nous écrivions un article, créions un contenu numérique, révisions un texte ou produisions un support de communication, nous nous concentrons sur la clarté, l'exactitude, le ton et le public.",
+        "aside": "Nous ne croyons pas au remplissage. Chaque contenu doit avoir une raison d'exister."
+      },
+      "languages": {
+        "title": "Nous relions les langues et les cultures",
+        "body": "Pour nous, traduire n'est pas remplacer un mot par un autre. Nous tenons compte du contexte, de la culture, du ton, du public et de l'intention, pour que le message sonne naturel dans sa nouvelle langue tout en gardant le sens et l'intention de l'original."
+      },
+      "deliver": {
+        "title": "Nous livrons",
+        "body": "Un contenu est souvent attendu à une date, pas un jour. Une fois le travail validé, nous fixons clairement le périmètre, le calendrier et les livrables, et gardons la communication ouverte pendant toute la mission.",
+        "body2": "Pour les travaux urgents ou de terrain, notre expérience nous permet de réagir vite et de travailler sous pression sans perdre la qualité de vue.",
+        "aside": "Nous sommes là. Nous faisons le travail. Nous livrons."
+      },
+      "stay": {
+        "title": "Et nous restons impliquées",
+        "body": "Pour les clients qui ont besoin de plus qu'une mission ponctuelle, nous pouvons devenir un partenaire contenu et médias sur la durée — articles et traductions réguliers, contenus sociaux, appui éditorial, couverture médiatique et missions de terrain récurrentes.",
+        "aside": "Parce que le meilleur travail naît souvent de la connaissance du client, de la compréhension de sa voix et d'une confiance construite dans le temps."
+      }
+    }
   }
 }

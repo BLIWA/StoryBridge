@@ -15,32 +15,89 @@
     "cta": "Request a quote"
   },
   "Home": {
-    "eyebrow": "Tunis · Arabic · English · French",
-    "title": "Content. Translation. Editorial. Media.",
-    "subtitle": "One bridge between ideas and audiences.",
-    "about": "StoryBridge Content & Media is a communications and multilingual content company founded by two journalists and editors who met in the newsroom and never stopped building ideas together. We combine journalism, editorial expertise and multilingual communication to help businesses, organizations and media platforms create, translate and communicate meaningful content across Arabic, English and French.",
-    "ctaPrimary": "Request a quote",
-    "ctaSecondary": "See how we work",
-    "pillarsEyebrow": "What we do",
-    "pillars": {
-      "editorial": {
-        "title": "Content & Editorial",
-        "body": "Articles, website content, social-media content, branded content and editorial material."
+    "hero": {
+      "dateline": {
+        "place": "Tunis · Tunisia",
+        "disciplines": "Editorial · Translation · Media",
+        "languages": "AR · FR · EN"
       },
-      "translation": {
-        "title": "Translation & Localization",
-        "body": "Arabic, English and French translation, with attention to meaning, context, tone and audience."
+      "eyebrow": "A boutique editorial house · Tunis",
+      "titleLead": "Journalistic standards,",
+      "titleApplied": "applied to",
+      "titleHighlight": "your content.",
+      "intro": "StoryBridge Content & Media is a communications and multilingual content company founded by two journalists and editors who met in the newsroom and never stopped building ideas together.",
+      "ctaPrimary": "Request a quote",
+      "ctaSecondary": "See how we work",
+      "foundedBy": "Founded by <founder>Assia Touati</founder> and <founder>Imen Bliwa</founder> — an editor-in-chief and a journalist-translator, ten years and one newsroom apart.",
+      "mastheadLabel": "One message · three languages",
+      "readInArabic": "READ THIS PAGE IN ARABIC →",
+      "scroll": "SCROLL"
+    },
+    "trust": {
+      "newsroom": {
+        "label": "Newsroom-trained",
+        "body": "A decade-plus in journalism, translation and international media."
       },
-      "editing": {
-        "title": "Editing & Writing",
-        "body": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice."
+      "maghrebi": {
+        "label": "Maghrebi Arabic",
+        "body": "North African nuance — not Gulf-centric MSA dropped on a Tunisian audience."
       },
-      "media": {
-        "title": "Media & Press Services",
-        "body": "Press coverage, journalistic content, media-related support and communication materials."
+      "process": {
+        "label": "Visible desk process",
+        "body": "Brief → native writer → editor → QA. You see every stage."
+      },
+      "contact": {
+        "label": "One contact",
+        "body": "A single project manager per assignment, start to delivery."
       }
     },
-    "tagline": "Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver."
+    "whatWeDo": {
+      "title": "What we do",
+      "allServices": "All services and packages →",
+      "learnMore": "Learn more →"
+    },
+    "desk": {
+      "eyebrow": "02 · The desk process",
+      "title": "Every piece passes four sets of hands before it reaches you.",
+      "body": "The same workflow a newsroom runs on. Nothing is delivered straight from the writer — and you always know which stage the work is at.",
+      "link": "Read the full method →",
+      "stages": {
+        "brief": {
+          "title": "Brief",
+          "body": "We ask before we write."
+        },
+        "writer": {
+          "title": "Native writer",
+          "body": "First language, every time."
+        },
+        "editor": {
+          "title": "Editor",
+          "body": "Structure, accuracy, tone."
+        },
+        "qa": {
+          "title": "QA",
+          "body": "Facts, names, numbers, links."
+        }
+      }
+    },
+    "why": {
+      "eyebrow": "03 · Why StoryBridge",
+      "title": "Because language is more than translation.",
+      "link": "Read our story →",
+      "quote": "A good translation does not simply move words from one language to another. A good article does not simply fill a page. And good communication is not simply about saying more.",
+      "quoteEmphasis": "It is about making the right message reach the right people in the right way. That is the bridge we want to build."
+    },
+    "journal": {
+      "title": "From the Journal",
+      "note": "Our own writing, published in the open — the shortest way to judge whether we can write yours.",
+      "all": "All pieces →",
+      "imagePlaceholder": "image — 3:2"
+    },
+    "newsletterCta": {
+      "eyebrow": "The Bridge · monthly",
+      "title": "One letter a month on language, media and the Maghreb.",
+      "body": "Written by us, in the same voice we write for clients. It is also the easiest way to see how we work before you hire us."
+    }
   },
   "Footer": {
     "wordmark": "CONTENT & MEDIA",
@@ -70,5 +127,123 @@
   },
   "Common": {
     "draftTranslation": "Draft translation — this page has not yet been reviewed by our translator."
+  },
+  "Pillars": {
+    "editorial": {
+      "title": "Content & Editorial",
+      "short": "Articles, website copy, social and branded content — written to a brief, not to a word count.",
+      "long": "Articles, website content, social-media content, branded content and editorial material."
+    },
+    "translation": {
+      "title": "Translation & Localization",
+      "short": "Arabic, English and French — context, culture and tone carried across, not just words.",
+      "long": "Arabic, English and French translation, with attention to meaning, context, tone and audience."
+    },
+    "editing": {
+      "title": "Editing & Writing",
+      "short": "Editing, proofreading and rewriting that preserves the purpose and the voice already there.",
+      "long": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice."
+    },
+    "media": {
+      "title": "Media & Press",
+      "longTitle": "Media & Press Services",
+      "short": "Press coverage, journalistic content, field reporting and fixing — we go where the story is.",
+      "long": "Press coverage, journalistic content, media-related support and communication materials."
+    }
+  },
+  "JournalPosts": {
+    "arabic-copy-sounds-foreign-in-tunis": {
+      "kicker": "Translation · 6 min",
+      "title": "Why your Arabic copy sounds foreign in Tunis",
+      "standfirst": "Gulf-standard Arabic is not a neutral default. What Maghrebi audiences actually hear."
+    },
+    "the-brief-is-the-deliverable": {
+      "kicker": "Craft · 8 min",
+      "title": "The brief is the deliverable",
+      "standfirst": "Most content fails before a word is written. A newsroom fix for a marketing problem."
+    },
+    "what-a-fixer-actually-does": {
+      "kicker": "Field · 5 min",
+      "title": "What a fixer actually does",
+      "standfirst": "Access, contacts, permissions, timing — the invisible work behind a shoot that runs."
+    }
+  },
+  "WhoWeAre": {
+    "eyebrow": "Who we are",
+    "title": "Born from a friendship, a shared newsroom, and years of turning ideas into stories.",
+    "intro": "We are Assia Touati and Imen Bliwa, two best friends who first met through work. What began as a professional relationship quickly became a friendship built around a shared passion for journalism, communication, language, and good storytelling.",
+    "imen": "Imen is a journalist, translator and researcher working across Arabic, English and French, with more than a decade of experience in journalism, translation and international media. Her work has taken her across different subjects, audiences and formats, from journalistic reporting and research to translation and content development.",
+    "assia": "Assia is an open-minded editor-in-chief with a strong editorial instinct and a talent for turning ideas into clear, engaging and meaningful content. Her experience in editorial work brings another essential perspective: understanding the audience, shaping the message and making content work as part of a larger product.",
+    "magazine": "We first worked together at a magazine where we experienced something particularly valuable: building a successful media product from the inside.",
+    "learned": "We learned how an idea becomes a story, how stories become a product, and how strong editorial work, communication and teamwork can create something people actually connect with.",
+    "meetings": "We kept meeting at one of our favorite coffee places, at our offices, or simply whenever we had time to sit down and talk. We talked about our work, the media industry, businesses, communication, languages and all the things we thought could be done differently. And eventually, one idea kept coming back:",
+    "theIdea": "Why not build something together?",
+    "photoCaption": "photo — the coffee place",
+    "photoNote": "Where StoryBridge was argued into existence, one afternoon at a time.",
+    "foundedLabel": "Founded",
+    "foundedCity": "Tunis, Tunisia",
+    "foundedNote": "Working across Arabic, English and French, locally and internationally.",
+    "whatWeDo": "What we do",
+    "whatWeDoNote": "A strategic communications and multilingual content company, built around four core areas.",
+    "whyEyebrow": "Why StoryBridge Content & Media?",
+    "whyTitle": "Because language is more than translation.",
+    "whyCta": "Start a conversation",
+    "whyQuote": "A good translation does not simply move words from one language to another. A good article does not simply fill a page. And good communication is not simply about saying more.",
+    "whyQuoteEmphasis": "It is about making the right message reach the right people in the right way. That is the bridge we want to build."
+  },
+  "HowWeWork": {
+    "eyebrow": "How we work",
+    "title": "From the first idea to the final story.",
+    "standfirst": "Good content doesn't start with a keyboard. It starts with listening, understanding, asking the right questions and knowing where to look.",
+    "languageCardNote": "Maghrebi Arabic nuance where it matters — not Gulf-standard MSA applied by default.",
+    "closingEyebrow": "Our approach is simple",
+    "tagline": "Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver.",
+    "closingNote": "And when the next story comes, we're already there.",
+    "closingCta": "Bring us a brief",
+    "steps": {
+      "listen": {
+        "title": "We listen first",
+        "body": "Every assignment starts with a conversation. We want to understand what you need, who you are speaking to, what you want to achieve and what the story is really about.",
+        "aside": "We ask questions before we start producing. The better we understand the brief, the better we can tell the story."
+      },
+      "approach": {
+        "title": "We build the right approach",
+        "body": "Not every story needs the same treatment. We bring together the right people, skills, languages and tools for each assignment.",
+        "list": [
+          "Some require research and interviews.",
+          "Some require a journalist on the ground.",
+          "Some need a strong editor.",
+          "Some need translation that understands context, not just words."
+        ],
+        "listLast": "Others need all of it at once."
+      },
+      "field": {
+        "title": "We go beyond the desk",
+        "body": "Some stories cannot be told from behind a screen. When the assignment requires it, we are there — reporting, interviews, events, press coverage, research, fixing and multimedia content.",
+        "body2": "Our experience in field journalism means we understand the realities of working on location: finding contacts, navigating the environment, arranging access and getting the material needed to tell the story properly.",
+        "photo": "photo — on assignment, field",
+        "aside": "We don't just tell you what is happening. We go and find out."
+      },
+      "purpose": {
+        "title": "We create with purpose",
+        "body": "Whether we are writing an article, creating digital content, editing a text or producing communication material, we focus on clarity, accuracy, tone and audience.",
+        "aside": "We don't believe in filling space. Every piece of content needs a reason to exist."
+      },
+      "languages": {
+        "title": "We connect languages and cultures",
+        "body": "Translation, for us, is not simply replacing one word with another. We consider context, culture, tone, audience and purpose so the message feels natural in its new language while keeping the meaning and intention of the original."
+      },
+      "deliver": {
+        "title": "We deliver",
+        "body": "Content is often needed on time, not eventually. Once the work is agreed, we set the scope, timeline and deliverables clearly and keep communication open throughout the assignment.",
+        "body2": "For urgent or field-based work, our experience allows us to respond quickly and work under pressure without losing sight of quality.",
+        "aside": "We show up. We do the work. We deliver."
+      },
+      "stay": {
+        "title": "And we stay involved",
+        "body": "For clients who need more than a one-off assignment, we can become an ongoing content and media partner — regular articles and translations, social content, editorial support, media coverage and field assignments on a recurring basis.",
+        "aside": "Because the best work often comes from knowing the client, understanding their voice and building trust over time."
+      }
+    }
   }
 }

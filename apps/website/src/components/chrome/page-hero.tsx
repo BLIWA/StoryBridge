@@ -61,7 +61,9 @@ export function PageHero({
         >
           {eyebrow}
         </div>
-        <div
+        {/* The board styles this as a div; it is the page's only <h1>, and
+            seven of eleven pages shipped without one because of that. */}
+        <h1
           data-a
           style={{
             fontFamily: "'Source Serif 4',serif",
@@ -72,11 +74,12 @@ export function PageHero({
             color: "#002D62",
             maxWidth: titleMaxWidth,
             textWrap: "balance",
+            margin: 0,
             animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) 0.36s both",
           }}
         >
           {title}
-        </div>
+        </h1>
         {standfirst && (
           <div
             data-a

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { ArcWeaveDark } from "@/components/fx/backdrops";
@@ -22,6 +22,8 @@ const asideQuote = {
 export default async function HowWeWorkPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("HowWeWork");
+  const step = await getTranslations("HowWeWork.steps");
 
   return (
     <>
@@ -29,16 +31,16 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
         backdropId="wpg2"
         variant="arcs"
         glyph="“"
-        eyebrow="How we work"
-        title="From the first idea to the final story."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
         standfirstSerif
-        standfirst="Good content doesn't start with a keyboard. It starts with listening, understanding, asking the right questions and knowing where to look."
+        standfirst={t("standfirst")}
       />
 
       <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "64px 40px 40px" }}>
-        {PROCESS_STEPS.map((step, i) => (
+        {PROCESS_STEPS.map((s, i) => (
           <div
-            key={step.n}
+            key={s.id}
             style={{
               display: "grid",
               gridTemplateColumns: "120px 1fr 1fr",
@@ -58,7 +60,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                 fontWeight: 600,
               }}
             >
-              {step.n}
+              {s.n}
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -72,16 +74,18 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                   margin: 0,
                 }}
               >
-                {step.title}
+                {step(`${s.id}.title`)}
               </h2>
-              <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{step.body}</div>
-              {step.body2 && (
-                <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{step.body2}</div>
+              <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{step(`${s.id}.body`)}</div>
+              {s.body2 && (
+                <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
+                  {step(`${s.id}.body2`)}
+                </div>
               )}
             </div>
 
             {/* Right column varies by step: a pull quote, a list, a photo, or the language card */}
-            {step.list ? (
+            {s.listCount ? (
               <div
                 style={{
                   display: "flex",
@@ -91,16 +95,16 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                   paddingInlineStart: "28px",
                 }}
               >
-                {step.list.map((l) => (
-                  <div key={l} style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
-                    {l}
+                {Array.from({ length: s.listCount }, (_, k) => (
+                  <div key={k} style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
+                    {step(`${s.id}.list.${k}`)}
                   </div>
                 ))}
                 <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#002D62", fontWeight: 500 }}>
-                  {step.listLast}
+                  {step(`${s.id}.listLast`)}
                 </div>
               </div>
-            ) : step.photo ? (
+            ) : s.photo ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div
                   style={{
@@ -124,7 +128,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                       color: "#5A6472",
                     }}
                   >
-                    {step.photo}
+                    {step(`${s.id}.photo`)}
                   </div>
                 </div>
                 <div
@@ -136,10 +140,10 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                     color: "#002D62",
                   }}
                 >
-                  {step.aside}
+                  {step(`${s.id}.aside`)}
                 </div>
               </div>
-            ) : step.languageCard ? (
+            ) : s.languageCard ? (
               <div
                 style={{
                   border: "1px solid #E6E0D8",
@@ -179,11 +183,11 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
                     paddingTop: "14px",
                   }}
                 >
-                  Maghrebi Arabic nuance where it matters — not Gulf-standard MSA applied by default.
+                  {t("languageCardNote")}
                 </div>
               </div>
             ) : (
-              <div style={asideQuote}>{step.aside}</div>
+              <div style={asideQuote}>{step(`${s.id}.aside`)}</div>
             )}
           </div>
         ))}
@@ -219,7 +223,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
               color: "#B57D49",
             }}
           >
-            Our approach is simple
+            {t("closingEyebrow")}
           </div>
           <div
             style={{
@@ -231,12 +235,12 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
               textWrap: "balance",
             }}
           >
-            Listen. Understand. Prepare. Go where the story is. Create. Translate. Edit. Deliver.
+            {t("tagline")}
           </div>
           <div
             style={{ fontFamily: "'Source Serif 4',serif", fontStyle: "italic", fontSize: "24px", color: "#B57D49" }}
           >
-            And when the next story comes, we&apos;re already there.
+            {t("closingNote")}
           </div>
           <Link
             href="/contact"
@@ -252,7 +256,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
               transition: "all .16s ease",
             }}
           >
-            Bring us a brief
+            {t("closingCta")}
           </Link>
         </div>
       </div>
