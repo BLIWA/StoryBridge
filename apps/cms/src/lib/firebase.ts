@@ -3,9 +3,13 @@ import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 
-// Values come from the Firebase console (Project settings → General → Your apps)
-// once the "sotrybridge" project's web app is registered. See ../../.env.example.
-const firebaseConfig: FirebaseOptions = {
+// The "sotrybridge" web app, from `firebase apps:sdkconfig WEB`. Values live in
+// .env.production (committed — they are public project identifiers, not secrets)
+// and can be overridden per-machine in .env.local. See ../../.env.example.
+//
+// Exported because inviteStaff() needs it to stand up a throwaway secondary app
+// — see lib/staff.ts for why creating a user needs its own Auth instance.
+export const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,

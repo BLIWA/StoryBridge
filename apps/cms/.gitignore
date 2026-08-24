@@ -30,8 +30,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
+# .env.local stays out (per-machine overrides). .env.production is committed on
+# purpose: `next build` with output:"export" bakes NEXT_PUBLIC_* into the static
+# bundle, so a clone without it silently deploys a CMS whose sign-in cannot
+# reach Firebase. Those values are public project identifiers — they are already
+# served in the deployed JS — not credentials. See .env.production's own header.
 .env*
+!.env.example
+!.env.production
 
 # vercel
 .vercel

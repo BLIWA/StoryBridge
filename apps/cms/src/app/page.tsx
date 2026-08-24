@@ -3,10 +3,11 @@
 import { useAuth } from "@/lib/auth-context";
 import { LoginScreen } from "@/components/login-screen";
 import { Studio } from "@/components/shell/studio";
+import { NoAccess } from "@/components/no-access";
 import { DesignFx } from "@/components/fx/design-fx";
 
 export default function CmsRoot() {
-  const { user, loading } = useAuth();
+  const { user, staff, loading } = useAuth();
 
   if (loading) {
     return (
@@ -37,7 +38,9 @@ export default function CmsRoot() {
   return (
     <>
       <DesignFx />
-      {user ? <Studio /> : <LoginScreen />}
+      {/* Three states, not two: signed out, signed in without a staff record,
+          and actual staff. See lib/auth-context.tsx. */}
+      {!user ? <LoginScreen /> : staff ? <Studio /> : <NoAccess />}
     </>
   );
 }

@@ -1,12 +1,100 @@
 rules_version = '2';
 
-// Deny-by-default skeleton. Real collection rules land in Phase 04–06 of the
-// roadmap once roles/claims (owner, contributor, ...) and the exact
-// collections (articles, pages, issues, subscribers, submissions, staff)
-// are confirmed. Nothing is readable or writable until rules are written
-// explicitly below — do not relax this by wildcarding "if true" here.
+// StoryBridge Studio access control.
+//
+// The grant is a document: a person can use the CMS if and only if
+// `staff/{their lowercased email}` exists with `active: true`. That document
+// also carries their role, and the role table below mirrors
+// apps/cms/src/lib/staff.ts — these rules are the authority, the UI is a
+// convenience. Nothing here trusts anything the client sends about identity;
+// `request.auth.token.email` is minted by Firebase Auth.
+//
+// Why documents rather than custom claims: setting a claim requires the Admin
+// SDK in a privileged environment (a Cloud Function), which requires Blaze.
+// This project is deliberately still on Spark — see the root README. The cost
+// is one extra document read per rule evaluation.
+//
+// Everything outside /staff stays denied. Articles, pages, issues, subscribers
+// and contact submissions are still in-memory seed data in the CMS (see
+// apps/cms/src/content/seed.ts); their collections and rules land with the
+// content modules in roadmap Phase 05–06. Do not add a wildcard `if true` here.
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null && request.auth.token.email != null;
+    }
+
+    // Document ids are lowercased emails, so every comparison must lowercase too.
+    function email() {
+      return signedIn() ? request.auth.token.email.lower() : '';
+    }
+
+    function isSelf(docId) {
+      return signedIn() && docId == email();
+    }
+
+    function staffPath() {
+      return /databases/$(database)/documents/staff/$(email());
+    }
+
+    function isStaff() {
+      return signedIn()
+        && exists(staffPath())
+        && get(staffPath()).data.active == true;
+    }
+
+    function role() {
+      return isStaff() ? get(staffPath()).data.role : 'none';
+    }
+
+    // Only the capability the /staff rules actually need. The rest of the role
+    // table (publish, edit pages, send the newsletter, edit anyone's draft)
+    // lives in lib/staff.ts and gets its clauses here when the collections
+    // those verbs act on exist — Phase 05–06.
+    function canManagePeople() { return role() == 'owner'; }
+
+    match /staff/{staffEmail} {
+
+      function validRole(r) {
+        return r in ['owner', 'chief', 'journalist', 'contributor'];
+      }
+
+      function wellFormed() {
+        return request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 120
+          && validRole(request.resource.data.role)
+          && request.resource.data.active is bool
+          // The id is the identity. Letting a record claim a different address
+          // than its own key would make every lookup above meaningless.
+          && staffEmail == staffEmail.lower();
+      }
+
+      // Reading your own record is what tells a newly invited person they are
+      // in — it has to work before they are established as staff.
+      allow get: if isStaff() || isSelf(staffEmail);
+
+      // The roster. Staff only: this is the company's contact list.
+      allow list: if isStaff();
+
+      allow create: if canManagePeople() && wellFormed();
+
+      allow update: if
+        // Owners administer everyone, but may not demote themselves — the last
+        // owner clicking the wrong option would lock the project out for good.
+        (canManagePeople() && wellFormed()
+          && !(isSelf(staffEmail) && request.resource.data.role != resource.data.role))
+        // Anyone may stamp their own arrival, and nothing else.
+        || (isSelf(staffEmail)
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastSignInAt']));
+
+      // Revoking your own access has no valid use and no way back.
+      allow delete: if canManagePeople() && !isSelf(staffEmail);
+    }
+
+    // Deny-by-default for everything else. See the note at the top of this file.
     match /{document=**} {
       allow read, write: if false;
     }

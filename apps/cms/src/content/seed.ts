@@ -256,12 +256,128 @@ export const MESSAGES: Message[] = [
   },
 ];
 
-export const ISSUES = [
-  { no: "08", subject: "The Bridge · No. 08 — What a brief is for", date: "01 Sep 2026", audience: "1,904 recipients", status: "Draft", stats: "— · —" },
-  { no: "07", subject: "The word that cost a campaign its audience", date: "01 Aug 2026", audience: "1,842 recipients", status: "Sent", stats: "48.2% open · 9.1% click" },
-  { no: "06", subject: "When the client is also the source", date: "01 Jul 2026", audience: "1,780 recipients", status: "Sent", stats: "51.0% open · 7.4% click" },
-  { no: "05", subject: "A style guide is a business document", date: "01 Jun 2026", audience: "1,701 recipients", status: "Sent", stats: "46.8% open · 6.2% click" },
+/** Newsletter audiences. Counts are the segment size the composer estimates against. */
+export const AUDIENCES = [
+  { id: "all", label: "All subscribers", count: 1904 },
+  { id: "en", label: "English", count: 1048 },
+  { id: "fr", label: "Français", count: 512 },
+  { id: "ar", label: "العربية", count: 344 },
+  { id: "clients", label: "Clients only", count: 87 },
 ] as const;
+
+export type AudienceId = (typeof AUDIENCES)[number]["id"];
+
+export function audience(id: string): (typeof AUDIENCES)[number] {
+  return AUDIENCES.find((a) => a.id === id) ?? AUDIENCES[0];
+}
+
+export type IssueStatus = "Draft" | "Scheduled" | "Sent" | "Canceled";
+
+export type Issue = {
+  no: string;
+  subject: string;
+  preheader: string;
+  /**
+   * The send slot, as an editor picks it: a wall-clock date and time read in
+   * `zone`. Null on a draft that has not been given a window yet. See
+   * lib/schedule.ts for why this is three fields and not one timestamp.
+   */
+  date: string | null;
+  time: string | null;
+  zone: string;
+  audienceId: AudienceId;
+  /** Ids from BRIDGE_PICKS that go in this letter. */
+  picks: string[];
+  status: IssueStatus;
+  /** What was actually delivered to, on a sent issue — not the segment size today. */
+  recipients: number | null;
+  stats: string;
+};
+
+export const ISSUES: Issue[] = [
+  {
+    no: "08",
+    subject: "The Bridge · No. 08 — What a brief is for",
+    preheader: "Plus: three Arabic headlines we argued about for an hour.",
+    date: "2026-09-01",
+    time: "09:00",
+    zone: "tunis",
+    audienceId: "all",
+    picks: ["p1", "p2", "p4"],
+    status: "Draft",
+    recipients: null,
+    stats: "— · —",
+  },
+  {
+    no: "07",
+    subject: "The word that cost a campaign its audience",
+    preheader: "One adjective, one wrong register, one campaign nobody finished reading.",
+    date: "2026-08-01",
+    time: "09:00",
+    zone: "tunis",
+    audienceId: "all",
+    picks: ["p1", "p3"],
+    status: "Sent",
+    recipients: 1842,
+    stats: "48.2% open · 9.1% click",
+  },
+  {
+    no: "06",
+    subject: "When the client is also the source",
+    preheader: "Where the newsroom rule bends, and where it does not.",
+    date: "2026-07-01",
+    time: "09:00",
+    zone: "tunis",
+    audienceId: "all",
+    picks: ["p2"],
+    status: "Sent",
+    recipients: 1780,
+    stats: "51.0% open · 7.4% click",
+  },
+  {
+    no: "05",
+    subject: "A style guide is a business document",
+    preheader: "Why the people who sign it off never read it.",
+    date: "2026-06-01",
+    time: "09:00",
+    zone: "tunis",
+    audienceId: "all",
+    picks: ["p4"],
+    status: "Sent",
+    recipients: 1701,
+    stats: "46.8% open · 6.2% click",
+  },
+];
+
+/**
+ * Every scheduling action taken on an issue, newest last. The composer appends
+ * to this, and the Schedule tab is a read of it — so "who moved the September
+ * letter, and when" has one answer instead of living in someone's memory.
+ */
+export type ScheduleAction = "Scheduled" | "Rescheduled" | "Canceled" | "Sent" | "Test sent" | "Draft saved";
+
+export type ScheduleEvent = {
+  id: string;
+  /** ISO instant the entry was written. */
+  at: string;
+  issueNo: string;
+  subject: string;
+  action: ScheduleAction;
+  detail: string;
+  actor: string;
+};
+
+export const SCHEDULE_LOG: ScheduleEvent[] = [
+  { id: "e1", at: "2026-05-27T10:20:00Z", issueNo: "05", subject: "A style guide is a business document", action: "Scheduled", detail: "Monday 1 June 2026 at 09:00 (UTC+1) · All subscribers · 1,701 recipients", actor: "Assia Touati" },
+  { id: "e2", at: "2026-06-01T08:00:00Z", issueNo: "05", subject: "A style guide is a business document", action: "Sent", detail: "1,701 delivered · 46.8% open · 6.2% click", actor: "Scheduler" },
+  { id: "e3", at: "2026-06-24T15:41:00Z", issueNo: "06", subject: "When the client is also the source", action: "Scheduled", detail: "Wednesday 1 July 2026 at 09:00 (UTC+1) · All subscribers · 1,780 recipients", actor: "Imen Bliwa" },
+  { id: "e4", at: "2026-07-01T08:00:00Z", issueNo: "06", subject: "When the client is also the source", action: "Sent", detail: "1,780 delivered · 51.0% open · 7.4% click", actor: "Scheduler" },
+  { id: "e5", at: "2026-07-28T09:05:00Z", issueNo: "07", subject: "The word that cost a campaign its audience", action: "Scheduled", detail: "Friday 31 July 2026 at 17:00 (UTC+1) · All subscribers · 1,842 recipients", actor: "Imen Bliwa" },
+  { id: "e6", at: "2026-07-29T11:12:00Z", issueNo: "07", subject: "The word that cost a campaign its audience", action: "Test sent", detail: "Test copy to the desk", actor: "Assia Touati" },
+  { id: "e7", at: "2026-07-29T11:30:00Z", issueNo: "07", subject: "The word that cost a campaign its audience", action: "Rescheduled", detail: "Moved from 31 Jul 2026 · 17:00 UTC+1 to 01 Aug 2026 · 09:00 UTC+1 — Friday evening is a dead slot", actor: "Assia Touati" },
+  { id: "e8", at: "2026-08-01T08:00:00Z", issueNo: "07", subject: "The word that cost a campaign its audience", action: "Sent", detail: "1,842 delivered · 48.2% open · 9.1% click", actor: "Scheduler" },
+  { id: "e9", at: "2026-08-19T14:02:00Z", issueNo: "08", subject: "The Bridge · No. 08 — What a brief is for", action: "Draft saved", detail: "Subject and four candidate pieces set", actor: "Imen Bliwa" },
+]; 
 
 export const SUBSCRIBERS = [
   { email: "s.benamor@medtech.tn", name: "Sonia Ben Amor", lang: "FR", source: "Contact form", joined: "18 Aug 2026" },
@@ -272,21 +388,9 @@ export const SUBSCRIBERS = [
   { email: "m.gharbi@unitunis.tn", name: "Mehdi Gharbi", lang: "AR", source: "Journal", joined: "21 Jul 2026" },
 ] as const;
 
-export const STAFF = [
-  { name: "Assia Touati", email: "assia@storybridge.tn", role: "Owner", scope: "Everything, including people and billing", mfa: "2FA on" },
-  { name: "Imen Bliwa", email: "imen@storybridge.tn", role: "Chief", scope: "Publishing, pages, newsletter, inbox", mfa: "2FA on" },
-  { name: "Nadia Trabelsi", email: "nadia@storybridge.tn", role: "Journalist", scope: "Writes and edits; publishing goes through review", mfa: "2FA on" },
-  { name: "Youssef Karray", email: "youssef@freelance.tn", role: "Contributor", scope: "Own drafts only", mfa: "Not set" },
-] as const;
-
-export const ROLE_MATRIX = [
-  { cap: "Write and edit own drafts", c1: "●", c2: "●", c3: "●", c4: "●" },
-  { cap: "Edit anyone's draft", c1: "●", c2: "●", c3: "●", c4: "—" },
-  { cap: "Publish to the live site", c1: "●", c2: "●", c3: "—", c4: "—" },
-  { cap: "Edit pages and sections", c1: "●", c2: "●", c3: "—", c4: "—" },
-  { cap: "Send The Bridge", c1: "●", c2: "●", c3: "—", c4: "—" },
-  { cap: "Manage people and access", c1: "●", c2: "—", c3: "—", c4: "—" },
-] as const;
+// STAFF and ROLE_MATRIX used to live here. People are real now: the roster is
+// the Firestore `staff` collection and the role table is CAPABILITIES in
+// lib/staff.ts, which firestore.rules enforces. See components/views/settings.tsx.
 
 export const ACTIVITY = [
   { when: "09:12", text: "Assia published “What a newsroom taught us about client work”." },
@@ -313,9 +417,12 @@ export function pill(status: string): { bg: string; fg: string } {
     case "In review":
       return { bg: "#F6EADB", fg: "#8F6135" };
     case "Scheduled":
+    case "Rescheduled":
       return { bg: "#E5EBF3", fg: "#002D62" };
     case "New":
       return { bg: "#F6EADB", fg: "#8F6135" };
+    case "Canceled":
+      return { bg: "#F3E3E3", fg: "#8A3B3B" };
     default:
       return { bg: "#EDE9E2", fg: "#5A6472" };
   }

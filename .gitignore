@@ -23,6 +23,10 @@ firestore-debug.log
 ui-debug.log
 *.tsbuildinfo
 
+# python (scripts/build-icons.py)
+__pycache__/
+*.pyc
+
 # misc
 .DS_Store
 *.log

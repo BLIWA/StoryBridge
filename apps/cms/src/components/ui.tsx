@@ -90,26 +90,34 @@ export function PrimaryButton({
   onClick,
   type = "button",
   style,
+  disabled = false,
+  title,
 }: {
   children: ReactNode;
   onClick?: () => void;
   type?: "button" | "submit";
   style?: CSSProperties;
+  /** Greys the button out and drops the hover rule, so it never invites a click it will ignore. */
+  disabled?: boolean;
+  /** Worth passing whenever `disabled` is true: it is where the reason goes. */
+  title?: string;
 }) {
   return (
     <button
       type={type}
       onClick={onClick}
-      data-hover="background:#001838"
+      disabled={disabled}
+      title={title}
+      data-hover={disabled ? undefined : "background:#001838"}
       style={{
-        background: "#002D62",
-        color: "#FDF8F1",
+        background: disabled ? "#D5D0C8" : "#002D62",
+        color: disabled ? "#8A8378" : "#FDF8F1",
         border: "none",
         borderRadius: "4px",
         padding: "11px 18px",
         fontWeight: 600,
         fontSize: "13.5px",
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
         whiteSpace: "nowrap",
         transition: "all .16s ease",
         ...style,
@@ -124,16 +132,22 @@ export function GhostButton({
   children,
   onClick,
   style,
+  disabled = false,
+  title,
 }: {
   children: ReactNode;
   onClick?: () => void;
   style?: CSSProperties;
+  disabled?: boolean;
+  title?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      data-hover="background:#F1EBE3"
+      disabled={disabled}
+      title={title}
+      data-hover={disabled ? undefined : "background:#F1EBE3"}
       style={{
         background: "#FDF8F1",
         border: "1px solid #D8D1C7",
@@ -141,8 +155,8 @@ export function GhostButton({
         padding: "10px 16px",
         fontWeight: 600,
         fontSize: "13.5px",
-        color: "#3E4650",
-        cursor: "pointer",
+        color: disabled ? "#A9A296" : "#3E4650",
+        cursor: disabled ? "not-allowed" : "pointer",
         whiteSpace: "nowrap",
         transition: "all .16s ease",
         ...style,

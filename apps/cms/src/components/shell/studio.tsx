@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Sidebar } from "./sidebar";
 import { VIEW_META, type View } from "@/lib/view";
 import { useAuth } from "@/lib/auth-context";
+import { ROLE_LABEL } from "@/lib/staff";
 import { ARTICLES, type Article } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
 import { ArticlesView } from "@/components/views/articles";
@@ -17,7 +18,7 @@ import { MESSAGES } from "@/content/seed";
 const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published"] as const;
 
 export function Studio() {
-  const { user, signOut } = useAuth();
+  const { user, staff, role, can, signOut } = useAuth();
   const [view, setView] = useState<View>("dash");
   const [collapsed, setCollapsed] = useState(false);
   const [articles, setArticles] = useState<Article[]>(ARTICLES);
@@ -26,14 +27,14 @@ export function Studio() {
   const [savedLabel, setSavedLabel] = useState("All changes saved");
 
   /**
-   * Role is display-only for now. The board splits chief (publishes directly)
-   * from journalist (must send to review); real enforcement needs Firebase
-   * custom claims, which is roadmap Phase 04 — so everyone signed in sees the
-   * chief-level UI, and Settings says so.
+   * Role comes from the signed-in user's `staff` record, and firestore.rules
+   * makes the same check — so hiding Publish from a journalist is a courtesy,
+   * not the control. The board splits chief (publishes directly) from
+   * journalist (sends to review), which is exactly what `can("publish")` is.
    */
-  const userName = user?.displayName || user?.email?.split("@")[0] || "Signed in";
-  const userRole = "Editor-in-chief";
-  const canPublish = true;
+  const userName = staff?.name || user?.displayName || user?.email?.split("@")[0] || "Signed in";
+  const userRole = role ? ROLE_LABEL[role] : "Signed in";
+  const canPublish = can("publish");
 
   const openCount = articles.filter((a) => a.status !== "Published").length;
   const newCount = MESSAGES.filter((m) => m.status === "New").length;
