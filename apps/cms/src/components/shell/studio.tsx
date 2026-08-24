@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ROLE_LABEL } from "@/lib/staff";
 import { ARTICLES, type Article } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
-import { ArticlesView } from "@/components/views/articles";
+import { ArticlesView, type Filter } from "@/components/views/articles";
 import { ArticleEditor } from "@/components/views/article-editor";
 import { PagesView } from "@/components/views/pages";
 import { IssuesView } from "@/components/views/issues";
@@ -15,14 +15,13 @@ import { InboxView } from "@/components/views/inbox";
 import { SettingsView } from "@/components/views/settings";
 import { MESSAGES } from "@/content/seed";
 
-const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published"] as const;
 
 export function Studio() {
   const { user, staff, role, can, signOut } = useAuth();
   const [view, setView] = useState<View>("dash");
   const [collapsed, setCollapsed] = useState(false);
   const [articles, setArticles] = useState<Article[]>(ARTICLES);
-  const [filter, setFilter] = useState<(typeof STATUSES)[number]>("All");
+  const [filter, setFilter] = useState<Filter>("All");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [savedLabel, setSavedLabel] = useState("All changes saved");
 

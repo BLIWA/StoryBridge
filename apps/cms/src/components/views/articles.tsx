@@ -5,8 +5,9 @@ import { pill, type Article, type ArticleStatus } from "@/content/seed";
 
 /** Journal list from "StoryBridge CMS.dc.html" (lines 224–251). */
 
-const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published"] as const;
-type Filter = (typeof STATUSES)[number];
+/** The status filter's options, and the type Studio holds the selection in. */
+export const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published"] as const;
+export type Filter = (typeof STATUSES)[number];
 
 const headCell = {
   fontFamily: "'IBM Plex Mono',monospace",
