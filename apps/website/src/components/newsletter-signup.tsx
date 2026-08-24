@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 /**
@@ -11,6 +12,7 @@ import { Link } from "@/i18n/navigation";
  * Phase 06; until that exists this stores nothing, so it must not imply it did.
  */
 export function NewsletterSignup() {
+  const t = useTranslations("NewsletterSignup");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -28,8 +30,8 @@ export function NewsletterSignup() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
-          aria-label="Your email address"
+          placeholder={t("placeholder")}
+          aria-label={t("ariaLabel")}
           style={{
             flex: 1,
             border: "1.5px solid rgba(253,248,241,0.24)",
@@ -56,18 +58,18 @@ export function NewsletterSignup() {
             transition: "all .16s ease",
           }}
         >
-          Subscribe
+          {t("submit")}
         </button>
       </div>
       {subscribed && (
         <div role="status" style={{ fontSize: "14px", color: "#B57D49", fontWeight: 500 }}>
-          Not connected yet — subscriptions go live when The Bridge starts sending.
+          {t("notWired")}
         </div>
       )}
       <div style={{ fontSize: "13px", lineHeight: "1.6", color: "rgba(253,248,241,0.55)" }}>
-        Monthly. No pitches, no drip sequence.{" "}
+        {t("blurb")}{" "}
         <Link href="/newsletter" style={{ color: "#B57D49", fontWeight: 500 }}>
-          See past issues →
+          {t("pastIssues")}
         </Link>
       </div>
     </form>

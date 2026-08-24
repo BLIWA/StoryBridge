@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { ContactForm } from "@/components/contact-form";
@@ -29,6 +29,7 @@ const card = {
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Contact");
 
   return (
     <>
@@ -36,9 +37,9 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         backdropId="wpgContact"
         variant="arcs"
         glyph="“"
-        eyebrow="Contact"
-        title="Tell us what the story is."
-        standfirst="A rough idea is enough to start. We reply within two working days with questions, scope and a fixed quote — and one project manager who stays with you from there."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        standfirst={t("standfirst")}
       />
 
       <div
@@ -56,12 +57,12 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
         <aside style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <div style={card}>
-            <div style={label}>Direct</div>
+            <div style={label}>{t("directLabel")}</div>
             <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "24px", color: "#002D62" }}>
               hello@storybridge.tn
             </div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#5A6472" }}>
-              Tunis, Tunisia · working with clients locally and internationally.
+              {t("location")}
             </div>
             <div
               style={{
@@ -74,29 +75,28 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 alignSelf: "flex-start",
               }}
             >
-              placeholder — add real address, phone, LinkedIn
+              {t("detailsPending")}
             </div>
           </div>
 
           <div style={card}>
-            <div style={label}>One point of contact</div>
+            <div style={label}>{t("contactTitle")}</div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>
-              Whoever answers this form stays on your assignment. A single project manager owns the brief from
-              the first call to the final file — no relay, no repeating yourself.
+              {t("contactBody")}
             </div>
           </div>
 
           <div style={card}>
-            <div style={label}>Working languages</div>
+            <div style={label}>{t("languagesTitle")}</div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>
-              Write to us in Arabic, French or English. We answer in the language you used.
+              {t("languagesBody")}
             </div>
           </div>
 
           <div style={card}>
-            <div style={label}>Not ready for a brief?</div>
+            <div style={label}>{t("notReadyTitle")}</div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>
-              Read the Journal, or take the monthly letter. Both are a fair sample of how we write.
+              {t("notReadyBody")}
             </div>
             <div style={{ display: "flex", gap: "10px", marginTop: "4px", flexWrap: "wrap" }}>
               <Link
@@ -112,7 +112,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   transition: "all .16s ease",
                 }}
               >
-                The Journal
+                {t("journalLink")}
               </Link>
               <Link
                 href="/newsletter"
@@ -127,7 +127,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   transition: "all .16s ease",
                 }}
               >
-                The Bridge
+                {t("bridgeLink")}
               </Link>
             </div>
           </div>

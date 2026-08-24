@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 /**
  * Brief form from the board's Contact page.
@@ -22,16 +23,11 @@ const field = {
   width: "100%",
 } as const;
 
-const NEEDS = [
-  "Content & editorial",
-  "Translation & localization",
-  "Editing & writing",
-  "Media & press",
-  "Launch package",
-  "Not sure yet",
-] as const;
+/** Ids only — the visible options are translated. */
+const NEEDS = ["editorial", "translation", "editing", "media", "launch", "unsure"] as const;
 
 export function ContactForm() {
+  const t = useTranslations("ContactForm");
   const [sent, setSent] = useState(false);
 
   if (sent) {
@@ -56,15 +52,16 @@ export function ContactForm() {
             lineHeight: "1.2",
           }}
         >
-          Nothing was sent yet.
+          {t("sentTitle")}
         </div>
         <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
-          This form has no destination behind it — enquiry routing and the CMS inbox are still to be built, so
-          your brief has not reached anyone. Until then, email{" "}
-          <a href="mailto:hello@storybridge.tn" style={{ color: "#8F6135", fontWeight: 600 }}>
-            hello@storybridge.tn
-          </a>{" "}
-          directly.
+          {t.rich("sentBody", {
+            mail: (chunks) => (
+              <a href="mailto:hello@storybridge.tn" style={{ color: "#8F6135", fontWeight: 600 }}>
+                {chunks}
+              </a>
+            ),
+          })}
         </div>
         <button
           type="button"
@@ -82,7 +79,7 @@ export function ContactForm() {
             cursor: "pointer",
           }}
         >
-          Back to the form
+          {t("backToForm")}
         </button>
       </div>
     );
@@ -98,40 +95,42 @@ export function ContactForm() {
     >
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "22px" }}>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>Full name</span>
-          <input type="text" required placeholder="Your name" style={field} />
+          <span style={label}>{t("name")}</span>
+          <input type="text" required placeholder={t("namePlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>Work email</span>
-          <input type="email" required placeholder="you@company.com" style={field} />
+          <span style={label}>{t("email")}</span>
+          <input type="email" required placeholder={t("emailPlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>Organisation</span>
-          <input type="text" placeholder="Company or outlet" style={field} />
+          <span style={label}>{t("organisation")}</span>
+          <input type="text" placeholder={t("organisationPlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>What do you need?</span>
+          <span style={label}>{t("need")}</span>
           <select style={field} defaultValue={NEEDS[0]}>
             {NEEDS.map((n) => (
-              <option key={n}>{n}</option>
+              <option key={n} value={n}>
+                {t(`needs.${n}`)}
+              </option>
             ))}
           </select>
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>Languages</span>
-          <input type="text" placeholder="e.g. Arabic and French" style={field} />
+          <span style={label}>{t("languages")}</span>
+          <input type="text" placeholder={t("languagesPlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>Deadline</span>
-          <input type="text" placeholder="dd / mm / yyyy" style={field} />
+          <span style={label}>{t("deadline")}</span>
+          <input type="text" placeholder={t("deadlinePlaceholder")} style={field} />
         </label>
       </div>
 
       <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-        <span style={label}>The brief</span>
+        <span style={label}>{t("brief")}</span>
         <textarea
           rows={6}
-          placeholder="What is the story, who is it for, and what would a good outcome look like?"
+          placeholder={t("briefPlaceholder")}
           style={{ ...field, resize: "vertical", fontFamily: "'IBM Plex Sans',sans-serif" }}
         />
       </label>
@@ -152,10 +151,10 @@ export function ContactForm() {
             transition: "all .16s ease",
           }}
         >
-          Send the brief
+          {t("submit")}
         </button>
         <div style={{ fontSize: "13.5px", lineHeight: "1.6", color: "#5A6472", maxWidth: "340px" }}>
-          We reply within two working days. Everything you send stays between us.
+          {t("reassurance")}
         </div>
       </div>
     </form>

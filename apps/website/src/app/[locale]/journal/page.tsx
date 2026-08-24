@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHeroBackdrop } from "@/components/fx/backdrops";
 import { JOURNAL_INDEX, JOURNAL_SECTIONS } from "@/content/journal";
@@ -19,6 +19,8 @@ const kicker = {
 export default async function JournalPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Journal");
+  const post = await getTranslations("JournalPosts");
 
   const [lead, ...rest] = JOURNAL_INDEX;
 
@@ -67,7 +69,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                 margin: 0,
               }}
             >
-              The StoryBridge Journal
+              {t("masthead")}
             </h1>
             <div
               style={{
@@ -77,7 +79,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                 color: "#8F6135",
               }}
             >
-              Notes from the desk
+              {t("title")}
             </div>
           </div>
           <div
@@ -91,8 +93,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
               animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .36s both",
             }}
           >
-            We publish what we know about language, media and the Maghreb — partly because it is useful,
-            partly because it is the fastest way for you to judge whether we can write.
+            {t("standfirst")}
           </div>
 
           <div
@@ -117,7 +118,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                   paddingBottom: "6px",
                 }}
               >
-                {s}
+                {t(`sections.${s}`)}
               </div>
             ))}
           </div>
@@ -150,11 +151,11 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                   color: "#5A6472",
                 }}
               >
-                lead image — 16:9
+                {t("leadImage")}
               </div>
             </div>
             <div style={kicker}>
-              {lead.section} · {lead.readTime} · {lead.date}
+              {post(`${lead.slug}.kicker`)} · {post(`${lead.slug}.date`)}
             </div>
             <div
               style={{
@@ -167,10 +168,10 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                 textWrap: "balance",
               }}
             >
-              {lead.title}
+              {post(`${lead.slug}.title`)}
             </div>
             <div style={{ fontSize: "17px", lineHeight: "1.7", color: "#3E4650", textWrap: "pretty" }}>
-              {lead.standfirst}
+              {post(`${lead.slug}.lede`)}
             </div>
             <div
               style={{
@@ -192,7 +193,11 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                 }}
               />
               <div style={{ fontSize: "14.5px", color: "#5A6472" }}>
-                By <span style={{ color: "#002D62", fontWeight: 600 }}>{lead.author}</span>
+                {t.rich("byline", {
+                  name: () => (
+                    <span style={{ color: "#002D62", fontWeight: 600 }}>{post(`${lead.slug}.author`)}</span>
+                  ),
+                })}
               </div>
             </div>
           </Link>
@@ -214,7 +219,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                 }}
               >
                 <div style={kicker}>
-                  {p.section} · {p.readTime}
+                  {post(`${p.slug}.kicker`)}
                 </div>
                 <div
                   style={{
@@ -225,9 +230,9 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
                     color: "#002D62",
                   }}
                 >
-                  {p.title}
+                  {post(`${p.slug}.title`)}
                 </div>
-                <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>{p.standfirst}</div>
+                <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>{post(`${p.slug}.standfirst`)}</div>
               </Link>
             ))}
           </div>

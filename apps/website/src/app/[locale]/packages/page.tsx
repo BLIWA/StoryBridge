@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { ArcWeaveDark } from "@/components/fx/backdrops";
@@ -22,6 +22,8 @@ const cardShadow = "0 1px 2px rgba(0,24,56,0.06),0 2px 8px rgba(0,24,56,0.05)";
 export default async function PackagesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Packages");
+  const d = await getTranslations("Desks");
 
   return (
     <>
@@ -29,17 +31,17 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
         backdropId="wpg4"
         variant="arcs"
         glyph="“"
-        eyebrow="Packages"
-        title="Named packages, scoped before we start."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
         titleMaxWidth="960px"
-        standfirst="Every package below is quoted against your brief — length, research depth, languages and turnaround change the number, so we give you a real one rather than a headline rate you'd have to argue with later."
+        standfirst={t("standfirst")}
       />
 
       <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px 40px 0" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "28px" }}>
           {PACKAGES.map((p) => (
             <div
-              key={p.name}
+              key={p.id}
               data-hover="box-shadow:0 2px 4px rgba(0,24,56,0.06),0 8px 24px rgba(0,24,56,0.08)"
               style={{
                 background: "#FDF8F1",
@@ -52,7 +54,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                 transition: "box-shadow .18s ease",
               }}
             >
-              <div style={deskLabel}>{p.desk}</div>
+              <div style={deskLabel}>{d(`${p.desk}.title`)}</div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -62,13 +64,13 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                   lineHeight: "1.15",
                 }}
               >
-                {p.name}
+                {t(`items.${p.id}.name`)}
               </div>
-              <div style={{ fontSize: "15px", lineHeight: "1.7", color: "#3E4650" }}>{p.body}</div>
+              <div style={{ fontSize: "15px", lineHeight: "1.7", color: "#3E4650" }}>{t(`items.${p.id}.body`)}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginTop: "4px" }}>
-                {p.items.map((item) => (
+                {Array.from({ length: p.itemCount }, (_, k) => (
                   <div
-                    key={item}
+                    key={k}
                     style={{
                       fontSize: "14.5px",
                       lineHeight: "1.6",
@@ -77,11 +79,11 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                       paddingInlineStart: "14px",
                     }}
                   >
-                    {item}
+                    {t(`items.${p.id}.items.${k}`)}
                   </div>
                 ))}
               </div>
-              {SHOW_PRICE_BANDS && "band" in p && p.band && (
+              {SHOW_PRICE_BANDS && p.band && (
                 <div
                   style={{
                     fontFamily: "'IBM Plex Mono',monospace",
@@ -92,7 +94,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                     padding: "10px 12px",
                   }}
                 >
-                  {p.band}
+                  {t(`items.${p.id}.band`)}
                 </div>
               )}
               <Link
@@ -106,7 +108,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                   paddingTop: "6px",
                 }}
               >
-                Request a quote →
+                {t("requestQuoteArrow")}
               </Link>
             </div>
           ))}
@@ -131,7 +133,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
               <ArcWeaveDark id="weaveLaunch" />
             </div>
             <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "14px", height: "100%" }}>
-              <div style={{ ...deskLabel, color: "#B57D49" }}>{LAUNCH_PACKAGE.eyebrow}</div>
+              <div style={{ ...deskLabel, color: "#B57D49" }}>{t("launch.eyebrow")}</div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -141,15 +143,15 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                   lineHeight: "1.15",
                 }}
               >
-                {LAUNCH_PACKAGE.name}
+                {t("launch.name")}
               </div>
               <div style={{ fontSize: "15px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-                {LAUNCH_PACKAGE.body}
+                {t("launch.body")}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginTop: "4px" }}>
-                {LAUNCH_PACKAGE.items.map((item) => (
+                {Array.from({ length: LAUNCH_PACKAGE.itemCount }, (_, k) => (
                   <div
-                    key={item}
+                    key={k}
                     style={{
                       fontSize: "14.5px",
                       lineHeight: "1.6",
@@ -158,7 +160,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                       paddingInlineStart: "14px",
                     }}
                   >
-                    {item}
+                    {t(`launch.items.${k}`)}
                   </div>
                 ))}
               </div>
@@ -177,7 +179,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                   transition: "all .16s ease",
                 }}
               >
-                Request a quote
+                {t("requestQuote")}
               </Link>
             </div>
           </div>
@@ -197,7 +199,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div style={{ ...deskLabel, fontSize: "11.5px", letterSpacing: "0.18em" }}>How quoting works</div>
+            <div style={{ ...deskLabel, fontSize: "11.5px", letterSpacing: "0.18em" }}>{t("quoteTitle")}</div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -208,17 +210,15 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                 letterSpacing: "-0.015em",
               }}
             >
-              A written scope before any invoice.
+              {t("quoteLead")}
             </div>
             <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
-              Send us the brief — or a rough version of it. We come back within two working days with scope,
-              deliverables, timeline and a fixed price. Nothing starts until you approve it, and the price
-              doesn&apos;t move unless the brief does.
+              {t("quoteBody")}
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             {QUOTE_STEPS.map((s) => (
-              <div key={s.n} style={{ display: "flex", gap: "20px", alignItems: "baseline" }}>
+              <div key={s.id} style={{ display: "flex", gap: "20px", alignItems: "baseline" }}>
                 <div
                   style={{
                     fontFamily: "'IBM Plex Mono',monospace",
@@ -229,7 +229,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                 >
                   {s.n}
                 </div>
-                <div style={{ fontSize: "16px", lineHeight: "1.7", color: "#3E4650" }}>{s.body}</div>
+                <div style={{ fontSize: "16px", lineHeight: "1.7", color: "#3E4650" }}>{t(`quote.${s.id}`)}</div>
               </div>
             ))}
             <Link
@@ -247,7 +247,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
                 transition: "all .16s ease",
               }}
             >
-              Send us a brief
+              {t("quoteCta")}
             </Link>
           </div>
         </div>

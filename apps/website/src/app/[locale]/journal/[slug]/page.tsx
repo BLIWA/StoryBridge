@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { JOURNAL_INDEX, FEATURED_POST } from "@/content/journal";
@@ -33,6 +33,9 @@ export default async function JournalPostPage({
   // The board writes out one post in full; the rest exist as index entries only.
   const isWritten = slug === FEATURED_POST.slug;
   const post = FEATURED_POST;
+  const t = await getTranslations("Article");
+  const entry = await getTranslations(`JournalPosts.${slug}`);
+  const full = await getTranslations("FeaturedPost");
 
   return (
     <>
@@ -48,7 +51,7 @@ export default async function JournalPostPage({
             color: "#8F6135",
           }}
         >
-          ← The Journal
+          {t("backToJournal")}
         </Link>
       </div>
 
@@ -62,7 +65,7 @@ export default async function JournalPostPage({
             color: "#8F6135",
           }}
         >
-          {meta.section} · {meta.readTime}
+          {entry("kicker")}
         </div>
         <h1
           style={{
@@ -76,7 +79,7 @@ export default async function JournalPostPage({
             textWrap: "balance",
           }}
         >
-          {meta.title}
+          {entry("title")}
         </h1>
         <div
           style={{
@@ -88,7 +91,7 @@ export default async function JournalPostPage({
             textWrap: "pretty",
           }}
         >
-          {isWritten ? post.standfirst : meta.standfirst}
+          {isWritten ? full("standfirst") : entry("standfirst")}
         </div>
 
         <div
@@ -112,8 +115,8 @@ export default async function JournalPostPage({
             }}
           />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "15px", fontWeight: 600, color: "#002D62" }}>{post.author}</div>
-            <div style={{ fontSize: "13.5px", color: "#5A6472" }}>{post.authorRole}</div>
+            <div style={{ fontSize: "15px", fontWeight: 600, color: "#002D62" }}>{full("author")}</div>
+            <div style={{ fontSize: "13.5px", color: "#5A6472" }}>{full("authorRole")}</div>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             {post.languages.map((l) => (
@@ -158,7 +161,7 @@ export default async function JournalPostPage({
                 color: "#5A6472",
               }}
             >
-              lead image — 16:9
+              {t("leadImage")}
             </div>
           </div>
           <figcaption
@@ -169,7 +172,7 @@ export default async function JournalPostPage({
               marginTop: "10px",
             }}
           >
-            {post.caption}
+            {full("caption")}
           </figcaption>
         </figure>
 
@@ -190,7 +193,7 @@ export default async function JournalPostPage({
                       margin: "14px 0 0",
                     }}
                   >
-                    {block.text}
+                    {full(block.key)}
                   </h2>
                 );
               }
@@ -215,7 +218,7 @@ export default async function JournalPostPage({
                         textWrap: "pretty",
                       }}
                     >
-                      {block.text}
+                      {full(block.key)}
                     </div>
                   </div>
                 );
@@ -223,8 +226,8 @@ export default async function JournalPostPage({
               if (block.type === "numbered") {
                 return (
                   <div key={i} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                    {block.items.map((item, j) => (
-                      <div key={item} style={{ display: "flex", gap: "18px", alignItems: "baseline" }}>
+                    {Array.from({ length: block.count }, (_, j) => (
+                      <div key={j} style={{ display: "flex", gap: "18px", alignItems: "baseline" }}>
                         <div
                           style={{
                             fontFamily: "'IBM Plex Mono',monospace",
@@ -235,7 +238,7 @@ export default async function JournalPostPage({
                         >
                           {String(j + 1).padStart(2, "0")}
                         </div>
-                        <div style={{ ...para, fontSize: "19px" }}>{item}</div>
+                        <div style={{ ...para, fontSize: "19px" }}>{full(`${block.key}.${j}`)}</div>
                       </div>
                     ))}
                   </div>
@@ -256,15 +259,15 @@ export default async function JournalPostPage({
                         paddingTop: "4px",
                       }}
                     >
-                      {post.dropCap}
+                      {full(post.dropCapKey)}
                     </span>
-                    {block.text}
+                    {full(block.key)}
                   </p>
                 );
               }
               return (
                 <p key={i} style={{ ...para, margin: 0 }}>
-                  {block.text}
+                  {full(block.key)}
                 </p>
               );
             })}
@@ -290,7 +293,7 @@ export default async function JournalPostPage({
                 }}
               />
               <div style={{ fontSize: "15px", lineHeight: "1.7", color: "#5A6472" }}>
-                <span style={{ color: "#002D62", fontWeight: 600 }}>{post.author}</span> {post.bio}
+                <span style={{ color: "#002D62", fontWeight: 600 }}>{full("author")}</span> {full("bio")}
               </div>
             </div>
           </div>
@@ -316,11 +319,10 @@ export default async function JournalPostPage({
                 color: "#8F6135",
               }}
             >
-              Not written yet
+              {t("notWrittenTitle")}
             </div>
             <div style={{ fontSize: "16px", lineHeight: "1.7", color: "#3E4650" }}>
-              This piece is listed on the Journal index but has no body text yet — the design board writes out
-              one post in full as the article template. Copy will be authored in the CMS.
+              {t("notWrittenBody")}
             </div>
           </div>
         )}
@@ -349,7 +351,7 @@ export default async function JournalPostPage({
                 color: "#B57D49",
               }}
             >
-              The Bridge · monthly
+              {t("newsletterEyebrow")}
             </div>
             <div
               style={{
@@ -360,7 +362,7 @@ export default async function JournalPostPage({
                 letterSpacing: "-0.015em",
               }}
             >
-              Get the next one in your inbox.
+              {t("newsletterTitle")}
             </div>
           </div>
           <NewsletterSignup />

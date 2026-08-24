@@ -155,17 +155,42 @@
     "arabic-copy-sounds-foreign-in-tunis": {
       "kicker": "Translation · 6 min",
       "title": "Why your Arabic copy sounds foreign in Tunis",
-      "standfirst": "Gulf-standard Arabic is not a neutral default. What Maghrebi audiences actually hear."
+      "standfirst": "Gulf-standard Arabic is not a neutral default. What Maghrebi audiences actually hear.",
+      "date": "March 2026",
+      "author": "Imen Bliwa",
+      "lede": "Most Arabic content aimed at North Africa is written for a Gulf ear and translated by people who have never had to sell anything in Tunis, Algiers or Casablanca. Here is what that costs you."
     },
     "the-brief-is-the-deliverable": {
       "kicker": "Craft · 8 min",
       "title": "The brief is the deliverable",
-      "standfirst": "Most content fails before a word is written. A newsroom fix for a marketing problem."
+      "standfirst": "Most content fails before a word is written. A newsroom fix for a marketing problem.",
+      "date": "",
+      "author": "",
+      "lede": ""
     },
     "what-a-fixer-actually-does": {
       "kicker": "Field · 5 min",
       "title": "What a fixer actually does",
-      "standfirst": "Access, contacts, permissions, timing — the invisible work behind a shoot that runs."
+      "standfirst": "Access, contacts, permissions, timing — the invisible work behind a shoot that runs.",
+      "date": "",
+      "author": "",
+      "lede": ""
+    },
+    "three-languages-one-press-release": {
+      "kicker": "The Maghreb · 7 min",
+      "title": "Three languages, one press release",
+      "standfirst": "How a Tunisian announcement should read differently in Arabic, French and English.",
+      "date": "",
+      "author": "",
+      "lede": ""
+    },
+    "every-piece-needs-a-reason-to-exist": {
+      "kicker": "Editorial craft · 4 min",
+      "title": "Every piece needs a reason to exist",
+      "standfirst": "On refusing to fill space, and what to publish instead.",
+      "date": "",
+      "author": "",
+      "lede": ""
     }
   },
   "WhoWeAre": {
@@ -243,6 +268,368 @@
         "title": "And we stay involved",
         "body": "For clients who need more than a one-off assignment, we can become an ongoing content and media partner — regular articles and translations, social content, editorial support, media coverage and field assignments on a recurring basis.",
         "aside": "Because the best work often comes from knowing the client, understanding their voice and building trust over time."
+      }
+    }
+  },
+  "Desks": {
+    "editorial": {
+      "title": "Content & Editorial",
+      "body": "Articles, website content, social-media content, branded content and editorial material — written to a brief, researched properly, and edited before you ever see it.",
+      "items": [
+        "Feature and news articles",
+        "Website and landing copy",
+        "Interviews and profiles",
+        "Newsletters, written and managed",
+        "Social and branded content",
+        "Reports and editorial material"
+      ]
+    },
+    "translation": {
+      "title": "Translation & Localization",
+      "body": "Arabic, English and French — with attention to meaning, context, tone and audience. Maghrebi Arabic where the audience is Maghrebi.",
+      "items": [
+        "AR ⇄ EN ⇄ FR translation",
+        "Website and app localization",
+        "Transcreation for campaigns",
+        "Subtitles and transcripts",
+        "Bilingual style guides",
+        "Review of existing translations"
+      ]
+    },
+    "editing": {
+      "title": "Editing & Writing",
+      "body": "Editing, proofreading, rewriting and improving existing content while preserving its purpose and voice. The desk work behind a publishable piece.",
+      "items": [
+        "Structural and line editing",
+        "Proofreading and fact-checking",
+        "Rewrites and restructuring",
+        "Non-native English polish",
+        "House style development",
+        "Editorial review of drafts"
+      ]
+    },
+    "media": {
+      "title": "Media & Press Services",
+      "body": "Press coverage, journalistic content, media support and communication materials — including work on the ground when the assignment requires it.",
+      "items": [
+        "Press releases and media kits",
+        "Distribution to regional media",
+        "Event and conference coverage",
+        "Fixing and field production",
+        "Research and background briefs",
+        "Interviews and multimedia"
+      ]
+    }
+  },
+  "Services": {
+    "eyebrow": "Services",
+    "title": "Four desks, one editorial standard.",
+    "standfirst": "Whether you need an article, an interview, a translation, event coverage, research or a fixer on the ground — we adapt the approach to what the story requires.",
+    "stageLabel": "STAGE {n}",
+    "workflowTitle": "The workflow, in the open",
+    "workflowNote": "No piece goes out on one person's judgement. You can see which stage your work is at, at any point.",
+    "workflow": {
+      "brief": {
+        "title": "Brief",
+        "body": "A conversation, then a written brief you sign off on: audience, purpose, scope, tone, deadline."
+      },
+      "writer": {
+        "title": "Native writer",
+        "body": "Written or translated by someone working into their first language. Never the other way round."
+      },
+      "editor": {
+        "title": "Editor",
+        "body": "A second pair of eyes on structure, accuracy, tone and audience fit — a real edit, not a spellcheck."
+      },
+      "qa": {
+        "title": "QA & delivery",
+        "body": "Names, figures, links, terminology and formatting checked against the brief before it reaches you."
+      }
+    },
+    "contactTitle": "One point of contact",
+    "contactLead": "A single project manager per assignment.",
+    "contactBody": "One person owns your brief from first call to final file. No relay of account handlers, no repeating yourself, no wondering who to email.",
+    "languagesTitle": "Working languages",
+    "languagesLead": "Arabic, English, French — in any direction.",
+    "languagesBody": "Including the Maghrebi register that Gulf-centric suppliers miss, and the French that North African institutions actually use.",
+    "packagesLink": "See the packages →"
+  },
+  "Packages": {
+    "eyebrow": "Packages",
+    "title": "Named packages, scoped before we start.",
+    "standfirst": "Every package below is quoted against your brief — length, research depth, languages and turnaround change the number, so we give you a real one rather than a headline rate you'd have to argue with later.",
+    "requestQuote": "Request a quote",
+    "requestQuoteArrow": "Request a quote →",
+    "items": {
+      "articlePack": {
+        "name": "Article Pack",
+        "body": "A run of researched articles — four, eight or twelve — commissioned, written, edited and delivered on a publishing schedule.",
+        "items": [
+          "Brief and angle development",
+          "Research and interviews as needed",
+          "Full edit and QA on each piece",
+          "One language, or all three"
+        ],
+        "band": "indicative · $80–250 per article"
+      },
+      "websiteContent": {
+        "name": "Website Content",
+        "body": "Every page of a site written from scratch or rewritten — structure, voice and hierarchy included, not just words in boxes.",
+        "items": [
+          "Page-by-page content plan",
+          "Home, about, services, contact",
+          "Tone-of-voice note for future pages",
+          "Trilingual versions available"
+        ]
+      },
+      "pressRelease": {
+        "name": "Press Release + Distribution",
+        "body": "Written the way a newsroom wants to receive it, then sent to the regional media that would actually run it.",
+        "items": [
+          "Release drafted in AR / FR / EN",
+          "Media list built for the story",
+          "Distribution and follow-up",
+          "Coverage report"
+        ],
+        "band": "indicative · retainers $1,000–3,000 / month"
+      },
+      "localization": {
+        "name": "Localization",
+        "body": "Your existing material carried into Arabic, French or English so it reads as though it was written there.",
+        "items": [
+          "Translation by a native writer",
+          "Editor review against the source",
+          "Terminology and glossary kept",
+          "Maghrebi register on request"
+        ],
+        "band": "indicative · $0.06–0.12 per word"
+      },
+      "editorialPolish": {
+        "name": "Editorial Polish",
+        "body": "You wrote it. We make it publishable — structure, accuracy and tone, with your voice left intact.",
+        "items": [
+          "Structural and line edit",
+          "Fact and consistency check",
+          "Tracked changes and a short note",
+          "Per project or per batch"
+        ],
+        "band": "indicative · $0.02–0.05 per word"
+      }
+    },
+    "launch": {
+      "eyebrow": "All four desks · bundled",
+      "name": "Launch Package",
+      "body": "For a product, campaign or organisation going public: content, translation, press release and distribution, run as one assignment by one manager.",
+      "items": [
+        "Core content set, written",
+        "Trilingual versions",
+        "Press release + media distribution",
+        "Coverage report and follow-through"
+      ]
+    },
+    "quoteTitle": "How quoting works",
+    "quoteLead": "A written scope before any invoice.",
+    "quoteBody": "Send us the brief — or a rough version of it. We come back within two working days with scope, deliverables, timeline and a fixed price. Nothing starts until you approve it, and the price doesn't move unless the brief does.",
+    "quoteCta": "Send us a brief",
+    "quote": {
+      "send": "You send a brief, a link, or a rough idea.",
+      "questions": "We ask the questions that change the price — length, research, languages, deadline.",
+      "quote": "You get a written scope and a fixed quote within two working days.",
+      "manager": "One project manager runs it from there."
+    }
+  },
+  "Work": {
+    "eyebrow": "Selected work",
+    "title": "The brief, the work, the result.",
+    "standfirst": "Case studies are published once a client agrees to be named. The structure below is what each one will follow.",
+    "badge": "In preparation",
+    "comingTitle": "Case studies are on their way.",
+    "comingBody": "We publish work once the client has agreed to be named. In the meantime, the Journal is the fastest way to judge the writing.",
+    "readJournal": "Read the Journal",
+    "testimonialsTitle": "What clients say",
+    "placeholder": "PLACEHOLDER",
+    "nameLabel": "Name",
+    "roleLabel": "Role, organisation",
+    "testimonials": [
+      "A two-sentence quote from the client about what working with StoryBridge was actually like.",
+      "A two-sentence quote naming the specific problem we solved, not a generic compliment.",
+      "A two-sentence quote from a returning client — retention is the strongest signal we have."
+    ]
+  },
+  "Founders": {
+    "eyebrow": "The founders",
+    "title": "Two bylines behind every brief.",
+    "standfirst": "StoryBridge is not a marketplace with a logo on top. The people who scope your work are the people who edit it.",
+    "languagesLabel": "Languages",
+    "contactLabel": "Contact",
+    "placeholder": "placeholder",
+    "deskLabel": "On the desk",
+    "creditsLabel": "Selected credits",
+    "creditsPending": "placeholder — real credits to come",
+    "people": {
+      "assia": {
+        "name": "Assia Touati",
+        "role": "Co-founder · Editor-in-chief",
+        "portrait": "portrait — Assia Touati",
+        "languages": "Arabic · French · English",
+        "email": "assia@storybridge.tn · LinkedIn",
+        "lede": "An open-minded editor-in-chief with a strong editorial instinct and a talent for turning ideas into clear, engaging and meaningful content.",
+        "paras": [
+          "Assia's experience in editorial work brings the perspective a piece of content usually lacks: understanding the audience, shaping the message, and making the work function as part of a larger product rather than as an isolated deliverable. She decides what a story is before anyone starts writing it, and she is the last reader before it goes out.",
+          "She and Imen met at a magazine, where they built a media product from the inside — learning how an idea becomes a story, and how stories become something people actually connect with. That experience is the operating model StoryBridge runs on today."
+        ],
+        "desk": "Editorial direction · commissioning · structural editing · audience and message strategy · content as product",
+        "credits": "Magazine and outlet names, titles held, notable products launched."
+      },
+      "imen": {
+        "name": "Imen Bliwa",
+        "role": "Co-founder · Journalist, translator, researcher",
+        "portrait": "portrait — Imen Bliwa",
+        "languages": "Arabic · English · French",
+        "email": "imen@storybridge.tn · LinkedIn",
+        "lede": "A journalist, translator and researcher working across Arabic, English and French, with more than a decade in journalism, translation and international media.",
+        "paras": [
+          "Imen's work has moved across subjects, audiences and formats — reporting and research, translation, content development, and the field work that sits behind all of it. She knows what it takes to get access, find the right contacts and come back with the material a story actually needs.",
+          "That range is why StoryBridge can take an assignment from a first conversation to a finished piece in three languages without handing it to strangers halfway through."
+        ],
+        "desk": "Reporting · interviews · AR/EN/FR translation · research · fixing and field production",
+        "credits": "Outlets published in, international media worked with, notable assignments."
+      }
+    }
+  },
+  "Contact": {
+    "eyebrow": "Contact",
+    "title": "Tell us what the story is.",
+    "standfirst": "A rough idea is enough to start. We reply within two working days with questions, scope and a fixed quote — and one project manager who stays with you from there.",
+    "directLabel": "Direct",
+    "location": "Tunis, Tunisia · working with clients locally and internationally.",
+    "detailsPending": "placeholder — add real address, phone, LinkedIn",
+    "contactTitle": "One point of contact",
+    "contactBody": "Whoever answers this form stays on your assignment. A single project manager owns the brief from the first call to the final file — no relay, no repeating yourself.",
+    "languagesTitle": "Working languages",
+    "languagesBody": "Write to us in Arabic, French or English. We answer in the language you used.",
+    "notReadyTitle": "Not ready for a brief?",
+    "notReadyBody": "Read the Journal, or take the monthly letter. Both are a fair sample of how we write.",
+    "journalLink": "The Journal",
+    "bridgeLink": "The Bridge"
+  },
+  "ContactForm": {
+    "sentTitle": "Nothing was sent yet.",
+    "sentBody": "This form has no destination behind it — enquiry routing and the CMS inbox are still to be built, so your brief has not reached anyone. Until then, email <mail>hello@storybridge.tn</mail> directly.",
+    "backToForm": "Back to the form",
+    "name": "Full name",
+    "namePlaceholder": "Your name",
+    "email": "Work email",
+    "emailPlaceholder": "you@company.com",
+    "organisation": "Organisation",
+    "organisationPlaceholder": "Company or outlet",
+    "need": "What do you need?",
+    "languages": "Languages",
+    "languagesPlaceholder": "e.g. Arabic and French",
+    "deadline": "Deadline",
+    "deadlinePlaceholder": "dd / mm / yyyy",
+    "brief": "The brief",
+    "briefPlaceholder": "What is the story, who is it for, and what would a good outcome look like?",
+    "submit": "Send the brief",
+    "reassurance": "We reply within two working days. Everything you send stays between us.",
+    "needs": {
+      "editorial": "Content & editorial",
+      "translation": "Translation & localization",
+      "editing": "Editing & writing",
+      "media": "Media & press",
+      "launch": "Launch package",
+      "unsure": "Not sure yet"
+    }
+  },
+  "NewsletterSignup": {
+    "placeholder": "you@company.com",
+    "ariaLabel": "Your email address",
+    "submit": "Subscribe",
+    "notWired": "Not connected yet — subscriptions go live when The Bridge starts sending.",
+    "blurb": "Monthly. No pitches, no drip sequence.",
+    "pastIssues": "See past issues →"
+  },
+  "Journal": {
+    "masthead": "The StoryBridge Journal",
+    "title": "Notes from the desk",
+    "standfirst": "We publish what we know about language, media and the Maghreb — partly because it is useful, partly because it is the fastest way for you to judge whether we can write.",
+    "leadImage": "lead image — 16:9",
+    "byline": "By <name></name>",
+    "sections": {
+      "all": "All",
+      "translation": "Translation",
+      "craft": "Editorial craft",
+      "field": "Field & media",
+      "maghreb": "The Maghreb"
+    }
+  },
+  "Article": {
+    "backToJournal": "← The Journal",
+    "leadImage": "lead image — 16:9",
+    "notWrittenTitle": "Not written yet",
+    "notWrittenBody": "This piece is listed on the Journal index but has no body text yet — the design board writes out one post in full as the article template. Copy will be authored in the CMS.",
+    "newsletterEyebrow": "The Bridge · monthly",
+    "newsletterTitle": "Get the next one in your inbox."
+  },
+  "FeaturedPost": {
+    "standfirst": "Most Arabic content aimed at North Africa is written for a Gulf ear. Your readers notice — even when they can't tell you why.",
+    "author": "Imen Bliwa",
+    "authorRole": "Co-founder · 14 March 2026",
+    "caption": "Caption line — where the photograph was taken and who took it.",
+    "dropCap": "T",
+    "b0": "here is a version of Arabic that lives on brochures, in press releases and across half the region's websites. It is grammatically correct. It is also unmistakably borrowed — the register of a Gulf agency, applied to an audience in Tunis, Algiers or Casablanca that speaks and reads differently.",
+    "b1": "Modern Standard Arabic is a real, shared language, and there are contexts where it is exactly right. The problem is not MSA itself. The problem is treating it as a neutral default, and assuming that a translator who has never worked with a North African audience will land the same way as one who has.",
+    "b2": "What readers actually notice",
+    "b3": "Rarely the grammar. Almost always the vocabulary choices, the sentence rhythm, and the assumptions underneath: what needs explaining, what can be taken for granted, which institutions get named, which examples ring true. A Tunisian reader will finish the paragraph and come away with the impression that it was not written for them — without necessarily being able to point to the word that gave it away.",
+    "b4": "Translation is not replacing one word with another. It is carrying context, culture, tone, audience and purpose across, so the message feels native in its new language.",
+    "b5": "This is the part that no glossary and no machine solves for you. It is a judgement call made by someone who knows the audience, checked by an editor who also knows the audience — which is why we run every translation through both, in that order.",
+    "b6": "Three questions before you commission anything in Arabic",
+    "b7": [
+      "Where does the reader live, and what do they read on an ordinary day?",
+      "Is this a formal document, or is it meant to persuade someone?",
+      "Who is going to read the Arabic back before it publishes — and are they from the audience?"
+    ],
+    "b8": "If the answer to the third one is nobody, that is the gap. It is also the cheapest one to close.",
+    "bio": "is a journalist, translator and researcher working across Arabic, English and French, and a co-founder of StoryBridge Content & Media."
+  },
+  "Newsletter": {
+    "eyebrow": "The Bridge · monthly newsletter",
+    "title": "One letter a month, worth the open.",
+    "standfirst": "Language, media and the Maghreb — what we are reading, what we are arguing about on the desk, and one piece of craft you can use. Written by us, in the voice we write for clients.",
+    "latestLabel": "ISSUE 07",
+    "latestTitle": "The word that cost a campaign its audience",
+    "latestBody": "Three paragraphs on one translation decision, why it went wrong, and the twenty-second check that would have caught it.",
+    "alsoInIssue": "Also in this issue",
+    "pastIssues": "Past issues",
+    "pastIssuesNote": "Read a few before you subscribe. That is rather the point.",
+    "serviceEyebrow": "Newsletters as a service",
+    "serviceTitle": "We can run yours too.",
+    "serviceBody": "The Bridge is the demonstration. Newsletter writing and management is part of our Content & Editorial line — for companies who want a letter their subscribers actually read.",
+    "serviceCta": "Talk to us about it",
+    "issues": {
+      "06": {
+        "label": "ISSUE 06 · FEBRUARY",
+        "title": "When the client is also the source"
+      },
+      "05": {
+        "label": "ISSUE 05 · JANUARY",
+        "title": "A style guide is a business document"
+      },
+      "04": {
+        "label": "ISSUE 04 · DECEMBER",
+        "title": "The year in Maghrebi media"
+      },
+      "03": {
+        "label": "ISSUE 03 · NOVEMBER",
+        "title": "Interviews people actually finish"
+      },
+      "02": {
+        "label": "ISSUE 02 · OCTOBER",
+        "title": "Against the content calendar"
+      },
+      "01": {
+        "label": "ISSUE 01 · SEPTEMBER",
+        "title": "Why we started StoryBridge"
       }
     }
   }

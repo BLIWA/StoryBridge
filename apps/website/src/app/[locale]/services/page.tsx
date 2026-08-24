@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { QuoteTile } from "@/components/fx/backdrops";
@@ -19,6 +19,8 @@ const mono = {
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Services");
+  const d = await getTranslations("Desks");
 
   return (
     <>
@@ -26,16 +28,16 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         backdropId="wpg3"
         variant="quotes"
         glyph="”"
-        eyebrow="Services"
-        title="Four desks, one editorial standard."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
         titleMaxWidth="960px"
-        standfirst="Whether you need an article, an interview, a translation, event coverage, research or a fixer on the ground — we adapt the approach to what the story requires."
+        standfirst={t("standfirst")}
       />
 
       <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px 40px 0", display: "flex", flexDirection: "column" }}>
         {SERVICE_DESKS.map((desk, i) => (
           <div
-            key={desk.title}
+            key={desk.id}
             style={{
               display: "grid",
               gridTemplateColumns: "88px 1fr 1.15fr",
@@ -79,14 +81,14 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                   margin: 0,
                 }}
               >
-                {desk.title}
+                {d(`${desk.id}.title`)}
               </h2>
-              <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{desk.body}</div>
+              <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{d(`${desk.id}.body`)}</div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 28px" }}>
-              {desk.items.map((item) => (
+              {Array.from({ length: desk.itemCount }, (_, k) => (
                 <div
-                  key={item}
+                  key={k}
                   style={{
                     fontSize: "15px",
                     lineHeight: "1.7",
@@ -95,7 +97,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                     paddingInlineStart: "16px",
                   }}
                 >
-                  {item}
+                  {d(`${desk.id}.items.${k}`)}
                 </div>
               ))}
             </div>
@@ -141,11 +143,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 letterSpacing: "-0.015em",
               }}
             >
-              The workflow, in the open
+              {t("workflowTitle")}
             </div>
             <div style={{ fontSize: "15px", color: "#5A6472", maxWidth: "560px", lineHeight: 1.6 }}>
-              No piece goes out on one person&apos;s judgement. You can see which stage your work is at, at any
-              point.
+              {t("workflowNote")}
             </div>
           </div>
 
@@ -161,7 +162,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
           >
             {WORKFLOW_STAGES.map((s, i) => (
               <div
-                key={s.stage}
+                key={s.id}
                 style={{
                   padding: "34px",
                   display: "flex",
@@ -170,7 +171,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                   borderInlineStart: i === 0 ? undefined : "1px solid #E6E0D8",
                 }}
               >
-                <div style={mono}>{s.stage}</div>
+                <div style={mono}>{t("stageLabel", { n: s.n })}</div>
                 <div
                   style={{
                     fontFamily: "'Source Serif 4',serif",
@@ -179,9 +180,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                     color: "#002D62",
                   }}
                 >
-                  {s.title}
+                  {t(`workflow.${s.id}.title`)}
                 </div>
-                <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>{s.body}</div>
+                <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>{t(`workflow.${s.id}.body`)}</div>
               </div>
             ))}
           </div>
@@ -197,7 +198,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 gap: "12px",
               }}
             >
-              <div style={{ ...mono, textTransform: "uppercase", color: "#B57D49" }}>One point of contact</div>
+              <div style={{ ...mono, textTransform: "uppercase", color: "#B57D49" }}>{t("contactTitle")}</div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -207,11 +208,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                   lineHeight: "1.25",
                 }}
               >
-                A single project manager per assignment.
+                {t("contactLead")}
               </div>
               <div style={{ fontSize: "15px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-                One person owns your brief from first call to final file. No relay of account handlers, no
-                repeating yourself, no wondering who to email.
+                {t("contactBody")}
               </div>
             </div>
             <div
@@ -225,7 +225,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 background: "#FDF8F1",
               }}
             >
-              <div style={{ ...mono, textTransform: "uppercase" }}>Working languages</div>
+              <div style={{ ...mono, textTransform: "uppercase" }}>{t("languagesTitle")}</div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -235,11 +235,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                   lineHeight: "1.25",
                 }}
               >
-                Arabic, English, French — in any direction.
+                {t("languagesLead")}
               </div>
               <div style={{ fontSize: "15px", lineHeight: "1.7", color: "#3E4650" }}>
-                Including the Maghrebi register that Gulf-centric suppliers miss, and the French that North
-                African institutions actually use.
+                {t("languagesBody")}
               </div>
             </div>
           </div>
@@ -258,7 +257,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 transition: "all .16s ease",
               }}
             >
-              See the packages →
+              {t("packagesLink")}
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHeroBackdrop } from "@/components/fx/backdrops";
 import { NewsletterSignup } from "@/components/newsletter-signup";
@@ -20,6 +20,7 @@ const mono = {
 export default async function NewsletterPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Newsletter");
 
   return (
     <>
@@ -55,7 +56,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 animation: "sb-wipe .8s cubic-bezier(.2,.7,.2,1) .1s both",
               }}
             />
-            <div style={mono}>The Bridge · monthly newsletter</div>
+            <div style={mono}>{t("eyebrow")}</div>
             <h1
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -68,11 +69,10 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 textWrap: "balance",
               }}
             >
-              One letter a month, worth the open.
+              {t("title")}
             </h1>
             <div style={{ fontSize: "18px", lineHeight: "1.7", color: "#3E4650", maxWidth: "560px" }}>
-              Language, media and the Maghreb — what we are reading, what we are arguing about on the desk, and
-              one piece of craft you can use. Written by us, in the voice we write for clients.
+              {t("standfirst")}
             </div>
             <div
               style={{
@@ -119,7 +119,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
               >
                 The Bridge
               </div>
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>ISSUE 07</div>
+              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>{t("latestLabel")}</div>
             </div>
             <div
               style={{
@@ -130,15 +130,14 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 color: "#002D62",
               }}
             >
-              The word that cost a campaign its audience
+              {t("latestTitle")}
             </div>
             <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
-              Three paragraphs on one translation decision, why it went wrong, and the twenty-second check
-              that would have caught it.
+              {t("latestBody")}
             </div>
             <div style={{ height: "1px", background: "#E6E0D8" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>Also in this issue</div>
+              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>{t("alsoInIssue")}</div>
               {[
                 "— Reading list: four pieces on Maghrebi media",
                 "— From the desk: how we scope a trilingual brief",
@@ -176,16 +175,16 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
               letterSpacing: "-0.015em",
             }}
           >
-            Past issues
+            {t("pastIssues")}
           </div>
           <div style={{ fontSize: "15px", color: "#5A6472", lineHeight: 1.6 }}>
-            Read a few before you subscribe. That is rather the point.
+            {t("pastIssuesNote")}
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "0 40px" }}>
           {NEWSLETTER_ISSUES.map((iss) => (
             <div
-              key={iss.issue}
+              key={iss}
               data-hover="background:#FDF8F1"
               style={{
                 display: "flex",
@@ -196,7 +195,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 transition: "background .16s ease",
               }}
             >
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>{iss.issue}</div>
+              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>{t(`issues.${iss}.label`)}</div>
               <div
                 style={{
                   fontFamily: "'Source Serif 4',serif",
@@ -206,7 +205,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                   color: "#002D62",
                 }}
               >
-                {iss.title}
+                {t(`issues.${iss}.title`)}
               </div>
             </div>
           ))}
@@ -228,7 +227,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-            <div style={mono}>Newsletters as a service</div>
+            <div style={mono}>{t("serviceEyebrow")}</div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -239,11 +238,10 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 letterSpacing: "-0.015em",
               }}
             >
-              We can run yours too.
+              {t("serviceTitle")}
             </div>
             <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
-              The Bridge is the demonstration. Newsletter writing and management is part of our Content &amp;
-              Editorial line — for companies who want a letter their subscribers actually read.
+              {t("serviceBody")}
             </div>
             <Link
               href="/contact"
@@ -260,7 +258,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 transition: "all .16s ease",
               }}
             >
-              Talk to us about it
+              {t("serviceCta")}
             </Link>
           </div>
           <div

@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { routing } from "@/i18n/routing";
@@ -24,15 +24,12 @@ const mono = {
   color: "#8F6135",
 } as const;
 
-const TESTIMONIALS = [
-  "A two-sentence quote from the client about what working with StoryBridge was actually like.",
-  "A two-sentence quote naming the specific problem we solved, not a generic compliment.",
-  "A two-sentence quote from a returning client — retention is the strongest signal we have.",
-] as const;
+const TESTIMONIAL_COUNT = 3;
 
 export default async function WorkPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations("Work");
 
   return (
     <>
@@ -40,9 +37,9 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
         backdropId="wpgWork"
         variant="quotes"
         glyph="”"
-        eyebrow="Selected work"
-        title="The brief, the work, the result."
-        standfirst="Case studies are published once a client agrees to be named. The structure below is what each one will follow."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        standfirst={t("standfirst")}
       />
 
       {MODE === "coming-soon" ? (
@@ -62,7 +59,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
               textAlign: "start",
             }}
           >
-            <div style={mono}>In preparation</div>
+            <div style={mono}>{t("badge")}</div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -73,11 +70,10 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
                 letterSpacing: "-0.015em",
               }}
             >
-              Case studies are on their way.
+              {t("comingTitle")}
             </div>
             <div style={{ fontSize: "17px", lineHeight: "1.75", color: "#3E4650" }}>
-              We publish work once the client has agreed to be named. In the meantime, the Journal is the
-              fastest way to judge the writing.
+              {t("comingBody")}
             </div>
             <Link
               href="/journal"
@@ -93,7 +89,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
                 transition: "all .16s ease",
               }}
             >
-              Read the Journal
+              {t("readJournal")}
             </Link>
           </div>
         </div>
@@ -121,7 +117,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
               letterSpacing: "-0.015em",
             }}
           >
-            What clients say
+            {t("testimonialsTitle")}
           </div>
           <div
             style={{
@@ -135,13 +131,13 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
               marginInlineStart: "auto",
             }}
           >
-            PLACEHOLDER
+            {t("placeholder")}
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "28px" }}>
-          {TESTIMONIALS.map((quote) => (
+          {Array.from({ length: TESTIMONIAL_COUNT }, (_, k) => (
             <div
-              key={quote}
+              key={k}
               style={{
                 background: "#FDF8F1",
                 borderRadius: "8px",
@@ -161,7 +157,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
                   textWrap: "pretty",
                 }}
               >
-                {quote}
+                {t(`testimonials.${k}`)}
               </div>
               <div style={{ display: "flex", gap: "12px", alignItems: "center", marginTop: "auto" }}>
                 <div
@@ -175,8 +171,8 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
                   }}
                 />
                 <div>
-                  <div style={{ fontSize: "14.5px", fontWeight: 600, color: "#002D62" }}>Name</div>
-                  <div style={{ fontSize: "13.5px", color: "#5A6472" }}>Role, organisation</div>
+                  <div style={{ fontSize: "14.5px", fontWeight: 600, color: "#002D62" }}>{t("nameLabel")}</div>
+                  <div style={{ fontSize: "13.5px", color: "#5A6472" }}>{t("roleLabel")}</div>
                 </div>
               </div>
             </div>
