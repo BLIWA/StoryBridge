@@ -22,7 +22,7 @@ export async function TranslationNotice({ locale }: { locale: string }) {
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "9px 40px",
+          padding: "9px var(--sb-gutter)",
           fontFamily: "'IBM Plex Mono',monospace",
           fontSize: "11.5px",
           lineHeight: 1.6,

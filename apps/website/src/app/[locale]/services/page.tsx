@@ -34,14 +34,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         standfirst={t("standfirst")}
       />
 
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px 40px 0", display: "flex", flexDirection: "column" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px var(--sb-gutter) 0", display: "flex", flexDirection: "column" }}>
         {SERVICE_DESKS.map((desk, i) => (
-          <div
+          <div className="grid grid-cols-1 lg:grid-cols-[88px_1fr_1.15fr]"
             key={desk.id}
             style={{
               display: "grid",
-              gridTemplateColumns: "88px 1fr 1.15fr",
-              gap: "48px",
+              gap: "clamp(28px,5vw,48px)",
               borderTop: "1px solid #D8D1C7",
               borderBottom: i === SERVICE_DESKS.length - 1 ? "1px solid #D8D1C7" : undefined,
               padding: "44px 0",
@@ -74,7 +73,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               <h2
                 style={{
                   fontFamily: "'Source Serif 4',serif",
-                  fontSize: "34px",
+                  fontSize: "clamp(24px,3.2vw,34px)",
                   fontWeight: 600,
                   color: "#002D62",
                   lineHeight: "1.1",
@@ -85,7 +84,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               </h2>
               <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>{d(`${desk.id}.body`)}</div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 28px" }}>
+            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "12px 28px" }}>
               {Array.from({ length: desk.itemCount }, (_, k) => (
                 <div
                   key={k}
@@ -121,7 +120,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         >
           <QuoteTile id="qSvc" size={60} glyph={42} opacity={0.24} />
         </div>
-        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px 40px" }}>
+        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
           <div
             style={{
               display: "flex",
@@ -137,7 +136,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               style={{
                 fontFamily: "'Source Serif 4',serif",
                 fontWeight: 600,
-                fontSize: "38px",
+                fontSize: "clamp(24px,3.6vw,38px)",
                 lineHeight: 1,
                 color: "#002D62",
                 letterSpacing: "-0.015em",
@@ -150,10 +149,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             </div>
           </div>
 
-          <div
+          <div className="grid grid-cols-2 lg:grid-cols-4"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4,1fr)",
               background: "#FDF8F1",
               borderRadius: "8px",
               overflow: "hidden",
@@ -187,7 +185,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", marginTop: "32px" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "32px", marginTop: "32px" }}>
             <div
               style={{
                 background: "#002D62",

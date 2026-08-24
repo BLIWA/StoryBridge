@@ -6,6 +6,28 @@
  * The design board is the spec — do not retune these values by eye.
  */
 
+:root {
+  /*
+   * Page gutter. The design board is drawn on a fixed 1320px canvas with a
+   * 40px inset, which pins content to the edge of a phone. Every page
+   * container reads this token instead, so the inset steps down with the
+   * viewport without touching the board's own spacing rhythm.
+   */
+  --sb-gutter: 20px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --sb-gutter: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --sb-gutter: 40px;
+  }
+}
+
 html,
 body {
   margin: 0;
@@ -22,6 +44,19 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+/* Wide content scrolls inside its own box rather than the whole page. */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
 }
 
 a {

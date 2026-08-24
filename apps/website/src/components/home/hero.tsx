@@ -27,7 +27,7 @@ export function HomeHero() {
             insetInlineEnd: "1.5%",
             top: "2%",
             fontFamily: "'Source Serif 4',serif",
-            fontSize: "400px",
+            fontSize: "clamp(140px,34vw,400px)",
             lineHeight: "0.66",
             color: "#B57D49",
             opacity: 0.11,
@@ -53,7 +53,7 @@ export function HomeHero() {
       </div>
 
       {/* Dateline strip */}
-      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "18px 40px 0" }}>
+      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "18px var(--sb-gutter) 0" }}>
         <div
           style={{
             borderBottom: "1px solid #D8D1C7",
@@ -75,15 +75,14 @@ export function HomeHero() {
         </div>
       </div>
 
-      <div
+      <div className="grid grid-cols-1 lg:grid-cols-[1.12fr_0.88fr]"
         style={{
           position: "relative",
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "66px 40px 30px",
+          padding: "66px var(--sb-gutter) 30px",
           display: "grid",
-          gridTemplateColumns: "1.12fr 0.88fr",
-          gap: "72px",
+          gap: "clamp(28px,5vw,72px)",
           alignItems: "center",
         }}
       >
@@ -115,7 +114,7 @@ export function HomeHero() {
             style={{
               fontFamily: "'Source Serif 4',serif",
               fontWeight: 600,
-              fontSize: "74px",
+              fontSize: "clamp(37px,7.0vw,74px)",
               lineHeight: "1.02",
               letterSpacing: "-0.024em",
               color: "#002D62",
@@ -379,7 +378,7 @@ export function HomeHero() {
           position: "relative",
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "0 40px 40px",
+          padding: "0 var(--sb-gutter) 40px",
           display: "flex",
           alignItems: "center",
           gap: "14px",

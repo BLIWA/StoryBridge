@@ -35,7 +35,7 @@ export function PageHero({
       }}
     >
       <PageHeroBackdrop id={backdropId} variant={variant} glyph={glyph} />
-      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "66px 40px 70px" }}>
+      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "66px var(--sb-gutter) 70px" }}>
         <div
           data-a
           style={{
@@ -68,7 +68,7 @@ export function PageHero({
           style={{
             fontFamily: "'Source Serif 4',serif",
             fontWeight: 600,
-            fontSize: "64px",
+            fontSize: "clamp(32px,6.1vw,64px)",
             lineHeight: "1.05",
             letterSpacing: "-0.022em",
             color: "#002D62",

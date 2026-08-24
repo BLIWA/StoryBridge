@@ -36,7 +36,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
         }}
       >
         <PageHeroBackdrop id="wpgJournal" variant="quotes" glyph="“" />
-        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "66px 40px 40px" }}>
+        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "66px var(--sb-gutter) 40px" }}>
           <div
             data-a
             style={{
@@ -62,7 +62,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
               style={{
                 fontFamily: "'Source Serif 4',serif",
                 fontWeight: 600,
-                fontSize: "64px",
+                fontSize: "clamp(32px,6.1vw,64px)",
                 lineHeight: "1.05",
                 letterSpacing: "-0.022em",
                 color: "#002D62",
@@ -125,8 +125,8 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
         </div>
       </div>
 
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "56px 40px 96px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "56px", alignItems: "start" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "56px var(--sb-gutter) 96px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]" style={{ gap: "clamp(28px,5vw,56px)", alignItems: "start" }}>
           {/* Lead story */}
           <Link href={`/journal/${lead.slug}`} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div
@@ -160,7 +160,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "40px",
+                fontSize: "clamp(24px,3.8vw,40px)",
                 fontWeight: 600,
                 lineHeight: "1.15",
                 color: "#002D62",

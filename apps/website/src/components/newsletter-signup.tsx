@@ -24,7 +24,7 @@ export function NewsletterSignup() {
       }}
       style={{ display: "flex", flexDirection: "column", gap: "14px" }}
     >
-      <div style={{ display: "flex", gap: "12px" }}>
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
         <input
           type="email"
           required
@@ -33,7 +33,10 @@ export function NewsletterSignup() {
           placeholder={t("placeholder")}
           aria-label={t("ariaLabel")}
           style={{
-            flex: 1,
+            flex: "1 1 200px",
+            // Without this an input refuses to shrink past its intrinsic size,
+            // which is what pushed the button off a 360px screen.
+            minWidth: 0,
             border: "1.5px solid rgba(253,248,241,0.24)",
             borderRadius: "2px",
             padding: "14px 15px",

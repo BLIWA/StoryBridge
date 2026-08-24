@@ -29,7 +29,7 @@ export function TrustStrip() {
           position: "relative",
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "44px 40px",
+          padding: "44px var(--sb-gutter)",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))",
           gap: "28px 0",
@@ -127,7 +127,7 @@ export function WhatWeDo() {
   const p = useTranslations("Pillars");
 
   return (
-    <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
+    <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px var(--sb-gutter)" }}>
       <SectionHead n="01" title={t("title")} linkHref="/services" linkLabel={t("allServices")} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: "28px" }}>
         {PILLARS.map((pillar) => (
@@ -197,15 +197,14 @@ export function DeskProcess() {
       >
         <ArcWeaveDark id="weaveHome" />
       </div>
-      <div
+      <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr]"
         style={{
           position: "relative",
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "80px 40px",
+          padding: "80px var(--sb-gutter)",
           display: "grid",
-          gridTemplateColumns: "0.9fr 1.1fr",
-          gap: "72px",
+          gap: "clamp(28px,5vw,72px)",
           alignItems: "center",
         }}
       >
@@ -216,7 +215,7 @@ export function DeskProcess() {
           <div
             style={{
               fontFamily: "'Source Serif 4',serif",
-              fontSize: "42px",
+              fontSize: "clamp(24px,4.0vw,42px)",
               lineHeight: "1.12",
               color: "#FDF8F1",
               letterSpacing: "-0.015em",
@@ -242,7 +241,7 @@ export function DeskProcess() {
             {t("link")}
           </Link>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "16px" }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "16px" }}>
           {DESK_STAGES.map((stage) => (
             <div
               key={stage.id}
@@ -284,7 +283,7 @@ export function WhyStoryBridge() {
           insetInlineEnd: "-1%",
           top: "-8%",
           fontFamily: "'Source Serif 4',serif",
-          fontSize: "420px",
+          fontSize: "clamp(140px,34vw,420px)",
           lineHeight: "0.7",
           color: "#B57D49",
           opacity: 0.09,
@@ -294,14 +293,14 @@ export function WhyStoryBridge() {
       >
         &#8221;
       </div>
-      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: "72px", alignItems: "start" }}>
+      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "88px var(--sb-gutter)" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]" style={{ gap: "clamp(28px,5vw,72px)", alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em" }}>{t("eyebrow")}</div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "40px",
+                fontSize: "clamp(24px,3.8vw,40px)",
                 lineHeight: "1.15",
                 color: "#002D62",
                 letterSpacing: "-0.015em",
@@ -369,7 +368,7 @@ export function FromTheJournal() {
       >
         <QuoteTile id="qJournal" size={64} glyph={46} opacity={0.22} />
       </div>
-      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px 40px" }}>
+      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
         <SectionHead
           n="04"
           title={t("title")}
@@ -440,15 +439,14 @@ export function NewsletterCta() {
   const t = useTranslations("Home.newsletterCta");
 
   return (
-    <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px 40px" }}>
-      <div
+    <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px var(--sb-gutter)" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]"
         style={{
           background: "#002D62",
           borderRadius: "8px",
           padding: "56px",
           display: "grid",
-          gridTemplateColumns: "1.05fr 0.95fr",
-          gap: "56px",
+          gap: "clamp(28px,5vw,56px)",
           alignItems: "center",
         }}
       >
@@ -459,7 +457,7 @@ export function NewsletterCta() {
           <div
             style={{
               fontFamily: "'Source Serif 4',serif",
-              fontSize: "38px",
+              fontSize: "clamp(24px,3.6vw,38px)",
               lineHeight: "1.15",
               color: "#FDF8F1",
               letterSpacing: "-0.015em",

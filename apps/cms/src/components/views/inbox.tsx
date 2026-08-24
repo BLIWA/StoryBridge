@@ -78,7 +78,7 @@ export function InboxView() {
       </div>
 
       {tab === "messages" ? (
-        <div style={{ display: "grid", gridTemplateColumns: "340px minmax(0,1fr)", gap: "20px", alignItems: "start" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)]" style={{ gap: "20px", alignItems: "start" }}>
           <div style={{ ...CARD, padding: 0 }}>
             {visible.map((m, i) => {
               const on = m.id === sel?.id;
@@ -149,10 +149,9 @@ export function InboxView() {
                   <Pill {...pill(sel.status)}>{sel.status}</Pill>
                 </div>
 
-                <div
+                <div className="grid grid-cols-1 md:grid-cols-3"
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3,1fr)",
                     gap: "12px",
                     borderBlock: "1px solid #EDE7DE",
                     padding: "14px 0",
@@ -224,7 +223,7 @@ export function InboxView() {
           )}
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 340px", gap: "20px", alignItems: "start" }}>
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px]" style={{ gap: "20px", alignItems: "start" }}>
           <div style={{ ...CARD, gap: "14px" }}>
             <div style={MONO_LABEL}>Contact form fields</div>
             {[

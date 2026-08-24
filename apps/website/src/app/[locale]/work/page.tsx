@@ -43,7 +43,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
       />
 
       {MODE === "coming-soon" ? (
-        <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px 40px 88px" }}>
+        <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px var(--sb-gutter) 88px" }}>
           <div
             style={{
               border: "1px solid #D8D1C7",
@@ -63,7 +63,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "38px",
+                fontSize: "clamp(24px,3.6vw,38px)",
                 fontWeight: 600,
                 lineHeight: "1.15",
                 color: "#002D62",
@@ -96,7 +96,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
       ) : null}
 
       {/* What clients say — structure only, clearly marked */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 40px 96px" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 var(--sb-gutter) 96px" }}>
         <div
           style={{
             display: "flex",
@@ -111,7 +111,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: s
             style={{
               fontFamily: "'Source Serif 4',serif",
               fontWeight: 600,
-              fontSize: "38px",
+              fontSize: "clamp(24px,3.6vw,38px)",
               lineHeight: 1,
               color: "#002D62",
               letterSpacing: "-0.015em",

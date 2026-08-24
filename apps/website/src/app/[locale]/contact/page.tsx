@@ -42,14 +42,13 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         standfirst={t("standfirst")}
       />
 
-      <div
+      <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_0.75fr]"
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "64px 40px 96px",
+          padding: "64px var(--sb-gutter) 96px",
           display: "grid",
-          gridTemplateColumns: "1.25fr 0.75fr",
-          gap: "72px",
+          gap: "clamp(28px,5vw,72px)",
           alignItems: "start",
         }}
       >

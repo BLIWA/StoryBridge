@@ -101,11 +101,12 @@ export function Studio() {
             zIndex: 20,
             background: "#FDF8F1",
             borderBottom: "1px solid #D8D1C7",
-            padding: "0 32px",
-            height: "70px",
+            padding: "0 clamp(16px, 3vw, 32px)",
+            minHeight: "70px",
             display: "flex",
             alignItems: "center",
-            gap: "20px",
+            flexWrap: "wrap",
+            gap: "12px 20px",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "3px", minWidth: 0 }}>
@@ -142,7 +143,8 @@ export function Studio() {
             aria-label="Search"
             style={{
               marginInlineStart: "auto",
-              width: "280px",
+              width: "min(280px, 40vw)",
+              minWidth: 0,
               border: "1px solid #D8D1C7",
               borderRadius: "4px",
               background: "#FFFFFF",
@@ -179,7 +181,16 @@ export function Studio() {
           </a>
         </div>
 
-        <div style={{ flex: 1, padding: "30px 32px 56px", display: "flex", flexDirection: "column", gap: "26px" }}>
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            padding: "30px clamp(16px, 3vw, 32px) 56px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "26px",
+          }}
+        >
           {view === "dash" && (
             <Dashboard
               articles={articles}

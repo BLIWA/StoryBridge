@@ -54,7 +54,7 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "14px 40px",
+          padding: "14px var(--sb-gutter)",
           minHeight: "84px",
           display: "flex",
           alignItems: "center",

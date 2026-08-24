@@ -27,7 +27,7 @@ export function ArabicHome() {
               insetInlineEnd: "1.5%",
               top: "2%",
               fontFamily: "'Source Serif 4',serif",
-              fontSize: "400px",
+              fontSize: "clamp(140px,34vw,400px)",
               lineHeight: "0.66",
               color: "#B57D49",
               opacity: 0.11,
@@ -52,15 +52,14 @@ export function ArabicHome() {
           />
         </div>
 
-        <div
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
           style={{
             position: "relative",
             maxWidth: "1320px",
             margin: "0 auto",
-            padding: "60px 40px 76px",
+            padding: "60px var(--sb-gutter) 76px",
             display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: "64px",
+            gap: "clamp(28px,5vw,64px)",
             alignItems: "center",
           }}
         >
@@ -79,7 +78,7 @@ export function ArabicHome() {
               style={{
                 fontFamily: "'Noto Naskh Arabic',serif",
                 fontWeight: 700,
-                fontSize: "60px",
+                fontSize: "clamp(30px,5.7vw,60px)",
                 lineHeight: "1.35",
                 color: "#002D62",
                 margin: 0,
@@ -196,14 +195,13 @@ export function ArabicHome() {
         >
           <QuoteTile id="qProofAr" />
         </div>
-        <div
+        <div className="grid grid-cols-2 lg:grid-cols-4"
           style={{
             position: "relative",
             maxWidth: "1320px",
             margin: "0 auto",
-            padding: "56px 40px",
+            padding: "56px var(--sb-gutter)",
             display: "grid",
-            gridTemplateColumns: "repeat(4,1fr)",
             gap: "36px",
           }}
         >
@@ -235,7 +233,7 @@ export function ArabicHome() {
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "72px 40px 88px",
+          padding: "72px var(--sb-gutter) 88px",
           display: "flex",
           flexDirection: "column",
           gap: "18px",
@@ -245,7 +243,7 @@ export function ArabicHome() {
         <div
           style={{
             fontFamily: "'Noto Naskh Arabic',serif",
-            fontSize: "38px",
+            fontSize: "clamp(24px,3.6vw,38px)",
             lineHeight: "1.5",
             color: "#002D62",
             maxWidth: "900px",

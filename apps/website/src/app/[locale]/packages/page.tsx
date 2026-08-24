@@ -37,7 +37,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
         standfirst={t("standfirst")}
       />
 
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px 40px 0" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "60px var(--sb-gutter) 0" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "28px" }}>
           {PACKAGES.map((p) => (
             <div
@@ -187,12 +187,11 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
       </div>
 
       {/* How quoting works */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px 40px 96px" }}>
-        <div
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter) 96px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr]"
           style={{
             display: "grid",
-            gridTemplateColumns: "0.9fr 1.1fr",
-            gap: "56px",
+            gap: "clamp(28px,5vw,56px)",
             alignItems: "start",
             borderTop: "2px solid #002D62",
             paddingTop: "40px",
@@ -203,7 +202,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "38px",
+                fontSize: "clamp(24px,3.6vw,38px)",
                 fontWeight: 600,
                 lineHeight: "1.15",
                 color: "#002D62",

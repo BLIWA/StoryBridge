@@ -34,14 +34,13 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
         titleMaxWidth="1000px"
       />
 
-      <div
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px]"
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "56px 40px 88px",
+          padding: "56px var(--sb-gutter) 88px",
           display: "grid",
-          gridTemplateColumns: "1fr 320px",
-          gap: "72px",
+          gap: "clamp(28px,5vw,72px)",
           alignItems: "start",
         }}
       >
@@ -89,7 +88,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
             style={{
               fontFamily: "'Source Serif 4',serif",
               fontWeight: 600,
-              fontSize: "34px",
+              fontSize: "clamp(24px,3.2vw,34px)",
               lineHeight: "1.3",
               color: "#002D62",
               letterSpacing: "-0.015em",
@@ -176,7 +175,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
         >
           <QuoteTile id="qWho" glyph={40} opacity={0.24} />
         </div>
-        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px 40px" }}>
+        <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
           <div
             style={{
               display: "flex",
@@ -192,7 +191,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               style={{
                 fontFamily: "'Source Serif 4',serif",
                 fontWeight: 600,
-                fontSize: "40px",
+                fontSize: "clamp(24px,3.8vw,40px)",
                 lineHeight: 1,
                 color: "#002D62",
                 letterSpacing: "-0.015em",
@@ -204,7 +203,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
               {t("whatWeDoNote")}
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "32px" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "32px" }}>
             {PILLARS.map((p) => (
               <div
                 key={p.id}
@@ -255,14 +254,13 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
       </div>
 
       {/* Why StoryBridge */}
-      <div
+      <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]"
         style={{
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "88px 40px",
+          padding: "88px var(--sb-gutter)",
           display: "grid",
-          gridTemplateColumns: "0.85fr 1.15fr",
-          gap: "72px",
+          gap: "clamp(28px,5vw,72px)",
           alignItems: "start",
         }}
       >
@@ -281,7 +279,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
           <div
             style={{
               fontFamily: "'Source Serif 4',serif",
-              fontSize: "42px",
+              fontSize: "clamp(24px,4.0vw,42px)",
               lineHeight: "1.12",
               color: "#002D62",
               letterSpacing: "-0.018em",

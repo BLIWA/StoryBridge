@@ -201,7 +201,7 @@ export function PageHeroBackdrop({
           insetInlineEnd: "2%",
           top: "-6%",
           fontFamily: "'Source Serif 4',serif",
-          fontSize: "320px",
+          fontSize: "clamp(140px,34vw,320px)",
           lineHeight: "0.66",
           color: "#B57D49",
           opacity: 0.1,

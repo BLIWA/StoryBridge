@@ -290,10 +290,9 @@ export function IssuesView() {
       </div>
 
       {tab === "issues" && (
-        <div
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,0.85fr)_minmax(440px,1.15fr)]"
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0,0.85fr) minmax(440px,1.15fr)",
             gap: "20px",
             alignItems: "start",
           }}
@@ -401,7 +400,7 @@ export function IssuesView() {
                 />
               </label>
 
-              <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: "20px" }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "20px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
                   <span style={FIELD_LABEL}>
                     Included pieces
@@ -631,7 +630,7 @@ export function IssuesView() {
 
       {tab === "schedule" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "18px" }}>
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "18px" }}>
             <Stat label="In the queue" value={String(queue.length)} note={queue.length === 1 ? "issue waiting" : "issues waiting"} />
             <Stat
               label="Next send"
@@ -831,7 +830,7 @@ export function IssuesView() {
 
       {tab === "subs" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "18px" }}>
+          <div className="grid grid-cols-2 xl:grid-cols-4" style={{ gap: "18px" }}>
             {[
               ["Active", num(AUDIENCES[0].count)],
               ["Open rate", "48.2%"],

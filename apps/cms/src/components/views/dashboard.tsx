@@ -65,7 +65,7 @@ export function Dashboard({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "26px", animation: "cms-fade .3s ease both" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "18px" }}>
+      <div className="grid grid-cols-2 xl:grid-cols-4" style={{ gap: "18px" }}>
         <div style={CARD}>
           <div style={MONO_LABEL}>Published pieces</div>
           <div style={statNumber}>{published}</div>
@@ -105,7 +105,7 @@ export function Dashboard({
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "18px", alignItems: "start" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr]" style={{ gap: "18px", alignItems: "start" }}>
         {/* Needs a decision */}
         <div style={{ ...CARD, padding: 0 }}>
           <div

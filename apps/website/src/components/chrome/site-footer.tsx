@@ -65,15 +65,14 @@ export function SiteFooter() {
         </svg>
       </div>
 
-      <div
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_0.7fr_1fr]"
         style={{
           position: "relative",
           maxWidth: "1320px",
           margin: "0 auto",
-          padding: "72px 40px 36px",
+          padding: "72px var(--sb-gutter) 36px",
           display: "grid",
-          gridTemplateColumns: "1.3fr 0.7fr 0.7fr 1fr",
-          gap: "48px",
+          gap: "clamp(28px,5vw,48px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
@@ -174,7 +173,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "0 40px" }}>
+      <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "0 var(--sb-gutter)" }}>
         <div
           style={{
             borderTop: "1px solid rgba(253,248,241,0.14)",

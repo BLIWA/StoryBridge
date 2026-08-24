@@ -39,7 +39,7 @@ export default async function JournalPostPage({
 
   return (
     <>
-      <div style={{ maxWidth: "820px", margin: "0 auto", padding: "40px 40px 0" }}>
+      <div style={{ maxWidth: "820px", margin: "0 auto", padding: "40px var(--sb-gutter) 0" }}>
         <Link
           href="/journal"
           data-hover="color:#002D62"
@@ -55,7 +55,7 @@ export default async function JournalPostPage({
         </Link>
       </div>
 
-      <article style={{ maxWidth: "820px", margin: "0 auto", padding: "32px 40px 0" }}>
+      <article style={{ maxWidth: "820px", margin: "0 auto", padding: "32px var(--sb-gutter) 0" }}>
         <div
           style={{
             fontFamily: "'IBM Plex Mono',monospace",
@@ -71,7 +71,7 @@ export default async function JournalPostPage({
           style={{
             fontFamily: "'Source Serif 4',serif",
             fontWeight: 600,
-            fontSize: "52px",
+            fontSize: "clamp(26px,5.0vw,52px)",
             lineHeight: "1.08",
             letterSpacing: "-0.022em",
             color: "#002D62",
@@ -250,7 +250,7 @@ export default async function JournalPostPage({
                     <span
                       style={{
                         fontFamily: "'Source Serif 4',serif",
-                        fontSize: "68px",
+                        fontSize: "clamp(34px,6.5vw,68px)",
                         lineHeight: "0.82",
                         fontWeight: 600,
                         color: "#002D62",
@@ -329,14 +329,13 @@ export default async function JournalPostPage({
       </article>
 
       {/* Footer signup */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px 40px 96px" }}>
-        <div
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px var(--sb-gutter) 96px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2"
           style={{
             background: "#002D62",
             borderRadius: "8px",
             padding: "44px",
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             gap: "40px",
             alignItems: "center",
           }}
@@ -356,7 +355,7 @@ export default async function JournalPostPage({
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "32px",
+                fontSize: "clamp(24px,3.0vw,32px)",
                 lineHeight: "1.2",
                 color: "#FDF8F1",
                 letterSpacing: "-0.015em",

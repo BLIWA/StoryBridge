@@ -38,10 +38,9 @@ export function PagesView() {
   }
 
   return (
-    <div
+    <div className="grid grid-cols-1 xl:grid-cols-[216px_minmax(0,1fr)_340px]"
       style={{
         display: "grid",
-        gridTemplateColumns: "216px minmax(0,1fr) 340px",
         gap: "20px",
         alignItems: "start",
         animation: "cms-fade .3s ease both",
@@ -238,7 +237,7 @@ export function PagesView() {
                   style={INPUT}
                 />
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "12px" }}>
                 <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   <span style={FIELD_LABEL}>Button label</span>
                   <input value={section.cta} onChange={(e) => updateSection({ cta: e.target.value })} style={INPUT} />

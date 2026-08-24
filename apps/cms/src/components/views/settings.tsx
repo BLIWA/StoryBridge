@@ -346,10 +346,9 @@ function RoleMatrixCard() {
 
 export function SettingsView() {
   return (
-    <div
+    <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px]"
       style={{
         display: "grid",
-        gridTemplateColumns: "minmax(0,1fr) 360px",
         gap: "24px",
         alignItems: "start",
         animation: "cms-fade .3s ease both",

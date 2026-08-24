@@ -49,18 +49,17 @@ export default async function FoundersPage({ params }: { params: Promise<{ local
       {FOUNDERS.map((f, i) => (
         <div key={f.id}>
           {i > 0 && (
-            <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px 40px 0" }}>
+            <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "72px var(--sb-gutter) 0" }}>
               <div style={{ height: "1px", background: "#D8D1C7" }} />
             </div>
           )}
-          <div
+          <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr]"
             style={{
               maxWidth: "1320px",
               margin: "0 auto",
               padding: i === 0 ? "64px 40px 0" : "64px 40px 88px",
               display: "grid",
-              gridTemplateColumns: "400px 1fr",
-              gap: "72px",
+              gap: "clamp(28px,5vw,72px)",
               alignItems: "start",
             }}
           >
@@ -131,7 +130,7 @@ export default async function FoundersPage({ params }: { params: Promise<{ local
                   style={{
                     fontFamily: "'Source Serif 4',serif",
                     fontWeight: 600,
-                    fontSize: "52px",
+                    fontSize: "clamp(26px,5.0vw,52px)",
                     lineHeight: 1,
                     color: "#002D62",
                     letterSpacing: "-0.02em",
@@ -177,10 +176,9 @@ export default async function FoundersPage({ params }: { params: Promise<{ local
                   {t(`people.${f.id}.paras.${k}`)}
                 </div>
               ))}
-              <div
+              <div className="grid grid-cols-1 md:grid-cols-2"
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
                   gap: "24px",
                   borderTop: "1px solid #D8D1C7",
                   paddingTop: "24px",

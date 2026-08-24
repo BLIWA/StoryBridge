@@ -37,14 +37,13 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
         standfirst={t("standfirst")}
       />
 
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "64px 40px 40px" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "64px var(--sb-gutter) 40px" }}>
         {PROCESS_STEPS.map((s, i) => (
-          <div
+          <div className="grid grid-cols-1 lg:grid-cols-[120px_1fr_1fr]"
             key={s.id}
             style={{
               display: "grid",
-              gridTemplateColumns: "120px 1fr 1fr",
-              gap: "48px",
+              gap: "clamp(28px,5vw,48px)",
               borderTop: "1px solid #D8D1C7",
               borderBottom: i === PROCESS_STEPS.length - 1 ? "1px solid #D8D1C7" : undefined,
               padding: "40px 0",
@@ -54,7 +53,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "56px",
+                fontSize: "clamp(28px,5.3vw,56px)",
                 lineHeight: "0.9",
                 color: "#B57D49",
                 fontWeight: 600,
@@ -67,7 +66,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
               <h2
                 style={{
                   fontFamily: "'Source Serif 4',serif",
-                  fontSize: "32px",
+                  fontSize: "clamp(24px,3.0vw,32px)",
                   fontWeight: 600,
                   color: "#002D62",
                   lineHeight: "1.15",
@@ -206,7 +205,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
             position: "relative",
             maxWidth: "1100px",
             margin: "0 auto",
-            padding: "88px 40px",
+            padding: "88px var(--sb-gutter)",
             display: "flex",
             flexDirection: "column",
             gap: "28px",
@@ -228,7 +227,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
           <div
             style={{
               fontFamily: "'Source Serif 4',serif",
-              fontSize: "44px",
+              fontSize: "clamp(24px,4.2vw,44px)",
               lineHeight: "1.35",
               color: "#FDF8F1",
               letterSpacing: "-0.015em",

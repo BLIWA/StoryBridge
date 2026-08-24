@@ -33,15 +33,14 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
         }}
       >
         <PageHeroBackdrop id="wpgNews" variant="quotes" glyph="”" />
-        <div
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]"
           style={{
             position: "relative",
             maxWidth: "1320px",
             margin: "0 auto",
-            padding: "66px 40px 80px",
+            padding: "66px var(--sb-gutter) 80px",
             display: "grid",
-            gridTemplateColumns: "1.05fr 0.95fr",
-            gap: "64px",
+            gap: "clamp(28px,5vw,64px)",
             alignItems: "center",
           }}
         >
@@ -61,7 +60,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
               style={{
                 fontFamily: "'Source Serif 4',serif",
                 fontWeight: 600,
-                fontSize: "60px",
+                fontSize: "clamp(30px,5.7vw,60px)",
                 lineHeight: "1.05",
                 letterSpacing: "-0.022em",
                 color: "#002D62",
@@ -153,7 +152,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
       </div>
 
       {/* Past issues */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px 40px" }}>
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
         <div
           style={{
             display: "flex",
@@ -169,7 +168,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
             style={{
               fontFamily: "'Source Serif 4',serif",
               fontWeight: 600,
-              fontSize: "38px",
+              fontSize: "clamp(24px,3.6vw,38px)",
               lineHeight: 1,
               color: "#002D62",
               letterSpacing: "-0.015em",
@@ -213,16 +212,15 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
       </div>
 
       {/* Newsletters as a service */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 40px 96px" }}>
-        <div
+      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 var(--sb-gutter) 96px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2"
           style={{
             background: "#E8E3DD",
             border: "1px solid #D8D1C7",
             borderRadius: "8px",
             padding: "48px",
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "48px",
+            gap: "clamp(28px,5vw,48px)",
             alignItems: "center",
           }}
         >
@@ -231,7 +229,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
-                fontSize: "36px",
+                fontSize: "clamp(24px,3.4vw,36px)",
                 fontWeight: 600,
                 lineHeight: "1.15",
                 color: "#002D62",

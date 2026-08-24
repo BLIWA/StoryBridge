@@ -87,3 +87,22 @@ a:focus-visible {
     animation: none !important;
   }
 }
+
+/*
+ * Studio is a laptop tool, so its grids collapse later than the website's do.
+ * The table-shaped ones — the People roster, the issue and article rows — are
+ * deliberately left at their full track list: squashing a row of columns makes
+ * it unreadable. They scroll inside their own card instead, and nothing is
+ * allowed to widen the page itself.
+ */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}

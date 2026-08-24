@@ -93,7 +93,7 @@ export function ContactForm() {
       }}
       style={{ display: "flex", flexDirection: "column", gap: "22px" }}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "22px" }}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "22px" }}>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
           <span style={label}>{t("name")}</span>
           <input type="text" required placeholder={t("namePlaceholder")} style={field} />
