@@ -9,6 +9,9 @@ import {
   NewsletterCta,
 } from "@/components/home/sections";
 import { ArabicHome } from "@/components/home/arabic-home";
+import { metadataFor } from "@/i18n/metadata";
+
+export const generateMetadata = metadataFor("home");
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

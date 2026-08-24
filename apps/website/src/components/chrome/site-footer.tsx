@@ -37,7 +37,7 @@ export function SiteFooter() {
   const t = useTranslations("Footer");
 
   return (
-    <div style={{ background: "#001838", color: "#FDF8F1", position: "relative", overflow: "hidden" }}>
+    <footer style={{ background: "#001838", color: "#FDF8F1", position: "relative", overflow: "hidden" }}>
       <div
         data-parallax="-34"
         style={{
@@ -190,6 +190,6 @@ export function SiteFooter() {
           <div>{t("disciplines")}</div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }

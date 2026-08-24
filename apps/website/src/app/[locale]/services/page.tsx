@@ -4,10 +4,13 @@ import { PageHero } from "@/components/chrome/page-hero";
 import { QuoteTile } from "@/components/fx/backdrops";
 import { SERVICE_DESKS, WORKFLOW_STAGES } from "@/content/services";
 import { routing } from "@/i18n/routing";
+import { metadataFor } from "@/i18n/metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const generateMetadata = metadataFor("services");
 
 const mono = {
   fontFamily: "'IBM Plex Mono',monospace",

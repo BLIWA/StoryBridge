@@ -632,5 +632,47 @@
         "title": "Why we started StoryBridge"
       }
     }
+  },
+  "Meta": {
+    "home": {
+      "title": "StoryBridge Content & Media — content, translation and editorial in Tunis",
+      "description": "A boutique editorial house in Tunis. Journalistic standards applied to content, translation, editing and press work across Arabic, English and French."
+    },
+    "who-we-are": {
+      "title": "Who we are — StoryBridge Content & Media",
+      "description": "Born from a friendship and a shared newsroom. Assia Touati and Imen Bliwa on why they built a multilingual content company in Tunis."
+    },
+    "founders": {
+      "title": "The founders — StoryBridge Content & Media",
+      "description": "Assia Touati, editor-in-chief, and Imen Bliwa, journalist-translator. The people who scope your work are the people who edit it."
+    },
+    "how-we-work": {
+      "title": "How we work — StoryBridge Content & Media",
+      "description": "Seven steps from the first idea to the final story: listening, building the approach, going to the field, and delivering on time."
+    },
+    "services": {
+      "title": "Services — content, translation, editing and press",
+      "description": "Four desks, one editorial standard. Articles, Arabic/English/French translation, editing and press services, each run through brief, native writer, editor and QA."
+    },
+    "packages": {
+      "title": "Packages and pricing — StoryBridge Content & Media",
+      "description": "Named packages scoped before we start, with indicative rates. A written scope and a fixed quote within two working days."
+    },
+    "work": {
+      "title": "Selected work — StoryBridge Content & Media",
+      "description": "Case studies are published once a client agrees to be named. Until then, the Journal is the fastest way to judge the writing."
+    },
+    "journal": {
+      "title": "The Journal — notes on language, media and the Maghreb",
+      "description": "Our own writing, published in the open: translation, editorial craft, field reporting and the Maghreb."
+    },
+    "newsletter": {
+      "title": "The Bridge — a monthly letter on language and media",
+      "description": "One letter a month on language, media and the Maghreb. Written by us, in the voice we write for clients."
+    },
+    "contact": {
+      "title": "Contact — StoryBridge Content & Media",
+      "description": "Tell us what the story is. A rough idea is enough; we reply within two working days with scope and a fixed quote."
+    }
   }
 }

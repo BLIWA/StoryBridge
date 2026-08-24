@@ -632,5 +632,47 @@
         "title": "Pourquoi nous avons lancé StoryBridge"
       }
     }
+  },
+  "Meta": {
+    "home": {
+      "title": "StoryBridge Content & Media — contenu, traduction et édition à Tunis",
+      "description": "Une maison d'édition indépendante à Tunis. Des exigences de journalistes appliquées au contenu, à la traduction, à la révision et aux relations presse, en arabe, anglais et français."
+    },
+    "who-we-are": {
+      "title": "Qui sommes-nous — StoryBridge Content & Media",
+      "description": "Née d'une amitié et d'une salle de rédaction partagée. Assia Touati et Imen Bliwa expliquent pourquoi elles ont fondé une agence de contenu multilingue à Tunis."
+    },
+    "founders": {
+      "title": "Les fondatrices — StoryBridge Content & Media",
+      "description": "Assia Touati, rédactrice en chef, et Imen Bliwa, journaliste-traductrice. Les personnes qui cadrent votre projet sont celles qui le révisent."
+    },
+    "how-we-work": {
+      "title": "Notre méthode — StoryBridge Content & Media",
+      "description": "Sept étapes, de la première idée à l'histoire finale : écouter, construire l'approche, aller sur le terrain et livrer dans les délais."
+    },
+    "services": {
+      "title": "Services — contenu, traduction, révision et presse",
+      "description": "Quatre pôles, une seule exigence éditoriale. Articles, traduction arabe/anglais/français, révision et services presse, chacun passant par brief, rédacteur natif, éditeur et contrôle qualité."
+    },
+    "packages": {
+      "title": "Formules et tarifs — StoryBridge Content & Media",
+      "description": "Des formules nommées, cadrées avant de commencer, avec des tarifs indicatifs. Un périmètre écrit et un devis ferme sous deux jours ouvrés."
+    },
+    "work": {
+      "title": "Réalisations — StoryBridge Content & Media",
+      "description": "Les études de cas sont publiées une fois que le client accepte d'être nommé. En attendant, Le Journal est le moyen le plus rapide de juger l'écriture."
+    },
+    "journal": {
+      "title": "Le Journal — notes sur la langue, les médias et le Maghreb",
+      "description": "Nos propres textes, publiés en clair : traduction, métier éditorial, reportage de terrain et Maghreb."
+    },
+    "newsletter": {
+      "title": "The Bridge — une lettre mensuelle sur la langue et les médias",
+      "description": "Une lettre par mois sur la langue, les médias et le Maghreb. Écrite par nous, dans la voix que nous écrivons pour nos clients."
+    },
+    "contact": {
+      "title": "Contact — StoryBridge Content & Media",
+      "description": "Dites-nous quelle est l'histoire. Une idée approximative suffit ; nous répondons sous deux jours ouvrés avec un périmètre et un devis ferme."
+    }
   }
 }

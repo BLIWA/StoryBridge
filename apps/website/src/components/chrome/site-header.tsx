@@ -41,7 +41,7 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
   };
 
   return (
-    <div
+    <header
       style={{
         position: "sticky",
         top: 0,
@@ -192,6 +192,6 @@ export function SiteHeader({ locale }: { locale: AppLocale }) {
           </Link>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

@@ -3,10 +3,13 @@ import { Link } from "@/i18n/navigation";
 import { PageHeroBackdrop } from "@/components/fx/backdrops";
 import { JOURNAL_INDEX, JOURNAL_SECTIONS } from "@/content/journal";
 import { routing } from "@/i18n/routing";
+import { metadataFor } from "@/i18n/metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const generateMetadata = metadataFor("journal");
 
 const kicker = {
   fontFamily: "'IBM Plex Mono',monospace",

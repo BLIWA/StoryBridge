@@ -4,10 +4,13 @@ import { PageHero } from "@/components/chrome/page-hero";
 import { ArcWeaveDark } from "@/components/fx/backdrops";
 import { PROCESS_STEPS } from "@/content/site";
 import { routing } from "@/i18n/routing";
+import { metadataFor } from "@/i18n/metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const generateMetadata = metadataFor("how-we-work");
 
 const asideQuote = {
   fontFamily: "'Source Serif 4',serif",

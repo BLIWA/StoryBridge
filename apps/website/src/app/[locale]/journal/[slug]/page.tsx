@@ -4,11 +4,28 @@ import { Link } from "@/i18n/navigation";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { JOURNAL_INDEX, FEATURED_POST } from "@/content/journal";
 import { routing } from "@/i18n/routing";
+import { pageMetadata } from "@/i18n/metadata";
+import type { Metadata } from "next";
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
     JOURNAL_INDEX.map((p) => ({ locale, slug: p.slug })),
   );
+}
+
+/** An article's own headline and standfirst, rather than the site defaults. */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const post = await getTranslations({ locale, namespace: `JournalPosts.${slug}` });
+  const base = await pageMetadata(locale, `journal/${slug}`, {
+    title: post("title"),
+    description: post("standfirst"),
+  });
+  return { ...base, openGraph: { ...base.openGraph, type: "article" } };
 }
 
 const para = {

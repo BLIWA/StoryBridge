@@ -3,10 +3,13 @@ import { Link } from "@/i18n/navigation";
 import { PageHero } from "@/components/chrome/page-hero";
 import { ContactForm } from "@/components/contact-form";
 import { routing } from "@/i18n/routing";
+import { metadataFor } from "@/i18n/metadata";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const generateMetadata = metadataFor("contact");
 
 const label = {
   fontFamily: "'IBM Plex Mono',monospace",
