@@ -807,6 +807,9 @@ export function IssuesView() {
               </div>
             </div>
 
+            {/* LOG_GRID's fixed-width columns run past a phone's width — see
+                the same fix in ArticlesView. */}
+            <div style={{ overflowX: "auto" }}>
             <div
               style={{
                 display: "grid",
@@ -815,6 +818,7 @@ export function IssuesView() {
                 padding: "12px 22px",
                 borderBottom: "1px solid #E6E0D8",
                 background: "#F8F4EE",
+                minWidth: "560px",
               }}
             >
               <div style={headCell}>When · {zone(DEFAULT_ZONE).short}</div>
@@ -836,6 +840,7 @@ export function IssuesView() {
                     gap: "16px",
                     alignItems: "start",
                     padding: "14px 22px",
+                    minWidth: "560px",
                     borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
                     transition: "background .16s ease",
                   }}
@@ -858,6 +863,7 @@ export function IssuesView() {
                 </div>
               ))
             )}
+            </div>
           </div>
 
           <NotWiredNote>
@@ -902,6 +908,7 @@ export function IssuesView() {
           </div>
 
           <div style={{ ...CARD, padding: 0, overflow: "hidden" }}>
+            <div style={{ overflowX: "auto" }}>
             <div
               style={{
                 display: "grid",
@@ -910,6 +917,7 @@ export function IssuesView() {
                 padding: "14px 22px",
                 borderBottom: "1px solid #E6E0D8",
                 background: "#F8F4EE",
+                minWidth: "600px",
               }}
             >
               <div style={headCell}>Email</div>
@@ -929,6 +937,7 @@ export function IssuesView() {
                   gap: "16px",
                   alignItems: "center",
                   padding: "14px 22px",
+                  minWidth: "600px",
                   borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
                   transition: "background .16s ease",
                 }}
@@ -940,6 +949,7 @@ export function IssuesView() {
                 <div style={{ fontSize: "12.5px", color: "#5A6472" }}>{s.joined}</div>
               </div>
             ))}
+            </div>
           </div>
 
           <NotWiredNote>

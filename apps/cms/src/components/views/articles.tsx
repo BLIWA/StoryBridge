@@ -81,7 +81,12 @@ export function ArticlesView({
         </PrimaryButton>
       </div>
 
+      {/* GRID's fixed-width columns add up to more than a phone screen — the
+          rounded card clips vertically as before, but this inner scroller
+          lets a narrow viewport reach the rest of the row horizontally
+          instead of silently cutting it off. */}
       <div style={{ ...CARD, padding: 0, overflow: "hidden" }}>
+        <div style={{ overflowX: "auto" }}>
         <div
           style={{
             display: "grid",
@@ -90,6 +95,7 @@ export function ArticlesView({
             padding: "14px 22px",
             borderBottom: "1px solid #E6E0D8",
             background: "#F8F4EE",
+            minWidth: "620px",
           }}
         >
           <div style={headCell}>Title</div>
@@ -117,6 +123,7 @@ export function ArticlesView({
                 background: "transparent",
                 border: "none",
                 width: "100%",
+                minWidth: "620px",
                 textAlign: "start",
                 cursor: "pointer",
                 transition: "background .16s ease",
@@ -164,6 +171,7 @@ export function ArticlesView({
             Nothing with that status.
           </div>
         )}
+        </div>
       </div>
 
       <div style={{ fontSize: "12.5px", color: "#8A8378" }}>

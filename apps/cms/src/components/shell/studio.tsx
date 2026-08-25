@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Sidebar } from "./sidebar";
 import { VIEW_META, type View } from "@/lib/view";
 import { useAuth } from "@/lib/auth-context";
@@ -13,7 +13,7 @@ import { type Article, type Message } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
 import { ArticlesView, type Filter } from "@/components/views/articles";
 import { ArticleEditor } from "@/components/views/article-editor";
-import { SiteContentView } from "@/components/views/site-content";
+import { SiteContentView, NAMESPACES } from "@/components/views/site-content";
 import { IssuesView } from "@/components/views/issues";
 import { InboxView } from "@/components/views/inbox";
 import { SettingsView } from "@/components/views/settings";
@@ -93,6 +93,64 @@ export function Studio() {
       () => setMessages([]),
     );
   }, []);
+
+  // Header search — across whatever this component already has loaded
+  // (articles, messages) or knows the shape of (site copy's namespace
+  // list), rather than a separate index. Cheap enough client-side at this
+  // scale that a real search backend isn't worth building yet.
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  // Force SiteContentView/InboxView to remount on the namespace/message a
+  // search result points at — both keep that selection in local state with
+  // no setter prop, so a `key` change is what makes a second search inside
+  // the same view actually jump, not just the first.
+  const [pagesKey, setPagesKey] = useState(0);
+  const [pendingNamespace, setPendingNamespace] = useState<string | undefined>(undefined);
+  const [inboxKey, setInboxKey] = useState(0);
+  const [pendingMessageId, setPendingMessageId] = useState<string | undefined>(undefined);
+
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return { articles: [], messages: [], namespaces: [] };
+    return {
+      articles: articles
+        .filter((a) => [a.title, a.slug, a.excerpt, a.author].some((f) => f?.toLowerCase().includes(q)))
+        .slice(0, 5),
+      messages: messages
+        .filter((m) => [m.name, m.subject, m.org, m.body].some((f) => f?.toLowerCase().includes(q)))
+        .slice(0, 5),
+      namespaces: NAMESPACES.filter((n) => n.toLowerCase().includes(q)).slice(0, 5),
+    };
+  }, [searchQuery, articles, messages]);
+
+  const hasSearchResults =
+    searchResults.articles.length > 0 || searchResults.messages.length > 0 || searchResults.namespaces.length > 0;
+
+  function goToNamespace(namespace: string) {
+    setPendingNamespace(namespace);
+    setPagesKey((k) => k + 1);
+    setView("pages");
+    setSearchQuery("");
+    setSearchFocused(false);
+  }
+
+  function goToMessage(id: string) {
+    setPendingMessageId(id);
+    setInboxKey((k) => k + 1);
+    setView("inbox");
+    setSearchQuery("");
+    setSearchFocused(false);
+  }
+
+  function goToSearchedArticle(id: string) {
+    // openArticle is declared further down in this component — a function
+    // declaration, so it's hoisted and already callable by the time a click
+    // actually invokes this (function declarations in the same scope are
+    // fully set up before any statement runs, unlike a `const` arrow fn).
+    openArticle(id);
+    setSearchQuery("");
+    setSearchFocused(false);
+  }
 
   /**
    * Role comes from the signed-in user's `staff` record, and firestore.rules
@@ -234,20 +292,72 @@ export function Studio() {
             </div>
           </div>
 
-          <input
-            placeholder="Search articles, pages, messages…"
-            aria-label="Search"
-            style={{
-              marginInlineStart: "auto",
-              width: "min(280px, 40vw)",
-              minWidth: 0,
-              border: "1px solid #D8D1C7",
-              borderRadius: "4px",
-              background: "#FFFFFF",
-              padding: "9px 12px",
-              fontSize: "13.5px",
-            }}
-          />
+          <div style={{ position: "relative", marginInlineStart: "auto", width: "min(280px, 40vw)", minWidth: 0 }}>
+            <input
+              placeholder="Search articles, pages, messages…"
+              aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              style={{
+                width: "100%",
+                border: "1px solid #D8D1C7",
+                borderRadius: "4px",
+                background: "#FFFFFF",
+                padding: "9px 12px",
+                fontSize: "13.5px",
+              }}
+            />
+            {searchFocused && searchQuery.trim() && (
+              <div
+                style={{
+                  position: "absolute",
+                  insetInlineStart: 0,
+                  insetInlineEnd: 0,
+                  top: "calc(100% + 6px)",
+                  zIndex: 30,
+                  background: "#FFFFFF",
+                  border: "1px solid #D8D1C7",
+                  borderRadius: "6px",
+                  boxShadow: "0 8px 24px rgba(0,24,56,0.12)",
+                  maxHeight: "min(420px, 70vh)",
+                  overflowY: "auto",
+                  padding: "8px",
+                }}
+              >
+                {!hasSearchResults && (
+                  <div style={{ padding: "10px 8px", fontSize: "12.5px", color: "#8A8378" }}>Nothing matches.</div>
+                )}
+                {searchResults.articles.length > 0 && (
+                  <SearchGroup label="Journal">
+                    {searchResults.articles.map((a) => (
+                      <SearchResultButton key={a.id} onMouseDown={() => goToSearchedArticle(a.id)} title={a.title} subtitle={`${a.status} · ${a.author}`} />
+                    ))}
+                  </SearchGroup>
+                )}
+                {searchResults.namespaces.length > 0 && (
+                  <SearchGroup label="Site copy">
+                    {searchResults.namespaces.map((n) => (
+                      <SearchResultButton key={n} onMouseDown={() => goToNamespace(n)} title={n} subtitle="Namespace" />
+                    ))}
+                  </SearchGroup>
+                )}
+                {searchResults.messages.length > 0 && (
+                  <SearchGroup label="Contact">
+                    {searchResults.messages.map((m) => (
+                      <SearchResultButton
+                        key={m.id}
+                        onMouseDown={() => goToMessage(m.id)}
+                        title={m.name}
+                        subtitle={`${m.subject} · ${m.status}`}
+                      />
+                    ))}
+                  </SearchGroup>
+                )}
+              </div>
+            )}
+          </div>
           <div
             style={{
               display: "flex",
@@ -336,9 +446,9 @@ export function Studio() {
               }
             />
           )}
-          {view === "pages" && <SiteContentView />}
+          {view === "pages" && <SiteContentView key={pagesKey} initialNamespace={pendingNamespace} />}
           {view === "issues" && <IssuesView />}
-          {view === "inbox" && <InboxView />}
+          {view === "inbox" && <InboxView key={inboxKey} initialSelectedId={pendingMessageId} />}
           {view === "settings" && <SettingsView />}
         </div>
       </div>
@@ -399,5 +509,62 @@ export function Studio() {
         </div>
       )}
     </div>
+  );
+}
+
+function SearchGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: "6px" }}>
+      <div
+        style={{
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: "9.5px",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "#8A8378",
+          padding: "6px 8px 4px",
+        }}
+      >
+        {label}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Uses onMouseDown rather than onClick — the input's onBlur (which closes
+ * this dropdown) fires before a click would land, so a click never actually
+ * reaches these buttons. mousedown fires first, while the dropdown is still
+ * mounted.
+ */
+function SearchResultButton({ title, subtitle, onMouseDown }: { title: string; subtitle: string; onMouseDown: () => void }) {
+  return (
+    <button
+      type="button"
+      onMouseDown={(e) => {
+        e.preventDefault();
+        onMouseDown();
+      }}
+      data-hover="background:#F8F4EE"
+      style={{
+        display: "block",
+        width: "100%",
+        textAlign: "start",
+        background: "none",
+        border: "none",
+        borderRadius: "4px",
+        padding: "8px",
+        cursor: "pointer",
+        transition: "background .12s ease",
+      }}
+    >
+      <div style={{ fontSize: "13.5px", fontWeight: 600, color: "#002D62", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        {title}
+      </div>
+      <div style={{ fontSize: "11.5px", color: "#8A8378", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        {subtitle}
+      </div>
+    </button>
   );
 }

@@ -32,10 +32,10 @@ const LOCALE_NAME: Record<Locale, string> = { en: "English", fr: "Français", ar
 // Editing their old placeholder strings here would touch nothing live.
 const EXCLUDED_NAMESPACES = new Set(["JournalPosts", "FeaturedPost"]);
 
-const NAMESPACES = Object.keys(enDefaults).filter((k) => !EXCLUDED_NAMESPACES.has(k));
+export const NAMESPACES = Object.keys(enDefaults).filter((k) => !EXCLUDED_NAMESPACES.has(k));
 
-export function SiteContentView() {
-  const [namespace, setNamespace] = useState(NAMESPACES[0]);
+export function SiteContentView({ initialNamespace }: { initialNamespace?: string } = {}) {
+  const [namespace, setNamespace] = useState(initialNamespace ?? NAMESPACES[0]);
   const [locale, setLocale] = useState<Locale>("en");
   const [search, setSearch] = useState("");
   const [overrides, setOverrides] = useState<Partial<Record<Locale, unknown>>>({});

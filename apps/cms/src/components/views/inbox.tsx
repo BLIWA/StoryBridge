@@ -10,11 +10,15 @@ import { getFirebase } from "@/lib/firebase";
 
 const FILTERS = ["New", "Replied", "Archived", "All"] as const;
 
-export function InboxView() {
+export function InboxView({ initialSelectedId }: { initialSelectedId?: string } = {}) {
   const [tab, setTab] = useState<"messages" | "form">("messages");
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("New");
+  // "All" rather than the usual default "New" when arriving with a specific
+  // message already picked (from a search result) — otherwise a Replied or
+  // Archived match would be shown in the detail pane but invisible, filtered
+  // out, in the list beside it.
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>(initialSelectedId ? "All" : "New");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [selId, setSelId] = useState<string | null>(null);
+  const [selId, setSelId] = useState<string | null>(initialSelectedId ?? null);
   const [reply, setReply] = useState("");
 
   useEffect(() => {

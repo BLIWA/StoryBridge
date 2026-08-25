@@ -136,6 +136,10 @@ function PeopleCard() {
         </div>
       )}
 
+      {/* The role/status columns are fixed-width and don't fit a phone
+          screen alongside a name — scroll the list horizontally there
+          rather than letting rows bleed past the card's edge. */}
+      <div style={{ overflowX: "auto" }}>
       {members?.map((u, i) => {
         const isMe = u.email === me;
         // An owner can always be removed except when they are the last one, or
@@ -154,6 +158,7 @@ function PeopleCard() {
               gap: "16px",
               alignItems: "center",
               padding: "16px 22px",
+              minWidth: manages ? "560px" : "480px",
               borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
               opacity: busyEmail === u.email ? 0.5 : 1,
               transition: "opacity .14s ease",
@@ -262,6 +267,7 @@ function PeopleCard() {
           </div>
         );
       })}
+      </div>
 
       {!manages && (
         <div style={{ padding: "0 22px 18px" }}>
@@ -292,6 +298,7 @@ function RoleMatrixCard() {
       <div style={{ padding: "18px 22px", borderBottom: "1px solid #E6E0D8" }}>
         <div style={MONO_LABEL}>What each role can touch</div>
       </div>
+      <div style={{ overflowX: "auto" }}>
       <div
         style={{
           display: "grid",
@@ -300,6 +307,7 @@ function RoleMatrixCard() {
           padding: "12px 22px",
           background: "#F8F4EE",
           borderBottom: "1px solid #E6E0D8",
+          minWidth: "460px",
         }}
       >
         <div style={headCell}>Capability</div>
@@ -318,6 +326,7 @@ function RoleMatrixCard() {
             gap: "12px",
             padding: "13px 22px",
             alignItems: "center",
+            minWidth: "460px",
             borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
           }}
         >
@@ -335,6 +344,7 @@ function RoleMatrixCard() {
           })}
         </div>
       ))}
+      </div>
       <div style={{ padding: "0 22px 18px" }}>
         <NotWiredNote>
           This table is generated from the same role definitions firestore.rules enforces — it
