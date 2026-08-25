@@ -20,6 +20,9 @@ importers:
 
   apps/cms:
     dependencies:
+      '@storybridge/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       firebase:
         specifier: ^12.18.0
         version: 12.18.0
@@ -60,6 +63,9 @@ importers:
 
   apps/website:
     dependencies:
+      '@storybridge/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       firebase:
         specifier: ^12.18.0
         version: 12.18.0
@@ -100,6 +106,8 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.3
+
+  packages/content: {}
 
   packages/ui: {}
 

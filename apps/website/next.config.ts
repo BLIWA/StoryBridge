@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "firebasestorage.googleapis.com" }],
   },
+  // @storybridge/content ships raw TS, same as every other internal workspace
+  // package here — Next only transpiles node_modules-linked packages it's
+  // told to.
+  transpilePackages: ["@storybridge/content"],
 };
 
 export default withNextIntl(nextConfig);

@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   // require revisiting this — see the root README.
   output: "export",
   images: { unoptimized: true },
+  // @storybridge/content ships raw TS — see apps/website/next.config.ts.
+  transpilePackages: ["@storybridge/content"],
 };
 
 export default nextConfig;

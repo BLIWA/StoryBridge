@@ -12,7 +12,7 @@ import { type Article, type Message } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
 import { ArticlesView, type Filter } from "@/components/views/articles";
 import { ArticleEditor } from "@/components/views/article-editor";
-import { PagesView } from "@/components/views/pages";
+import { SiteContentView } from "@/components/views/site-content";
 import { IssuesView } from "@/components/views/issues";
 import { InboxView } from "@/components/views/inbox";
 import { SettingsView } from "@/components/views/settings";
@@ -334,7 +334,7 @@ export function Studio() {
               }
             />
           )}
-          {view === "pages" && <PagesView />}
+          {view === "pages" && <SiteContentView />}
           {view === "issues" && <IssuesView />}
           {view === "inbox" && <InboxView />}
           {view === "settings" && <SettingsView />}
