@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Sidebar } from "./sidebar";
 import { VIEW_META, type View } from "@/lib/view";
 import { useAuth } from "@/lib/auth-context";
+import { useIdleSignOut } from "@/lib/idle-signout";
 import { ROLE_LABEL, normalizeEmail } from "@/lib/staff";
 import { getFirebase } from "@/lib/firebase";
 import { watchArticles, createArticle, saveArticle, newArticleId } from "@/lib/articles";
@@ -26,6 +27,7 @@ function todayLabel(): string {
 
 export function Studio() {
   const { user, staff, role, can, signOut } = useAuth();
+  const { warning: idleWarning, stayActive } = useIdleSignOut(() => void signOut());
   const [view, setView] = useState<View>("dash");
   const [collapsed, setCollapsed] = useState(false);
   const [articles, setArticles] = useState<Article[]>([]);
@@ -340,6 +342,62 @@ export function Studio() {
           {view === "settings" && <SettingsView />}
         </div>
       </div>
+
+      {idleWarning && (
+        <div
+          role="alertdialog"
+          aria-label="You're about to be signed out"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 50,
+            background: "rgba(0,24,56,0.45)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              background: "#FDF8F1",
+              border: "1px solid #D8D1C7",
+              borderRadius: "8px",
+              padding: "26px 28px",
+              maxWidth: "360px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "19px", fontWeight: 600, color: "#002D62" }}>
+              Still there?
+            </div>
+            <div style={{ fontSize: "13.5px", lineHeight: 1.6, color: "#3E4650" }}>
+              You&rsquo;ve been idle a while — Studio signs out inactive sessions after 12 hours. You&rsquo;ll be
+              signed out in a minute unless you stay.
+            </div>
+            <button
+              type="button"
+              onClick={stayActive}
+              style={{
+                alignSelf: "flex-start",
+                marginTop: "4px",
+                background: "#002D62",
+                color: "#FDF8F1",
+                border: "none",
+                borderRadius: "4px",
+                padding: "10px 20px",
+                fontWeight: 600,
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+            >
+              Stay signed in
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -806,21 +806,21 @@
   },
   "CookiePage": {
     "eyebrow": "Mentions légales",
-    "title": "Politique de cookies",
-    "standfirst": "En résumé : ce site ne dépose aucun cookie aujourd'hui.",
+    "title": "Politique relative aux cookies",
+    "standfirst": "En bref : ce site ne dépose toujours aucun cookie — pas même pour la mesure d'audience.",
     "updated": "Brouillon — 25 août 2026.",
     "sections": [
       {
         "heading": "Ce que nous utilisons aujourd'hui",
         "body": [
-          "Ce site ne dépose aucun cookie de suivi, d'analyse ou publicitaire. La langue (anglais, français ou arabe) est déterminée par l'URL visitée, pas stockée dans un cookie.",
-          "Le seul endroit où des cookies sont réellement utilisés est notre outil de gestion de contenu interne, un outil distinct réservé à l'équipe, à une autre adresse — Firebase Authentication y dépose un cookie de session pour qu'un membre de l'équipe connecté le reste. Cela n'a aucun rapport avec les visiteurs de ce site."
+          "Ce site utilise Plausible, un outil de mesure d'audience respectueux de la vie privée, pour savoir combien de personnes le visitent et quelles pages elles consultent — de manière agrégée, jamais individuellement. Plausible n'utilise pas de cookies, ne collecte aucune donnée personnelle et ne peut pas vous suivre sur d'autres sites. La langue (anglais, français ou arabe) est choisie par l'URL, elle non plus n'est pas stockée dans un cookie.",
+          "Le seul endroit où des cookies sont réellement utilisés est notre CMS interne, un outil séparé, réservé aux personnes connectées, à une autre adresse — Firebase Authentication y dépose un cookie de session pour qu'un membre de l'équipe reste connecté. Cela ne concerne pas les visiteurs de ce site."
         ]
       },
       {
-        "heading": "Si cela change",
+        "heading": "Pourquoi nous affichons quand même un avis",
         "body": [
-          "L'ajout d'outils d'analyse est une décision encore ouverte, pas encore prise. Si nous en ajoutons, cette page décrira précisément ce qui est déposé et, si nécessaire, demandera votre consentement avant que ce soit fait — pas après."
+          "L'absence de cookies chez Plausible signifie que la loi n'exige pas de demander votre consentement avant son fonctionnement — mais nous préférons vous le signaler plutôt que de nous appuyer sur cette technicalité. Le petit avis affiché lors de votre première visite n'est rien de plus que cela : une information, pas une barrière."
         ]
       },
       {
@@ -830,5 +830,9 @@
         ]
       }
     ]
+  },
+  "CookieBanner": {
+    "message": "Nous utilisons Plausible, un outil de mesure d'audience respectueux de la vie privée, sans cookies ni suivi personnel. <cookies>En savoir plus</cookies>.",
+    "dismiss": "Compris"
   }
 }

@@ -11,6 +11,7 @@ import {
   NotWiredNote,
 } from "@/components/ui";
 import { InviteDialog } from "@/components/views/invite-dialog";
+import { MfaCard } from "@/components/views/mfa-card";
 import { useAuth } from "@/lib/auth-context";
 import { getFirebase } from "@/lib/firebase";
 import {
@@ -360,25 +361,23 @@ export function SettingsView() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <MfaCard />
+
         <div style={CARD}>
           <div style={MONO_LABEL}>Security</div>
-          {[
-            { label: "Require a second factor for all staff", def: true },
-            { label: "Sign out inactive sessions after 12 hours", def: true },
-            { label: "Allow contributor access from outside Tunisia", def: false },
-          ].map((c) => (
-            <label
-              key={c.label}
-              style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}
-            >
-              <input type="checkbox" defaultChecked={c.def} style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
-              {c.label}
-            </label>
-          ))}
+          <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
+            <input type="checkbox" checked disabled style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
+            Sign out inactive sessions after 12 hours
+          </label>
+          <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
+            <input type="checkbox" defaultChecked={false} style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
+            Allow contributor access from outside Tunisia
+          </label>
           <NotWiredNote>
-            These three switches are display-only. Roles and removal are real; enforced 2FA needs
-            Identity Platform MFA, and session/geo limits need blocking functions — both are Blaze,
-            roadmap Phase 09.
+            The idle sign-out above is real — see lib/idle-signout.ts — and fixed at 12 hours rather than
+            configurable, so its checkbox stays checked and disabled instead of pretending it&apos;s a live
+            setting. The geo-restriction switch is still display-only: enforcing it needs a blocking Cloud
+            Function, which nothing here has built yet.
           </NotWiredNote>
         </div>
 
