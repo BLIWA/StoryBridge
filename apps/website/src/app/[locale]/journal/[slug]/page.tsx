@@ -243,7 +243,17 @@ export default async function JournalPostPage({
             return (
               <p key={i} style={{ ...para, margin: 0 }}>
                 {tokenizeInline(block.text).map((tok, j) =>
-                  tok.bold ? <strong key={j}>{tok.text}</strong> : tok.italic ? <em key={j}>{tok.text}</em> : <span key={j}>{tok.text}</span>,
+                  tok.href ? (
+                    <a key={j} href={tok.href} style={{ color: "#8F6135" }}>
+                      {tok.text}
+                    </a>
+                  ) : tok.bold ? (
+                    <strong key={j}>{tok.text}</strong>
+                  ) : tok.italic ? (
+                    <em key={j}>{tok.text}</em>
+                  ) : (
+                    <span key={j}>{tok.text}</span>
+                  ),
                 )}
               </p>
             );
