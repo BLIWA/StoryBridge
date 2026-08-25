@@ -1,0 +1,23 @@
+{
+  "name": "storybridge-functions",
+  "private": true,
+  "description": "Cloud Functions for storybridge-eb71e — the Resend-backed mail pipeline (contact notifications, subscriber welcome, newsletter test/send) and server-side reCAPTCHA verification for the public contact form. A standalone npm project, deliberately outside the pnpm workspace: Cloud Functions' build servers expect their own lockfile in this directory.",
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "deploy": "npm run build && firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

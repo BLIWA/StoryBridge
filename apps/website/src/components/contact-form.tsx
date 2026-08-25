@@ -1,18 +1,49 @@
 "use client";
 
 import { useState } from "react";
+import Script from "next/script";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { submitEnquiry } from "@/lib/submissions";
 
 /**
  * Brief form from the board's Contact page.
  *
- * Submits straight to Firestore (see lib/submissions.ts) — there is still no
- * Cloud Function behind it, so nobody is notified automatically and no email
- * goes out. Enquiry routing and outbound mail are roadmap Phase 06, blocked
- * on Blaze. What's real now: the brief is saved and visible in the CMS
- * inbox, which it never was before.
+ * Goes through submitContact() (see lib/submissions.ts) — a Cloud Function
+ * that verifies a reCAPTCHA v3 token before writing anything and, once
+ * written, emails the desk via Resend. Real spam protection, real routing.
+ *
+ * reCAPTCHA needs a site key registered at google.com/recaptcha/admin for
+ * this project's domains — a console-only step, not done yet. Until
+ * NEXT_PUBLIC_RECAPTCHA_SITE_KEY is set, the script below doesn't load and
+ * the form just submits without a token; submitContact() skips verification
+ * in that case too (see functions/src/recaptcha.ts) rather than blocking
+ * every enquiry on a step only the project owner can complete.
  */
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, opts: { action: string }) => Promise<string>;
+    };
+  }
+}
+
+async function getCaptchaToken(): Promise<string | undefined> {
+  if (!RECAPTCHA_SITE_KEY || typeof window === "undefined" || !window.grecaptcha) return undefined;
+  try {
+    await new Promise<void>((resolve) => window.grecaptcha!.ready(resolve));
+    return await window.grecaptcha!.execute(RECAPTCHA_SITE_KEY, { action: "contact" });
+  } catch {
+    // A missing/failed token isn't fatal here — submitContact() treats "no
+    // token" as "verification unavailable," same as the key not being
+    // configured at all. It never silently waves a real bot through: that
+    // gate is the score check on the server, not whether a token exists.
+    return undefined;
+  }
+}
 
 const label = { fontSize: "13px", fontWeight: 500, color: "#3E4650" } as const;
 
@@ -91,12 +122,17 @@ export function ContactForm() {
   }
 
   return (
-    <form
+    <>
+      {RECAPTCHA_SITE_KEY && (
+        <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
+      )}
+      <form
       onSubmit={async (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         setStatus("sending");
         try {
+          const captchaToken = await getCaptchaToken();
           await submitEnquiry({
             name: String(data.get("name") ?? ""),
             email: String(data.get("email") ?? ""),
@@ -106,6 +142,7 @@ export function ContactForm() {
             deadline: String(data.get("deadline") ?? ""),
             brief: String(data.get("brief") ?? ""),
             honeypot: String(data.get("company_website") ?? ""),
+            captchaToken,
           });
           setStatus("sent");
         } catch {
@@ -199,6 +236,24 @@ export function ContactForm() {
           {t("error")}
         </div>
       )}
-    </form>
+
+      {RECAPTCHA_SITE_KEY && (
+        <div style={{ fontSize: "12px", lineHeight: "1.6", color: "#8A8378" }}>
+          {t.rich("captchaNotice", {
+            privacy: (chunks) => (
+              <Link href="/privacy" style={{ color: "#8F6135" }}>
+                {chunks}
+              </Link>
+            ),
+            terms: (chunks) => (
+              <Link href="/terms" style={{ color: "#8F6135" }}>
+                {chunks}
+              </Link>
+            ),
+          })}
+        </div>
+      )}
+      </form>
+    </>
   );
 }

@@ -8,10 +8,9 @@ import { subscribe } from "@/lib/subscribers";
 /**
  * "The Bridge" signup, from the board's navy CTA block.
  *
- * Submits straight to Firestore (see lib/subscribers.ts) — the address is
- * genuinely saved now, which it never was before. What's still missing:
- * nothing is actually sent to anyone. Delivery is Cloud Functions + a
- * transactional email provider in roadmap Phase 06, blocked on Blaze.
+ * Submits straight to Firestore (see lib/subscribers.ts), which triggers a
+ * real welcome email via Resend. What's still missing: an actual issue
+ * send pipeline for The Bridge itself — see apps/cms/src/components/views/issues.tsx.
  */
 export function NewsletterSignup({ source = "Website" }: { source?: string }) {
   const t = useTranslations("NewsletterSignup");

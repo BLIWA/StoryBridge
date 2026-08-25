@@ -13,6 +13,8 @@ import { routing, isRtl, type AppLocale } from "@/i18n/routing";
 import { SiteHeader } from "@/components/chrome/site-header";
 import { SiteFooter } from "@/components/chrome/site-footer";
 import { TranslationNotice } from "@/components/chrome/translation-notice";
+import { Analytics } from "@/components/chrome/analytics";
+import { CookieBanner } from "@/components/chrome/cookie-banner";
 import { DesignFx } from "@/components/fx/design-fx";
 import "../globals.css";
 
@@ -87,12 +89,14 @@ export default async function LocaleLayout({
           minHeight: "100vh",
         }}
       >
+        <Analytics />
         <NextIntlClientProvider>
           <DesignFx />
           <SiteHeader locale={locale as AppLocale} />
           <TranslationNotice locale={locale} />
           <main id="main">{children}</main>
           <SiteFooter />
+          <CookieBanner />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp, type FirebaseOptions } from "firebase/a
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
+import { getFunctions, type Functions } from "firebase/functions";
 
 // The "storybridge-eb71e" web app, from `firebase apps:sdkconfig WEB`. Values live in
 // .env.production (committed — they are public project identifiers, not secrets)
@@ -25,12 +26,22 @@ export const firebaseConfig: FirebaseOptions = {
 // real Firebase web app config is filled into .env.local). Deferring to first
 // call — which only ever happens client-side, inside an event handler —
 // avoids that.
-let cached: { auth: Auth; db: Firestore; storage: FirebaseStorage } | null = null;
+// Matches functions/src/index.ts's setGlobalOptions region — Cloud Functions
+// has no eur3 (that's a Firestore-only multi-region id), europe-west1 is the
+// closest Blaze region to the eur3 data.
+const FUNCTIONS_REGION = "europe-west1";
+
+let cached: { auth: Auth; db: Firestore; storage: FirebaseStorage; functions: Functions } | null = null;
 
 export function getFirebase() {
   if (!cached) {
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-    cached = { auth: getAuth(app), db: getFirestore(app), storage: getStorage(app) };
+    cached = {
+      auth: getAuth(app),
+      db: getFirestore(app),
+      storage: getStorage(app),
+      functions: getFunctions(app, FUNCTIONS_REGION),
+    };
   }
   return cached;
 }

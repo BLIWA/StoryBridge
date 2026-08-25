@@ -5,8 +5,10 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   AuthError,
+  type MultiFactorResolver,
 } from "firebase/auth";
 import { getFirebase, googleProvider } from "@/lib/firebase";
+import { isMfaRequired, resolverFor, totpHint, resolveSignIn } from "@/lib/mfa";
 
 function messageFor(error: unknown): string {
   const code = (error as AuthError)?.code ?? "";
@@ -28,6 +30,11 @@ export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
+  // Set only when sign-in comes back asking for a second factor — see
+  // lib/mfa.ts. Its presence switches the form below to the code-entry step.
+  const [resolver, setResolver] = useState<MultiFactorResolver | null>(null);
+  const [mfaCode, setMfaCode] = useState("");
+
   async function handleEmailSignIn(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -36,7 +43,11 @@ export function SignInForm() {
       const { auth } = getFirebase();
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      setError(messageFor(err));
+      if (isMfaRequired(err)) {
+        setResolver(resolverFor(err));
+      } else {
+        setError(messageFor(err));
+      }
     } finally {
       setPending(false);
     }
@@ -49,10 +60,83 @@ export function SignInForm() {
       const { auth } = getFirebase();
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
-      setError(messageFor(err));
+      if (isMfaRequired(err)) {
+        setResolver(resolverFor(err));
+      } else {
+        setError(messageFor(err));
+      }
     } finally {
       setPending(false);
     }
+  }
+
+  async function handleMfaSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!resolver) return;
+    setError(null);
+    setPending(true);
+    try {
+      const hint = totpHint(resolver);
+      await resolveSignIn(resolver, hint.uid, mfaCode);
+    } catch {
+      setError("That code didn't work. Check your authenticator app and try again.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  if (resolver) {
+    return (
+      <div className="w-full max-w-sm rounded-sb-lg border border-hairline bg-card p-9 shadow-[var(--sb-shadow)]">
+        <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-bronze-deep">
+          StoryBridge Studio
+        </p>
+        <h1 className="mt-3 font-serif text-2xl font-semibold text-navy">Enter your code</h1>
+        <p className="mt-1 text-sm text-ink-mute">Open your authenticator app for {resolver.hints[0]?.displayName ?? "this account"}.</p>
+
+        <form onSubmit={handleMfaSubmit} className="mt-7 flex flex-col gap-4">
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-medium text-ink-soft">6-digit code</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="one-time-code"
+              autoFocus
+              required
+              value={mfaCode}
+              onChange={(e) => setMfaCode(e.target.value)}
+              className="rounded-sb border border-rule bg-cream px-3.5 py-2.5 text-[15px] tracking-[0.3em] text-ink outline-none focus:border-navy"
+            />
+          </label>
+
+          {error && (
+            <p role="alert" className="text-sm font-medium text-danger">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={pending || mfaCode.trim().length < 6}
+            className="mt-1 rounded-sb bg-navy py-3 text-[15px] font-semibold text-cream transition-colors hover:bg-navy-hover disabled:opacity-60"
+          >
+            {pending ? "Checking…" : "Verify"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setResolver(null);
+              setMfaCode("");
+              setError(null);
+            }}
+            className="text-sm font-medium text-ink-mute underline underline-offset-2"
+          >
+            Use a different account
+          </button>
+        </form>
+      </div>
+    );
   }
 
   return (

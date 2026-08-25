@@ -291,10 +291,12 @@ export function InboxView() {
             </div>
 
             <NotWiredNote>
-              The live contact form posts straight to Firestore now — no Cloud Function in between (see
-              lib/submissions.ts). Real spam protection beyond the honeypot, automatic routing, and email
-              notifications still need one — roadmap Phase 06, blocked on Blaze. The fields, routing address
-              and consent line below are still the board&apos;s static presentation.
+              The live contact form now goes through the submitContact Cloud Function (functions/src/index.ts):
+              it checks a reCAPTCHA v3 token — once one is registered, see .env.production — before writing to
+              Firestore, and every new submission emails the active owner/chief roster via Resend. What&apos;s
+              still the board&apos;s static presentation: the fields list, the routing address (in practice it&apos;s
+              &ldquo;every active owner and chief,&rdquo; with hello@storybridge.tn as the fallback if that list
+              is ever empty) and the consent line below.
             </NotWiredNote>
           </div>
         </div>

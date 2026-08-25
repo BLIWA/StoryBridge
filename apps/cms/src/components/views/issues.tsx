@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import { httpsCallable } from "firebase/functions";
 import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
 import { useAuth } from "@/lib/auth-context";
 import { getFirebase } from "@/lib/firebase";
@@ -78,6 +79,7 @@ export function IssuesView() {
   const [logFilter, setLogFilter] = useState("all");
   const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [sendingTest, setSendingTest] = useState(false);
 
   useEffect(() => {
     const { db } = getFirebase();
@@ -191,9 +193,32 @@ export function IssuesView() {
     say("Draft saved to this session.");
   }
 
-  function sendTest() {
-    record(composing, "Test sent", `Test copy requested for ${user?.email ?? "the desk"}`);
-    say("Test recorded in the log — no message left the browser.");
+  /**
+   * The one real send in this whole view — everything else on this tab is
+   * bookkeeping (see the NotWiredNote below). Calls sendBridgeTest
+   * (functions/src/index.ts), which re-checks the sendNewsletter capability
+   * server-side and emails one real copy to the caller's own address via
+   * Resend.
+   */
+  async function sendTest() {
+    setSendingTest(true);
+    try {
+      const send = httpsCallable<{ subject: string; preheader: string; picks: string[] }, { ok: true }>(
+        getFirebase().functions,
+        "sendBridgeTest",
+      );
+      await send({
+        subject: composing.subject,
+        preheader: composing.preheader,
+        picks: composing.picks.map((id) => BRIDGE_PICKS.find((p) => p.id === id)?.title ?? id),
+      });
+      record(composing, "Test sent", `Test copy sent to ${user?.email ?? "the desk"}`);
+      say(`Sent — check ${user?.email ?? "your inbox"}.`);
+    } catch {
+      say("Couldn't send that test. Check your connection and try again.");
+    } finally {
+      setSendingTest(false);
+    }
   }
 
   function confirmSchedule() {
@@ -600,7 +625,9 @@ export function IssuesView() {
                     </>
                   ) : (
                     <>
-                      <GhostButton onClick={sendTest}>Send test</GhostButton>
+                      <GhostButton onClick={() => void sendTest()} disabled={sendingTest}>
+                        {sendingTest ? "Sending…" : "Send test"}
+                      </GhostButton>
                       <GhostButton onClick={saveDraft}>Save draft</GhostButton>
                       {rescheduling && <GhostButton onClick={keepCurrent}>Keep current time</GhostButton>}
                       <PrimaryButton
@@ -630,10 +657,12 @@ export function IssuesView() {
             </div>
 
             <NotWiredNote>
-              Scheduling is bookkeeping, not delivery. A confirmed window is held on the issue and written to the
-              activity log in the Schedule tab, and nothing else happens at that time — sending needs Cloud Functions
-              plus a transactional email provider, roadmap Phase 06. Nothing here reaches a subscriber, and this
-              session&apos;s changes are gone on reload.
+              &ldquo;Send test&rdquo; is real — it emails one copy of exactly what&apos;s in the composer to your own
+              address via Resend (functions/src/index.ts). Everything else on this tab is still bookkeeping:
+              scheduling holds a window on the issue and writes to the activity log, but nothing actually goes out at
+              that time — sending to the real audience needs its own delivery pipeline (subscriber segmentation,
+              unsubscribe links, batching), which this session&apos;s work didn&apos;t build. This session&apos;s
+              other changes here are still gone on reload.
             </NotWiredNote>
           </div>
         </div>

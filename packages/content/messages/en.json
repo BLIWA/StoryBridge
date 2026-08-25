@@ -546,7 +546,8 @@
       "media": "Media & press",
       "launch": "Launch package",
       "unsure": "Not sure yet"
-    }
+    },
+    "captchaNotice": "This site is protected by reCAPTCHA, and the Google <privacy>Privacy Policy</privacy> and <terms>Terms of Service</terms> apply."
   },
   "NewsletterSignup": {
     "placeholder": "you@company.com",
@@ -806,20 +807,20 @@
   "CookiePage": {
     "eyebrow": "Legal",
     "title": "Cookie Policy",
-    "standfirst": "The short version: this site doesn't set any cookies today.",
+    "standfirst": "The short version: this site still doesn't set any cookies — not even for analytics.",
     "updated": "Draft — 25 August 2026.",
     "sections": [
       {
         "heading": "What we use today",
         "body": [
-          "This site doesn't set tracking, analytics or advertising cookies. Language (English, French or Arabic) is chosen by the URL you're on, not stored in a cookie.",
+          "This site uses Plausible, a privacy-first analytics tool, to see how many people visit and which pages they read — in aggregate, never as individuals. Plausible doesn't use cookies, doesn't collect personal data, and can't track you across other websites. Language (English, French or Arabic) is chosen by the URL you're on, not stored in a cookie either.",
           "The one place cookies genuinely are used is our staff CMS, a separate, sign-in-only tool at a different address — Firebase Authentication sets a session cookie there so a signed-in staff member stays signed in. That has nothing to do with visitors to this site."
         ]
       },
       {
-        "heading": "If that changes",
+        "heading": "Why we still show a notice",
         "body": [
-          "Analytics is an open decision we haven't made yet. If we add it, this page will describe exactly what's set and, where required, ask for consent before it's set — not after."
+          "Plausible's cookie-free design means the law doesn't require asking your permission before it runs — but we'd rather tell you it's there than rely on that technicality. The small notice on your first visit is exactly that: a heads-up, not a gate."
         ]
       },
       {
@@ -829,5 +830,9 @@
         ]
       }
     ]
+  },
+  "CookieBanner": {
+    "message": "We use Plausible, privacy-first analytics with no cookies and no personal tracking. <cookies>Learn more</cookies>.",
+    "dismiss": "Got it"
   }
 }
