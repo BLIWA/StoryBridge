@@ -81,12 +81,13 @@ The `storybridge-eb71e` project is provisioned and in use:
 | Piece | State |
 | --- | --- |
 | Web app | Registered. Config committed in `apps/cms/.env.production` — public identifiers, not secrets |
-| Auth | Email/password **and** Google both enabled |
+| Auth | Email/password **and** Google both enabled; TOTP-based 2FA is available (not yet enforced project-wide) — see `apps/cms/src/lib/mfa.ts` |
 | Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app` (+ the two `.firebaseapp.com` forms) |
 | Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU |
-| Firestore rules | Real for `staff`; deny-by-default everywhere else |
-| Storage | API not enabled yet; rules stay deny-all until the Phase 05 media library |
-| Billing | Still Spark. Nothing added here needs Blaze |
+| Firestore rules | Real for every collection in use (`staff`, `media`, `articles`, `siteContent`, `submissions`, `subscribers`); deny-by-default everywhere else |
+| Storage | Live, bucket `storybridge-eb71e.firebasestorage.app`, region `EU` — backs the CMS media library |
+| Cloud Functions | Live, `functions/`, region `europe-west1` (Blaze) — the Resend mail pipeline and server-side reCAPTCHA verification. See `functions/src/index.ts` |
+| Billing | **Blaze.** Cloud Functions and the MFA/Identity-Platform features above both need it |
 
 `cma-storybridge.web.app` had to be added to the authorised-domain list —
 without it Google sign-in fails on the live CMS with `auth/unauthorized-domain`,
@@ -94,13 +95,8 @@ because the list Firebase seeds a project with only covers the default site.
 
 ### Roles without Cloud Functions
 
-Role enforcement usually means Firebase custom claims, which means the Admin SDK
-in a Cloud Function, which means Blaze billing. Instead a person's role lives in
-their `staff/{email}` document and `firestore.rules` reads it with a `get()`.
-That costs one extra document read per rule evaluation and buys genuine
-server-side enforcement on the free plan today. Moving to claims later touches
-`lib/staff.ts` and the rules' helper functions; nothing else.
+Role enforcement predates the move to Blaze and was deliberately built without custom claims (which need the Admin SDK in a Cloud Function): a person's role lives in their `staff/{email}` document and `firestore.rules` reads it with a `get()`. That costs one extra document read per rule evaluation and bought genuine server-side enforcement back when this project was still on Spark. It hasn't been revisited since Blaze landed — `lib/staff.ts` and the rules' helper functions are still the source of truth.
 
-## A note on the `fr`/`ar` copy already in the repo
+## A note on the `fr`/`ar` copy in the repo
 
-`apps/website/messages/fr.json` and `ar.json` exist so the trilingual layout (including RTL) could be verified end-to-end during scaffolding. They are **my draft translations**, not reviewed by Imen — StoryBridge's own translator. Treat every non-English string in this repo as placeholder until a native pass happens; this is exactly the kind of gap a company selling translation quality shouldn't ship silently.
+`packages/content/messages/fr.json` and `ar.json` (read by both apps; CMS-editable overrides layer on top per-page via the `siteContent` Firestore collection — see `packages/content/src/merge.ts`) exist so the trilingual layout (including RTL) could be verified end-to-end during scaffolding. They are **my draft translations**, not reviewed by Imen — StoryBridge's own translator. Treat every non-English string in this repo as placeholder until a native pass happens; this is exactly the kind of gap a company selling translation quality shouldn't ship silently.
