@@ -93,7 +93,12 @@ export function Sidebar({
         flexDirection: "column",
         position: "sticky",
         top: 0,
-        alignSelf: "flex-start",
+        // No alignSelf override here: the parent row is `alignItems: "stretch"`
+        // (see studio.tsx) specifically so this box matches the height of the
+        // content column next to it — the navy background needs to reach the
+        // page's actual bottom, not just wrap its own header+nav+footer.
+        // `position: sticky` still pins it to the viewport while it's taller
+        // than the screen.
         transition: "width .2s cubic-bezier(.2,.7,.2,1)",
       }}
     >

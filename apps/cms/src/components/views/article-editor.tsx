@@ -5,7 +5,7 @@ import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton,
 import { pill, type Article } from "@/content/seed";
 import { ALL_LANGS, LANG_NAME, langContentOf, langStarted, langPatch, primaryLangOf } from "@/lib/languages";
 import { bodyOps, type Selection } from "@/lib/body-format";
-import { uploadMedia, recordMediaMeta, type MediaItem } from "@/lib/media";
+import { uploadMedia, recordMediaMeta, describeUploadError, type MediaItem } from "@/lib/media";
 import { watchStaff, type StaffMember } from "@/lib/staff";
 import { getFirebase } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
@@ -113,8 +113,8 @@ export function ArticleEditor({
       const credit = window.prompt("Credit (shown under the image, e.g. “Photo: Jane Doe”):", "") ?? "";
       void recordMediaMeta(media, { alt, credit, uploadedBy: user?.email ?? "" });
       applyBodyEdit(bodyOps.image(content.body, currentSelection(), media.url, alt, credit));
-    } catch {
-      setUploadError("Couldn't upload that image. Check your connection and try again.");
+    } catch (err) {
+      setUploadError(describeUploadError(err));
     } finally {
       setUploading(false);
     }
@@ -127,8 +127,8 @@ export function ArticleEditor({
       const media = await uploadMedia(file);
       void recordMediaMeta(media, { alt: "", credit: "", uploadedBy: user?.email ?? "" });
       setDraft({ leadImage: { url: media.url, path: media.path, alt: "", credit: "" } });
-    } catch {
-      setUploadError("Couldn't upload that image. Check your connection and try again.");
+    } catch (err) {
+      setUploadError(describeUploadError(err));
     } finally {
       setUploading(false);
     }

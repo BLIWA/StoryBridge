@@ -12,9 +12,34 @@
  * failure is swallowed rather than surfaced as an upload failure.
  */
 
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, StorageError } from "firebase/storage";
 import { doc, setDoc, collection, query, orderBy, onSnapshot, serverTimestamp, type Firestore } from "firebase/firestore";
 import { getFirebase } from "./firebase";
+
+/**
+ * storage.rules denies anything that isn't `image/*` under 15MB from a staff
+ * account — a StorageError carries which of those it was, but the editor was
+ * swallowing it and always showing the same "check your connection" copy.
+ * That made every real cause (wrong content-type, not staff, oversized file,
+ * actually offline) look identical. Map the ones worth telling apart.
+ */
+export function describeUploadError(err: unknown): string {
+  const code = err instanceof StorageError ? err.code : undefined;
+  switch (code) {
+    case "storage/unauthorized":
+      return "Couldn't upload that image — your account isn't recognized as active staff. Ask an owner to check Settings & access.";
+    case "storage/unauthenticated":
+      return "Couldn't upload that image — you've been signed out. Sign in again and retry.";
+    case "storage/quota-exceeded":
+      return "Couldn't upload that image — storage quota exceeded.";
+    case "storage/canceled":
+      return "Upload canceled.";
+    case "storage/retry-limit-exceeded":
+      return "Couldn't upload that image — the connection kept timing out. Check your connection and try again.";
+    default:
+      return "Couldn't upload that image. Check your connection and try again.";
+  }
+}
 
 export type UploadedMedia = {
   /** Storage path, e.g. `media/1737-cover.jpg` — kept so callers can delete later. */
