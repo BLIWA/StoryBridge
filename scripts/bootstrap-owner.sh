@@ -21,7 +21,7 @@ set -euo pipefail
 
 EMAIL_RAW="${1:-}"
 NAME="${2:-}"
-PROJECT="${3:-sotrybridge}"
+PROJECT="${3:-storybridge-eb71e}"
 
 if [[ -z "$EMAIL_RAW" || -z "$NAME" ]]; then
   echo "usage: $0 <email> <full name> [project-id]" >&2

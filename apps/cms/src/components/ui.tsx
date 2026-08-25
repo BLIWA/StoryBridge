@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 
 /** Small primitives shared by the CMS views, styled from the board. */
 
@@ -164,6 +164,107 @@ export function GhostButton({
     >
       {children}
     </button>
+  );
+}
+
+// One hook-shaped path — the same comma silhouette as the bronze stroke in
+// /assets/storybridge-mark.png — drawn once and mirrored horizontally in
+// navy, so the pair reads as an opening and closing curly quote rather than
+// one blob. Used wherever the editor needs a curly-quote glyph in the
+// brand's own shape rather than a generic typographic one: the toolbar's
+// quote button and the pull-quote block in Preview. Kept local to the CMS
+// rather than shared via @storybridge/ui — it's a few lines of SVG, not
+// worth a package boundary.
+const QUOTE_HOOK_PATH =
+  "M27 2C16 3.6 8.5 12.4 8.5 21.8C8.5 29.8 14.6 36 21.8 36C28 36 33 31.2 33 25C33 18.8 28 14 21.8 14C19.6 14 17.6 14.7 16 15.9C16.7 8.6 21.2 3.6 27.8 1.7C28.9 1.4 28.3 1.8 27 2Z";
+
+export function QuoteMark({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size * (36 / 70)}
+      viewBox="0 0 70 36"
+      aria-hidden="true"
+      style={{ display: "block", flex: "none" }}
+    >
+      <path d={QUOTE_HOOK_PATH} fill="#B57D49" />
+      <path d={QUOTE_HOOK_PATH} fill="#002D62" transform="translate(70,0) scale(-1,1)" />
+    </svg>
+  );
+}
+
+/**
+ * A Storage image with somewhere to go while it loads and somewhere to go if
+ * it never does — the two states a bare `<img>` leaves blank. Used wherever
+ * the editor shows a real uploaded image (lead image, in-body images in
+ * Preview) now that lib/media.ts uploads to real URLs instead of nothing.
+ */
+export function MediaImage({
+  src,
+  alt,
+  style,
+}: {
+  src: string;
+  alt: string;
+  style?: CSSProperties;
+}) {
+  const [state, setState] = useState<"loading" | "loaded" | "error">("loading");
+
+  if (state === "error") {
+    return (
+      <div
+        role="img"
+        aria-label={alt || "Image failed to load"}
+        style={{
+          ...style,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#F3E3E3",
+          border: "1px solid #E0C6C4",
+          color: "#8A3B3B",
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: "11px",
+          textAlign: "center",
+          padding: "8px",
+        }}
+      >
+        Couldn&rsquo;t load image
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden", ...style }}>
+      {state === "loading" && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(90deg,#EDE7DE 0%,#F8F4EE 50%,#EDE7DE 100%)",
+            backgroundSize: "200% 100%",
+            animation: "cms-shimmer 1.3s ease-in-out infinite",
+          }}
+        />
+      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setState("loaded")}
+        onError={() => setState("error")}
+        loading="lazy"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+          opacity: state === "loaded" ? 1 : 0,
+          transition: "opacity .2s ease",
+        }}
+      />
+    </div>
   );
 }
 

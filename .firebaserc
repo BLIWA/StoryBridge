@@ -1,15 +1,15 @@
 {
   "projects": {
-    "default": "sotrybridge"
+    "default": "storybridge-eb71e"
   },
   "targets": {
-    "sotrybridge": {
+    "storybridge-eb71e": {
       "hosting": {
         "website": [
-          "sotrybridge"
+          "storybridge-eb71e"
         ],
         "cms": [
-          "cms-sotrybridge"
+          "cma-storybridge"
         ]
       }
     }

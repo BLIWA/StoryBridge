@@ -8,7 +8,7 @@ Run from the repo root: `pnpm dev:cms` (port 3001). See the root
 
 ## Firebase config
 
-The `sotrybridge` web app is registered and its config is committed in
+The `storybridge-eb71e` web app is registered and its config is committed in
 `.env.production`. **There is nothing to fill in** — a fresh clone builds and
 deploys with working auth. `NEXT_PUBLIC_FIREBASE_*` values are public project
 identifiers, not credentials; the security boundary is Firebase Auth plus

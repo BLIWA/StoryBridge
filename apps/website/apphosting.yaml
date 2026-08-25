@@ -1,6 +1,6 @@
 # Firebase App Hosting config for the marketing site.
 # Create the backend once authenticated (see root README):
-#   firebase apphosting:backends:create --project=sotrybridge
+#   firebase apphosting:backends:create --project=storybridge-eb71e
 # and point its root directory at apps/website in this monorepo.
 # Custom domain (the apex/root domain) is attached after the backend exists —
 # see roadmap Phase 09.
@@ -14,7 +14,17 @@ runConfig:
 
 env:
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: sotrybridge
+    value: storybridge-eb71e
+    availability:
+      - BUILD
+      - RUNTIME
+  # Needed since the site started reading published articles from Firestore
+  # (src/lib/articles.ts) — same secret the CMS backend already references,
+  # see apps/cms/apphosting.yaml. Inert until a real App Hosting backend
+  # exists (Phase 09); today's static-export build reads .env.production
+  # instead.
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    secret: NEXT_PUBLIC_FIREBASE_API_KEY
     availability:
       - BUILD
       - RUNTIME

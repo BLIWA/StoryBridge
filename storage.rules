@@ -1,10 +1,36 @@
 rules_version = '2';
 
-// Deny-by-default skeleton — mirrors firestore.rules. The CMS media library
-// (Phase 05) will need authenticated-write / public-read rules scoped to a
-// path like /media/{file}, added once roles are finalized.
+// Mirrors firestore.rules' staff gate, cross-service: a Storage rule can call
+// firestore.get()/exists() directly, so "is this person on the team" has one
+// answer instead of two. Everything outside /media stays denied — that skeleton
+// is still correct for paths nothing writes to yet.
 service firebase.storage {
   match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null && request.auth.token.email != null;
+    }
+
+    function staffDoc() {
+      return firestore.get(/databases/(default)/documents/staff/$(request.auth.token.email.lower()));
+    }
+
+    function isStaff() {
+      return signedIn()
+        && firestore.exists(/databases/(default)/documents/staff/$(request.auth.token.email.lower()))
+        && staffDoc().data.active == true;
+    }
+
+    // Lead images and in-body media: publicly readable (the website embeds
+    // them unauthenticated), writable only by active staff. 15MB caps an
+    // accidental raw-video upload without getting in the way of a real photo.
+    match /media/{fileName} {
+      allow read: if true;
+      allow write: if isStaff()
+        && request.resource.size < 15 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

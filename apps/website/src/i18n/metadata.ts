@@ -18,7 +18,7 @@ import { isDraftLocale } from "./status";
  * them in the same pass as the page itself.
  */
 
-export const SITE_URL = "https://sotrybridge.web.app";
+export const SITE_URL = "https://storybridge-eb71e.web.app";
 export const SITE_NAME = "StoryBridge Content & Media";
 
 /** Route for a page key in a given locale. `home` is the bare locale root. */

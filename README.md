@@ -5,8 +5,8 @@ Website + CMS for StoryBridge Content & Media. Full build plan, architecture rat
 **→ [Roadmap & Open Questions](https://claude.ai/code/artifact/a1b752c4-215f-4508-a2a8-7a09287cba5a)**
 
 **Live now:**
-- Website — https://sotrybridge.web.app (redirects `/` → `/en`; `/fr`, `/ar` also live, RTL for Arabic)
-- CMS — https://cms-sotrybridge.web.app (sign-in screen; `noindex`)
+- Website — https://storybridge-eb71e.web.app (redirects `/` → `/en`; `/fr`, `/ar` also live, RTL for Arabic)
+- CMS — https://cma-storybridge.web.app (sign-in screen; `noindex`)
 
 This repo is past Phase 01 (infrastructure scaffold) and has a first deploy live via classic Firebase Hosting static export — see "Hosting: static export today, App Hosting later" below for why. See "What's not done yet" for everything still ahead.
 
@@ -48,11 +48,11 @@ The CMS ships with working Firebase config committed in `apps/cms/.env.productio
 
 ## Hosting: static export today, App Hosting later
 
-Both apps currently build with `output: "export"` and deploy as static files to classic Firebase Hosting — two sites in the one `sotrybridge` project, mapped via `.firebaserc` targets (`website` → `sotrybridge`, `cms` → `cms-sotrybridge`):
+Both apps currently build with `output: "export"` and deploy as static files to classic Firebase Hosting — two sites in the one `storybridge-eb71e` project, mapped via `.firebaserc` targets (`website` → `storybridge-eb71e`, `cms` → `cma-storybridge`):
 
 ```bash
 pnpm build                              # writes apps/{website,cms}/out
-firebase deploy --only hosting --project sotrybridge
+firebase deploy --only hosting --project storybridge-eb71e
 ```
 
 This was the pragmatic call for the first deploy: the requested URLs are `*.web.app`, which is what classic Hosting gives you (App Hosting backends get a different default domain shape), and static Hosting needs no Blaze plan — nothing in either app requires a server yet, so there was no reason to put billing on the table just to get something live.
@@ -76,19 +76,19 @@ Full detail, durations and the specific questions blocking each step: see the ro
 
 ## Firebase project state
 
-The `sotrybridge` project is provisioned and in use:
+The `storybridge-eb71e` project is provisioned and in use:
 
 | Piece | State |
 | --- | --- |
 | Web app | Registered. Config committed in `apps/cms/.env.production` — public identifiers, not secrets |
 | Auth | Email/password **and** Google both enabled |
-| Authorised domains | `localhost`, `sotrybridge.web.app`, `cms-sotrybridge.web.app` (+ the two `.firebaseapp.com` forms) |
+| Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app` (+ the two `.firebaseapp.com` forms) |
 | Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU |
 | Firestore rules | Real for `staff`; deny-by-default everywhere else |
 | Storage | API not enabled yet; rules stay deny-all until the Phase 05 media library |
 | Billing | Still Spark. Nothing added here needs Blaze |
 
-`cms-sotrybridge.web.app` had to be added to the authorised-domain list —
+`cma-storybridge.web.app` had to be added to the authorised-domain list —
 without it Google sign-in fails on the live CMS with `auth/unauthorized-domain`,
 because the list Firebase seeds a project with only covers the default site.
 

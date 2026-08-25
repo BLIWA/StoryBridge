@@ -14,10 +14,11 @@ rules_version = '2';
 // This project is deliberately still on Spark — see the root README. The cost
 // is one extra document read per rule evaluation.
 //
-// Everything outside /staff stays denied. Articles, pages, issues, subscribers
+// /staff, /media and /articles have rules below. Pages, issues, subscribers
 // and contact submissions are still in-memory seed data in the CMS (see
 // apps/cms/src/content/seed.ts); their collections and rules land with the
-// content modules in roadmap Phase 05–06. Do not add a wildcard `if true` here.
+// rest of the content modules in roadmap Phase 05–06.
+// Do not add a wildcard `if true` here.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -49,11 +50,13 @@ service cloud.firestore {
       return isStaff() ? get(staffPath()).data.role : 'none';
     }
 
-    // Only the capability the /staff rules actually need. The rest of the role
-    // table (publish, edit pages, send the newsletter, edit anyone's draft)
-    // lives in lib/staff.ts and gets its clauses here when the collections
-    // those verbs act on exist — Phase 05–06.
+    // Mirrors the CAPABILITIES table in lib/staff.ts. Clauses land here as the
+    // collections those verbs act on exist — /articles is the first; edit
+    // pages, send the newsletter and the rest still land with Phase 05–06.
     function canManagePeople() { return role() == 'owner'; }
+    function canEditAnyDraft() { return role() in ['owner', 'chief', 'journalist']; }
+    function canPublish() { return role() in ['owner', 'chief']; }
+    function canEditPages() { return role() in ['owner', 'chief']; }
 
     match /staff/{staffEmail} {
 
@@ -92,6 +95,98 @@ service cloud.firestore {
 
       // Revoking your own access has no valid use and no way back.
       allow delete: if canManagePeople() && !isSelf(staffEmail);
+    }
+
+    // Metadata for uploads in Storage's /media path (credit, alt text, who
+    // uploaded it) — see apps/cms/src/lib/media.ts. Staff-only: the website
+    // is still a static export reading apps/website/src/content rather than
+    // Firestore, so there is no public consumer of this collection yet.
+    // Revisit read access when there is (Phase 05).
+    match /media/{fileId} {
+      function wellFormedMedia() {
+        return request.resource.data.path is string
+          && request.resource.data.url is string
+          && request.resource.data.credit is string
+          && request.resource.data.alt is string
+          && request.resource.data.uploadedBy is string;
+      }
+
+      allow read: if isStaff();
+      allow create: if isStaff() && wellFormedMedia();
+      allow update, delete: if isStaff();
+    }
+
+    // Journal articles — see apps/cms/src/lib/articles.ts. The website reads
+    // this collection at build time now (apps/website/src/lib/articles.ts),
+    // so a Published piece is public; every other status (drafts, review,
+    // scheduled) stays staff-only — nobody outside the team gets to see work
+    // in progress. `authorEmail` is the ownership key — `author` on the
+    // document is just a display name, not proof of anything.
+    match /articles/{articleId} {
+      function validStatus(s) {
+        return s in ['Draft', 'In review', 'Scheduled', 'Published'];
+      }
+
+      function wellFormedArticle() {
+        return request.resource.data.title is string
+          && request.resource.data.slug is string
+          && validStatus(request.resource.data.status)
+          && request.resource.data.authorEmail is string
+          && request.resource.data.authorEmail == request.resource.data.authorEmail.lower();
+      }
+
+      // Anyone on staff may write their own drafts (the board's "own drafts
+      // only" contributor scope); owner/chief/journalist may write anyone's.
+      function isOwnDraft() {
+        return isStaff() && resource.data.authorEmail == email();
+      }
+
+      // Setting status to Published from the client is an owner/chief verb;
+      // every other status transition (draft edits, sending to review,
+      // scheduling) is open to whoever may touch the document at all.
+      function statusChangeAllowed() {
+        return request.resource.data.status == resource.data.status || canPublish();
+      }
+
+      // Firestore requires the client's own query to filter by `status` for
+      // this to work without reading the whole collection (rules constrain a
+      // list request, they don't post-filter it) — see listPublishedArticles()
+      // on the website, which always queries with `where('status','==',...)`.
+      allow read: if isStaff() || resource.data.status == 'Published';
+
+      allow create: if isStaff()
+        && wellFormedArticle()
+        && request.resource.data.authorEmail == email()
+        // Can't hand yourself a published piece on the way in — publishing
+        // is always a transition on an existing draft, never day-one status.
+        && request.resource.data.status != 'Published';
+
+      allow update: if isStaff()
+        && wellFormedArticle()
+        // authorEmail is the ownership key — it doesn't move after creation,
+        // the same way a staff document can't reassign its own identity.
+        && request.resource.data.authorEmail == resource.data.authorEmail
+        && (canEditAnyDraft() || isOwnDraft())
+        && statusChangeAllowed();
+
+      // Not exposed in the UI yet — kept consistent with the roles that can
+      // already touch any draft, rather than left to fall through to deny.
+      allow delete: if canEditAnyDraft();
+    }
+
+    // Site pages & sections — see apps/cms/src/lib/pages.ts. Editing pages is
+    // the `editPages` capability in lib/staff.ts (owner/chief), not the
+    // "own drafts" model articles use — nobody authors a page alone. No
+    // public consumer yet: the website's marketing copy still comes from its
+    // own next-intl message catalogs, not this collection (see the roadmap —
+    // reconciling those two is a separate, undecided piece of work).
+    match /pages/{pageKey} {
+      function wellFormedPage() {
+        return request.resource.data.order is list && request.resource.data.sections is map;
+      }
+
+      allow read: if isStaff();
+      allow write: if isStaff() && canEditPages() && wellFormedPage();
     }
 
     // Deny-by-default for everything else. See the note at the top of this file.
