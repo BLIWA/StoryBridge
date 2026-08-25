@@ -22,6 +22,9 @@ const PAGES = [
   { key: "journal", priority: 0.7 },
   { key: "newsletter", priority: 0.6 },
   { key: "work", priority: 0.5 },
+  { key: "privacy", priority: 0.2 },
+  { key: "terms", priority: 0.2 },
+  { key: "cookies", priority: 0.2 },
 ];
 
 // output:"export" builds this to a static file at build time; Next requires the

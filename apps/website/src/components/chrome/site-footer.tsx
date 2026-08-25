@@ -180,14 +180,29 @@ export function SiteFooter() {
             padding: "22px 0 40px",
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             gap: "24px",
+            flexWrap: "wrap",
             fontFamily: "'IBM Plex Mono',monospace",
             fontSize: "11.5px",
             color: "rgba(253,248,241,0.5)",
           }}
         >
-          <div>{t("copyright", { year: 2026 })}</div>
-          <div>{t("disciplines")}</div>
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+            <div>{t("copyright", { year: 2026 })}</div>
+            <div>{t("disciplines")}</div>
+          </div>
+          <div style={{ display: "flex", gap: "18px" }}>
+            <Link href="/privacy" data-hover="color:#FDF8F1" style={{ color: "rgba(253,248,241,0.5)" }}>
+              {t("legal.privacy")}
+            </Link>
+            <Link href="/terms" data-hover="color:#FDF8F1" style={{ color: "rgba(253,248,241,0.5)" }}>
+              {t("legal.terms")}
+            </Link>
+            <Link href="/cookies" data-hover="color:#FDF8F1" style={{ color: "rgba(253,248,241,0.5)" }}>
+              {t("legal.cookies")}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
