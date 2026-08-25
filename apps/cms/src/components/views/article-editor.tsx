@@ -5,12 +5,13 @@ import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton,
 import { pill, type Article } from "@/content/seed";
 import { ALL_LANGS, LANG_NAME, langContentOf, langStarted, langPatch, primaryLangOf } from "@/lib/languages";
 import { bodyOps, type Selection } from "@/lib/body-format";
-import { uploadMedia, recordMediaMeta } from "@/lib/media";
+import { uploadMedia, recordMediaMeta, type MediaItem } from "@/lib/media";
 import { watchStaff, type StaffMember } from "@/lib/staff";
 import { getFirebase } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 import { ArticlePreview } from "@/components/views/article-preview";
 import { PublishConfirmDialog } from "@/components/views/publish-confirm-dialog";
+import { MediaPicker } from "@/components/views/media-picker";
 
 /** Article editor from "StoryBridge CMS.dc.html" (lines 252–325). */
 
@@ -55,6 +56,7 @@ export function ArticleEditor({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showPublishConfirm, setShowPublishConfirm] = useState(false);
+  const [picker, setPicker] = useState<"lead" | "toolbar" | null>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const leadImageInput = useRef<HTMLInputElement>(null);
   const toolbarImageInput = useRef<HTMLInputElement>(null);
@@ -130,6 +132,16 @@ export function ArticleEditor({
     } finally {
       setUploading(false);
     }
+  }
+
+  /** A library pick already has its credit/alt recorded — no re-prompt, unlike a fresh upload. */
+  function insertFromLibrary(item: MediaItem) {
+    if (picker === "lead") {
+      setDraft({ leadImage: { url: item.url, path: item.path, alt: item.alt, credit: item.credit } });
+    } else {
+      applyBodyEdit(bodyOps.image(content.body, currentSelection(), item.url, item.alt, item.credit));
+    }
+    setPicker(null);
   }
 
   const coAuthorChoices = staff.filter((s) => s.name !== draft.author);
@@ -318,6 +330,15 @@ export function ArticleEditor({
               >
                 {uploading ? "uploading…" : "image"}
               </button>
+              <button
+                type="button"
+                title="Pick from the media library"
+                data-hover="background:#E8E3DD"
+                style={toolbarBtn}
+                onClick={() => setPicker("toolbar")}
+              >
+                library
+              </button>
               <input
                 ref={toolbarImageInput}
                 type="file"
@@ -409,6 +430,7 @@ export function ArticleEditor({
                     <GhostButton onClick={() => leadImageInput.current?.click()} disabled={uploading}>
                       Replace
                     </GhostButton>
+                    <GhostButton onClick={() => setPicker("lead")}>Choose from library</GhostButton>
                     <GhostButton onClick={() => setDraft({ leadImage: undefined })}>Remove</GhostButton>
                   </div>
                 </div>
@@ -416,10 +438,11 @@ export function ArticleEditor({
             ) : (
               <>
                 <div style={{ fontSize: "13px", color: "#8A8378" }}>Drop a file or pick from the media library</div>
-                <div>
+                <div style={{ display: "flex", gap: "8px" }}>
                   <GhostButton onClick={() => leadImageInput.current?.click()} disabled={uploading}>
                     {uploading ? "Uploading…" : "Upload image"}
                   </GhostButton>
+                  <GhostButton onClick={() => setPicker("lead")}>Choose from library</GhostButton>
                 </div>
               </>
             )}
@@ -582,6 +605,8 @@ export function ArticleEditor({
           }}
         />
       )}
+
+      {picker && <MediaPicker onSelect={insertFromLibrary} onClose={() => setPicker(null)} />}
     </div>
   );
 }

@@ -13,7 +13,7 @@
  */
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, collection, query, orderBy, onSnapshot, serverTimestamp, type Firestore } from "firebase/firestore";
 import { getFirebase } from "./firebase";
 
 export type UploadedMedia = {
@@ -59,4 +59,39 @@ export async function recordMediaMeta(
     // The file is already uploaded and usable; a missing metadata doc just
     // means the credit won't show up in a future media library list.
   }
+}
+
+export type MediaItem = {
+  id: string;
+  path: string;
+  url: string;
+  credit: string;
+  alt: string;
+  uploadedBy: string;
+};
+
+/** The library the editor's "pick from the media library" copy has always promised. */
+export function watchMedia(
+  db: Firestore,
+  onChange: (items: MediaItem[]) => void,
+  onError: (error: unknown) => void,
+) {
+  return onSnapshot(
+    query(collection(db, "media"), orderBy("createdAt", "desc")),
+    (snap) =>
+      onChange(
+        snap.docs.map((d) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            path: typeof data.path === "string" ? data.path : "",
+            url: typeof data.url === "string" ? data.url : "",
+            credit: typeof data.credit === "string" ? data.credit : "",
+            alt: typeof data.alt === "string" ? data.alt : "",
+            uploadedBy: typeof data.uploadedBy === "string" ? data.uploadedBy : "",
+          };
+        }),
+      ),
+    onError,
+  );
 }
