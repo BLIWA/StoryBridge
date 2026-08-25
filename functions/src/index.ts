@@ -3,7 +3,7 @@
  * server-side half of contact-form reCAPTCHA. See the root README's
  * "roadmap" link for why this didn't exist before Blaze.
  *
- * Six functions:
+ * Eight functions:
  *  - onSubmissionCreated  Firestore trigger → notifies staff of a new enquiry
  *  - onSubscriberCreated  Firestore trigger → welcomes a new Bridge subscriber
  *  - submitContact        callable → verifies reCAPTCHA, writes the enquiry
@@ -17,24 +17,29 @@
  *                          has no per-role gating either)
  *  - enforceContributorGeoRestriction  Auth blocking function (blocking.ts)
  *                          → the "outside Tunisia" switch in Settings
+ *  - sendScheduledBridgeIssues  scheduled (every 5 min) → the actual send
+ *                          pipeline for The Bridge; see lib/bridge-issues.ts
+ *  - unsubscribe           onRequest → the link in every real Bridge send
  *
- * All six run in europe-west1 — Cloud Functions has no eur3 (that's a
+ * All eight run in europe-west1 — Cloud Functions has no eur3 (that's a
  * Firestore-only multi-region id), europe-west1 is the closest Blaze region
  * to the eur3 data.
  */
 
 import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, type Query } from "firebase-admin/firestore";
 import { setGlobalOptions } from "firebase-functions/v2";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { onCall, onRequest, HttpsError } from "firebase-functions/v2/https";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions/v2";
 
-import { sendEmail } from "./resend";
-import { contactNotification, subscriberWelcome, bridgeIssue, contactReply } from "./templates";
+import { sendEmail, sendBatch } from "./resend";
+import { contactNotification, subscriberWelcome, bridgeIssue, contactReply, unsubscribePage } from "./templates";
 import { verifyRecaptcha } from "./recaptcha";
 import { isSendCapable, isActiveStaff } from "./staff";
+import { unsubscribeUrl, verifyUnsubscribeToken } from "./unsubscribe-token";
 
 export { enforceContributorGeoRestriction } from "./blocking";
 
@@ -43,6 +48,7 @@ setGlobalOptions({ region: "europe-west1" });
 
 const RESEND_API_KEY = defineSecret("RESEND_API_KEY");
 const RECAPTCHA_SECRET_KEY = defineSecret("RECAPTCHA_SECRET_KEY");
+const UNSUBSCRIBE_SECRET = defineSecret("UNSUBSCRIBE_SECRET");
 
 const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "hello@storybridge.tn";
 
@@ -269,4 +275,110 @@ export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) =
   // than something this function also does — no reason to hand this
   // function Firestore-write scope it doesn't otherwise need.
   return { ok: true };
+});
+
+// ---------------------------------------------------------------------------
+
+/**
+ * The actual send pipeline for The Bridge. Everything in
+ * apps/cms/src/components/views/issues.tsx up to "Schedule send" is
+ * composing and bookkeeping; this is the one thing in that whole flow that
+ * reaches a subscriber's inbox. Runs every 5 minutes, picks up any issue
+ * whose scheduled instant has arrived, and sends it.
+ *
+ * A failed issue is deliberately left `Scheduled` rather than marked
+ * failed or Sent — the next tick retries it. That risks a duplicate send
+ * if the failure happened after Resend accepted the batch but before this
+ * function could write `status: 'Sent'` back; there is no dedupe / idempotency
+ * key on the send itself. Accepted for now: at this project's volume, an
+ * occasional duplicate newsletter is a far smaller problem than a send that
+ * silently never goes out and never retries.
+ */
+export const sendScheduledBridgeIssues = onSchedule(
+  { schedule: "every 5 minutes", secrets: [RESEND_API_KEY, UNSUBSCRIBE_SECRET] },
+  async () => {
+    const db = getFirestore();
+    const now = Date.now();
+    const due = await db.collection("bridgeIssues").where("status", "==", "Scheduled").where("sendAt", "<=", now).get();
+    if (due.empty) return;
+
+    for (const issueDoc of due.docs) {
+      const issue = issueDoc.data();
+      const issueNo = String(issue.no ?? "");
+      const subject = String(issue.subject ?? "");
+      try {
+        let subsQuery: Query = db.collection("subscribers").where("status", "==", "Subscribed");
+        const audienceId = typeof issue.audienceId === "string" ? issue.audienceId : "all";
+        if (audienceId !== "all") {
+          subsQuery = subsQuery.where("lang", "==", audienceId.toUpperCase());
+        }
+        const subsSnap = await subsQuery.get();
+        const recipients = subsSnap.docs.map((d) => d.id);
+
+        const pickIds: string[] = Array.isArray(issue.pickArticleIds) ? issue.pickArticleIds : [];
+        const picks: string[] = [];
+        for (const id of pickIds) {
+          const articleSnap = await db.collection("articles").doc(id).get();
+          if (articleSnap.exists) picks.push(String(articleSnap.data()?.title ?? id));
+        }
+
+        if (recipients.length > 0) {
+          const messages = recipients.map((email) => {
+            const built = bridgeIssue({
+              subject,
+              preheader: String(issue.preheader ?? ""),
+              picks,
+              test: false,
+              unsubscribeUrl: unsubscribeUrl(UNSUBSCRIBE_SECRET.value(), email),
+            });
+            return { to: email, subject: built.subject, html: built.html, text: built.text };
+          });
+          await sendBatch(RESEND_API_KEY.value(), messages);
+        }
+
+        await issueDoc.ref.set(
+          { status: "Sent", recipients: recipients.length, stats: `${recipients.length} sent`, sentAt: now },
+          { merge: true },
+        );
+        await db.collection("bridgeLog").add({
+          at: new Date(),
+          issueNo,
+          subject,
+          action: "Sent",
+          detail: `${recipients.length} delivered`,
+          actor: "Scheduler",
+        });
+      } catch (err) {
+        logger.error(`sendScheduledBridgeIssues: issue ${issueDoc.id} (No. ${issueNo}) failed`, err);
+        // Left as `Scheduled` — see the doc comment above.
+      }
+    }
+  },
+);
+
+/**
+ * The link at the bottom of every real Bridge send. Deliberately not staff-
+ * gated (a subscriber isn't signed in) — the HMAC token in
+ * unsubscribe-token.ts is what stops this from being "anyone can
+ * unsubscribe anyone," not an auth check.
+ */
+export const unsubscribe = onRequest({ secrets: [UNSUBSCRIBE_SECRET] }, async (req, res) => {
+  const email = String(req.query.email ?? "");
+  const token = String(req.query.token ?? "");
+
+  if (!email || !token || !verifyUnsubscribeToken(UNSUBSCRIBE_SECRET.value(), email, token)) {
+    res.status(400).send(unsubscribePage("That unsubscribe link isn't valid.", false));
+    return;
+  }
+
+  try {
+    await getFirestore()
+      .collection("subscribers")
+      .doc(email.trim().toLowerCase())
+      .set({ status: "Unsubscribed" }, { merge: true });
+    res.status(200).send(unsubscribePage(`${email} is unsubscribed from The Bridge.`, true));
+  } catch (err) {
+    logger.error("unsubscribe: write failed", err);
+    res.status(500).send(unsubscribePage("Something went wrong. Try again in a moment.", false));
+  }
 });

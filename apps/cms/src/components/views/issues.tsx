@@ -6,18 +6,21 @@ import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton,
 import { useAuth } from "@/lib/auth-context";
 import { getFirebase } from "@/lib/firebase";
 import { watchSubscribers, type Subscriber } from "@/lib/subscribers";
+import { pill, type Article } from "@/content/seed";
 import {
-  AUDIENCES,
-  BRIDGE_PICKS,
-  ISSUES,
-  SCHEDULE_LOG,
-  audience,
-  pill,
+  AUDIENCE_LABEL,
+  watchIssues,
+  nextIssueNo,
+  newIssueId,
+  createIssue,
+  saveIssue,
+  watchBridgeLog,
+  appendLogEntry,
   type AudienceId,
   type Issue,
   type ScheduleAction,
   type ScheduleEvent,
-} from "@/content/seed";
+} from "@/lib/bridge-issues";
 import {
   DEFAULT_ZONE,
   ZONES,
@@ -33,14 +36,13 @@ import {
 
 /**
  * The Bridge — compose, schedule and subscribers, from "StoryBridge CMS.dc.html"
- * (404–483), with the composer widened to half the page and the board's inert
- * "Schedule" button turned into a working mechanism.
- *
- * Scheduling here is real bookkeeping and nothing more: a send window is
- * validated, held on the issue, and every change to it is appended to the
- * activity log the Schedule tab reads. What it is *not* is delivery — no
- * message leaves the browser, and the log says "Scheduled", never "Sent",
- * for anything this session did. Delivery is roadmap Phase 06.
+ * (404–483). Issues and their activity log are real Firestore documents
+ * (lib/bridge-issues.ts) and a real send actually happens: a Scheduled
+ * issue is picked up by sendScheduledBridgeIssues (functions/src/index.ts),
+ * which runs every 5 minutes. What's composed here is exactly what a
+ * subscriber gets — "Included pieces" is real published articles, and
+ * "Audience" is a real count of real subscribers by language, not a
+ * fabricated segment.
  */
 
 const headCell: CSSProperties = {
@@ -60,6 +62,8 @@ const num = (n: number) => n.toLocaleString("en-US");
 
 type Tab = "issues" | "schedule" | "subs";
 
+const AUDIENCE_IDS: readonly AudienceId[] = ["all", "en", "fr", "ar"];
+
 const LOG_FILTERS: Array<{ key: string; label: string; actions: ScheduleAction[] }> = [
   { key: "all", label: "Everything", actions: [] },
   { key: "scheduled", label: "Scheduled", actions: ["Scheduled", "Rescheduled"] },
@@ -68,14 +72,14 @@ const LOG_FILTERS: Array<{ key: string; label: string; actions: ScheduleAction[]
   { key: "tests", label: "Tests & drafts", actions: ["Test sent", "Draft saved"] },
 ];
 
-export function IssuesView() {
+export function IssuesView({ articles }: { articles: Article[] }) {
   const { user, staff, can } = useAuth();
   const actor = staff?.name || user?.displayName || user?.email || "Signed in";
   const canSend = can("sendNewsletter");
 
   const [tab, setTab] = useState<Tab>("issues");
-  const [issues, setIssues] = useState<Issue[]>(ISSUES);
-  const [log, setLog] = useState<ScheduleEvent[]>(SCHEDULE_LOG);
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const [log, setLog] = useState<ScheduleEvent[]>([]);
   const [logFilter, setLogFilter] = useState("all");
   const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
@@ -89,6 +93,41 @@ export function IssuesView() {
       () => setSubscribers([]),
     );
   }, []);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchIssues(
+      db,
+      (list) => setIssues(list),
+      () => setIssues([]),
+    );
+  }, []);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchBridgeLog(
+      db,
+      (list) => setLog(list),
+      () => setLog([]),
+    );
+  }, []);
+
+  /** Real published pieces a letter can feature — replaces the board's fixed BRIDGE_PICKS list. */
+  const publishedPicks = useMemo(
+    () => articles.filter((a) => a.status === "Published").map((a) => ({ id: a.id, title: a.title })),
+    [articles],
+  );
+
+  /** Real subscriber counts per segment — replaces the board's fabricated AUDIENCES counts. */
+  const audienceCounts = useMemo(() => {
+    const subscribed = subscribers.filter((s) => s.status === "Subscribed");
+    const counts: Record<AudienceId, number> = { all: subscribed.length, en: 0, fr: 0, ar: 0 };
+    for (const s of subscribed) {
+      const lang = s.lang.toLowerCase();
+      if (lang === "en" || lang === "fr" || lang === "ar") counts[lang] += 1;
+    }
+    return counts;
+  }, [subscribers]);
 
   /**
    * null until the browser has hydrated, then a timestamp that moves every half
@@ -107,56 +146,56 @@ export function IssuesView() {
     setFlash((prev) => ({ n: (prev?.n ?? 0) + 1, text }));
   }
 
-  function patch(no: string, next: Partial<Issue>) {
-    setIssues((prev) => prev.map((i) => (i.no === no ? { ...i, ...next } : i)));
+  function patch(id: string, next: Partial<Issue>) {
+    setIssues((prev) => prev.map((i) => (i.id === id ? { ...i, ...next } : i)));
   }
 
-  function record(issue: Issue, action: ScheduleAction, detail: string, by = actor) {
-    setLog((prev) => [
-      ...prev,
-      {
-        id: `e-${issue.no}-${prev.length + 1}`,
-        at: new Date().toISOString(),
-        issueNo: issue.no,
-        subject: issue.subject,
-        action,
-        detail,
-        actor: by,
-      },
-    ]);
+  async function logAction(issue: Issue, action: ScheduleAction, detail: string, by = actor) {
+    try {
+      await appendLogEntry(getFirebase().db, { issueNo: issue.no, subject: issue.subject, action, detail, actor: by });
+    } catch {
+      // The activity log is a record of what happened, not a gate on it — a
+      // failed log write shouldn't undo (or even report as failed) the
+      // action it was describing.
+    }
   }
 
   /**
    * The letter on the desk. Defaults to the newest issue that has not gone out,
    * but the Schedule tab can point the composer at a specific queued issue — so
    * "Reschedule" on the third row in the queue edits that row, not whichever
-   * issue happened to be first.
+   * issue happened to be first. Undefined only when there truly is nothing to
+   * compose yet — a fresh project, before anyone has clicked "New letter."
    */
-  const [composingNo, setComposingNo] = useState<string | null>(null);
+  const [composingId, setComposingId] = useState<string | null>(null);
   const composing =
-    (composingNo ? issues.find((i) => i.no === composingNo) : undefined) ??
+    (composingId ? issues.find((i) => i.id === composingId) : undefined) ??
     issues.find((i) => i.status !== "Sent") ??
     issues[0];
-  const aud = audience(composing.audienceId);
+
+  const audLabel = composing ? AUDIENCE_LABEL[composing.audienceId] : "";
+  const audCount = composing ? audienceCounts[composing.audienceId] : 0;
 
   /** Holds the slot an issue had before "Reschedule" was pressed, for the diff and for undo. */
   const [rescheduling, setRescheduling] = useState<{ date: string | null; time: string | null; zone: string } | null>(
     null,
   );
-  const locked = composing.status === "Scheduled" && !rescheduling;
+  const locked = composing?.status === "Scheduled" && !rescheduling;
 
-  const problems = scheduleProblems({
-    subject: composing.subject,
-    preheader: composing.preheader,
-    pickCount: composing.picks.length,
-    recipients: aud.count,
-    date: composing.date,
-    time: composing.time,
-    zoneId: composing.zone,
-    nowMs: now,
-  });
+  const problems = composing
+    ? scheduleProblems({
+        subject: composing.subject,
+        preheader: composing.preheader,
+        pickCount: composing.pickArticleIds.length,
+        recipients: audCount,
+        date: composing.date,
+        time: composing.time,
+        zoneId: composing.zone,
+        nowMs: now,
+      })
+    : [];
 
-  const instant = toInstant(composing.date, composing.time, composing.zone);
+  const instant = composing ? toInstant(composing.date, composing.time, composing.zone) : null;
 
   const queue = useMemo(
     () =>
@@ -171,36 +210,69 @@ export function IssuesView() {
 
   const history = useMemo(() => {
     const chosen = LOG_FILTERS.find((f) => f.key === logFilter) ?? LOG_FILTERS[0];
-    const rows = [...log].reverse();
-    return chosen.actions.length === 0 ? rows : rows.filter((e) => chosen.actions.includes(e.action));
+    return chosen.actions.length === 0 ? log : log.filter((e) => chosen.actions.includes(e.action));
   }, [log, logFilter]);
 
   // ---- actions -------------------------------------------------------------
 
+  async function newIssue() {
+    const { db } = getFirebase();
+    const blank: Issue = {
+      id: newIssueId(db),
+      no: nextIssueNo(issues),
+      subject: "",
+      preheader: "",
+      date: null,
+      time: null,
+      zone: DEFAULT_ZONE,
+      audienceId: "all",
+      pickArticleIds: [],
+      status: "Draft",
+      sendAt: null,
+      recipients: null,
+      stats: "— · —",
+    };
+    setIssues((prev) => [blank, ...prev]);
+    setComposingId(blank.id);
+    setRescheduling(null);
+    setTab("issues");
+    try {
+      await createIssue(db, blank);
+    } catch {
+      say("Couldn't create that draft — check your connection.");
+    }
+  }
+
   function togglePick(id: string) {
-    const has = composing.picks.includes(id);
-    patch(composing.no, {
-      picks: has ? composing.picks.filter((p) => p !== id) : [...composing.picks, id],
+    if (!composing) return;
+    const has = composing.pickArticleIds.includes(id);
+    patch(composing.id, {
+      pickArticleIds: has ? composing.pickArticleIds.filter((p) => p !== id) : [...composing.pickArticleIds, id],
     });
   }
 
-  function saveDraft() {
-    record(
-      composing,
-      "Draft saved",
-      `${composing.picks.length} piece${composing.picks.length === 1 ? "" : "s"} · ${aud.label}`,
-    );
-    say("Draft saved to this session.");
+  async function saveDraft() {
+    if (!composing) return;
+    try {
+      await saveIssue(getFirebase().db, composing);
+      await logAction(
+        composing,
+        "Draft saved",
+        `${composing.pickArticleIds.length} piece${composing.pickArticleIds.length === 1 ? "" : "s"} · ${audLabel}`,
+      );
+      say("Draft saved.");
+    } catch {
+      say("Couldn't save — check your connection.");
+    }
   }
 
   /**
-   * The one real send in this whole view — everything else on this tab is
-   * bookkeeping (see the NotWiredNote below). Calls sendBridgeTest
-   * (functions/src/index.ts), which re-checks the sendNewsletter capability
-   * server-side and emails one real copy to the caller's own address via
-   * Resend.
+   * Calls sendBridgeTest (functions/src/index.ts), which re-checks the
+   * sendNewsletter capability server-side and emails one real copy to the
+   * caller's own address via Resend.
    */
   async function sendTest() {
+    if (!composing) return;
     setSendingTest(true);
     try {
       const send = httpsCallable<{ subject: string; preheader: string; picks: string[] }, { ok: true }>(
@@ -210,9 +282,9 @@ export function IssuesView() {
       await send({
         subject: composing.subject,
         preheader: composing.preheader,
-        picks: composing.picks.map((id) => BRIDGE_PICKS.find((p) => p.id === id)?.title ?? id),
+        picks: composing.pickArticleIds.map((id) => publishedPicks.find((p) => p.id === id)?.title ?? id),
       });
-      record(composing, "Test sent", `Test copy sent to ${user?.email ?? "the desk"}`);
+      await logAction(composing, "Test sent", `Test copy sent to ${user?.email ?? "the desk"}`);
       say(`Sent — check ${user?.email ?? "your inbox"}.`);
     } catch {
       say("Couldn't send that test. Check your connection and try again.");
@@ -221,49 +293,69 @@ export function IssuesView() {
     }
   }
 
-  function confirmSchedule() {
-    if (problems.length > 0 || !canSend) return;
+  /**
+   * Writes the issue's whole current draft state, not just the schedule
+   * fields — "Schedule send" is also the point at which unsaved subject/
+   * pick edits become real. sendAt is the instant sendScheduledBridgeIssues
+   * actually watches for; date/time/zone stay too, so the composer has
+   * something to show back.
+   */
+  async function confirmSchedule() {
+    if (!composing || problems.length > 0 || !canSend) return;
     const was = rescheduling;
     const slot = formatSlot(composing.date, composing.time, composing.zone);
     const moved = was && (was.date !== composing.date || was.time !== composing.time || was.zone !== composing.zone);
+    const sendAt = toInstant(composing.date, composing.time, composing.zone);
+    const next: Issue = { ...composing, status: "Scheduled", sendAt };
 
-    patch(composing.no, { status: "Scheduled" });
-
-    if (moved) {
-      record(
-        composing,
-        "Rescheduled",
-        `Moved from ${formatSlot(was.date, was.time, was.zone, "short")} to ${formatSlot(composing.date, composing.time, composing.zone, "short")}`,
-      );
-      say(`No. ${composing.no} moved to ${slot}.`);
-    } else if (was) {
-      record(composing, "Scheduled", `Re-confirmed for ${slot} · ${aud.label} · ${num(aud.count)} recipients`);
-      say(`No. ${composing.no} kept at ${slot}.`);
-    } else {
-      record(composing, "Scheduled", `${slot} · ${aud.label} · ${num(aud.count)} recipients`);
-      say(`No. ${composing.no} scheduled for ${slot}.`);
-    }
+    patch(composing.id, { status: "Scheduled", sendAt });
     setRescheduling(null);
+
+    try {
+      await saveIssue(getFirebase().db, next);
+      if (moved) {
+        await logAction(
+          next,
+          "Rescheduled",
+          `Moved from ${formatSlot(was.date, was.time, was.zone, "short")} to ${formatSlot(composing.date, composing.time, composing.zone, "short")}`,
+        );
+        say(`No. ${composing.no} moved to ${slot}.`);
+      } else if (was) {
+        await logAction(next, "Scheduled", `Re-confirmed for ${slot} · ${audLabel} · ${num(audCount)} recipients`);
+        say(`No. ${composing.no} kept at ${slot}.`);
+      } else {
+        await logAction(next, "Scheduled", `${slot} · ${audLabel} · ${num(audCount)} recipients`);
+        say(`No. ${composing.no} scheduled for ${slot}. It sends automatically within 5 minutes of that time.`);
+      }
+    } catch {
+      say("Couldn't schedule that — check your connection and try again.");
+    }
   }
 
   function startReschedule(issue: Issue) {
-    setComposingNo(issue.no);
+    setComposingId(issue.id);
     setRescheduling({ date: issue.date, time: issue.time, zone: issue.zone });
     setTab("issues");
   }
 
   function keepCurrent() {
-    if (!rescheduling) return;
-    patch(composing.no, { date: rescheduling.date, time: rescheduling.time, zone: rescheduling.zone });
+    if (!composing || !rescheduling) return;
+    patch(composing.id, { date: rescheduling.date, time: rescheduling.time, zone: rescheduling.zone });
     setRescheduling(null);
   }
 
-  function cancelSchedule(issue: Issue) {
+  async function cancelSchedule(issue: Issue) {
     if (!canSend) return;
-    patch(issue.no, { status: "Draft" });
-    record(issue, "Canceled", `Was set for ${formatSlot(issue.date, issue.time, issue.zone, "short")} — back to draft`);
+    const next: Issue = { ...issue, status: "Draft", sendAt: null };
+    patch(issue.id, { status: "Draft", sendAt: null });
     setRescheduling(null);
-    say(`No. ${issue.no} is a draft again. Nothing is queued for it.`);
+    try {
+      await saveIssue(getFirebase().db, next);
+      await logAction(next, "Canceled", `Was set for ${formatSlot(issue.date, issue.time, issue.zone, "short")} — back to draft`);
+      say(`No. ${issue.no} is a draft again. Nothing is queued for it.`);
+    } catch {
+      say("Couldn't cancel that — check your connection and try again.");
+    }
   }
 
   // ---- render --------------------------------------------------------------
@@ -275,7 +367,7 @@ export function IssuesView() {
           [
             ["issues", "Issues", null],
             ["schedule", "Schedule", queue.length ? String(queue.length) : null],
-            ["subs", "Subscribers", num(AUDIENCES[0].count)],
+            ["subs", "Subscribers", num(audienceCounts.all)],
           ] as const
         ).map(([k, label, badge]) => {
           const on = tab === k;
@@ -303,13 +395,16 @@ export function IssuesView() {
           );
         })}
 
+        <GhostButton onClick={() => void newIssue()} style={{ marginInlineStart: "auto" }}>
+          New letter
+        </GhostButton>
+
         {flash && (
           <div
             key={flash.n}
             role="status"
             style={{
               ...MONO,
-              marginInlineStart: "auto",
               fontSize: "11px",
               letterSpacing: "0.06em",
               color: "#2F6B4F",
@@ -345,20 +440,34 @@ export function IssuesView() {
               }}
             >
               <div style={MONO_LABEL}>The Bridge · archive</div>
-              <div style={{ fontSize: "12.5px", color: "#8A8378" }}>Monthly since February</div>
+              <div style={{ fontSize: "12.5px", color: "#8A8378" }}>{issues.length} letter{issues.length === 1 ? "" : "s"}</div>
             </div>
+            {issues.length === 0 && <Empty>Nothing composed yet. &ldquo;New letter&rdquo; starts one.</Empty>}
             {issues.map((iss, i) => {
-              const recipients = iss.recipients ?? audience(iss.audienceId).count;
+              const recipients = iss.recipients ?? audienceCounts[iss.audienceId];
               return (
-                <div
-                  key={iss.no}
+                <button
+                  key={iss.id}
+                  type="button"
+                  onClick={() => {
+                    setComposingId(iss.id);
+                    setRescheduling(null);
+                  }}
+                  data-hover={iss.id === composing?.id ? undefined : "background:#F8F4EE"}
                   style={{
                     display: "grid",
+                    width: "100%",
+                    textAlign: "start",
+                    background: iss.id === composing?.id ? "#F8F4EE" : "transparent",
+                    border: "none",
+                    borderInlineStart: `3px solid ${iss.id === composing?.id ? "#B57D49" : "transparent"}`,
                     gridTemplateColumns: "40px minmax(0,1fr) auto",
                     gap: "14px",
                     alignItems: "start",
                     padding: "16px 22px",
                     borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
+                    cursor: "pointer",
+                    transition: "background .16s ease",
                   }}
                 >
                   <div
@@ -374,7 +483,7 @@ export function IssuesView() {
                   </div>
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: "14px", fontWeight: 600, color: "#002D62", lineHeight: 1.35 }}>
-                      {iss.subject}
+                      {iss.subject || "Untitled letter"}
                     </div>
                     <div style={{ fontSize: "12.5px", color: "#5A6472", marginTop: "4px" }}>
                       {iss.status === "Draft" && !iss.date
@@ -387,12 +496,21 @@ export function IssuesView() {
                     )}
                   </div>
                   <Pill {...pill(iss.status)}>{iss.status}</Pill>
-                </div>
+                </button>
               );
             })}
           </div>
 
           {/* Composer */}
+          {!composing ? (
+            <div style={{ ...CARD, alignItems: "flex-start", gap: "12px" }}>
+              <div style={MONO_LABEL}>Compose</div>
+              <p style={{ fontSize: "13.5px", color: "#5A6472", lineHeight: 1.6 }}>
+                Nothing to compose yet — start The Bridge&apos;s first letter.
+              </p>
+              <PrimaryButton onClick={() => void newIssue()}>New letter</PrimaryButton>
+            </div>
+          ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div style={{ ...CARD, gap: "18px", padding: "24px" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px" }}>
@@ -422,7 +540,7 @@ export function IssuesView() {
                 </span>
                 <input
                   value={composing.subject}
-                  onChange={(e) => patch(composing.no, { subject: e.target.value })}
+                  onChange={(e) => patch(composing.id, { subject: e.target.value })}
                   style={INPUT}
                 />
               </label>
@@ -431,7 +549,7 @@ export function IssuesView() {
                 <span style={FIELD_LABEL}>Preview text</span>
                 <input
                   value={composing.preheader}
-                  onChange={(e) => patch(composing.no, { preheader: e.target.value })}
+                  onChange={(e) => patch(composing.id, { preheader: e.target.value })}
                   style={INPUT}
                 />
               </label>
@@ -441,10 +559,15 @@ export function IssuesView() {
                   <span style={FIELD_LABEL}>
                     Included pieces
                     <span style={{ ...MONO, fontSize: "11px", color: "#8A8378", marginInlineStart: "8px" }}>
-                      {composing.picks.length} of {BRIDGE_PICKS.length}
+                      {composing.pickArticleIds.length} of {publishedPicks.length}
                     </span>
                   </span>
-                  {BRIDGE_PICKS.map((p) => (
+                  {publishedPicks.length === 0 && (
+                    <div style={{ fontSize: "12.5px", color: "#8A8378", lineHeight: 1.6 }}>
+                      No published articles yet — publish something in the Journal to feature it here.
+                    </div>
+                  )}
+                  {publishedPicks.map((p) => (
                     <label
                       key={p.id}
                       style={{
@@ -459,7 +582,7 @@ export function IssuesView() {
                     >
                       <input
                         type="checkbox"
-                        checked={composing.picks.includes(p.id)}
+                        checked={composing.pickArticleIds.includes(p.id)}
                         onChange={() => togglePick(p.id)}
                         style={{ width: "16px", height: "16px", accentColor: "#002D62", marginTop: "2px", flex: "none" }}
                       />
@@ -473,12 +596,12 @@ export function IssuesView() {
                     <span style={FIELD_LABEL}>Audience</span>
                     <select
                       value={composing.audienceId}
-                      onChange={(e) => patch(composing.no, { audienceId: e.target.value as AudienceId })}
+                      onChange={(e) => patch(composing.id, { audienceId: e.target.value as AudienceId })}
                       style={INPUT}
                     >
-                      {AUDIENCES.map((a) => (
-                        <option key={a.id} value={a.id}>
-                          {a.label} · {num(a.count)}
+                      {AUDIENCE_IDS.map((id) => (
+                        <option key={id} value={id}>
+                          {AUDIENCE_LABEL[id]} · {num(audienceCounts[id])}
                         </option>
                       ))}
                     </select>
@@ -502,10 +625,10 @@ export function IssuesView() {
                         marginTop: "4px",
                       }}
                     >
-                      {num(aud.count)}
+                      {num(audCount)}
                     </div>
                     <div style={{ fontSize: "12.5px", color: "#5A6472", marginTop: "2px" }}>
-                      subscribers in {aud.label}
+                      subscribers in {audLabel}
                     </div>
                   </div>
                 </div>
@@ -544,7 +667,7 @@ export function IssuesView() {
                       {formatSlot(composing.date, composing.time, composing.zone)}
                     </div>
                     <div style={{ fontSize: "12.5px", color: "#5A6472" }}>
-                      {aud.label} · {num(aud.count)} recipients · {composing.picks.length} pieces
+                      {audLabel} · {num(audCount)} recipients · {composing.pickArticleIds.length} pieces
                     </div>
                   </>
                 ) : (
@@ -556,7 +679,7 @@ export function IssuesView() {
                           type="date"
                           value={composing.date ?? ""}
                           min={now !== null ? todayIn(now, composing.zone) : undefined}
-                          onChange={(e) => patch(composing.no, { date: e.target.value || null })}
+                          onChange={(e) => patch(composing.id, { date: e.target.value || null })}
                           style={INPUT}
                         />
                       </label>
@@ -565,7 +688,7 @@ export function IssuesView() {
                         <input
                           type="time"
                           value={composing.time ?? ""}
-                          onChange={(e) => patch(composing.no, { time: e.target.value || null })}
+                          onChange={(e) => patch(composing.id, { time: e.target.value || null })}
                           style={INPUT}
                         />
                       </label>
@@ -573,7 +696,7 @@ export function IssuesView() {
                         <span style={FIELD_LABEL}>Read in</span>
                         <select
                           value={composing.zone}
-                          onChange={(e) => patch(composing.no, { zone: e.target.value })}
+                          onChange={(e) => patch(composing.id, { zone: e.target.value })}
                           style={INPUT}
                         >
                           {ZONES.map((z) => (
@@ -589,7 +712,7 @@ export function IssuesView() {
                       {composing.date && composing.time ? (
                         <>
                           Sends <strong style={{ color: "#002D62" }}>{formatSlot(composing.date, composing.time, composing.zone)}</strong>{" "}
-                          to {num(aud.count)} subscribers.
+                          to {num(audCount)} subscribers.
                         </>
                       ) : (
                         "Pick a date and a time to see when this goes out."
@@ -616,7 +739,7 @@ export function IssuesView() {
                         Reschedule
                       </GhostButton>
                       <GhostButton
-                        onClick={() => cancelSchedule(composing)}
+                        onClick={() => void cancelSchedule(composing)}
                         disabled={!canSend}
                         style={{ color: canSend ? "#8A3B3B" : undefined }}
                       >
@@ -628,10 +751,10 @@ export function IssuesView() {
                       <GhostButton onClick={() => void sendTest()} disabled={sendingTest}>
                         {sendingTest ? "Sending…" : "Send test"}
                       </GhostButton>
-                      <GhostButton onClick={saveDraft}>Save draft</GhostButton>
+                      <GhostButton onClick={() => void saveDraft()}>Save draft</GhostButton>
                       {rescheduling && <GhostButton onClick={keepCurrent}>Keep current time</GhostButton>}
                       <PrimaryButton
-                        onClick={confirmSchedule}
+                        onClick={() => void confirmSchedule()}
                         disabled={!canSend || problems.length > 0}
                         title={
                           !canSend
@@ -657,14 +780,15 @@ export function IssuesView() {
             </div>
 
             <NotWiredNote>
-              &ldquo;Send test&rdquo; is real — it emails one copy of exactly what&apos;s in the composer to your own
-              address via Resend (functions/src/index.ts). Everything else on this tab is still bookkeeping:
-              scheduling holds a window on the issue and writes to the activity log, but nothing actually goes out at
-              that time — sending to the real audience needs its own delivery pipeline (subscriber segmentation,
-              unsubscribe links, batching), which this session&apos;s work didn&apos;t build. This session&apos;s
-              other changes here are still gone on reload.
+              This is a real send pipeline: &ldquo;Schedule send&rdquo; saves the issue and sets its send instant;
+              sendScheduledBridgeIssues (functions/src/index.ts) checks every 5 minutes for anything due and sends
+              it via Resend to the real subscriber list for the chosen audience, with a working unsubscribe link.
+              &ldquo;Send test&rdquo; sends one real copy to you. What&apos;s not built: open/click tracking (Resend
+              doesn&apos;t report those back to this project), and a stuck send after a failure just stays
+              Scheduled for the next tick to retry rather than surfacing an alert anywhere.
             </NotWiredNote>
           </div>
+          )}
         </div>
       )}
 
@@ -704,13 +828,11 @@ export function IssuesView() {
             </div>
 
             {queue.length === 0 ? (
-              <Empty>
-                Nothing is queued. Set a send window on the September letter in the Issues tab, and it appears here.
-              </Empty>
+              <Empty>Nothing is queued. Set a send window on a letter in the Issues tab, and it appears here.</Empty>
             ) : (
               queue.map(({ issue, at }, i) => (
                 <div
-                  key={issue.no}
+                  key={issue.id}
                   style={{
                     display: "grid",
                     gridTemplateColumns: "40px minmax(0,1fr) 190px auto",
@@ -730,8 +852,8 @@ export function IssuesView() {
                       {issue.subject}
                     </div>
                     <div style={{ fontSize: "12.5px", color: "#5A6472", marginTop: "3px" }}>
-                      {audience(issue.audienceId).label} · {num(audience(issue.audienceId).count)} recipients ·{" "}
-                      {issue.picks.length} pieces
+                      {AUDIENCE_LABEL[issue.audienceId]} · {num(audienceCounts[issue.audienceId])} recipients ·{" "}
+                      {issue.pickArticleIds.length} pieces
                     </div>
                   </div>
                   <div>
@@ -753,7 +875,7 @@ export function IssuesView() {
                       Reschedule
                     </GhostButton>
                     <GhostButton
-                      onClick={() => cancelSchedule(issue)}
+                      onClick={() => void cancelSchedule(issue)}
                       disabled={!canSend}
                       style={{ padding: "8px 12px", fontSize: "12.5px", color: canSend ? "#8A3B3B" : undefined }}
                     >
@@ -867,9 +989,8 @@ export function IssuesView() {
           </div>
 
           <NotWiredNote>
-            The log is the record of what the desk decided, not of what a mail server did. Entries marked{" "}
-            <strong>Sent</strong> are the archive&apos;s own history from the design board; anything this session adds
-            is a scheduling decision held in memory until Firestore backs it — roadmap Phase 06.
+            This log is real (bridgeLog collection) — every entry above is something that actually happened, written
+            either by whoever was composing or, for &ldquo;Sent&rdquo; entries, by sendScheduledBridgeIssues itself.
           </NotWiredNote>
         </div>
       )}
@@ -880,7 +1001,7 @@ export function IssuesView() {
             {[
               ["Active", num(subscribers.filter((s) => s.status === "Subscribed").length)],
               ["Open rate", "—"],
-              ["Unsubscribes", "—"],
+              ["Unsubscribes", num(subscribers.filter((s) => s.status === "Unsubscribed").length)],
               ["Growth in Aug", "—"],
             ].map(([k, v]) => (
               <div key={k} style={CARD}>
@@ -953,11 +1074,11 @@ export function IssuesView() {
           </div>
 
           <NotWiredNote>
-            The list above is real — every signup on the site writes here directly (see
-            lib/subscribers.ts), no Cloud Function in between. Open rate, unsubscribes and growth need an
-            actual send to measure, so they stay blank until Phase 06&apos;s delivery pipeline exists. Name
-            isn&apos;t collected by the signup form — only an email address is. &ldquo;Export CSV&rdquo; and
-            &ldquo;Add subscriber&rdquo; aren&apos;t wired.
+            The list is real (see lib/subscribers.ts), and so is Unsubscribes now — the link in every real send
+            (functions/src/index.ts&apos;s unsubscribe endpoint) sets a subscriber&apos;s status to Unsubscribed rather
+            than deleting them. Open rate and growth still need real measurement Resend doesn&apos;t hand back to
+            this project, so they stay blank. Name isn&apos;t collected by the signup form — only an email address
+            is. &ldquo;Export CSV&rdquo; and &ldquo;Add subscriber&rdquo; aren&apos;t wired.
           </NotWiredNote>
         </div>
       )}

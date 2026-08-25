@@ -447,7 +447,7 @@ export function Studio() {
             />
           )}
           {view === "pages" && <SiteContentView key={pagesKey} initialNamespace={pendingNamespace} />}
-          {view === "issues" && <IssuesView />}
+          {view === "issues" && <IssuesView articles={articles} />}
           {view === "inbox" && <InboxView key={inboxKey} initialSelectedId={pendingMessageId} />}
           {view === "settings" && <SettingsView />}
         </div>
