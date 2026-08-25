@@ -17,13 +17,37 @@ import { doc, setDoc, collection, query, orderBy, onSnapshot, serverTimestamp, t
 import { getFirebase } from "./firebase";
 
 /**
- * storage.rules denies anything that isn't `image/*` under 15MB from a staff
- * account — a StorageError carries which of those it was, but the editor was
+ * storage.rules' single `allow write` clause ANDs together the staff check,
+ * the size cap, and the content-type check — Storage collapses a failure of
+ * *any* of those three into the same `storage/unauthorized` code, with no way
+ * for the client to tell which one actually failed. Reported live: a fully
+ * active staff member uploading a real photo whose browser-reported MIME
+ * type came through empty or as `application/octet-stream` (common for
+ * HEIC/Live Photos exports, some drag-and-drop paths) got told their account
+ * wasn't recognized as staff — a wrong diagnosis pointing them at the wrong
+ * fix. uploadMedia() below now checks size and content-type itself, client
+ * side, before ever calling Storage, using the same 15MB/`image/*` limits
+ * the rule enforces — so by the time a real `storage/unauthorized` reaches
+ * here, those two are already known-good and it really can only mean "not
+ * staff."
+ */
+export class UploadValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UploadValidationError";
+  }
+}
+
+const MAX_BYTES = 15 * 1024 * 1024;
+
+/**
+ * A StorageError carries which of those it was, but the editor was
  * swallowing it and always showing the same "check your connection" copy.
  * That made every real cause (wrong content-type, not staff, oversized file,
  * actually offline) look identical. Map the ones worth telling apart.
  */
 export function describeUploadError(err: unknown): string {
+  if (err instanceof UploadValidationError) return err.message;
   const code = err instanceof StorageError ? err.code : undefined;
   switch (code) {
     case "storage/unauthorized":
@@ -56,6 +80,18 @@ const SAFE_NAME = /[^a-zA-Z0-9.\-]/g;
  * always a human on the other end to show the error to.
  */
 export async function uploadMedia(file: File): Promise<UploadedMedia> {
+  if (file.size >= MAX_BYTES) {
+    const mb = (file.size / (1024 * 1024)).toFixed(1);
+    throw new UploadValidationError(`Couldn't upload that image — it's ${mb}MB, over the 15MB limit.`);
+  }
+  if (!file.type.startsWith("image/")) {
+    throw new UploadValidationError(
+      file.type
+        ? `Couldn't upload that image — "${file.type}" isn't an image format the site can serve. Try a JPEG, PNG, WebP, or GIF.`
+        : "Couldn't upload that image — your browser didn't report a recognizable image type for that file. Try exporting it as a JPEG, PNG, WebP, or GIF first.",
+    );
+  }
+
   const { storage } = getFirebase();
   const safeName = file.name.replace(SAFE_NAME, "_");
   const path = `media/${Date.now()}-${safeName}`;
