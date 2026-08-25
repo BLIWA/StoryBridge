@@ -15,3 +15,11 @@ export async function isSendCapable(email: string): Promise<boolean> {
   const data = snap.data() ?? {};
   return data.active === true && (data.role === "owner" || data.role === "chief");
 }
+
+/** Any active staff member, any role — the Inbox has no per-role gating, so replying doesn't either. */
+export async function isActiveStaff(email: string): Promise<boolean> {
+  const normalized = email.trim().toLowerCase();
+  const snap = await getFirestore().collection("staff").doc(normalized).get();
+  if (!snap.exists) return false;
+  return snap.data()?.active === true;
+}

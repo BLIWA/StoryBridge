@@ -78,6 +78,16 @@ export function contactNotification(input: {
   return { subject, html, text };
 }
 
+/** A staff reply to a contact-form enquiry — see the sendReply callable in index.ts. */
+export function contactReply(input: { name: string; body: string }): { html: string; text: string } {
+  const html = wrap(
+    `Hi ${escapeHtml(input.name)},`,
+    `<div style="white-space:pre-wrap;">${escapeHtml(input.body)}</div>`,
+  );
+  const text = `Hi ${input.name},\n\n${input.body}`;
+  return { html, text };
+}
+
 export function subscriberWelcome(lang: string): { subject: string; html: string; text: string } {
   // Only English copy for now — the site's fr/ar catalogs live in
   // packages/content, not here; a trilingual transactional template is a

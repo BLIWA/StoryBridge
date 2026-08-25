@@ -3,7 +3,7 @@
  * server-side half of contact-form reCAPTCHA. See the root README's
  * "roadmap" link for why this didn't exist before Blaze.
  *
- * Four functions:
+ * Five functions:
  *  - onSubmissionCreated  Firestore trigger → notifies staff of a new enquiry
  *  - onSubscriberCreated  Firestore trigger → welcomes a new Bridge subscriber
  *  - submitContact        callable → verifies reCAPTCHA, writes the enquiry
@@ -11,8 +11,12 @@
  *                          write — see firestore.rules)
  *  - sendBridgeTest       callable → one real test send of an in-progress
  *                          issue, to the signed-in staff member only
+ *  - sendReply            callable → a staff member's reply to an enquiry,
+ *                          sent to the enquirer directly (any active staff,
+ *                          not just owner/chief — matches the Inbox, which
+ *                          has no per-role gating either)
  *
- * All four run in europe-west1 — Cloud Functions has no eur3 (that's a
+ * All five run in europe-west1 — Cloud Functions has no eur3 (that's a
  * Firestore-only multi-region id), europe-west1 is the closest Blaze region
  * to the eur3 data.
  */
@@ -26,9 +30,9 @@ import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions/v2";
 
 import { sendEmail } from "./resend";
-import { contactNotification, subscriberWelcome, bridgeIssue } from "./templates";
+import { contactNotification, subscriberWelcome, bridgeIssue, contactReply } from "./templates";
 import { verifyRecaptcha } from "./recaptcha";
-import { isSendCapable } from "./staff";
+import { isSendCapable, isActiveStaff } from "./staff";
 
 initializeApp();
 setGlobalOptions({ region: "europe-west1" });
@@ -208,5 +212,57 @@ export const sendBridgeTest = onCall({ secrets: [RESEND_API_KEY] }, async (reque
   });
 
   await sendEmail(RESEND_API_KEY.value(), { to: callerEmail, subject, html, text });
+  return { ok: true };
+});
+
+// ---------------------------------------------------------------------------
+
+type ReplyInput = { to: string; name: string; subject: string; body: string };
+
+function isReplyInput(v: unknown): v is ReplyInput {
+  const d = v as Partial<ReplyInput> | null;
+  return !!d && typeof d.to === "string" && typeof d.name === "string" && typeof d.subject === "string" && typeof d.body === "string";
+}
+
+export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) => {
+  const callerEmail = request.auth?.token.email;
+  if (!callerEmail) {
+    throw new HttpsError("unauthenticated", "Sign in to reply.");
+  }
+  if (!(await isActiveStaff(callerEmail))) {
+    throw new HttpsError("permission-denied", "Only staff can reply to enquiries.");
+  }
+
+  const input = request.data;
+  if (!isReplyInput(input) || !input.to.trim() || !input.body.trim()) {
+    throw new HttpsError("invalid-argument", "Missing recipient or reply text.");
+  }
+
+  const { html, text } = contactReply({ name: input.name, body: input.body });
+  try {
+    await sendEmail(RESEND_API_KEY.value(), {
+      to: input.to,
+      subject: input.subject || "Re: your enquiry",
+      html,
+      text,
+      // hello@storybridge.tn isn't a verified Resend sender yet (see
+      // resend.ts's DEFAULT_FROM) — routing replies there instead of
+      // making it the From address means at least the enquirer sees a
+      // real inbox to write back to, even while the send itself still
+      // comes from Resend's sandbox address.
+      replyTo: "hello@storybridge.tn",
+    });
+  } catch (err) {
+    logger.error("sendReply: send failed", err);
+    throw new HttpsError(
+      "internal",
+      "Couldn't send that. If the recipient isn't the Resend account owner, this is almost certainly the sandbox-sender limit in resend.ts — storybridge.tn needs to be a verified Resend domain first.",
+    );
+  }
+
+  // Marking the submission Replied stays a client-side write (setSubmissionStatus,
+  // already allowed by firestore.rules for any active staff member) rather
+  // than something this function also does — no reason to hand this
+  // function Firestore-write scope it doesn't otherwise need.
   return { ok: true };
 });
