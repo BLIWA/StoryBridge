@@ -123,7 +123,12 @@
     "city": "Tunis, Tunisie",
     "detailsPending": "provisoire — coordonnées définitives à venir",
     "copyright": "© {year} StoryBridge Content & Media",
-    "disciplines": "Communication stratégique · Contenu · Traduction · Médias"
+    "disciplines": "Communication stratégique · Contenu · Traduction · Médias",
+    "legal": {
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "cookies": "Cookies"
+    }
   },
   "Common": {
     "draftTranslation": "Traduction provisoire — cette page n'a pas encore été relue par notre traductrice."
@@ -679,6 +684,150 @@
     "contact": {
       "title": "Contact — StoryBridge Content & Media",
       "description": "Dites-nous quelle est l'histoire. Une idée approximative suffit ; nous répondons sous deux jours ouvrés avec un périmètre et un devis ferme."
+    },
+    "privacy": {
+      "title": "Politique de confidentialité — StoryBridge Content & Media",
+      "description": "Ce que nous collectons lorsque vous utilisez ce site, où c'est stocké, et comment en demander la suppression."
+    },
+    "terms": {
+      "title": "Conditions d'utilisation — StoryBridge Content & Media",
+      "description": "La version en langage clair de ce qu'implique l'utilisation de ce site."
+    },
+    "cookies": {
+      "title": "Politique de cookies — StoryBridge Content & Media",
+      "description": "En résumé : ce site ne dépose aucun cookie aujourd'hui."
     }
+  },
+  "PrivacyPage": {
+    "eyebrow": "Mentions légales",
+    "title": "Politique de confidentialité",
+    "standfirst": "Ce que nous collectons lorsque vous utilisez ce site, et ce que nous en faisons.",
+    "updated": "Brouillon — 25 août 2026. Pas encore relu par un juriste ; à considérer comme une description de nos pratiques, pas un document juridique définitif.",
+    "sections": [
+      {
+        "heading": "Ce que nous collectons",
+        "body": [
+          "Si vous nous envoyez un brief via le formulaire de contact, nous conservons votre nom, votre adresse e-mail, votre organisation, le type de mission, les langues, le délai et le brief lui-même.",
+          "Si vous vous abonnez à The Bridge, notre newsletter, nous conservons uniquement votre adresse e-mail — le formulaire d'inscription ne demande pas de nom.",
+          "Nous n'utilisons aujourd'hui aucun cookie de suivi, script d'analyse ou pixel publicitaire sur ce site. Si cela change, cette page le dira avant que ce soit le cas, pas après."
+        ]
+      },
+      {
+        "heading": "Où c'est stocké",
+        "body": [
+          "Tout ce qui précède est stocké dans Google Cloud Firestore, dans une région de base de données située dans l'Union européenne. Nous avons choisi cette région pour la latence avec notre base à Tunis et pour garder le contenu dans l'UE par défaut.",
+          "Seule l'équipe StoryBridge peut lire ce que vous nous envoyez — un message du formulaire de contact ou une adresse d'abonné n'est jamais public, et nous ne le vendons ni ne le partageons avec personne."
+        ]
+      },
+      {
+        "heading": "Comment nous l'utilisons",
+        "body": [
+          "Un brief envoyé via le formulaire sert à vous répondre au sujet du travail demandé. Un abonnement à la newsletter servira, une fois l'envoi de The Bridge activé, à vous envoyer cette newsletter et rien d'autre — aucune autre liste, aucune revente.",
+          "Nous n'avons pas encore de moyen automatisé de vous envoyer quoi que ce soit — c'est encore en construction. En attendant, s'abonner enregistre votre adresse ; cela ne met rien dans votre boîte de réception."
+        ]
+      },
+      {
+        "heading": "Combien de temps nous le conservons",
+        "body": [
+          "Nous n'avons pas encore fixé de durée de conservation formelle. Si vous souhaitez que ce que vous nous avez envoyé soit supprimé, écrivez à hello@storybridge.tn et nous le supprimerons."
+        ]
+      },
+      {
+        "heading": "Vos droits",
+        "body": [
+          "Vous pouvez à tout moment demander ce que nous détenons à votre sujet, en demander la correction, ou en demander la suppression, en écrivant à hello@storybridge.tn. Nous cherchons à agir dans l'esprit du RGPD européen, sans avoir formellement certifié notre conformité."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "Questions sur cette politique : hello@storybridge.tn."
+        ]
+      }
+    ]
+  },
+  "TermsPage": {
+    "eyebrow": "Mentions légales",
+    "title": "Conditions d'utilisation",
+    "standfirst": "La version en langage clair de ce qu'implique l'utilisation de ce site.",
+    "updated": "Brouillon — 25 août 2026. Pas encore relu par un juriste — la clause de droit applicable en particulier a besoin d'une vraie relecture juridique avant d'être invoquée.",
+    "sections": [
+      {
+        "heading": "Ce site",
+        "body": [
+          "Ce site est géré par StoryBridge Content & Media, basée à Tunis, en Tunisie. L'utiliser signifie accepter ces conditions."
+        ]
+      },
+      {
+        "heading": "Ce qui nous appartient",
+        "body": [
+          "Les textes, la mise en forme et les articles du Journal sur ce site appartiennent à StoryBridge, sauf mention explicite d'un autre auteur. Ne republiez pas notre travail comme le vôtre."
+        ]
+      },
+      {
+        "heading": "Ce que nous ne promettons pas",
+        "body": [
+          "Ce site est en construction et le dit tout au long de son contenu — ce qui est signalé comme non encore réalisé ne l'est vraiment pas. Nous ne garantissons pas une disponibilité permanente, une absence d'erreurs, ni que tout son contenu soit complet ou à jour.",
+          "Les tarifs affichés sont indicatifs. Un devis réel découle d'un brief réel, pas des chiffres de la page Formules."
+        ]
+      },
+      {
+        "heading": "Envoyer un brief ou s'abonner",
+        "body": [
+          "Nous envoyer un brief ou vous abonner à la newsletter ne crée pas de contrat entre nous — c'est le début d'une conversation. Voir la politique de confidentialité pour ce qu'il advient de ces informations."
+        ]
+      },
+      {
+        "heading": "Responsabilité",
+        "body": [
+          "Dans la mesure permise par la loi, StoryBridge n'est pas responsable des dommages indirects ou consécutifs liés à l'utilisation de ce site. Rien ici ne limite une responsabilité qui ne peut légalement être limitée."
+        ]
+      },
+      {
+        "heading": "Droit applicable",
+        "body": [
+          "Ces conditions sont destinées à être régies par le droit tunisien. Cette clause en particulier n'a pas encore fait l'objet d'une relecture juridique — à considérer comme provisoire jusque-là."
+        ]
+      },
+      {
+        "heading": "Modifications",
+        "body": [
+          "Nous pouvons modifier ces conditions à mesure que le site évolue. La date en haut de cette page est celle de la dernière modification."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "hello@storybridge.tn."
+        ]
+      }
+    ]
+  },
+  "CookiePage": {
+    "eyebrow": "Mentions légales",
+    "title": "Politique de cookies",
+    "standfirst": "En résumé : ce site ne dépose aucun cookie aujourd'hui.",
+    "updated": "Brouillon — 25 août 2026.",
+    "sections": [
+      {
+        "heading": "Ce que nous utilisons aujourd'hui",
+        "body": [
+          "Ce site ne dépose aucun cookie de suivi, d'analyse ou publicitaire. La langue (anglais, français ou arabe) est déterminée par l'URL visitée, pas stockée dans un cookie.",
+          "Le seul endroit où des cookies sont réellement utilisés est notre outil de gestion de contenu interne, un outil distinct réservé à l'équipe, à une autre adresse — Firebase Authentication y dépose un cookie de session pour qu'un membre de l'équipe connecté le reste. Cela n'a aucun rapport avec les visiteurs de ce site."
+        ]
+      },
+      {
+        "heading": "Si cela change",
+        "body": [
+          "L'ajout d'outils d'analyse est une décision encore ouverte, pas encore prise. Si nous en ajoutons, cette page décrira précisément ce qui est déposé et, si nécessaire, demandera votre consentement avant que ce soit fait — pas après."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "hello@storybridge.tn."
+        ]
+      }
+    ]
   }
 }

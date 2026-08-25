@@ -123,7 +123,12 @@
     "city": "Tunis, Tunisia",
     "detailsPending": "placeholder — real details to come",
     "copyright": "© {year} StoryBridge Content & Media",
-    "disciplines": "Strategic communications · Content · Translation · Media"
+    "disciplines": "Strategic communications · Content · Translation · Media",
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies"
+    }
   },
   "Common": {
     "draftTranslation": "Draft translation — this page has not yet been reviewed by our translator."
@@ -679,6 +684,150 @@
     "contact": {
       "title": "Contact — StoryBridge Content & Media",
       "description": "Tell us what the story is. A rough idea is enough; we reply within two working days with scope and a fixed quote."
+    },
+    "privacy": {
+      "title": "Privacy Policy — StoryBridge Content & Media",
+      "description": "What we collect when you use this site, where it's stored, and how to ask us to delete it."
+    },
+    "terms": {
+      "title": "Terms of Service — StoryBridge Content & Media",
+      "description": "The plain-language version of what using this site means."
+    },
+    "cookies": {
+      "title": "Cookie Policy — StoryBridge Content & Media",
+      "description": "The short version: this site doesn't set any cookies today."
     }
+  },
+  "PrivacyPage": {
+    "eyebrow": "Legal",
+    "title": "Privacy Policy",
+    "standfirst": "What we collect when you use this site, and what we do with it.",
+    "updated": "Draft — 25 August 2026. Not yet reviewed by a lawyer; treat this as a description of practice, not a final legal document.",
+    "sections": [
+      {
+        "heading": "What we collect",
+        "body": [
+          "If you send us a brief through the contact form, we store your name, email address, organisation, the kind of work you need, languages, deadline and the brief itself.",
+          "If you subscribe to The Bridge, our newsletter, we store your email address and nothing else — the signup form doesn't ask for a name.",
+          "We don't use tracking cookies, analytics scripts or advertising pixels on this site today. If that changes, this page will say so before it happens, not after."
+        ]
+      },
+      {
+        "heading": "Where it's stored",
+        "body": [
+          "Everything above is stored in Google Cloud Firestore, in a database region located in the European Union. We chose that region for latency to our own base in Tunis and to keep content in the EU by default.",
+          "Only StoryBridge staff can read what you send us — a contact-form submission or a newsletter address is never public, and we don't sell or share it with anyone."
+        ]
+      },
+      {
+        "heading": "How we use it",
+        "body": [
+          "A contact-form brief is used to reply to you about the work you're asking for. A newsletter subscription is used, once we start sending The Bridge, to send you that newsletter and nothing else — no other list, no resale.",
+          "We don't currently have an automated way to send you anything — that's genuinely still being built. Until it exists, subscribing saves your address; it doesn't put anything in your inbox."
+        ]
+      },
+      {
+        "heading": "How long we keep it",
+        "body": [
+          "We haven't yet set a formal retention schedule. If you'd like something you sent us deleted, email hello@storybridge.tn and we'll remove it."
+        ]
+      },
+      {
+        "heading": "Your rights",
+        "body": [
+          "You can ask what we hold about you, ask us to correct it, or ask us to delete it, at any time, by emailing hello@storybridge.tn. We aim to handle these in the spirit of the EU's GDPR, though we haven't formally certified compliance with it."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "Questions about this policy: hello@storybridge.tn."
+        ]
+      }
+    ]
+  },
+  "TermsPage": {
+    "eyebrow": "Legal",
+    "title": "Terms of Service",
+    "standfirst": "The plain-language version of what using this site means.",
+    "updated": "Draft — 25 August 2026. Not yet reviewed by a lawyer — the governing-law clause in particular needs real legal review before this is relied on.",
+    "sections": [
+      {
+        "heading": "This site",
+        "body": [
+          "This site is run by StoryBridge Content & Media, based in Tunis, Tunisia. Using it means agreeing to these terms."
+        ]
+      },
+      {
+        "heading": "What's ours",
+        "body": [
+          "The text, design and journal articles on this site are StoryBridge's, unless a piece explicitly credits someone else. Don't republish our work as your own."
+        ]
+      },
+      {
+        "heading": "What we don't promise",
+        "body": [
+          "This site is a work in progress and says so throughout — features marked as not yet built genuinely aren't. We don't guarantee the site is available at all times, error-free, or that anything on it is complete or current.",
+          "Pricing shown on the site is indicative. A real quote comes from an actual brief, not from the numbers on the Packages page."
+        ]
+      },
+      {
+        "heading": "Submitting a brief or subscribing",
+        "body": [
+          "Sending us a brief or subscribing to the newsletter doesn't create a contract between us — it's the start of a conversation. See the Privacy Policy for what happens to that information."
+        ]
+      },
+      {
+        "heading": "Liability",
+        "body": [
+          "To the extent the law allows, StoryBridge isn't liable for indirect or consequential loss arising from your use of this site. Nothing here limits liability that can't legally be limited."
+        ]
+      },
+      {
+        "heading": "Governing law",
+        "body": [
+          "These terms are intended to be governed by the laws of Tunisia. This clause specifically has not had a lawyer's review — treat it as a placeholder until it does."
+        ]
+      },
+      {
+        "heading": "Changes",
+        "body": [
+          "We may update these terms as the site changes. The date at the top of this page is the last time it changed."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "hello@storybridge.tn."
+        ]
+      }
+    ]
+  },
+  "CookiePage": {
+    "eyebrow": "Legal",
+    "title": "Cookie Policy",
+    "standfirst": "The short version: this site doesn't set any cookies today.",
+    "updated": "Draft — 25 August 2026.",
+    "sections": [
+      {
+        "heading": "What we use today",
+        "body": [
+          "This site doesn't set tracking, analytics or advertising cookies. Language (English, French or Arabic) is chosen by the URL you're on, not stored in a cookie.",
+          "The one place cookies genuinely are used is our staff CMS, a separate, sign-in-only tool at a different address — Firebase Authentication sets a session cookie there so a signed-in staff member stays signed in. That has nothing to do with visitors to this site."
+        ]
+      },
+      {
+        "heading": "If that changes",
+        "body": [
+          "Analytics is an open decision we haven't made yet. If we add it, this page will describe exactly what's set and, where required, ask for consent before it's set — not after."
+        ]
+      },
+      {
+        "heading": "Contact",
+        "body": [
+          "hello@storybridge.tn."
+        ]
+      }
+    ]
   }
 }

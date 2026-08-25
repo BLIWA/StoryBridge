@@ -1,0 +1,76 @@
+import { PageHero } from "@/components/chrome/page-hero";
+
+/**
+ * Shared layout for Privacy, Terms and Cookies — same hero as every other
+ * inner page, then a plain-text document. Content comes from a translation
+ * namespace shaped like:
+ *   { eyebrow, title, standfirst, updated, sections: [{ heading, body: string[] }] }
+ * `t.raw("sections")` hands back that array as parsed JSON — see each page.
+ */
+
+type Section = { heading: string; body: string[] };
+
+export function LegalPage({
+  backdropId,
+  eyebrow,
+  title,
+  standfirst,
+  updated,
+  sections,
+}: {
+  backdropId: string;
+  eyebrow: string;
+  title: string;
+  standfirst: string;
+  updated: string;
+  sections: Section[];
+}) {
+  return (
+    <>
+      <PageHero backdropId={backdropId} variant="arcs" glyph="§" eyebrow={eyebrow} title={title} standfirst={standfirst} />
+
+      <div style={{ maxWidth: "820px", margin: "0 auto", padding: "48px var(--sb-gutter) 96px" }}>
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            fontFamily: "'IBM Plex Mono',monospace",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            color: "#8F6135",
+            border: "1px dashed #DEC5A9",
+            borderRadius: "2px",
+            padding: "7px 11px",
+            marginBottom: "40px",
+          }}
+        >
+          {updated}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
+          {sections.map((s, i) => (
+            <div key={i} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <h2
+                style={{
+                  fontFamily: "'Source Serif 4',serif",
+                  fontWeight: 600,
+                  fontSize: "22px",
+                  color: "#002D62",
+                  margin: 0,
+                }}
+              >
+                {s.heading}
+              </h2>
+              {s.body.map((p, j) => (
+                <p key={j} style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650", margin: 0 }}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
