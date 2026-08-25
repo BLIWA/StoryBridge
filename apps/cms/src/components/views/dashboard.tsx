@@ -1,8 +1,13 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { CARD, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
 import { ACTIVITY, pill, type Article } from "@/content/seed";
 import type { View } from "@/lib/view";
+import { getFirebase } from "@/lib/firebase";
+import { watchSubscribers, type Subscriber } from "@/lib/subscribers";
+import { watchIssues, type Issue } from "@/lib/bridge-issues";
+import { formatDate } from "@/lib/schedule";
 
 /** Overview from "StoryBridge CMS.dc.html" (lines 161–223). */
 
@@ -31,6 +36,52 @@ export function Dashboard({
   const drafts = articles.filter((a) => a.status === "Draft").length;
   const inReview = articles.filter((a) => a.status === "In review").length;
   const scheduled = articles.filter((a) => a.status === "Scheduled").length;
+
+  // Real Bridge subscriber/issue data — replaces the board's fixed "1,904"
+  // and its fabricated "No. 08, 72% ready" progress card. Subscribed here so
+  // the dashboard doesn't depend on the Bridge view having mounted first.
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
+  useEffect(() => {
+    const { db } = getFirebase();
+    const unsubA = watchSubscribers(
+      db,
+      (list) => setSubscribers(list),
+      () => setSubscribers([]),
+    );
+    const unsubB = watchIssues(
+      db,
+      (list) => setIssues(list),
+      () => setIssues([]),
+    );
+    return () => {
+      unsubA();
+      unsubB();
+    };
+  }, []);
+
+  const activeSubscribers = useMemo(() => subscribers.filter((s) => s.status === "Subscribed"), [subscribers]);
+
+  // The issue worth surfacing: the soonest-due Scheduled one, or failing
+  // that the most recent Draft (issues arrive sorted by no, descending, so
+  // the first Draft in the list is the highest-numbered one) — same
+  // "what needs picking up" intent the board's fixed card had, with real
+  // data behind it. No live equivalent of the board's "% ready" exists (no
+  // section-completeness field on an issue), so that bar is dropped rather
+  // than faked.
+  const currentIssue = useMemo(() => {
+    const scheduledDue = issues
+      .filter((i) => i.status === "Scheduled" && i.sendAt != null)
+      .sort((a, b) => (a.sendAt ?? 0) - (b.sendAt ?? 0))[0];
+    if (scheduledDue) return scheduledDue;
+    return issues.find((i) => i.status === "Draft");
+  }, [issues]);
+
+  const currentIssueRecipients = useMemo(() => {
+    if (!currentIssue) return 0;
+    if (currentIssue.audienceId === "all") return activeSubscribers.length;
+    return activeSubscribers.filter((s) => s.lang.toLowerCase() === currentIssue.audienceId).length;
+  }, [currentIssue, activeSubscribers]);
 
   const queue = [
     {
@@ -80,8 +131,8 @@ export function Dashboard({
         </div>
         <div style={CARD}>
           <div style={MONO_LABEL}>Bridge subscribers</div>
-          <div style={statNumber}>1,904</div>
-          <div style={{ fontSize: "13px", color: "#5A6472" }}>+86 in August</div>
+          <div style={statNumber}>{activeSubscribers.length.toLocaleString()}</div>
+          <div style={{ fontSize: "13px", color: "#5A6472" }}>Active, across EN/FR/AR</div>
         </div>
         <div style={CARD}>
           <div style={MONO_LABEL}>Unanswered enquiries</div>
@@ -147,34 +198,51 @@ export function Dashboard({
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-          {/* Bridge progress */}
+          {/* Bridge progress — real (see currentIssue above), no fake readiness % */}
           <div style={{ ...CARD, background: "#002D62", border: "none", gap: "14px" }}>
-            <div style={{ ...MONO_LABEL, color: "#B57D49" }}>The Bridge · No. 08</div>
-            <div style={{ fontSize: "14.5px", lineHeight: 1.65, color: "rgba(253,248,241,0.82)" }}>
-              Drafted, three of four sections written. Goes out on 1 September.
-            </div>
-            <div style={{ height: "6px", background: "rgba(253,248,241,0.18)", borderRadius: "999px" }}>
-              <div style={{ width: "72%", height: "100%", background: "#B57D49", borderRadius: "999px" }} />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontFamily: "'IBM Plex Mono',monospace",
-                fontSize: "10.5px",
-                letterSpacing: "0.1em",
-                color: "rgba(253,248,241,0.6)",
-              }}
-            >
-              <span>72% READY</span>
-              <span>1,904 RECIPIENTS</span>
-            </div>
-            <PrimaryButton
-              onClick={() => setView("issues")}
-              style={{ background: "#B57D49", color: "#001838", alignSelf: "flex-start" }}
-            >
-              Continue the issue
-            </PrimaryButton>
+            {currentIssue ? (
+              <>
+                <div style={{ ...MONO_LABEL, color: "#B57D49" }}>The Bridge · No. {currentIssue.no}</div>
+                <div style={{ fontSize: "14.5px", lineHeight: 1.65, color: "rgba(253,248,241,0.82)" }}>
+                  {currentIssue.subject || "Untitled issue"} —{" "}
+                  {currentIssue.status === "Scheduled" && currentIssue.date
+                    ? `scheduled for ${formatDate(currentIssue.date, "long")}.`
+                    : "still a draft, not yet scheduled."}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: "10.5px",
+                    letterSpacing: "0.1em",
+                    color: "rgba(253,248,241,0.6)",
+                  }}
+                >
+                  <span>{currentIssue.status.toUpperCase()}</span>
+                  <span>{currentIssueRecipients.toLocaleString()} RECIPIENTS</span>
+                </div>
+                <PrimaryButton
+                  onClick={() => setView("issues")}
+                  style={{ background: "#B57D49", color: "#001838", alignSelf: "flex-start" }}
+                >
+                  Continue the issue
+                </PrimaryButton>
+              </>
+            ) : (
+              <>
+                <div style={{ ...MONO_LABEL, color: "#B57D49" }}>The Bridge</div>
+                <div style={{ fontSize: "14.5px", lineHeight: 1.65, color: "rgba(253,248,241,0.82)" }}>
+                  No issue in progress — nothing drafted or scheduled right now.
+                </div>
+                <PrimaryButton
+                  onClick={() => setView("issues")}
+                  style={{ background: "#B57D49", color: "#001838", alignSelf: "flex-start" }}
+                >
+                  Start an issue
+                </PrimaryButton>
+              </>
+            )}
           </div>
 
           {/* Recent activity */}
@@ -210,8 +278,10 @@ export function Dashboard({
           </div>
 
           <NotWiredNote>
-            Figures and activity are sample data from the design board. Firestore-backed counts arrive with
-            roadmap Phase 05.
+            The stat row, Bridge subscribers/progress card above are real (Firestore-backed articles, submissions,
+            subscribers, Bridge issues). &ldquo;Needs a decision&rdquo; and &ldquo;Recent activity&rdquo; below are
+            still sample data from the design board — they&apos;d need a real cross-collection query this slice
+            didn&apos;t build.
           </NotWiredNote>
         </div>
       </div>

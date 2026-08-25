@@ -384,7 +384,7 @@ export function ArticleEditor({
             )}
             <NotWiredNote>
               Plain-text field with a light markdown convention (**bold**, _italic_, ## heading, &gt;
-              pull-quote, images) — a full rich-text field is still roadmap Phase 05.
+              pull-quote, [links](url), images) — a full rich-text field is still roadmap Phase 05.
             </NotWiredNote>
           </div>
 

@@ -183,7 +183,17 @@ export function ArticlePreview({
               return (
                 <p key={i} style={{ fontFamily: "'Source Serif 4',serif", fontSize: "17px", lineHeight: 1.75, color: "#111111", margin: 0 }}>
                   {tokenizeInline(block.text).map((tok, j) =>
-                    tok.bold ? <strong key={j}>{tok.text}</strong> : tok.italic ? <em key={j}>{tok.text}</em> : <span key={j}>{tok.text}</span>,
+                    tok.href ? (
+                      <a key={j} href={tok.href} style={{ color: "#8F6135" }}>
+                        {tok.text}
+                      </a>
+                    ) : tok.bold ? (
+                      <strong key={j}>{tok.text}</strong>
+                    ) : tok.italic ? (
+                      <em key={j}>{tok.text}</em>
+                    ) : (
+                      <span key={j}>{tok.text}</span>
+                    ),
                   )}
                 </p>
               );
