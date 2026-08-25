@@ -1,6 +1,6 @@
 # Firebase App Hosting config for the CMS ("Studio").
 # Create the backend once authenticated (see root README):
-#   firebase apphosting:backends:create --project=sotrybridge
+#   firebase apphosting:backends:create --project=storybridge-eb71e
 # and point its root directory at apps/cms in this monorepo.
 # Custom domain: attach cms.[domain] to this backend at Phase 09.
 #
@@ -17,7 +17,7 @@ runConfig:
 
 env:
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: sotrybridge
+    value: storybridge-eb71e
     availability:
       - BUILD
       - RUNTIME

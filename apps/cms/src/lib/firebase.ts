@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 
-// The "sotrybridge" web app, from `firebase apps:sdkconfig WEB`. Values live in
+// The "storybridge-eb71e" web app, from `firebase apps:sdkconfig WEB`. Values live in
 // .env.production (committed — they are public project identifiers, not secrets)
 // and can be overridden per-machine in .env.local. See ../../.env.example.
 //

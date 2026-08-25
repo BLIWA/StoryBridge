@@ -82,6 +82,15 @@ a:focus-visible {
   }
 }
 
+@keyframes cms-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -105,4 +114,19 @@ img,
 svg,
 video {
   max-width: 100%;
+}
+
+/*
+ * The sidebar pins itself with `position: sticky; top: 0` and needs a height
+ * to pin *to* — 100vh, historically. On tablets and phones that number is the
+ * browser's largest possible viewport (toolbars retracted), not the one the
+ * page actually renders at, so the sidebar falls short of the bottom of the
+ * screen whenever the address/tab bar is showing. 100dvh tracks the real,
+ * current viewport; the 100vh line above it is the fallback for browsers that
+ * don't know `dvh` yet (a browser that fails to parse a declaration's value
+ * leaves the previous one in the cascade, rather than clearing it).
+ */
+.cms-sidebar {
+  height: 100vh;
+  height: 100dvh;
 }

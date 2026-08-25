@@ -5,11 +5,17 @@ import type { View } from "@/lib/view";
 
 /** Collapsible navy sidebar from "StoryBridge CMS.dc.html" (lines 102–146). */
 
+// Every mark here is a classic printer's reference glyph in the same weight
+// and register — pilcrow, section, dagger, double dagger, guillemet — so the
+// row reads as one typographic family. The board's original mark for "The
+// Bridge" was ✉, a pictographic envelope that sits heavier than its neighbors
+// (and renders as a colour emoji in some fonts); ‡ keeps the dagger/section
+// idiom instead.
 const WORKSPACE = [
   { view: "dash" as const, mark: "¶", label: "Overview" },
   { view: "articles" as const, mark: "§", label: "Journal", badge: "open" as const },
   { view: "pages" as const, mark: "†", label: "Pages & sections" },
-  { view: "issues" as const, mark: "✉", label: "The Bridge" },
+  { view: "issues" as const, mark: "‡", label: "The Bridge" },
   { view: "inbox" as const, mark: "«", label: "Contact", badge: "new" as const },
 ];
 
@@ -77,6 +83,7 @@ export function Sidebar({
 
   return (
     <div
+      className="cms-sidebar"
       style={{
         width: collapsed ? "72px" : "250px",
         flex: "none",
@@ -87,7 +94,6 @@ export function Sidebar({
         position: "sticky",
         top: 0,
         alignSelf: "flex-start",
-        height: "100vh",
         transition: "width .2s cubic-bezier(.2,.7,.2,1)",
       }}
     >
