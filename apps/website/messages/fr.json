@@ -514,8 +514,10 @@
     "bridgeLink": "The Bridge"
   },
   "ContactForm": {
-    "sentTitle": "Rien n'a encore été envoyé.",
-    "sentBody": "Ce formulaire n'a aucune destination derrière lui — l'acheminement des demandes et la boîte de réception du CMS restent à construire, votre brief n'est donc parvenu à personne. En attendant, écrivez directement à <mail>hello@storybridge.tn</mail>.",
+    "sentTitle": "C'est reçu — merci.",
+    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>hello@storybridge.tn</mail>.",
+    "sending": "Envoi…",
+    "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à hello@storybridge.tn.",
     "backToForm": "Revenir au formulaire",
     "name": "Nom complet",
     "namePlaceholder": "Votre nom",
@@ -545,7 +547,9 @@
     "placeholder": "vous@entreprise.com",
     "ariaLabel": "Votre adresse e-mail",
     "submit": "S'abonner",
-    "notWired": "Pas encore connecté — les abonnements s'activeront quand The Bridge commencera à paraître.",
+    "sending": "Abonnement…",
+    "done": "Vous êtes inscrit·e. The Bridge ne part pas encore — vous serez averti·e en premier au lancement.",
+    "error": "Impossible d'enregistrer — vérifiez votre connexion et réessayez.",
     "blurb": "Mensuelle. Aucun démarchage, aucune séquence automatisée.",
     "pastIssues": "Voir les numéros précédents →"
   },

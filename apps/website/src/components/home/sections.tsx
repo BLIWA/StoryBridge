@@ -469,7 +469,7 @@ export function NewsletterCta() {
             {t("body")}
           </div>
         </div>
-        <NewsletterSignup />
+        <NewsletterSignup source="Home page" />
       </div>
     </div>
   );

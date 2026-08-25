@@ -85,7 +85,7 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
                 maxWidth: "560px",
               }}
             >
-              <NewsletterSignup />
+              <NewsletterSignup source="Newsletter page" />
             </div>
           </div>
 

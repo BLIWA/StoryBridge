@@ -226,6 +226,8 @@ export const PAGES: Page[] = [
   },
 ];
 
+export type MessageStatus = "New" | "Replied" | "Archived";
+
 export type Message = {
   id: string;
   name: string;
@@ -236,10 +238,11 @@ export type Message = {
   langs: string;
   deadline: string;
   when: string;
-  status: "New" | "Replied" | "Archived";
+  status: MessageStatus;
   body: string;
 };
 
+/** Unused dead data — InboxView reads real submissions via lib/submissions.ts now. Kept as a board-copy reference. */
 export const MESSAGES: Message[] = [
   {
     id: "m1",
@@ -405,6 +408,7 @@ export const SCHEDULE_LOG: ScheduleEvent[] = [
   { id: "e9", at: "2026-08-19T14:02:00Z", issueNo: "08", subject: "The Bridge · No. 08 — What a brief is for", action: "Draft saved", detail: "Subject and four candidate pieces set", actor: "Imen Bliwa" },
 ]; 
 
+/** Unused dead data — IssuesView reads real subscribers via lib/subscribers.ts now. Kept as a board-copy reference. */
 export const SUBSCRIBERS = [
   { email: "s.benamor@medtech.tn", name: "Sonia Ben Amor", lang: "FR", source: "Contact form", joined: "18 Aug 2026" },
   { email: "k.haddad@institut-maghreb.org", name: "Karim Haddad", lang: "AR", source: "Journal", joined: "12 Aug 2026" },
