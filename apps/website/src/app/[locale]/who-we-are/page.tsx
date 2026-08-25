@@ -5,6 +5,7 @@ import { QuoteTile } from "@/components/fx/backdrops";
 import { PILLARS } from "@/content/site";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";
+import { getSiteImage } from "@/lib/site-images";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -25,6 +26,7 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
   const t = await getTranslations("WhoWeAre");
   const pillar = await getTranslations("Pillars");
+  const photo = await getSiteImage("who-we-are.photo");
 
   return (
     <>
@@ -103,31 +105,40 @@ export default async function WhoWeArePage({ params }: { params: Promise<{ local
         </div>
 
         <aside style={{ display: "flex", flexDirection: "column", gap: "16px", position: "sticky", top: "110px" }}>
-          <div
-            style={{
-              aspectRatio: "4/5",
-              borderRadius: "8px",
-              border: "1px solid #D8D1C7",
-              backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
-              display: "flex",
-              alignItems: "flex-end",
-              padding: "16px",
-            }}
-          >
+          {photo ? (
+            // eslint-disable-next-line @next/next/no-img-element -- arbitrary Storage URL; avoids a remotePatterns change for CMS-uploaded media
+            <img
+              src={photo.url}
+              alt={photo.alt}
+              style={{ aspectRatio: "4/5", objectFit: "cover", borderRadius: "8px", border: "1px solid #D8D1C7", width: "100%" }}
+            />
+          ) : (
             <div
               style={{
-                background: "#FDF8F1",
+                aspectRatio: "4/5",
+                borderRadius: "8px",
                 border: "1px solid #D8D1C7",
-                borderRadius: "2px",
-                padding: "6px 10px",
-                fontFamily: "'IBM Plex Mono',monospace",
-                fontSize: "10.5px",
-                color: "#5A6472",
+                backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
+                display: "flex",
+                alignItems: "flex-end",
+                padding: "16px",
               }}
             >
-              {t("photoCaption")}
+              <div
+                style={{
+                  background: "#FDF8F1",
+                  border: "1px solid #D8D1C7",
+                  borderRadius: "2px",
+                  padding: "6px 10px",
+                  fontFamily: "'IBM Plex Mono',monospace",
+                  fontSize: "10.5px",
+                  color: "#5A6472",
+                }}
+              >
+                {t("photoCaption")}
+              </div>
             </div>
-          </div>
+          )}
           <div
             style={{
               fontFamily: "'IBM Plex Mono',monospace",

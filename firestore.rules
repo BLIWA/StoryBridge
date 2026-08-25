@@ -196,6 +196,24 @@ service cloud.firestore {
       allow write: if isStaff() && canEditPages() && wellFormedSiteContent();
     }
 
+    // Site-wide imagery (an office photo, a founder's portrait, …) — see
+    // apps/cms/src/lib/site-images.ts. Deliberately its own collection
+    // rather than folded into siteContent above: a photo doesn't change by
+    // locale, so one doc per slot (not per namespace-and-locale) is enough.
+    // Same read/write split as siteContent, same reasoning.
+    match /siteImages/{slotId} {
+      allow read: if true;
+      // create/update carry a `request.resource` to validate; delete (used
+      // by clearSiteImage() to revert a slot to its placeholder) doesn't —
+      // `request.resource` is null there, so it gets its own clause rather
+      // than sharing a single `allow write` that would error out on delete.
+      allow create, update: if isStaff() && canEditPages()
+        && request.resource.data.url is string
+        && request.resource.data.path is string
+        && request.resource.data.alt is string;
+      allow delete: if isStaff() && canEditPages();
+    }
+
     // Project-level switches an owner sets once, rather than per-document
     // content. Currently one document: `settings/security`, holding
     // `allowContributorsOutsideTunisia` — read by the enforceContributorGeoRestriction

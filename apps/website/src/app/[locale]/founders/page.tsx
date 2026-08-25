@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHero } from "@/components/chrome/page-hero";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";
+import { getSiteImage, type SiteImage } from "@/lib/site-images";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -37,6 +38,9 @@ export default async function FoundersPage({ params }: { params: Promise<{ local
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Founders");
+  const portraits: Record<string, SiteImage | null> = Object.fromEntries(
+    await Promise.all(FOUNDERS.map(async (f) => [f.id, await getSiteImage(`founders.${f.id}.portrait`)] as const)),
+  );
 
   return (
     <>
@@ -67,31 +71,40 @@ export default async function FoundersPage({ params }: { params: Promise<{ local
             }}
           >
             <aside style={{ display: "flex", flexDirection: "column", gap: "14px", position: "sticky", top: "110px" }}>
-              <div
-                style={{
-                  aspectRatio: "4/5",
-                  borderRadius: "8px",
-                  border: "1px solid #D8D1C7",
-                  backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  padding: "16px",
-                }}
-              >
+              {portraits[f.id] ? (
+                // eslint-disable-next-line @next/next/no-img-element -- arbitrary Storage URL; avoids a remotePatterns change for CMS-uploaded media
+                <img
+                  src={portraits[f.id]!.url}
+                  alt={portraits[f.id]!.alt}
+                  style={{ aspectRatio: "4/5", objectFit: "cover", borderRadius: "8px", border: "1px solid #D8D1C7", width: "100%" }}
+                />
+              ) : (
                 <div
                   style={{
-                    background: "#FDF8F1",
+                    aspectRatio: "4/5",
+                    borderRadius: "8px",
                     border: "1px solid #D8D1C7",
-                    borderRadius: "2px",
-                    padding: "6px 10px",
-                    fontFamily: "'IBM Plex Mono',monospace",
-                    fontSize: "10.5px",
-                    color: "#5A6472",
+                    backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    padding: "16px",
                   }}
                 >
-                  {t(`people.${f.id}.portrait`)}
+                  <div
+                    style={{
+                      background: "#FDF8F1",
+                      border: "1px solid #D8D1C7",
+                      borderRadius: "2px",
+                      padding: "6px 10px",
+                      fontFamily: "'IBM Plex Mono',monospace",
+                      fontSize: "10.5px",
+                      color: "#5A6472",
+                    }}
+                  >
+                    {t(`people.${f.id}.portrait`)}
+                  </div>
                 </div>
-              </div>
+              )}
               <div
                 style={{
                   display: "flex",

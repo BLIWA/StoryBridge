@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { CARD, MONO_LABEL, PrimaryButton, NotWiredNote } from "@/components/ui";
 import { getFirebase } from "@/lib/firebase";
 import { fetchNamespaceOverrides, saveNamespaceOverride, type Locale } from "@/lib/site-content";
+import { watchSiteImages, SITE_IMAGE_SLOTS, type SiteImage } from "@/lib/site-images";
+import { SiteImageCard } from "./site-image-card";
 import { flatten, unflatten, type JSONObject } from "@storybridge/content/merge";
 import enDefaults from "@storybridge/content/messages/en.json";
 import frDefaults from "@storybridge/content/messages/fr.json";
@@ -44,6 +46,22 @@ export function SiteContentView({ initialNamespace }: { initialNamespace?: strin
   const [loadedFor, setLoadedFor] = useState<string | null>(null);
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [savedLabel, setSavedLabel] = useState("All changes saved");
+  const [images, setImages] = useState<Record<string, SiteImage>>({});
+
+  // One subscription for the whole view, not per-namespace: there are only
+  // a handful of image slots total, and unlike the text overrides below,
+  // an image isn't scoped to a language — a card just needs to know if a
+  // slot has been set at all.
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchSiteImages(
+      db,
+      (items) => setImages(items),
+      () => setImages({}),
+    );
+  }, []);
+
+  const imageSlots = SITE_IMAGE_SLOTS.filter((s) => s.namespace === namespace);
 
   useEffect(() => {
     let cancelled = false;
@@ -152,6 +170,15 @@ export function SiteContentView({ initialNamespace }: { initialNamespace?: strin
 
         {/* Editor */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {imageSlots.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={MONO_LABEL}>Images — same across EN/FR/AR</div>
+              {imageSlots.map((slot) => (
+                <SiteImageCard key={slot.id} slot={slot} image={images[slot.id]} />
+              ))}
+            </div>
+          )}
+
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
             <div style={{ display: "flex", gap: "4px" }}>
               {LOCALES.map((l) => (
@@ -283,10 +310,10 @@ export function SiteContentView({ initialNamespace }: { initialNamespace?: strin
       </div>
 
       <NotWiredNote>
-        Real, saved to Firestore, and read by the website at build time — but only at build time. A save here
-        doesn&apos;t change the live site until the next deploy. Fields left untouched keep reading the
-        default copy from the catalog; &ldquo;Reset to default&rdquo; deletes the override rather than
-        re-copying the default text.
+        Real, saved to Firestore, and read by the website at build time — but only at build time. A save (or an
+        image upload) here doesn&apos;t change the live site until the next deploy. Fields left untouched keep
+        reading the default copy from the catalog; &ldquo;Reset to default&rdquo; deletes the override rather than
+        re-copying the default text. Images are shared across EN/FR/AR — there&apos;s one office photo, not three.
       </NotWiredNote>
     </div>
   );

@@ -5,6 +5,7 @@ import { ArcWeaveDark } from "@/components/fx/backdrops";
 import { PROCESS_STEPS } from "@/content/site";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";
+import { getSiteImage } from "@/lib/site-images";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -27,6 +28,7 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
   setRequestLocale(locale);
   const t = await getTranslations("HowWeWork");
   const step = await getTranslations("HowWeWork.steps");
+  const fieldPhoto = await getSiteImage("how-we-work.field-photo");
 
   return (
     <>
@@ -108,31 +110,40 @@ export default async function HowWeWorkPage({ params }: { params: Promise<{ loca
               </div>
             ) : s.photo ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div
-                  style={{
-                    aspectRatio: "3/2",
-                    borderRadius: "8px",
-                    border: "1px solid #D8D1C7",
-                    backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
-                    display: "flex",
-                    alignItems: "flex-end",
-                    padding: "14px",
-                  }}
-                >
+                {fieldPhoto ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- arbitrary Storage URL; avoids a remotePatterns change for CMS-uploaded media
+                  <img
+                    src={fieldPhoto.url}
+                    alt={fieldPhoto.alt}
+                    style={{ aspectRatio: "3/2", objectFit: "cover", borderRadius: "8px", border: "1px solid #D8D1C7", width: "100%" }}
+                  />
+                ) : (
                   <div
                     style={{
-                      background: "#FDF8F1",
+                      aspectRatio: "3/2",
+                      borderRadius: "8px",
                       border: "1px solid #D8D1C7",
-                      borderRadius: "2px",
-                      padding: "6px 10px",
-                      fontFamily: "'IBM Plex Mono',monospace",
-                      fontSize: "10.5px",
-                      color: "#5A6472",
+                      backgroundImage: "repeating-linear-gradient(135deg,#E8E3DD 0 11px,#EFE1D2 11px 22px)",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      padding: "14px",
                     }}
                   >
-                    {step(`${s.id}.photo`)}
+                    <div
+                      style={{
+                        background: "#FDF8F1",
+                        border: "1px solid #D8D1C7",
+                        borderRadius: "2px",
+                        padding: "6px 10px",
+                        fontFamily: "'IBM Plex Mono',monospace",
+                        fontSize: "10.5px",
+                        color: "#5A6472",
+                      }}
+                    >
+                      {step(`${s.id}.photo`)}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div
                   style={{
                     fontFamily: "'Source Serif 4',serif",
