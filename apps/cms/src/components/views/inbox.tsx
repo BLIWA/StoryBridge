@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { httpsCallable } from "firebase/functions";
 import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
 import { pill, type Message } from "@/content/seed";
 import { watchSubmissions, setSubmissionStatus } from "@/lib/submissions";
@@ -10,12 +11,19 @@ import { getFirebase } from "@/lib/firebase";
 
 const FILTERS = ["New", "Replied", "Archived", "All"] as const;
 
-export function InboxView() {
+export function InboxView({ initialSelectedId }: { initialSelectedId?: string } = {}) {
   const [tab, setTab] = useState<"messages" | "form">("messages");
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("New");
+  // "All" rather than the usual default "New" when arriving with a specific
+  // message already picked (from a search result) — otherwise a Replied or
+  // Archived match would be shown in the detail pane but invisible, filtered
+  // out, in the list beside it.
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>(initialSelectedId ? "All" : "New");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [selId, setSelId] = useState<string | null>(null);
+  const [selId, setSelId] = useState<string | null>(initialSelectedId ?? null);
   const [reply, setReply] = useState("");
+  const [sending, setSending] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
+  const [replySent, setReplySent] = useState(false);
 
   useEffect(() => {
     const { db } = getFirebase();
@@ -28,6 +36,28 @@ export function InboxView() {
 
   const visible = messages.filter((m) => filter === "All" || m.status === filter);
   const sel = messages.find((m) => m.id === selId) ?? visible[0] ?? messages[0];
+
+  async function sendReply() {
+    if (!sel || !reply.trim()) return;
+    setSending(true);
+    setReplyError(null);
+    setReplySent(false);
+    try {
+      const call = httpsCallable<{ to: string; name: string; subject: string; body: string }, { ok: true }>(
+        getFirebase().functions,
+        "sendReply",
+      );
+      await call({ to: sel.email, name: sel.name, subject: `Re: ${sel.subject}`, body: reply.trim() });
+      await setSubmissionStatus(getFirebase().db, sel.id, "Replied");
+      setReply("");
+      setReplySent(true);
+    } catch (err) {
+      const message = (err as { message?: string })?.message;
+      setReplyError(message || "Couldn't send that. Check your connection and try again.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px", animation: "cms-fade .3s ease both" }}>
@@ -197,12 +227,27 @@ export function InboxView() {
                 <textarea
                   rows={6}
                   value={reply}
-                  onChange={(e) => setReply(e.target.value)}
+                  onChange={(e) => {
+                    setReply(e.target.value);
+                    setReplySent(false);
+                  }}
                   placeholder={`Reply to ${sel.name}…`}
                   style={INPUT}
                 />
+                {replyError && (
+                  <div role="alert" style={{ fontSize: "13px", color: "#A5342E", lineHeight: 1.6 }}>
+                    {replyError}
+                  </div>
+                )}
+                {replySent && (
+                  <div role="status" style={{ fontSize: "13px", color: "#2F6B4F" }}>
+                    Sent to {sel.email}.
+                  </div>
+                )}
                 <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-                  <PrimaryButton>Send reply</PrimaryButton>
+                  <PrimaryButton onClick={() => void sendReply()} disabled={sending || !reply.trim()}>
+                    {sending ? "Sending…" : "Send reply"}
+                  </PrimaryButton>
                   <GhostButton onClick={() => void setSubmissionStatus(getFirebase().db, sel.id, "Replied")}>
                     Mark replied
                   </GhostButton>
@@ -210,12 +255,15 @@ export function InboxView() {
                     Archive
                   </GhostButton>
                   <div style={{ fontSize: "12.5px", color: "#8A8378", marginInlineStart: "auto" }}>
-                    Sends from hello@storybridge.tn
+                    Reply-to: hello@storybridge.tn
                   </div>
                 </div>
                 <NotWiredNote>
-                  &ldquo;Send reply&rdquo; has no mail transport behind it yet — roadmap Phase 06, blocked on
-                  Blaze. &ldquo;Mark replied&rdquo; and &ldquo;Archive&rdquo; are real, saved to Firestore.
+                  &ldquo;Send reply&rdquo; is real now — it calls the sendReply Cloud Function (functions/src/index.ts)
+                  via Resend. Until storybridge.tn is a verified Resend sending domain, it can only actually deliver to
+                  the Resend account owner&apos;s own address (see functions/src/resend.ts) — every other recipient
+                  will show an error here rather than fail silently. &ldquo;Mark replied&rdquo; and
+                  &ldquo;Archive&rdquo; were already real, saved to Firestore.
                 </NotWiredNote>
               </div>
             </div>

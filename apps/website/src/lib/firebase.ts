@@ -21,6 +21,14 @@ const firebaseConfig: FirebaseOptions = {
 // closest Blaze region to the eur3 data.
 const FUNCTIONS_REGION = "europe-west1";
 
+// "(default)" is the production database — the only one this app's own
+// .env.production sets. A second named database, "test", exists in the
+// same project (same rules, empty of real data) for exercising the site
+// against sample data without touching anything live; point a local
+// .env.local at it with NEXT_PUBLIC_FIRESTORE_DATABASE_ID=test. See
+// scripts/seed-test-db.mjs to populate it and the root README.
+const DATABASE_ID = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID || "(default)";
+
 let cachedDb: Firestore | null = null;
 let cachedFunctions: Functions | null = null;
 
@@ -29,7 +37,7 @@ function app() {
 }
 
 export function getDb(): Firestore {
-  if (!cachedDb) cachedDb = getFirestore(app());
+  if (!cachedDb) cachedDb = getFirestore(app(), DATABASE_ID);
   return cachedDb;
 }
 

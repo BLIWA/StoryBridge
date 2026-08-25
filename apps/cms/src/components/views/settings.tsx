@@ -14,6 +14,7 @@ import { InviteDialog } from "@/components/views/invite-dialog";
 import { MfaCard } from "@/components/views/mfa-card";
 import { useAuth } from "@/lib/auth-context";
 import { getFirebase } from "@/lib/firebase";
+import { watchSecuritySettings, setAllowContributorsOutsideTunisia } from "@/lib/settings";
 import {
   watchStaff,
   setStaffRole,
@@ -136,6 +137,10 @@ function PeopleCard() {
         </div>
       )}
 
+      {/* The role/status columns are fixed-width and don't fit a phone
+          screen alongside a name — scroll the list horizontally there
+          rather than letting rows bleed past the card's edge. */}
+      <div style={{ overflowX: "auto" }}>
       {members?.map((u, i) => {
         const isMe = u.email === me;
         // An owner can always be removed except when they are the last one, or
@@ -154,6 +159,7 @@ function PeopleCard() {
               gap: "16px",
               alignItems: "center",
               padding: "16px 22px",
+              minWidth: manages ? "560px" : "480px",
               borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
               opacity: busyEmail === u.email ? 0.5 : 1,
               transition: "opacity .14s ease",
@@ -262,6 +268,7 @@ function PeopleCard() {
           </div>
         );
       })}
+      </div>
 
       {!manages && (
         <div style={{ padding: "0 22px 18px" }}>
@@ -292,6 +299,7 @@ function RoleMatrixCard() {
       <div style={{ padding: "18px 22px", borderBottom: "1px solid #E6E0D8" }}>
         <div style={MONO_LABEL}>What each role can touch</div>
       </div>
+      <div style={{ overflowX: "auto" }}>
       <div
         style={{
           display: "grid",
@@ -300,6 +308,7 @@ function RoleMatrixCard() {
           padding: "12px 22px",
           background: "#F8F4EE",
           borderBottom: "1px solid #E6E0D8",
+          minWidth: "460px",
         }}
       >
         <div style={headCell}>Capability</div>
@@ -318,6 +327,7 @@ function RoleMatrixCard() {
             gap: "12px",
             padding: "13px 22px",
             alignItems: "center",
+            minWidth: "460px",
             borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
           }}
         >
@@ -335,12 +345,86 @@ function RoleMatrixCard() {
           })}
         </div>
       ))}
+      </div>
       <div style={{ padding: "0 22px 18px" }}>
         <NotWiredNote>
           This table is generated from the same role definitions firestore.rules enforces — it
           describes what the database actually allows, not just what the UI shows.
         </NotWiredNote>
       </div>
+    </div>
+  );
+}
+
+function SecurityCard() {
+  const { can } = useAuth();
+  const manages = can("managePeople");
+  const [allowOutsideTunisia, setAllowOutsideTunisia] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchSecuritySettings(
+      db,
+      (settings) => setAllowOutsideTunisia(settings.allowContributorsOutsideTunisia),
+      () => {},
+    );
+  }, []);
+
+  async function toggle() {
+    if (!manages) return;
+    const next = !allowOutsideTunisia;
+    setBusy(true);
+    setError(null);
+    try {
+      await setAllowContributorsOutsideTunisia(getFirebase().db, next);
+    } catch {
+      setError("Couldn't save that. Check your connection and try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div style={CARD}>
+      <div style={MONO_LABEL}>Security</div>
+      <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
+        <input type="checkbox" checked disabled style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
+        Sign out inactive sessions after 12 hours
+      </label>
+      <label
+        style={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          fontSize: "13.5px",
+          color: "#3E4650",
+          opacity: busy ? 0.6 : 1,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={allowOutsideTunisia}
+          disabled={!manages || busy}
+          onChange={() => void toggle()}
+          style={{ width: "16px", height: "16px", accentColor: "#002D62" }}
+        />
+        Allow contributor access from outside Tunisia
+      </label>
+      {error && (
+        <p role="alert" style={{ fontSize: "13px", color: "#A5342E" }}>
+          {error}
+        </p>
+      )}
+      <NotWiredNote>
+        The idle sign-out above is real (lib/idle-signout.ts) and fixed at 12 hours rather than configurable, so
+        its checkbox stays checked and disabled instead of pretending it&apos;s a live setting. The geo-restriction
+        switch is real too now — it&apos;s read by an Auth blocking function (functions/src/blocking.ts) that
+        checks a signing-in contributor&apos;s IP against a free geolocation lookup, failing open (letting them
+        in) if that lookup errors or times out rather than locking someone out over a third-party hiccup.{" "}
+        {!manages && "Only an owner can change it."}
+      </NotWiredNote>
     </div>
   );
 }
@@ -363,23 +447,7 @@ export function SettingsView() {
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <MfaCard />
 
-        <div style={CARD}>
-          <div style={MONO_LABEL}>Security</div>
-          <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
-            <input type="checkbox" checked disabled style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
-            Sign out inactive sessions after 12 hours
-          </label>
-          <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
-            <input type="checkbox" defaultChecked={false} style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
-            Allow contributor access from outside Tunisia
-          </label>
-          <NotWiredNote>
-            The idle sign-out above is real — see lib/idle-signout.ts — and fixed at 12 hours rather than
-            configurable, so its checkbox stays checked and disabled instead of pretending it&apos;s a live
-            setting. The geo-restriction switch is still display-only: enforcing it needs a blocking Cloud
-            Function, which nothing here has built yet.
-          </NotWiredNote>
-        </div>
+        <SecurityCard />
 
         <div style={CARD}>
           <div style={MONO_LABEL}>Site</div>

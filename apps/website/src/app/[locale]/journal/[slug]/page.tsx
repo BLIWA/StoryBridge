@@ -225,7 +225,13 @@ export default async function JournalPostPage({
               return (
                 <figure key={i} style={{ margin: 0 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary Storage URL */}
-                  <img src={block.url} alt={block.alt} style={{ width: "100%", borderRadius: "8px" }} />
+                  <img
+                    src={block.url}
+                    alt={block.alt}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: "100%", borderRadius: "8px" }}
+                  />
                   {block.credit && (
                     <figcaption style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#8A8378", marginTop: "10px" }}>
                       {block.credit}

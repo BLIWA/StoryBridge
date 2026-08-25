@@ -57,6 +57,7 @@ service cloud.firestore {
     function canEditAnyDraft() { return role() in ['owner', 'chief', 'journalist']; }
     function canPublish() { return role() in ['owner', 'chief']; }
     function canEditPages() { return role() in ['owner', 'chief']; }
+    function canSendNewsletter() { return role() in ['owner', 'chief']; }
 
     match /staff/{staffEmail} {
 
@@ -195,6 +196,21 @@ service cloud.firestore {
       allow write: if isStaff() && canEditPages() && wellFormedSiteContent();
     }
 
+    // Project-level switches an owner sets once, rather than per-document
+    // content. Currently one document: `settings/security`, holding
+    // `allowContributorsOutsideTunisia` — read by the enforceContributorGeoRestriction
+    // Auth blocking function (functions/src/blocking.ts) via the Admin SDK,
+    // which bypasses these rules the same as every other privileged read in
+    // this project; what's enforced here is who can change the switch from
+    // the CMS. Staff can see the current setting (Settings renders it for
+    // everyone, disabled for non-owners); only an owner can change it —
+    // same scope as managing people, since it is itself an access-control
+    // decision.
+    match /settings/{doc} {
+      allow read: if isStaff();
+      allow write: if canManagePeople();
+    }
+
     // Contact-form submissions — see apps/website/src/lib/submissions.ts and
     // functions/src/index.ts. Used to be the one collection a non-staff
     // caller could write to directly; now the public site calls the
@@ -226,6 +242,30 @@ service cloud.firestore {
       allow create: if wellFormedSubscriber();
       allow read: if isStaff();
       allow update: if isStaff();
+    }
+
+    // The Bridge — see apps/cms/src/lib/bridge-issues.ts and
+    // functions/src/index.ts's sendScheduledBridgeIssues. An issue is
+    // editable by anyone who could send it (staff below owner/chief can
+    // still read the archive and the composer, matching the board's
+    // original "chief sends, others can see" design carried over from the
+    // in-memory version this replaced). The scheduled-send Cloud Function
+    // writes `status: 'Sent'`, `sentAt` and `stats` via the Admin SDK,
+    // which bypasses this the same as every other privileged write here.
+    match /bridgeIssues/{issueId} {
+      allow read: if isStaff();
+      allow create, update, delete: if isStaff() && canSendNewsletter();
+    }
+
+    // Append-only activity log for the Schedule tab — see the `record()`
+    // calls in components/views/issues.tsx. Interactive actions (Scheduled,
+    // Rescheduled, Canceled, Draft saved, Test sent) are written by whoever
+    // is composing, same capability as editing the issue itself; the "Sent"
+    // entry a real send produces comes from the Cloud Function instead.
+    match /bridgeLog/{entryId} {
+      allow read: if isStaff();
+      allow create: if isStaff() && canSendNewsletter();
+      allow update, delete: if false;
     }
 
     // Deny-by-default for everything else. See the note at the top of this file.

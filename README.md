@@ -46,6 +46,23 @@ pnpm dev:cms         # → http://localhost:3001
 
 The CMS ships with working Firebase config committed in `apps/cms/.env.production` — nothing to fill in. Sign-in works out of the box; who it lets *in* is a separate question, answered in [apps/cms/README.md](apps/cms/README.md).
 
+### Developing against sample data instead of production
+
+`storybridge-eb71e` has a second Firestore database, `test` — same project, same `firestore.rules`, no real content. To point either app at it instead of production:
+
+```bash
+# in apps/website/.env.local and/or apps/cms/.env.local
+NEXT_PUBLIC_FIRESTORE_DATABASE_ID=test
+```
+
+Populate it with a representative sample (a few staff roles, articles in every status, contact submissions, subscribers, media):
+
+```bash
+./scripts/seed-test-db.sh storybridge-eb71e you@example.com   # 2nd arg optional — seeds *you* an owner record there too
+```
+
+Firebase Auth is project-wide, not per-database, so your real sign-in works against `test` the same as production; the sample roster otherwise is fake `@example.com` addresses nobody can actually sign in as. Cloud Functions (the Resend pipeline) always read/write the `(default)` database regardless of which one either app's UI points at — there's no test-mode mail pipeline, so nothing in `test` triggers a real email.
+
 ## Hosting: static export today, App Hosting later
 
 Both apps currently build with `output: "export"` and deploy as static files to classic Firebase Hosting — two sites in the one `storybridge-eb71e` project, mapped via `.firebaserc` targets (`website` → `storybridge-eb71e`, `cms` → `cma-storybridge`):
@@ -83,7 +100,7 @@ The `storybridge-eb71e` project is provisioned and in use:
 | Web app | Registered. Config committed in `apps/cms/.env.production` — public identifiers, not secrets |
 | Auth | Email/password **and** Google both enabled; TOTP-based 2FA is available (not yet enforced project-wide) — see `apps/cms/src/lib/mfa.ts` |
 | Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app` (+ the two `.firebaseapp.com` forms) |
-| Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU |
+| Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU. Two databases: `(default)` (production) and `test` (sample data, same rules) — see "Developing against sample data" above |
 | Firestore rules | Real for every collection in use (`staff`, `media`, `articles`, `siteContent`, `submissions`, `subscribers`); deny-by-default everywhere else |
 | Storage | Live, bucket `storybridge-eb71e.firebasestorage.app`, region `EU` — backs the CMS media library |
 | Cloud Functions | Live, `functions/`, region `europe-west1` (Blaze) — the Resend mail pipeline and server-side reCAPTCHA verification. See `functions/src/index.ts` |

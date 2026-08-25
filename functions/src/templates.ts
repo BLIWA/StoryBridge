@@ -78,6 +78,38 @@ export function contactNotification(input: {
   return { subject, html, text };
 }
 
+/** The plain confirmation page the unsubscribe link (index.ts) lands on — not an email, so it skips wrap(). */
+export function unsubscribePage(message: string, ok: boolean): string {
+  return `<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>The Bridge</title></head>
+<body style="margin:0;padding:0;background:${CREAM};font-family:Georgia,serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${CREAM};padding:48px 16px;min-height:100vh;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" style="max-width:480px;background:#FFFFFF;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden;">
+        <tr><td style="background:${NAVY};padding:22px 28px;">
+          <span style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:${CREAM};">StoryBridge</span>
+        </tr></td>
+        <tr><td style="padding:32px 28px;font-family:'IBM Plex Sans',Arial,sans-serif;font-size:15px;line-height:1.7;color:${ok ? "#3E4650" : "#8A3B3B"};">
+          ${escapeHtml(message)}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+/** A staff reply to a contact-form enquiry — see the sendReply callable in index.ts. */
+export function contactReply(input: { name: string; body: string }): { html: string; text: string } {
+  const html = wrap(
+    `Hi ${escapeHtml(input.name)},`,
+    `<div style="white-space:pre-wrap;">${escapeHtml(input.body)}</div>`,
+  );
+  const text = `Hi ${input.name},\n\n${input.body}`;
+  return { html, text };
+}
+
 export function subscriberWelcome(lang: string): { subject: string; html: string; text: string } {
   // Only English copy for now — the site's fr/ar catalogs live in
   // packages/content, not here; a trilingual transactional template is a
@@ -95,20 +127,31 @@ export function subscriberWelcome(lang: string): { subject: string; html: string
   return { subject, html, text };
 }
 
-export function bridgeIssue(input: { subject: string; preheader: string; picks: string[]; test: boolean }): {
+export function bridgeIssue(input: {
+  subject: string;
+  preheader: string;
+  picks: string[];
+  test: boolean;
+  /** Set only on a real send — a per-recipient unsubscribe link. Omitted on a test send: there's no subscriber to unsubscribe. */
+  unsubscribeUrl?: string;
+}): {
   subject: string;
   html: string;
   text: string;
 } {
   const subject = input.test ? `[TEST] ${input.subject}` : input.subject;
+  const footer = input.unsubscribeUrl
+    ? `<p style="margin-top:26px;font-size:11px;color:#8A8378;"><a href="${input.unsubscribeUrl}" style="color:#8A8378;">Unsubscribe from The Bridge</a></p>`
+    : "";
   const html = wrap(
     input.subject,
     `<p style="color:#8A8378;font-size:13px;">${escapeHtml(input.preheader)}</p>
      ${input.test ? `<p style="background:#F8F4EE;border:1px solid #E6E0D8;padding:10px 14px;border-radius:4px;font-family:monospace;font-size:11px;color:${BRONZE};">TEST COPY — sent only to you, not to subscribers.</p>` : ""}
      <ul style="padding-inline-start:20px;">
        ${input.picks.map((p) => `<li style="margin-bottom:8px;">${escapeHtml(p)}</li>`).join("")}
-     </ul>`,
+     </ul>${footer}`,
   );
-  const text = `${input.subject}\n${input.preheader}\n\n${input.picks.map((p) => `- ${p}`).join("\n")}`;
+  const unsubLine = input.unsubscribeUrl ? `\n\nUnsubscribe: ${input.unsubscribeUrl}` : "";
+  const text = `${input.subject}\n${input.preheader}\n\n${input.picks.map((p) => `- ${p}`).join("\n")}${unsubLine}`;
   return { subject, html, text };
 }
