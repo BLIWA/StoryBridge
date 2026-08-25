@@ -23,3 +23,12 @@ export async function isActiveStaff(email: string): Promise<boolean> {
   if (!snap.exists) return false;
   return snap.data()?.active === true;
 }
+
+/** The role on an active staff record, or null if there isn't one (or it's inactive). See blocking.ts. */
+export async function activeRoleOf(email: string): Promise<string | null> {
+  const normalized = email.trim().toLowerCase();
+  const snap = await getFirestore().collection("staff").doc(normalized).get();
+  if (!snap.exists) return null;
+  const data = snap.data() ?? {};
+  return data.active === true && typeof data.role === "string" ? data.role : null;
+}

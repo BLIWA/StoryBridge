@@ -195,6 +195,21 @@ service cloud.firestore {
       allow write: if isStaff() && canEditPages() && wellFormedSiteContent();
     }
 
+    // Project-level switches an owner sets once, rather than per-document
+    // content. Currently one document: `settings/security`, holding
+    // `allowContributorsOutsideTunisia` — read by the enforceContributorGeoRestriction
+    // Auth blocking function (functions/src/blocking.ts) via the Admin SDK,
+    // which bypasses these rules the same as every other privileged read in
+    // this project; what's enforced here is who can change the switch from
+    // the CMS. Staff can see the current setting (Settings renders it for
+    // everyone, disabled for non-owners); only an owner can change it —
+    // same scope as managing people, since it is itself an access-control
+    // decision.
+    match /settings/{doc} {
+      allow read: if isStaff();
+      allow write: if canManagePeople();
+    }
+
     // Contact-form submissions — see apps/website/src/lib/submissions.ts and
     // functions/src/index.ts. Used to be the one collection a non-staff
     // caller could write to directly; now the public site calls the

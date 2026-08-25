@@ -3,7 +3,7 @@
  * server-side half of contact-form reCAPTCHA. See the root README's
  * "roadmap" link for why this didn't exist before Blaze.
  *
- * Five functions:
+ * Six functions:
  *  - onSubmissionCreated  Firestore trigger → notifies staff of a new enquiry
  *  - onSubscriberCreated  Firestore trigger → welcomes a new Bridge subscriber
  *  - submitContact        callable → verifies reCAPTCHA, writes the enquiry
@@ -15,8 +15,10 @@
  *                          sent to the enquirer directly (any active staff,
  *                          not just owner/chief — matches the Inbox, which
  *                          has no per-role gating either)
+ *  - enforceContributorGeoRestriction  Auth blocking function (blocking.ts)
+ *                          → the "outside Tunisia" switch in Settings
  *
- * All five run in europe-west1 — Cloud Functions has no eur3 (that's a
+ * All six run in europe-west1 — Cloud Functions has no eur3 (that's a
  * Firestore-only multi-region id), europe-west1 is the closest Blaze region
  * to the eur3 data.
  */
@@ -33,6 +35,8 @@ import { sendEmail } from "./resend";
 import { contactNotification, subscriberWelcome, bridgeIssue, contactReply } from "./templates";
 import { verifyRecaptcha } from "./recaptcha";
 import { isSendCapable, isActiveStaff } from "./staff";
+
+export { enforceContributorGeoRestriction } from "./blocking";
 
 initializeApp();
 setGlobalOptions({ region: "europe-west1" });
