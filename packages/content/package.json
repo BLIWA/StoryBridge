@@ -1,0 +1,12 @@
+{
+  "name": "@storybridge/content",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The canonical trilingual message catalog (default site copy), plus the merge utilities that let Firestore overrides sit on top of it. Read by apps/website (renders it) and apps/cms (edits the overrides) — see src/merge.ts for why this lives here instead of in either app.",
+  "exports": {
+    "./messages/en.json": "./messages/en.json",
+    "./messages/fr.json": "./messages/fr.json",
+    "./messages/ar.json": "./messages/ar.json",
+    "./merge": "./src/merge.ts"
+  }
+}

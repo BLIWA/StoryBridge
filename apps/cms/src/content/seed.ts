@@ -146,6 +146,14 @@ export type Section = {
 
 export type Page = { key: string; name: string; path: string; edited: string; sections: Section[] };
 
+/**
+ * Unused dead data — retired outright, not migrated (see firestore.rules'
+ * comment on `/siteContent`). The "Pages & sections" module became
+ * "Site copy": real Firestore overrides on top of the website's own
+ * next-intl catalog (packages/content), edited generically by
+ * components/views/site-content.tsx rather than through this fixed
+ * per-page Section shape.
+ */
 export const PAGES: Page[] = [
   {
     key: "home",

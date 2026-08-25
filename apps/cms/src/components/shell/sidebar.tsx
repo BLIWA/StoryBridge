@@ -14,7 +14,7 @@ import type { View } from "@/lib/view";
 const WORKSPACE = [
   { view: "dash" as const, mark: "¶", label: "Overview" },
   { view: "articles" as const, mark: "§", label: "Journal", badge: "open" as const },
-  { view: "pages" as const, mark: "†", label: "Pages & sections" },
+  { view: "pages" as const, mark: "†", label: "Site copy" },
   { view: "issues" as const, mark: "‡", label: "The Bridge" },
   { view: "inbox" as const, mark: "«", label: "Contact", badge: "new" as const },
 ];

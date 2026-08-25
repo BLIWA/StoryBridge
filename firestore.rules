@@ -174,19 +174,25 @@ service cloud.firestore {
       allow delete: if canEditAnyDraft();
     }
 
-    // Site pages & sections — see apps/cms/src/lib/pages.ts. Editing pages is
-    // the `editPages` capability in lib/staff.ts (owner/chief), not the
-    // "own drafts" model articles use — nobody authors a page alone. No
-    // public consumer yet: the website's marketing copy still comes from its
-    // own next-intl message catalogs, not this collection (see the roadmap —
-    // reconciling those two is a separate, undecided piece of work).
-    match /pages/{pageKey} {
-      function wellFormedPage() {
-        return request.resource.data.order is list && request.resource.data.sections is map;
+    // Site copy overrides — see packages/content/src/merge.ts and
+    // apps/website/src/lib/site-content.ts. Replaces the earlier Section-
+    // based /pages collection (never had real data in it — retired
+    // outright rather than migrated). One document per next-intl top-level
+    // namespace (`Home`, `Services`, …), each holding only the strings
+    // someone has actually overridden, keyed by locale — the website
+    // deep-merges this onto packages/content's default catalog at build
+    // time. Editing is `editPages` (owner/chief), same as before. Read is
+    // public: this is marketing copy the build process fetches with no
+    // credentials, same reasoning as a Published article.
+    match /siteContent/{namespace} {
+      function wellFormedSiteContent() {
+        return (!("en" in request.resource.data) || request.resource.data.en is map)
+          && (!("fr" in request.resource.data) || request.resource.data.fr is map)
+          && (!("ar" in request.resource.data) || request.resource.data.ar is map);
       }
 
-      allow read: if isStaff();
-      allow write: if isStaff() && canEditPages() && wellFormedPage();
+      allow read: if true;
+      allow write: if isStaff() && canEditPages() && wellFormedSiteContent();
     }
 
     // Contact-form submissions — see apps/website/src/lib/submissions.ts. The
