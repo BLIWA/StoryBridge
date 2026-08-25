@@ -546,7 +546,8 @@
       "media": "Médias & presse",
       "launch": "Formule lancement",
       "unsure": "Je ne sais pas encore"
-    }
+    },
+    "captchaNotice": "Ce site est protégé par reCAPTCHA. La <privacy>politique de confidentialité</privacy> et les <terms>conditions d'utilisation</terms> de Google s'appliquent."
   },
   "NewsletterSignup": {
     "placeholder": "vous@entreprise.com",

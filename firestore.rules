@@ -195,26 +195,20 @@ service cloud.firestore {
       allow write: if isStaff() && canEditPages() && wellFormedSiteContent();
     }
 
-    // Contact-form submissions — see apps/website/src/lib/submissions.ts. The
-    // one collection in this project a non-staff caller can write to at all:
-    // the public site posts directly, no Cloud Function in between (Blaze —
-    // see the root README). Everything here is about containing that: field
-    // presence, generous but real length caps, and a status that can only
-    // ever start at 'New' from the client. Once a document exists, editing
-    // it is staff-only, and the only field they may change is `status` — a
-    // submission's own content isn't staff's to rewrite.
+    // Contact-form submissions — see apps/website/src/lib/submissions.ts and
+    // functions/src/index.ts. Used to be the one collection a non-staff
+    // caller could write to directly; now the public site calls the
+    // submitContact Cloud Function instead, which verifies a reCAPTCHA v3
+    // token before writing via the Admin SDK (which bypasses these rules
+    // entirely, same as every other privileged write in this project). So
+    // `create` is closed here — the Function is the only path in, and a
+    // client that tried to skip it and write straight to Firestore would be
+    // skipping the captcha check too, which defeats the point of having one.
+    // Once a document exists, editing it is still staff-only, and the only
+    // field they may change is `status` — a submission's own content isn't
+    // staff's to rewrite.
     match /submissions/{submissionId} {
-      function wellFormedSubmission() {
-        return request.resource.data.name is string
-          && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 200
-          && request.resource.data.email is string
-          && request.resource.data.email.size() > 0 && request.resource.data.email.size() <= 200
-          && request.resource.data.body is string
-          && request.resource.data.body.size() > 0 && request.resource.data.body.size() <= 5000
-          && request.resource.data.status == 'New';
-      }
-
-      allow create: if wellFormedSubmission();
+      allow create: if false;
       allow read: if isStaff();
       allow update: if isStaff() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
     }

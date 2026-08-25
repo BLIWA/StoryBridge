@@ -546,7 +546,8 @@
       "media": "إعلام وصحافة",
       "launch": "باقة الإطلاق",
       "unsure": "لست متأكّدًا بعد"
-    }
+    },
+    "captchaNotice": "هذا الموقع محمي بواسطة reCAPTCHA، وتُطبَّق <privacy>سياسة خصوصية</privacy> Google و<terms>شروط الخدمة</terms> الخاصة بها."
   },
   "NewsletterSignup": {
     "placeholder": "you@company.com",

@@ -1,20 +1,21 @@
 /**
- * Contact-form submissions — the website's first real Firestore write.
+ * Contact-form submissions.
  *
- * No Cloud Function sits behind this (see the root README on Blaze): a
- * submission lands directly in Firestore from the visitor's browser, the
- * same way a staff member's own arrival gets stamped in lib/staff.ts.
- * firestore.rules is the only thing standing between the public internet
- * and this collection — it validates shape and field lengths, since unlike
- * every other collection in this app, the writer here is never staff.
+ * Used to be a direct, unauthenticated Firestore write with firestore.rules
+ * as the only gate. Now it goes through submitContact() — a Cloud Function
+ * (functions/src/index.ts) that checks the reCAPTCHA v3 token before writing
+ * anything, so firestore.rules denies public `create` on /submissions
+ * outright (the Function's Admin SDK write bypasses rules, same as every
+ * other privileged write in this project). See recaptcha in
+ * components/contact-form.tsx for the client half.
  *
- * What this deliberately doesn't do: notify anyone, route to a person, or
- * check for spam beyond a honeypot field. Real enquiry routing and outbound
- * email are Cloud Functions work — roadmap Phase 06, blocked on Blaze.
+ * A successful write triggers onSubmissionCreated, which emails the active
+ * owner/chief roster via Resend — the enquiry no longer sits unnoticed until
+ * someone opens the CMS inbox.
  */
 
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { getDb } from "./firebase";
+import { httpsCallable, type HttpsCallableResult } from "firebase/functions";
+import { getFn } from "./firebase";
 
 export type EnquiryInput = {
   name: string;
@@ -24,30 +25,29 @@ export type EnquiryInput = {
   languages: string;
   deadline: string;
   brief: string;
-  /** Filled in only by a bot — a human never sees this field. Reject if non-empty. */
+  /** Filled in only by a bot — a human never sees this field. */
   honeypot: string;
+  /** From grecaptcha.execute() — undefined until NEXT_PUBLIC_RECAPTCHA_SITE_KEY is set. */
+  captchaToken?: string;
 };
 
 export class SubmissionError extends Error {}
 
 export async function submitEnquiry(input: EnquiryInput): Promise<void> {
-  if (input.honeypot) {
-    // Silently succeed from the bot's point of view; don't write anything.
-    return;
-  }
   if (!input.name.trim() || !input.email.trim() || !input.brief.trim()) {
+    // Same client-side guard as before — the Function re-checks this
+    // regardless, but there's no reason to round-trip an incomplete form.
     throw new SubmissionError("Name, email and a brief are required.");
   }
 
-  await addDoc(collection(getDb(), "submissions"), {
-    name: input.name.trim().slice(0, 200),
-    email: input.email.trim().slice(0, 200),
-    org: input.organisation.trim().slice(0, 200),
-    need: input.need,
-    langs: input.languages.trim().slice(0, 200),
-    deadline: input.deadline.trim().slice(0, 100),
-    body: input.brief.trim().slice(0, 5000),
-    status: "New",
-    createdAt: serverTimestamp(),
-  });
+  const submitContact = httpsCallable<EnquiryInput, { ok: true }>(getFn(), "submitContact");
+  let result: HttpsCallableResult<{ ok: true }>;
+  try {
+    result = await submitContact(input);
+  } catch {
+    throw new SubmissionError("Couldn't send that. Check your connection and try again.");
+  }
+  if (!result.data?.ok) {
+    throw new SubmissionError("Couldn't send that. Check your connection and try again.");
+  }
 }
