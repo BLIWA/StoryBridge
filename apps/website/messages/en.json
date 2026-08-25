@@ -555,6 +555,8 @@
     "standfirst": "We publish what we know about language, media and the Maghreb — partly because it is useful, partly because it is the fastest way for you to judge whether we can write.",
     "leadImage": "lead image — 16:9",
     "byline": "By <name></name>",
+    "emptyTitle": "Nothing published yet",
+    "emptyBody": "The Journal is moving into the CMS — the first pieces will appear here once they're published.",
     "sections": {
       "all": "All",
       "translation": "Translation",

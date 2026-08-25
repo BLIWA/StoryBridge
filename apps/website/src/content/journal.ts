@@ -1,12 +1,13 @@
 /**
- * The shape of the Journal index, the one fully-written post, and the
- * newsletter archive. Words live in messages/{en,fr,ar}.json under `Journal`,
- * `FeaturedPost` and `Newsletter` — see content/site.ts for the reasoning.
+ * IMPORTANT: `JOURNAL_INDEX`, `JOURNAL_SECTIONS` and `FEATURED_POST` below
+ * are unused dead data now. The Journal index and post pages read real
+ * published articles from Firestore instead (see src/lib/articles.ts) —
+ * this placeholder editorial was the stand-in before the CMS could publish
+ * anything for real. Kept only as a reference for the board's original
+ * sample content, same as apps/cms/src/content/seed.ts's `ARTICLES`.
  *
- * This is placeholder editorial that the CMS's Journal module will own
- * (roadmap Phase 05). The shape mirrors the fields the CMS article editor
- * shows: section, read time, title, standfirst, author, language versions,
- * body — so the migration is a change of source, not of markup.
+ * `NEWSLETTER_ISSUES` is unrelated (the newsletter archive, not the
+ * Journal) and is still live — see app/[locale]/newsletter/page.tsx.
  */
 
 export type JournalEntry = {

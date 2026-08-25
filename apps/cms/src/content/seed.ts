@@ -1,13 +1,20 @@
 /**
  * Seed content for the CMS, taken from "StoryBridge CMS.dc.html".
  *
- * IMPORTANT: this is the design board's sample data, held in React state. It is
- * NOT persisted — every view reads and writes this in memory, so edits vanish on
- * reload. Firestore collections replace it in roadmap Phase 05–06; the shapes
- * below are deliberately the shapes those collections should have.
+ * IMPORTANT: `ARTICLES` below is the design board's sample data. It is no
+ * longer what Studio reads — articles are real Firestore documents now (see
+ * lib/articles.ts), and this array is unused dead data, kept only as a
+ * reference for what the board's sample content looked like. Pages, issues,
+ * subscribers and contact submissions are still in-memory only; their
+ * collections land with the rest of Phase 05–06.
  */
 
 export type ArticleStatus = "Draft" | "In review" | "Scheduled" | "Published";
+
+/** The three language versions a piece can carry — see lib/languages.ts. */
+export type LangCode = "EN" | "FR" | "AR";
+
+export type LangContent = { title: string; slug: string; excerpt: string; body: string };
 
 export type Article = {
   id: string;
@@ -21,6 +28,25 @@ export type Article = {
   words: number;
   excerpt: string;
   body: string;
+  /**
+   * The other two language versions, keyed by code — the top-level
+   * title/slug/excerpt/body above are always the *primary* language's content
+   * (whichever code `lang` starts with), so a piece never has three sources
+   * of truth for the same field. Absent or empty-string content means that
+   * language hasn't been started. See components/views/article-editor.tsx.
+   */
+  translations?: Partial<Record<LangCode, LangContent>>;
+  /** Names, in credit order after the primary `author`. */
+  coAuthors?: string[];
+  leadImage?: { url: string; path: string; alt: string; credit: string };
+  /**
+   * Normalized email of whoever created the piece. Absent on the seed data
+   * above (it never went through lib/articles.ts's createArticle()); present
+   * and immutable on every real article, because firestore.rules needs it to
+   * tell "your own draft" from anyone else's — `author` is a display name,
+   * not an identity.
+   */
+  authorEmail?: string;
 };
 
 export const ARTICLES: Article[] = [
