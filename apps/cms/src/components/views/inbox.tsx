@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
-import { MESSAGES, pill, type Message } from "@/content/seed";
+import { pill, type Message } from "@/content/seed";
+import { watchSubmissions, setSubmissionStatus } from "@/lib/submissions";
+import { getFirebase } from "@/lib/firebase";
 
 /** Contact inbox + form settings, from "StoryBridge CMS.dc.html" (484–577). */
 
@@ -11,9 +13,18 @@ const FILTERS = ["New", "Replied", "Archived", "All"] as const;
 export function InboxView() {
   const [tab, setTab] = useState<"messages" | "form">("messages");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("New");
-  const [messages, setMessages] = useState<Message[]>(MESSAGES);
-  const [selId, setSelId] = useState(MESSAGES[0].id);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [selId, setSelId] = useState<string | null>(null);
   const [reply, setReply] = useState("");
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchSubmissions(
+      db,
+      (list) => setMessages(list),
+      () => setMessages([]),
+    );
+  }, []);
 
   const visible = messages.filter((m) => filter === "All" || m.status === filter);
   const sel = messages.find((m) => m.id === selId) ?? visible[0] ?? messages[0];
@@ -192,22 +203,10 @@ export function InboxView() {
                 />
                 <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
                   <PrimaryButton>Send reply</PrimaryButton>
-                  <GhostButton
-                    onClick={() =>
-                      setMessages((prev) =>
-                        prev.map((m) => (m.id === sel.id ? { ...m, status: "Replied" as const } : m)),
-                      )
-                    }
-                  >
+                  <GhostButton onClick={() => void setSubmissionStatus(getFirebase().db, sel.id, "Replied")}>
                     Mark replied
                   </GhostButton>
-                  <GhostButton
-                    onClick={() =>
-                      setMessages((prev) =>
-                        prev.map((m) => (m.id === sel.id ? { ...m, status: "Archived" as const } : m)),
-                      )
-                    }
-                  >
+                  <GhostButton onClick={() => void setSubmissionStatus(getFirebase().db, sel.id, "Archived")}>
                     Archive
                   </GhostButton>
                   <div style={{ fontSize: "12.5px", color: "#8A8378", marginInlineStart: "auto" }}>
@@ -215,8 +214,8 @@ export function InboxView() {
                   </div>
                 </div>
                 <NotWiredNote>
-                  &ldquo;Send reply&rdquo; has no mail transport behind it yet — roadmap Phase 06. Status
-                  changes are local to this session.
+                  &ldquo;Send reply&rdquo; has no mail transport behind it yet — roadmap Phase 06, blocked on
+                  Blaze. &ldquo;Mark replied&rdquo; and &ldquo;Archive&rdquo; are real, saved to Firestore.
                 </NotWiredNote>
               </div>
             </div>
@@ -292,8 +291,10 @@ export function InboxView() {
             </div>
 
             <NotWiredNote>
-              The live contact form does not post anywhere yet. Routing, spam checks and this inbox all depend
-              on Cloud Functions — roadmap Phase 06.
+              The live contact form posts straight to Firestore now — no Cloud Function in between (see
+              lib/submissions.ts). Real spam protection beyond the honeypot, automatic routing, and email
+              notifications still need one — roadmap Phase 06, blocked on Blaze. The fields, routing address
+              and consent line below are still the board&apos;s static presentation.
             </NotWiredNote>
           </div>
         </div>

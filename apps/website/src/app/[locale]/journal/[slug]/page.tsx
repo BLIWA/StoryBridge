@@ -282,7 +282,7 @@ export default async function JournalPostPage({
               {t("newsletterTitle")}
             </div>
           </div>
-          <NewsletterSignup />
+          <NewsletterSignup source="Journal post" />
         </div>
       </div>
     </>

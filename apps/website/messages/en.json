@@ -514,8 +514,10 @@
     "bridgeLink": "The Bridge"
   },
   "ContactForm": {
-    "sentTitle": "Nothing was sent yet.",
-    "sentBody": "This form has no destination behind it — enquiry routing and the CMS inbox are still to be built, so your brief has not reached anyone. Until then, email <mail>hello@storybridge.tn</mail> directly.",
+    "sentTitle": "Got it — thank you.",
+    "sentBody": "Your brief is saved and visible to the team. Nobody's notified automatically yet, so if it's urgent, email <mail>hello@storybridge.tn</mail> directly too.",
+    "sending": "Sending…",
+    "error": "Something went wrong on our end. Try again, or email hello@storybridge.tn directly.",
     "backToForm": "Back to the form",
     "name": "Full name",
     "namePlaceholder": "Your name",
@@ -545,7 +547,9 @@
     "placeholder": "you@company.com",
     "ariaLabel": "Your email address",
     "submit": "Subscribe",
-    "notWired": "Not connected yet — subscriptions go live when The Bridge starts sending.",
+    "sending": "Subscribing…",
+    "done": "You're on the list. The Bridge doesn't send yet — you'll be the first to know when it does.",
+    "error": "Couldn't save that — check your connection and try again.",
     "blurb": "Monthly. No pitches, no drip sequence.",
     "pastIssues": "See past issues →"
   },

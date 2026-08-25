@@ -7,7 +7,8 @@ import { useAuth } from "@/lib/auth-context";
 import { ROLE_LABEL, normalizeEmail } from "@/lib/staff";
 import { getFirebase } from "@/lib/firebase";
 import { watchArticles, createArticle, saveArticle, newArticleId } from "@/lib/articles";
-import { type Article } from "@/content/seed";
+import { watchSubmissions } from "@/lib/submissions";
+import { type Article, type Message } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
 import { ArticlesView, type Filter } from "@/components/views/articles";
 import { ArticleEditor } from "@/components/views/article-editor";
@@ -15,7 +16,6 @@ import { PagesView } from "@/components/views/pages";
 import { IssuesView } from "@/components/views/issues";
 import { InboxView } from "@/components/views/inbox";
 import { SettingsView } from "@/components/views/settings";
-import { MESSAGES } from "@/content/seed";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 /** Matches the seed data's "12 Aug 2026" style — see content/seed.ts. */
@@ -79,6 +79,19 @@ export function Studio() {
     );
   }, []);
 
+  // Just the count for the sidebar badge — InboxView runs its own copy of
+  // this subscription for the actual list, same as watchArticles's split
+  // between here and ArticleEditor's staff-roster watch.
+  const [messages, setMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchSubmissions(
+      db,
+      (list) => setMessages(list),
+      () => setMessages([]),
+    );
+  }, []);
+
   /**
    * Role comes from the signed-in user's `staff` record, and firestore.rules
    * makes the same check — so hiding Publish from a journalist is a courtesy,
@@ -90,7 +103,7 @@ export function Studio() {
   const canPublish = can("publish");
 
   const openCount = articles.filter((a) => a.status !== "Published").length;
-  const newCount = MESSAGES.filter((m) => m.status === "New").length;
+  const newCount = messages.filter((m) => m.status === "New").length;
 
   const draft = articles.find((a) => a.id === editingId) ?? null;
 

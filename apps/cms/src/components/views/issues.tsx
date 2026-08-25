@@ -3,12 +3,13 @@
 import { useEffect, useMemo, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
 import { useAuth } from "@/lib/auth-context";
+import { getFirebase } from "@/lib/firebase";
+import { watchSubscribers, type Subscriber } from "@/lib/subscribers";
 import {
   AUDIENCES,
   BRIDGE_PICKS,
   ISSUES,
   SCHEDULE_LOG,
-  SUBSCRIBERS,
   audience,
   pill,
   type AudienceId,
@@ -76,6 +77,16 @@ export function IssuesView() {
   const [log, setLog] = useState<ScheduleEvent[]>(SCHEDULE_LOG);
   const [logFilter, setLogFilter] = useState("all");
   const [flash, setFlash] = useState<{ n: number; text: string } | null>(null);
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchSubscribers(
+      db,
+      (list) => setSubscribers(list),
+      () => setSubscribers([]),
+    );
+  }, []);
 
   /**
    * null until the browser has hydrated, then a timestamp that moves every half
@@ -832,10 +843,10 @@ export function IssuesView() {
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
           <div className="grid grid-cols-2 xl:grid-cols-4" style={{ gap: "18px" }}>
             {[
-              ["Active", num(AUDIENCES[0].count)],
-              ["Open rate", "48.2%"],
-              ["Unsubscribes", "6"],
-              ["Growth in Aug", "+86"],
+              ["Active", num(subscribers.filter((s) => s.status === "Subscribed").length)],
+              ["Open rate", "—"],
+              ["Unsubscribes", "—"],
+              ["Growth in Aug", "—"],
             ].map(([k, v]) => (
               <div key={k} style={CARD}>
                 <div style={MONO_LABEL}>{k}</div>
@@ -878,7 +889,8 @@ export function IssuesView() {
               <div style={headCell}>Source</div>
               <div style={headCell}>Joined</div>
             </div>
-            {SUBSCRIBERS.map((s, i) => (
+            {subscribers.length === 0 && <Empty>Nobody&apos;s subscribed yet.</Empty>}
+            {subscribers.map((s, i) => (
               <div
                 key={s.email}
                 data-hover="background:#F8F4EE"
@@ -893,7 +905,7 @@ export function IssuesView() {
                 }}
               >
                 <div style={{ ...MONO, fontSize: "12.5px", color: "#002D62" }}>{s.email}</div>
-                <div style={{ fontSize: "13.5px", color: "#3E4650" }}>{s.name}</div>
+                <div style={{ fontSize: "13.5px", color: "#3E4650" }}>—</div>
                 <div style={{ ...MONO, fontSize: "12px", color: "#5A6472" }}>{s.lang}</div>
                 <div style={{ fontSize: "13px", color: "#5A6472" }}>{s.source}</div>
                 <div style={{ fontSize: "12.5px", color: "#5A6472" }}>{s.joined}</div>
@@ -902,8 +914,11 @@ export function IssuesView() {
           </div>
 
           <NotWiredNote>
-            Sample subscribers from the design board. The real list lives in Firestore once the signup form is
-            wired up — roadmap Phase 06.
+            The list above is real — every signup on the site writes here directly (see
+            lib/subscribers.ts), no Cloud Function in between. Open rate, unsubscribes and growth need an
+            actual send to measure, so they stay blank until Phase 06&apos;s delivery pipeline exists. Name
+            isn&apos;t collected by the signup form — only an email address is. &ldquo;Export CSV&rdquo; and
+            &ldquo;Add subscriber&rdquo; aren&apos;t wired.
           </NotWiredNote>
         </div>
       )}
