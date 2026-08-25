@@ -117,7 +117,7 @@ video {
 }
 
 /*
- * The sidebar pins itself with `position: sticky; top: 0` and needs a height
+ * The sidebar pins itself with `position: sticky; top: 0` and needs a floor
  * to pin *to* — 100vh, historically. On tablets and phones that number is the
  * browser's largest possible viewport (toolbars retracted), not the one the
  * page actually renders at, so the sidebar falls short of the bottom of the
@@ -125,8 +125,15 @@ video {
  * current viewport; the 100vh line above it is the fallback for browsers that
  * don't know `dvh` yet (a browser that fails to parse a declaration's value
  * leaves the previous one in the cascade, rather than clearing it).
+ *
+ * This has to be `min-height`, not `height`: studio.tsx's row is
+ * `alignItems: "stretch"` specifically so the sidebar's navy background
+ * stretches to match a content column taller than one screen (an article
+ * list, a long Bridge issue) — a fixed `height` caps the sidebar at exactly
+ * one viewport and defeats that, so the background ran out partway down any
+ * page long enough to scroll.
  */
 .cms-sidebar {
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
