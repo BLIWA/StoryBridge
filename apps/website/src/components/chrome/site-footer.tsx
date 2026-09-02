@@ -151,7 +151,7 @@ export function SiteFooter() {
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <div style={labelStyle}>{t("contact")}</div>
           <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
-            hello@storybridge.tn
+            hello@storybridge.news
           </div>
           <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
             {t("city")}

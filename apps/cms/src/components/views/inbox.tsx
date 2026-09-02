@@ -255,12 +255,12 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
                     Archive
                   </GhostButton>
                   <div style={{ fontSize: "12.5px", color: "#8A8378", marginInlineStart: "auto" }}>
-                    Reply-to: hello@storybridge.tn
+                    Reply-to: hello@storybridge.news
                   </div>
                 </div>
                 <NotWiredNote>
                   &ldquo;Send reply&rdquo; is real now — it calls the sendReply Cloud Function (functions/src/index.ts)
-                  via Resend. Until storybridge.tn is a verified Resend sending domain, it can only actually deliver to
+                  via Resend. Until storybridge.news is a verified Resend sending domain, it can only actually deliver to
                   the Resend account owner&apos;s own address (see functions/src/resend.ts) — every other recipient
                   will show an error here rather than fail silently. &ldquo;Mark replied&rdquo; and
                   &ldquo;Archive&rdquo; were already real, saved to Firestore.
@@ -310,7 +310,7 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
               <div style={MONO_LABEL}>Routing</div>
               <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span style={FIELD_LABEL}>Send submissions to</span>
-                <input defaultValue="hello@storybridge.tn" style={INPUT} />
+                <input defaultValue="hello@storybridge.news" style={INPUT} />
               </label>
               <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span style={FIELD_LABEL}>Assign new enquiries to</span>
@@ -343,7 +343,7 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
               it checks a reCAPTCHA v3 token — once one is registered, see .env.production — before writing to
               Firestore, and every new submission emails the active owner/chief roster via Resend. What&apos;s
               still the board&apos;s static presentation: the fields list, the routing address (in practice it&apos;s
-              &ldquo;every active owner and chief,&rdquo; with hello@storybridge.tn as the fallback if that list
+              &ldquo;every active owner and chief,&rdquo; with hello@storybridge.news as the fallback if that list
               is ever empty) and the consent line below.
             </NotWiredNote>
           </div>

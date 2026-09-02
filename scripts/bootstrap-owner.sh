@@ -14,8 +14,8 @@
 # from having removed every owner.
 #
 # Usage:
-#   ./scripts/bootstrap-owner.sh assia@storybridge.tn "Assia Touati"
-#   ./scripts/bootstrap-owner.sh assia@storybridge.tn "Assia Touati" my-project-id
+#   ./scripts/bootstrap-owner.sh assia@storybridge.news "Assia Touati"
+#   ./scripts/bootstrap-owner.sh assia@storybridge.news "Assia Touati" my-project-id
 
 set -euo pipefail
 

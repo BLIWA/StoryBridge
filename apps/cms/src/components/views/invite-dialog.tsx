@@ -133,7 +133,7 @@ export function InviteDialog({ onClose, onDone }: { onClose: () => void; onDone:
             autoComplete="off"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="imen@storybridge.tn"
+            placeholder="imen@storybridge.news"
             style={INPUT}
           />
         </label>

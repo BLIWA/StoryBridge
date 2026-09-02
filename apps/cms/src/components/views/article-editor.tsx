@@ -576,7 +576,7 @@ export function ArticleEditor({
               {content.title || draft.title}
             </div>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#2F6B4F" }}>
-              storybridge.tn/journal/{content.slug || draft.slug}
+              storybridge.news/journal/{content.slug || draft.slug}
             </div>
             <div style={{ fontSize: "12.5px", lineHeight: 1.6, color: "#5A6472" }}>
               {content.excerpt || "Add a standfirst to control the search snippet."}

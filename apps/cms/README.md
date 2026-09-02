@@ -68,7 +68,7 @@ correct and also a chicken-and-egg on a fresh project. Seed the first one from
 a terminal:
 
 ```bash
-./scripts/bootstrap-owner.sh assia@storybridge.tn "Assia Touati"
+./scripts/bootstrap-owner.sh assia@storybridge.news "Assia Touati"
 ```
 
 It writes through the Firestore REST API with your gcloud credentials — project

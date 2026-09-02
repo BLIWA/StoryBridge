@@ -22,7 +22,7 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://cma-storybridge.web.app";
+const SITE_URL = "https://cms.storybridge.news";
 const TITLE = "StoryBridge — Studio";
 const DESCRIPTION = "StoryBridge Content & Media — editorial workspace.";
 

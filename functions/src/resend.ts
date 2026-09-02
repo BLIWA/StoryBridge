@@ -11,11 +11,12 @@
 const RESEND_API = "https://api.resend.com";
 
 // Resend's default test sender, verified out of the box, no domain setup
-// required. It works today; it should become `hello@storybridge.tn` (or a
-// subdomain of it) the moment storybridge.tn is a secured domain with DNS
-// access — see the root README's open questions. Override without a
-// redeploy via the RESEND_FROM env var if that happens before this comment
-// does.
+// required. It works today; it should become `hello@storybridge.news` (or a
+// subdomain of it) the moment storybridge.news is added and verified as a
+// sending domain in the Resend dashboard (Domains → Add Domain → add the
+// DKIM/SPF/DMARC DNS records it gives you). Override without a redeploy via
+// the RESEND_FROM env var once that's done — do NOT flip this default before
+// then, or every send starts failing instead of reaching the sandbox owner.
 export const DEFAULT_FROM = process.env.RESEND_FROM || "StoryBridge <onboarding@resend.dev>";
 
 export type SendEmailInput = {

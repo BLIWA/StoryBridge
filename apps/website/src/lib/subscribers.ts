@@ -11,7 +11,7 @@
  * What is real now: the write triggers onSubscriberCreated
  * (functions/src/index.ts), which sends a welcome email via Resend. What
  * still isn't: confirming the address is real (no double opt-in), a
- * self-service unsubscribe, and — until storybridge.tn is a verified
+ * self-service unsubscribe, and — until storybridge.news is a verified
  * sending domain on Resend — delivery to anyone but the Resend account
  * owner (Resend's sandbox sender can only reach its own account's address;
  * see functions/src/resend.ts).

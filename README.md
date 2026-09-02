@@ -5,8 +5,12 @@ Website + CMS for StoryBridge Content & Media. Full build plan, architecture rat
 **→ [Roadmap & Open Questions](https://claude.ai/code/artifact/a1b752c4-215f-4508-a2a8-7a09287cba5a)**
 
 **Live now:**
-- Website — https://storybridge-eb71e.web.app (redirects `/` → `/en`; `/fr`, `/ar` also live, RTL for Arabic)
-- CMS — https://cma-storybridge.web.app (sign-in screen; `noindex`)
+- Website — https://storybridge.news (custom domain; `storybridge-eb71e.web.app` still works too) — redirects `/` → `/en`; `/fr`, `/ar` also live, RTL for Arabic
+- CMS — https://cms.storybridge.news (custom domain; `cma-storybridge.web.app` still works too) — sign-in screen; `noindex`
+
+Custom domains were attached to Firebase Hosting on 2 Sep 2026; SSL provisioning
+on Firebase's side can take a little while after DNS is pointed at it, so give
+a fresh domain a bit before treating a cert mismatch as a real problem.
 
 This repo is past Phase 01 (infrastructure scaffold) and has a first deploy live via classic Firebase Hosting static export — see "Hosting: static export today, App Hosting later" below for why. See "What's not done yet" for everything still ahead.
 
@@ -74,7 +78,7 @@ firebase deploy --only hosting --project storybridge-eb71e
 
 This was the pragmatic call for the first deploy: the requested URLs are `*.web.app`, which is what classic Hosting gives you (App Hosting backends get a different default domain shape), and static Hosting needs no Blaze plan — nothing in either app requires a server yet, so there was no reason to put billing on the table just to get something live.
 
-**`apphosting.yaml` is still in the repo for both apps** — real SSR via Firebase App Hosting remains the Phase 09 plan, revisited once something actually needs a server (ISR'd Journal posts, for instance) or once Blaze billing is a deliberate decision rather than a side effect of a first deploy. Custom domains (root domain → website, `cms.[domain]` → cms) get attached at that point too, once there's a real domain and DNS access (open question).
+**`apphosting.yaml` is still in the repo for both apps** — real SSR via Firebase App Hosting remains the Phase 09 plan, revisited once something actually needs a server (ISR'd Journal posts, for instance). Billing is no longer the blocker (Blaze has been on since the Resend/Functions work), and the domain question is resolved (`storybridge.news` / `cms.storybridge.news`, attached to classic Hosting as of 2 Sep 2026) — App Hosting migration is now purely "once something needs a server," not blocked on anything external.
 
 ## What's not done yet
 
@@ -99,7 +103,7 @@ The `storybridge-eb71e` project is provisioned and in use:
 | --- | --- |
 | Web app | Registered. Config committed in `apps/cms/.env.production` — public identifiers, not secrets |
 | Auth | Email/password **and** Google both enabled; TOTP-based 2FA is available (not yet enforced project-wide) — see `apps/cms/src/lib/mfa.ts` |
-| Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app` (+ the two `.firebaseapp.com` forms) |
+| Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app`, `storybridge.news`, `cms.storybridge.news` (+ the two `.firebaseapp.com` forms) |
 | Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU. Two databases: `(default)` (production) and `test` (sample data, same rules) — see "Developing against sample data" above |
 | Firestore rules | Real for every collection in use (`staff`, `media`, `articles`, `siteContent`, `submissions`, `subscribers`); deny-by-default everywhere else |
 | Storage | Live, bucket `storybridge-eb71e.firebasestorage.app`, region `EU` — backs the CMS media library |
@@ -109,6 +113,10 @@ The `storybridge-eb71e` project is provisioned and in use:
 `cma-storybridge.web.app` had to be added to the authorised-domain list —
 without it Google sign-in fails on the live CMS with `auth/unauthorized-domain`,
 because the list Firebase seeds a project with only covers the default site.
+Same reason `storybridge.news` and `cms.storybridge.news` were added the
+moment the custom domains went live (via the Identity Toolkit admin API,
+not the console) — otherwise Google sign-in would fail on the real domain
+the moment DNS/SSL finished propagating.
 
 ### Roles without Cloud Functions
 

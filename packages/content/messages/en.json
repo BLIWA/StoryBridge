@@ -477,7 +477,7 @@
         "role": "Co-founder · Editor-in-chief",
         "portrait": "portrait — Assia Touati",
         "languages": "Arabic · French · English",
-        "email": "assia@storybridge.tn · LinkedIn",
+        "email": "assia@storybridge.news · LinkedIn",
         "lede": "An open-minded editor-in-chief with a strong editorial instinct and a talent for turning ideas into clear, engaging and meaningful content.",
         "paras": [
           "Assia's experience in editorial work brings the perspective a piece of content usually lacks: understanding the audience, shaping the message, and making the work function as part of a larger product rather than as an isolated deliverable. She decides what a story is before anyone starts writing it, and she is the last reader before it goes out.",
@@ -491,7 +491,7 @@
         "role": "Co-founder · Journalist, translator, researcher",
         "portrait": "portrait — Imen Bliwa",
         "languages": "Arabic · English · French",
-        "email": "imen@storybridge.tn · LinkedIn",
+        "email": "imen@storybridge.news · LinkedIn",
         "lede": "A journalist, translator and researcher working across Arabic, English and French, with more than a decade in journalism, translation and international media.",
         "paras": [
           "Imen's work has moved across subjects, audiences and formats — reporting and research, translation, content development, and the field work that sits behind all of it. She knows what it takes to get access, find the right contacts and come back with the material a story actually needs.",
@@ -520,9 +520,9 @@
   },
   "ContactForm": {
     "sentTitle": "Got it — thank you.",
-    "sentBody": "Your brief is saved and visible to the team. Nobody's notified automatically yet, so if it's urgent, email <mail>hello@storybridge.tn</mail> directly too.",
+    "sentBody": "Your brief is saved and visible to the team. Nobody's notified automatically yet, so if it's urgent, email <mail>hello@storybridge.news</mail> directly too.",
     "sending": "Sending…",
-    "error": "Something went wrong on our end. Try again, or email hello@storybridge.tn directly.",
+    "error": "Something went wrong on our end. Try again, or email hello@storybridge.news directly.",
     "backToForm": "Back to the form",
     "name": "Full name",
     "namePlaceholder": "Your name",
@@ -730,19 +730,19 @@
       {
         "heading": "How long we keep it",
         "body": [
-          "We haven't yet set a formal retention schedule. If you'd like something you sent us deleted, email hello@storybridge.tn and we'll remove it."
+          "We haven't yet set a formal retention schedule. If you'd like something you sent us deleted, email hello@storybridge.news and we'll remove it."
         ]
       },
       {
         "heading": "Your rights",
         "body": [
-          "You can ask what we hold about you, ask us to correct it, or ask us to delete it, at any time, by emailing hello@storybridge.tn. We aim to handle these in the spirit of the EU's GDPR, though we haven't formally certified compliance with it."
+          "You can ask what we hold about you, ask us to correct it, or ask us to delete it, at any time, by emailing hello@storybridge.news. We aim to handle these in the spirit of the EU's GDPR, though we haven't formally certified compliance with it."
         ]
       },
       {
         "heading": "Contact",
         "body": [
-          "Questions about this policy: hello@storybridge.tn."
+          "Questions about this policy: hello@storybridge.news."
         ]
       }
     ]
@@ -799,7 +799,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.tn."
+          "hello@storybridge.news."
         ]
       }
     ]
@@ -826,7 +826,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.tn."
+          "hello@storybridge.news."
         ]
       }
     ]

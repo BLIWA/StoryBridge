@@ -477,7 +477,7 @@
         "role": "Cofondatrice · Rédactrice en chef",
         "portrait": "portrait — Assia Touati",
         "languages": "Arabe · Français · Anglais",
-        "email": "assia@storybridge.tn · LinkedIn",
+        "email": "assia@storybridge.news · LinkedIn",
         "lede": "Une rédactrice en chef ouverte, dotée d'un instinct éditorial affûté et d'un talent pour transformer des idées en contenus clairs, engageants et utiles.",
         "paras": [
           "L'expérience éditoriale d'Assia apporte la perspective qui manque d'ordinaire à un contenu : comprendre le public, façonner le message et faire fonctionner le travail au sein d'un produit plus large plutôt que comme un livrable isolé. Elle décide de ce qu'est une histoire avant que quiconque commence à l'écrire, et elle est la dernière lectrice avant publication.",
@@ -491,7 +491,7 @@
         "role": "Cofondatrice · Journaliste, traductrice, chercheuse",
         "portrait": "portrait — Imen Bliwa",
         "languages": "Arabe · Anglais · Français",
-        "email": "imen@storybridge.tn · LinkedIn",
+        "email": "imen@storybridge.news · LinkedIn",
         "lede": "Journaliste, traductrice et chercheuse travaillant en arabe, en anglais et en français, avec plus de dix ans dans le journalisme, la traduction et les médias internationaux.",
         "paras": [
           "Le travail d'Imen a traversé des sujets, des publics et des formats — reportage et recherche, traduction, développement de contenus, et le travail de terrain qui sous-tend tout cela. Elle sait ce qu'il faut pour obtenir un accès, trouver les bons contacts et revenir avec la matière dont une histoire a réellement besoin.",
@@ -520,9 +520,9 @@
   },
   "ContactForm": {
     "sentTitle": "C'est reçu — merci.",
-    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>hello@storybridge.tn</mail>.",
+    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>hello@storybridge.news</mail>.",
     "sending": "Envoi…",
-    "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à hello@storybridge.tn.",
+    "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à hello@storybridge.news.",
     "backToForm": "Revenir au formulaire",
     "name": "Nom complet",
     "namePlaceholder": "Votre nom",
@@ -730,19 +730,19 @@
       {
         "heading": "Combien de temps nous le conservons",
         "body": [
-          "Nous n'avons pas encore fixé de durée de conservation formelle. Si vous souhaitez que ce que vous nous avez envoyé soit supprimé, écrivez à hello@storybridge.tn et nous le supprimerons."
+          "Nous n'avons pas encore fixé de durée de conservation formelle. Si vous souhaitez que ce que vous nous avez envoyé soit supprimé, écrivez à hello@storybridge.news et nous le supprimerons."
         ]
       },
       {
         "heading": "Vos droits",
         "body": [
-          "Vous pouvez à tout moment demander ce que nous détenons à votre sujet, en demander la correction, ou en demander la suppression, en écrivant à hello@storybridge.tn. Nous cherchons à agir dans l'esprit du RGPD européen, sans avoir formellement certifié notre conformité."
+          "Vous pouvez à tout moment demander ce que nous détenons à votre sujet, en demander la correction, ou en demander la suppression, en écrivant à hello@storybridge.news. Nous cherchons à agir dans l'esprit du RGPD européen, sans avoir formellement certifié notre conformité."
         ]
       },
       {
         "heading": "Contact",
         "body": [
-          "Questions sur cette politique : hello@storybridge.tn."
+          "Questions sur cette politique : hello@storybridge.news."
         ]
       }
     ]
@@ -799,7 +799,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.tn."
+          "hello@storybridge.news."
         ]
       }
     ]
@@ -826,7 +826,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.tn."
+          "hello@storybridge.news."
         ]
       }
     ]
