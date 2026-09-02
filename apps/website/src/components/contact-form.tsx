@@ -93,7 +93,7 @@ export function ContactForm() {
         <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
           {t.rich("sentBody", {
             mail: (chunks) => (
-              <a href="mailto:hello@storybridge.news" style={{ color: "#8F6135", fontWeight: 600 }}>
+              <a href="mailto:contact@storybridge.news" style={{ color: "#8F6135", fontWeight: 600 }}>
                 {chunks}
               </a>
             ),

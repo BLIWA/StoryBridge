@@ -35,7 +35,7 @@ export function wrap(title: string, bodyHtml: string): string {
           </div>
         </td></tr>
         <tr><td style="padding:18px 28px;border-top:1px solid #EDE7DE;font-family:monospace;font-size:11px;color:#8A8378;">
-          StoryBridge Content &amp; Media · hello@storybridge.news
+          StoryBridge Content &amp; Media · contact@storybridge.news
         </td></tr>
       </table>
     </td></tr>

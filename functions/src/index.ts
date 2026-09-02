@@ -50,7 +50,7 @@ const RESEND_API_KEY = defineSecret("RESEND_API_KEY");
 const RECAPTCHA_SECRET_KEY = defineSecret("RECAPTCHA_SECRET_KEY");
 const UNSUBSCRIBE_SECRET = defineSecret("UNSUBSCRIBE_SECRET");
 
-const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "hello@storybridge.news";
+const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "contact@storybridge.news";
 
 // Secret Manager won't hold an empty string, so the placeholder that ships
 // before https://www.google.com/recaptcha/admin has been visited is this
@@ -255,12 +255,12 @@ export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) =
       subject: input.subject || "Re: your enquiry",
       html,
       text,
-      // hello@storybridge.news isn't a verified Resend sender yet (see
+      // contact@storybridge.news isn't a verified Resend sender yet (see
       // resend.ts's DEFAULT_FROM) — routing replies there instead of
       // making it the From address means at least the enquirer sees a
       // real inbox to write back to, even while the send itself still
       // comes from Resend's sandbox address.
-      replyTo: "hello@storybridge.news",
+      replyTo: "contact@storybridge.news",
     });
   } catch (err) {
     logger.error("sendReply: send failed", err);

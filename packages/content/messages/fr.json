@@ -520,9 +520,9 @@
   },
   "ContactForm": {
     "sentTitle": "C'est reçu — merci.",
-    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>hello@storybridge.news</mail>.",
+    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>contact@storybridge.news</mail>.",
     "sending": "Envoi…",
-    "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à hello@storybridge.news.",
+    "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à contact@storybridge.news.",
     "backToForm": "Revenir au formulaire",
     "name": "Nom complet",
     "namePlaceholder": "Votre nom",
@@ -730,19 +730,19 @@
       {
         "heading": "Combien de temps nous le conservons",
         "body": [
-          "Nous n'avons pas encore fixé de durée de conservation formelle. Si vous souhaitez que ce que vous nous avez envoyé soit supprimé, écrivez à hello@storybridge.news et nous le supprimerons."
+          "Nous n'avons pas encore fixé de durée de conservation formelle. Si vous souhaitez que ce que vous nous avez envoyé soit supprimé, écrivez à contact@storybridge.news et nous le supprimerons."
         ]
       },
       {
         "heading": "Vos droits",
         "body": [
-          "Vous pouvez à tout moment demander ce que nous détenons à votre sujet, en demander la correction, ou en demander la suppression, en écrivant à hello@storybridge.news. Nous cherchons à agir dans l'esprit du RGPD européen, sans avoir formellement certifié notre conformité."
+          "Vous pouvez à tout moment demander ce que nous détenons à votre sujet, en demander la correction, ou en demander la suppression, en écrivant à contact@storybridge.news. Nous cherchons à agir dans l'esprit du RGPD européen, sans avoir formellement certifié notre conformité."
         ]
       },
       {
         "heading": "Contact",
         "body": [
-          "Questions sur cette politique : hello@storybridge.news."
+          "Questions sur cette politique : contact@storybridge.news."
         ]
       }
     ]
@@ -799,7 +799,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.news."
+          "contact@storybridge.news."
         ]
       }
     ]
@@ -826,7 +826,7 @@
       {
         "heading": "Contact",
         "body": [
-          "hello@storybridge.news."
+          "contact@storybridge.news."
         ]
       }
     ]

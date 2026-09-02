@@ -11,7 +11,7 @@
 const RESEND_API = "https://api.resend.com";
 
 // Resend's default test sender, verified out of the box, no domain setup
-// required. It works today; it should become `hello@storybridge.news` (or a
+// required. It works today; it should become `contact@storybridge.news` (or a
 // subdomain of it) the moment storybridge.news is added and verified as a
 // sending domain in the Resend dashboard (Domains → Add Domain → add the
 // DKIM/SPF/DMARC DNS records it gives you). Override without a redeploy via

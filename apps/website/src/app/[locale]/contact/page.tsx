@@ -61,7 +61,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           <div style={card}>
             <div style={label}>{t("directLabel")}</div>
             <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "24px", color: "#002D62" }}>
-              hello@storybridge.news
+              contact@storybridge.news
             </div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#5A6472" }}>
               {t("location")}
