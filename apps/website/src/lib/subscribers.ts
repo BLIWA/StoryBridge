@@ -9,12 +9,14 @@
  * than duplicates.
  *
  * What is real now: the write triggers onSubscriberCreated
- * (functions/src/index.ts), which sends a welcome email via Resend. What
- * still isn't: confirming the address is real (no double opt-in), a
- * self-service unsubscribe, and — until storybridge.tn is a verified
- * sending domain on Resend — delivery to anyone but the Resend account
- * owner (Resend's sandbox sender can only reach its own account's address;
- * see functions/src/resend.ts).
+ * (functions/src/index.ts), which sends a welcome email via Resend —
+ * storybridge.news is a verified sending domain as of 3 Sep 2026, so this
+ * reaches the real address, not just the Resend account owner (see
+ * functions/src/resend.ts). What still isn't real: confirming the address
+ * is genuine (no double opt-in), and a self-service unsubscribe (the
+ * per-recipient unsubscribe link only exists on Bridge issues today, see
+ * unsubscribe-token.ts — a welcome email has nothing to unsubscribe from
+ * yet).
  */
 
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";

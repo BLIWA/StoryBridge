@@ -18,7 +18,7 @@ import { isDraftLocale } from "./status";
  * them in the same pass as the page itself.
  */
 
-export const SITE_URL = "https://storybridge-eb71e.web.app";
+export const SITE_URL = "https://storybridge.news";
 export const SITE_NAME = "StoryBridge Content & Media";
 
 /** Route for a page key in a given locale. `home` is the bare locale root. */
@@ -59,8 +59,22 @@ export async function pageMetadata(
       url,
       title,
       description,
+      // opengraph-image.tsx (src/app root) renders the charter's Primary
+      // lockup on Content Cream. Every route here calls pageMetadata and
+      // sets its own `openGraph` object, which is why the file convention's
+      // auto-discovery never reaches these pages: Next only inherits a
+      // static-file image into a segment that doesn't declare `images`
+      // itself, and re-declaring `openGraph` at every leaf (as pageMetadata
+      // does) resets that inheritance each time. Pointing at it explicitly
+      // sidesteps that instead of relying on the file convention to cascade.
+      images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: SITE_NAME }],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${SITE_URL}/twitter-image`],
+    },
     other: {
       // Machine-readable counterpart to the on-page draft notice, so the state
       // of a translation is not something only a human reader can discover.

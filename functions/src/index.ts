@@ -50,7 +50,7 @@ const RESEND_API_KEY = defineSecret("RESEND_API_KEY");
 const RECAPTCHA_SECRET_KEY = defineSecret("RECAPTCHA_SECRET_KEY");
 const UNSUBSCRIBE_SECRET = defineSecret("UNSUBSCRIBE_SECRET");
 
-const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "hello@storybridge.tn";
+const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "contact@storybridge.news";
 
 // Secret Manager won't hold an empty string, so the placeholder that ships
 // before https://www.google.com/recaptcha/admin has been visited is this
@@ -255,18 +255,15 @@ export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) =
       subject: input.subject || "Re: your enquiry",
       html,
       text,
-      // hello@storybridge.tn isn't a verified Resend sender yet (see
-      // resend.ts's DEFAULT_FROM) — routing replies there instead of
-      // making it the From address means at least the enquirer sees a
-      // real inbox to write back to, even while the send itself still
-      // comes from Resend's sandbox address.
-      replyTo: "hello@storybridge.tn",
+      // No explicit replyTo needed anymore — DEFAULT_FROM (resend.ts) is
+      // already contact@storybridge.news now that the domain's verified,
+      // so a reply to the From address already lands in the right inbox.
     });
   } catch (err) {
     logger.error("sendReply: send failed", err);
     throw new HttpsError(
       "internal",
-      "Couldn't send that. If the recipient isn't the Resend account owner, this is almost certainly the sandbox-sender limit in resend.ts — storybridge.tn needs to be a verified Resend domain first.",
+      "Couldn't send that. Check the Cloud Functions logs for the underlying Resend error.",
     );
   }
 

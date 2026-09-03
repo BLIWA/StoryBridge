@@ -13,12 +13,12 @@ import { submitEnquiry } from "@/lib/submissions";
  * that verifies a reCAPTCHA v3 token before writing anything and, once
  * written, emails the desk via Resend. Real spam protection, real routing.
  *
- * reCAPTCHA needs a site key registered at google.com/recaptcha/admin for
- * this project's domains — a console-only step, not done yet. Until
- * NEXT_PUBLIC_RECAPTCHA_SITE_KEY is set, the script below doesn't load and
- * the form just submits without a token; submitContact() skips verification
- * in that case too (see functions/src/recaptcha.ts) rather than blocking
- * every enquiry on a step only the project owner can complete.
+ * reCAPTCHA site key registered at google.com/recaptcha/admin as of 3 Sep
+ * 2026 (NEXT_PUBLIC_RECAPTCHA_SITE_KEY, .env.production) — the script below
+ * loads and every submission now carries a real token, verified server-side
+ * in submitContact() (functions/src/recaptcha.ts). If that env var is ever
+ * unset again, the script just doesn't load and verification skips itself
+ * rather than blocking every enquiry.
  */
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
@@ -93,7 +93,7 @@ export function ContactForm() {
         <div style={{ fontSize: "16px", lineHeight: "1.75", color: "#3E4650" }}>
           {t.rich("sentBody", {
             mail: (chunks) => (
-              <a href="mailto:hello@storybridge.tn" style={{ color: "#8F6135", fontWeight: 600 }}>
+              <a href="mailto:contact@storybridge.news" style={{ color: "#8F6135", fontWeight: 600 }}>
                 {chunks}
               </a>
             ),

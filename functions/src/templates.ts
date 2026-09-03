@@ -35,7 +35,7 @@ export function wrap(title: string, bodyHtml: string): string {
           </div>
         </td></tr>
         <tr><td style="padding:18px 28px;border-top:1px solid #EDE7DE;font-family:monospace;font-size:11px;color:#8A8378;">
-          StoryBridge Content &amp; Media · hello@storybridge.tn
+          StoryBridge Content &amp; Media · contact@storybridge.news
         </td></tr>
       </table>
     </td></tr>
@@ -72,9 +72,9 @@ export function contactNotification(input: {
         .join("")}
     </table>
     <div style="border-top:1px solid #EDE7DE;padding-top:14px;white-space:pre-wrap;">${escapeHtml(input.body)}</div>
-    <p style="margin-top:22px;"><a href="https://cma-storybridge.web.app" style="color:${BRONZE};font-weight:600;">Open the CMS inbox →</a></p>`,
+    <p style="margin-top:22px;"><a href="https://cms.storybridge.news" style="color:${BRONZE};font-weight:600;">Open the CMS inbox →</a></p>`,
   );
-  const text = `New enquiry via the contact form\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${input.body}\n\nOpen the CMS inbox: https://cma-storybridge.web.app`;
+  const text = `New enquiry via the contact form\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${input.body}\n\nOpen the CMS inbox: https://cms.storybridge.news`;
   return { subject, html, text };
 }
 
@@ -121,7 +121,7 @@ export function subscriberWelcome(lang: string): { subject: string; html: string
     "You're on the list",
     `<p>Thanks for subscribing to The Bridge, StoryBridge's newsletter — a monthly note on translation, editorial craft, and what we're working on.</p>
      <p>The first issue reaches you the next time we send one. No spam, no list-selling, no cookies involved in getting you here.</p>
-     <p style="margin-top:22px;"><a href="https://storybridge-eb71e.web.app" style="color:${BRONZE};font-weight:600;">Visit storybridge.tn →</a></p>`,
+     <p style="margin-top:22px;"><a href="https://storybridge.news" style="color:${BRONZE};font-weight:600;">Visit storybridge.news →</a></p>`,
   );
   const text = "You're on the list.\n\nThanks for subscribing to The Bridge, StoryBridge's newsletter. The first issue reaches you the next time we send one.";
   return { subject, html, text };

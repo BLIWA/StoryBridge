@@ -378,7 +378,7 @@ export function Studio() {
             />
           </div>
           <a
-            href="https://storybridge-eb71e.web.app"
+            href="https://storybridge.news"
             target="_blank"
             rel="noreferrer"
             style={{ fontSize: "13.5px", fontWeight: 600, color: "#8F6135", whiteSpace: "nowrap" }}
