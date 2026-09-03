@@ -1,167 +1,21 @@
 /**
- * Every outbound email shares one plain, brand-coloured wrapper rather than a
- * bespoke layout per message — three templates (contact notification,
- * subscriber welcome, Bridge issue) is not enough variety to justify a
- * templating library.
+ * A byte-for-byte mirror of functions/src/templates.ts's bridgeIssue() —
+ * the actual send pipeline's email builder — used only to render the
+ * composer's live preview (components/views/issues.tsx) and to build the
+ * payload "Send test" hands to the sendBridgeTest callable.
+ *
+ * functions/ is a standalone npm project outside the pnpm workspace (see
+ * its package.json — Cloud Functions' build servers expect their own
+ * lockfile), so this file can't import that one. Any change to the email's
+ * markup belongs in both places — keep them in sync by hand.
  */
+
+import type { IssueSections, BridgeArticlePick } from "./bridge-issues";
 
 const NAVY = "#002D62";
 const BRONZE = "#B57D49";
-const CREAM = "#FDF8F1";
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-export function wrap(title: string, bodyHtml: string): string {
-  return `<!doctype html>
-<html>
-<body style="margin:0;padding:0;background:${CREAM};font-family:Georgia,'Source Serif 4',serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${CREAM};padding:32px 16px;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" style="max-width:560px;background:#FFFFFF;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden;">
-        <tr><td style="background:${NAVY};padding:22px 28px;">
-          <span style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:${CREAM};">StoryBridge</span>
-          <span style="font-family:monospace;font-size:10px;letter-spacing:0.14em;color:${BRONZE};margin-inline-start:10px;text-transform:uppercase;">Content &amp; Media</span>
-        </tr></td>
-        <tr><td style="padding:28px;">
-          <h1 style="margin:0 0 16px;font-size:20px;color:${NAVY};">${escapeHtml(title)}</h1>
-          <div style="font-family:'IBM Plex Sans',Arial,sans-serif;font-size:14.5px;line-height:1.7;color:#3E4650;">
-            ${bodyHtml}
-          </div>
-        </td></tr>
-        <tr><td style="padding:18px 28px;border-top:1px solid #EDE7DE;font-family:monospace;font-size:11px;color:#8A8378;">
-          StoryBridge Content &amp; Media · contact@storybridge.news
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
-}
-
-export function contactNotification(input: {
-  name: string;
-  email: string;
-  org: string;
-  need: string;
-  langs: string;
-  deadline: string;
-  body: string;
-}): { subject: string; html: string; text: string } {
-  const subject = `New enquiry — ${input.name}${input.org ? ` (${input.org})` : ""}`;
-  const rows: Array<[string, string]> = [
-    ["From", `${input.name} <${input.email}>`],
-    ["Organisation", input.org || "—"],
-    ["Need", input.need || "—"],
-    ["Languages", input.langs || "—"],
-    ["Deadline", input.deadline || "—"],
-  ];
-  const html = wrap(
-    "New enquiry via the contact form",
-    `<table role="presentation" style="width:100%;margin-bottom:18px;">
-      ${rows
-        .map(
-          ([k, v]) =>
-            `<tr><td style="padding:4px 0;color:#8A8378;font-family:monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;width:120px;vertical-align:top;">${escapeHtml(k)}</td><td style="padding:4px 0;">${escapeHtml(v)}</td></tr>`,
-        )
-        .join("")}
-    </table>
-    <div style="border-top:1px solid #EDE7DE;padding-top:14px;white-space:pre-wrap;">${escapeHtml(input.body)}</div>
-    <p style="margin-top:22px;"><a href="https://cms.storybridge.news" style="color:${BRONZE};font-weight:600;">Open the CMS inbox →</a></p>`,
-  );
-  const text = `New enquiry via the contact form\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${input.body}\n\nOpen the CMS inbox: https://cms.storybridge.news`;
-  return { subject, html, text };
-}
-
-/** The plain confirmation page the unsubscribe link (index.ts) lands on — not an email, so it skips wrap(). */
-export function unsubscribePage(message: string, ok: boolean): string {
-  return `<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>The Bridge</title></head>
-<body style="margin:0;padding:0;background:${CREAM};font-family:Georgia,serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${CREAM};padding:48px 16px;min-height:100vh;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" style="max-width:480px;background:#FFFFFF;border:1px solid #E6E0D8;border-radius:8px;overflow:hidden;">
-        <tr><td style="background:${NAVY};padding:22px 28px;">
-          <span style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:${CREAM};">StoryBridge</span>
-        </tr></td>
-        <tr><td style="padding:32px 28px;font-family:'IBM Plex Sans',Arial,sans-serif;font-size:15px;line-height:1.7;color:${ok ? "#3E4650" : "#8A3B3B"};">
-          ${escapeHtml(message)}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
-}
-
-/** A staff reply to a contact-form enquiry — see the sendReply callable in index.ts. */
-export function contactReply(input: { name: string; body: string }): { html: string; text: string } {
-  const html = wrap(
-    `Hi ${escapeHtml(input.name)},`,
-    `<div style="white-space:pre-wrap;">${escapeHtml(input.body)}</div>`,
-  );
-  const text = `Hi ${input.name},\n\n${input.body}`;
-  return { html, text };
-}
-
-export function subscriberWelcome(lang: string): { subject: string; html: string; text: string } {
-  // Only English copy for now — the site's fr/ar catalogs live in
-  // packages/content, not here; a trilingual transactional template is a
-  // reasonable follow-up once the subscriber's chosen language is worth
-  // routing on for more than the newsletter itself.
-  void lang;
-  const subject = "Welcome to The Bridge";
-  const html = wrap(
-    "You're on the list",
-    `<p>Thanks for subscribing to The Bridge, StoryBridge's newsletter — a monthly note on translation, editorial craft, and what we're working on.</p>
-     <p>The first issue reaches you the next time we send one. No spam, no list-selling, no cookies involved in getting you here.</p>
-     <p style="margin-top:22px;"><a href="https://storybridge.news" style="color:${BRONZE};font-weight:600;">Visit storybridge.news →</a></p>`,
-  );
-  const text = "You're on the list.\n\nThanks for subscribing to The Bridge, StoryBridge's newsletter. The first issue reaches you the next time we send one.";
-  return { subject, html, text };
-}
-
-/**
- * The Bridge issue email — a dedicated, richer layout (header/eyebrow/hero/
- * feature/"also from the desk"/pull quote/footer) rather than wrap()'s plain
- * wrapper, ported from the "StoryBridge Newsletter Email.html" design. See
- * apps/cms/src/lib/bridge-email-template.ts for the browser-side mirror used
- * by the CMS composer's live preview — functions/ is a standalone npm
- * project outside the pnpm workspace (see package.json), so that file can't
- * simply import this one; keep the two in sync by hand.
- */
-
-/** One included piece — already resolved to a real title/excerpt/url/image for the issue's audience locale. picks[0] is the feature; the rest run under "Also from the desk". */
-export type BridgeArticlePick = {
-  title: string;
-  excerpt: string;
-  url: string;
-  imageUrl?: string;
-  imageAlt?: string;
-};
-
-export type BridgeIssueSections = {
-  /** The 1200×628 band under the dek — the feature's own image, or a textured placeholder when it has none. */
-  showHero: boolean;
-  showQuote: boolean;
-  quoteText: string;
-  quoteAttribution: string;
-};
-
-export const DEFAULT_BRIDGE_SECTIONS: BridgeIssueSections = {
-  showHero: true,
-  showQuote: false,
-  quoteText: "",
-  quoteAttribution: "",
-};
-
 const BRONZE_DARK = "#8F6135";
+const CREAM = "#FDF8F1";
 const INK = "#3E4650";
 const MUTED = "#5A6472";
 const FAINT = "#8A8378";
@@ -175,16 +29,20 @@ const FOOTER_MUTED = "#B9C2D0";
 const FOOTER_FAINT = "#8FA0BC";
 const MARK_URL = "https://storybridge.news/assets/storybridge-mark.png";
 
-// Decorative SVG textures, copied verbatim from the design canvas — a
-// quote-mark watermark (header, pull quote) and a bridge-arc watermark
-// (footer). Kept as opaque strings rather than generated, so what renders
-// matches exactly what was designed and reviewed.
 const HEADER_TEXTURE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Ctext x='2' y='22' font-family='Georgia,serif' font-size='24' fill='%23002D62' opacity='0.12'%3E%E2%80%9C%3C/text%3E%3Ctext x='18' y='34' font-family='Georgia,serif' font-size='24' fill='%23002D62' opacity='0.12'%3E%E2%80%9D%3C/text%3E%3C/svg%3E";
 const QUOTE_TEXTURE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Ctext x='2' y='22' font-family='Georgia,serif' font-size='24' fill='%23002D62' opacity='0.14'%3E%E2%80%9C%3C/text%3E%3Ctext x='18' y='34' font-family='Georgia,serif' font-size='24' fill='%23002D62' opacity='0.14'%3E%E2%80%9D%3C/text%3E%3C/svg%3E";
 const FOOTER_TEXTURE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='36'%3E%3Cpath d='M0,36 A18,18 0 0,1 36,36 A18,18 0 0,1 72,36' fill='none' stroke='%23B57D49' stroke-width='1.2' opacity='0.35'/%3E%3Cpath d='M-18,18 A18,18 0 0,1 18,18 A18,18 0 0,1 54,18 A18,18 0 0,1 90,18' fill='none' stroke='%23345C8A' stroke-width='1.2' opacity='0.35'/%3E%3C/svg%3E";
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
 const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -240,61 +98,22 @@ ${p.excerpt ? `<div style="padding-top:4px;font-size:14px;line-height:1.55;color
 </tr>`;
 }
 
-function buildBridgeText(input: {
+/**
+ * Renders exactly what a subscriber (or a test recipient) would receive.
+ * `unsubscribeUrl` is omitted for the preview and for test sends — there is
+ * no real subscriber to unsubscribe in either case, same as
+ * functions/src/templates.ts's bridgeIssue().
+ */
+export function buildBridgeEmail(input: {
   subject: string;
   preheader: string;
   issueNo: string;
-  period: string;
-  feature: BridgeArticlePick | null;
-  secondary: BridgeArticlePick[];
-  sections: BridgeIssueSections;
-  test: boolean;
-  unsubscribeUrl?: string;
-}): string {
-  const lines: string[] = [];
-  lines.push(`Issue No. ${input.issueNo} · ${input.period}`);
-  lines.push(input.subject);
-  if (input.preheader) lines.push(input.preheader);
-  if (input.test) lines.push("", "TEST COPY — sent only to you, not to subscribers.");
-  lines.push("");
-  if (input.feature) {
-    lines.push(`FEATURE: ${input.feature.title}`);
-    if (input.feature.excerpt) lines.push(input.feature.excerpt);
-    lines.push(input.feature.url);
-  } else {
-    lines.push("No pieces are included in this issue yet.");
-  }
-  if (input.secondary.length > 0) {
-    lines.push("", "ALSO FROM THE DESK");
-    for (const p of input.secondary) lines.push(`- ${p.title} — ${p.url}`);
-  }
-  if (input.sections.showQuote && input.sections.quoteText.trim()) {
-    lines.push("", `"${input.sections.quoteText.trim()}"`);
-    if (input.sections.quoteAttribution.trim()) lines.push(`— ${input.sections.quoteAttribution.trim()}`);
-  }
-  lines.push("", "StoryBridge Content & Media · Tunis, Tunisia · storybridge.news");
-  if (input.unsubscribeUrl) lines.push(`Unsubscribe: ${input.unsubscribeUrl}`);
-  lines.push("Questions? contact@storybridge.news");
-  return lines.join("\n");
-}
-
-export function bridgeIssue(input: {
-  subject: string;
-  preheader: string;
-  issueNo: string;
-  /** "2026-09-01" — the send date, formatted into the header's period label. Null on an unscheduled draft's test send. */
   issueDate: string | null;
-  /** Real, already-resolved picks in composer order — picks[0] is the feature; the rest run under "Also from the desk". */
   picks: BridgeArticlePick[];
-  sections: BridgeIssueSections;
+  sections: IssueSections;
   test: boolean;
-  /** Set only on a real send — a per-recipient unsubscribe link. Omitted on a test send: there's no subscriber to unsubscribe. */
   unsubscribeUrl?: string;
-}): {
-  subject: string;
-  html: string;
-  text: string;
-} {
+}): { subject: string; html: string } {
   const subject = input.test ? `[TEST] ${input.subject}` : input.subject;
   const feature = input.picks[0] ?? null;
   const secondary = input.picks.slice(1);
@@ -457,17 +276,5 @@ ${footerLine3}
 </body>
 </html>`;
 
-  const text = buildBridgeText({
-    subject: input.subject,
-    preheader: input.preheader,
-    issueNo: input.issueNo,
-    period,
-    feature,
-    secondary,
-    sections: input.sections,
-    test: input.test,
-    unsubscribeUrl: input.unsubscribeUrl,
-  });
-
-  return { subject, html, text };
+  return { subject, html };
 }

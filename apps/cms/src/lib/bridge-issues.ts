@@ -19,6 +19,8 @@ import {
   type Firestore,
   type Timestamp,
 } from "firebase/firestore";
+import { primaryLangOf, langContentOf, langStarted } from "@/lib/languages";
+import type { Article, LangCode } from "@/content/seed";
 
 const COLLECTION = "bridgeIssues";
 
@@ -34,6 +36,44 @@ export const AUDIENCE_LABEL: Record<AudienceId, string> = {
   ar: "العربية",
 };
 
+/**
+ * Which optional blocks the rendered email shows, plus the pull quote's own
+ * copy. `pickArticleIds`' order already decides feature vs. "Also from the
+ * desk" (index 0 is the feature — see setFeature() in components/views/
+ * issues.tsx), so no separate field is needed for that.
+ */
+export type IssueSections = {
+  /** The hero image band under the dek — the feature piece's own lead image, or a textured placeholder when it has none. */
+  showHero: boolean;
+  showQuote: boolean;
+  quoteText: string;
+  quoteAttribution: string;
+};
+
+export const DEFAULT_ISSUE_SECTIONS: IssueSections = {
+  showHero: true,
+  showQuote: false,
+  quoteText: "",
+  quoteAttribution: "",
+};
+
+/**
+ * functions/ is a standalone npm project outside the pnpm workspace (see
+ * its package.json), so this can't import IssueSections' twin,
+ * BridgeIssueSections in functions/src/templates.ts, and parses its own
+ * copy of an issue's `sections` field (functions/src/index.ts's
+ * parseBridgeSections()). Keep the two in sync by hand.
+ */
+function toSections(data: unknown): IssueSections {
+  const d = (data ?? {}) as Partial<IssueSections>;
+  return {
+    showHero: typeof d.showHero === "boolean" ? d.showHero : DEFAULT_ISSUE_SECTIONS.showHero,
+    showQuote: typeof d.showQuote === "boolean" ? d.showQuote : DEFAULT_ISSUE_SECTIONS.showQuote,
+    quoteText: typeof d.quoteText === "string" ? d.quoteText : DEFAULT_ISSUE_SECTIONS.quoteText,
+    quoteAttribution: typeof d.quoteAttribution === "string" ? d.quoteAttribution : DEFAULT_ISSUE_SECTIONS.quoteAttribution,
+  };
+}
+
 export type Issue = {
   id: string;
   no: string;
@@ -43,8 +83,10 @@ export type Issue = {
   time: string | null;
   zone: string;
   audienceId: AudienceId;
-  /** Real article ids from the `articles` collection — see components/views/issues.tsx. */
+  /** Real article ids from the `articles` collection, in the order they run in the letter — index 0 is the feature. See components/views/issues.tsx. */
   pickArticleIds: string[];
+  /** Which optional blocks (hero image, pull quote) the composed email shows. */
+  sections: IssueSections;
   status: IssueStatus;
   /** Epoch ms the scheduled-send function watches for — set alongside date/time/zone, kept in step by toInstant(). */
   sendAt: number | null;
@@ -66,6 +108,7 @@ function toIssue(id: string, data: Record<string, unknown>): Issue {
       ? (data.audienceId as AudienceId)
       : "all",
     pickArticleIds: Array.isArray(data.pickArticleIds) ? data.pickArticleIds.filter((p) => typeof p === "string") : [],
+    sections: toSections(data.sections),
     status: (["Draft", "Scheduled", "Sent", "Canceled"] as const).includes(data.status as IssueStatus)
       ? (data.status as IssueStatus)
       : "Draft",
@@ -149,4 +192,58 @@ export async function appendLogEntry(
   entry: Omit<ScheduleEvent, "id" | "at">,
 ): Promise<void> {
   await addDoc(collection(db, "bridgeLog"), { ...entry, at: serverTimestamp() });
+}
+
+// ---------------------------------------------------------------------------
+// The rendered letter — resolving included pieces to real content/links for
+// the composer's live preview, "Send test", and functions/src/index.ts's
+// sendScheduledBridgeIssues (a server-side duplicate, since functions/ is a
+// standalone npm project outside the pnpm workspace — see its package.json).
+
+export const PUBLIC_SITE_URL = "https://storybridge.news";
+
+/** One included piece, already resolved to a real title/excerpt/url/image for the issue's audience locale. picks[0] is the feature; the rest run under "Also from the desk". */
+export type BridgeArticlePick = {
+  title: string;
+  excerpt: string;
+  url: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+/** Issue.audienceId → the locale a pick should be resolved in. "all" reads as English — same rule functions/src/index.ts's audienceLocale() applies server-side. */
+export function audienceLocale(audienceId: AudienceId): LangCode {
+  return audienceId === "fr" || audienceId === "ar" ? (audienceId.toUpperCase() as LangCode) : "EN";
+}
+
+/**
+ * Resolves an issue's included pieces to real titles/excerpts/URLs/images,
+ * in composer order (index 0 is the feature). Falls back to an article's
+ * primary language — and that language's own URL — when the audience's
+ * locale hasn't been translated yet: the website's Journal has no
+ * cross-locale fallback (apps/website/src/lib/articles.ts's contentFor()
+ * returns null for an unstarted translation, so that route 404s), so a link
+ * has to follow whichever locale the content is actually in. Mirrors
+ * functions/src/locale-content.ts's resolveArticleContent() server-side.
+ */
+export function resolvePicks(articles: Article[], pickArticleIds: string[], audienceId: AudienceId): BridgeArticlePick[] {
+  const locale = audienceLocale(audienceId);
+  const byId = new Map(articles.map((a) => [a.id, a]));
+  const picks: BridgeArticlePick[] = [];
+  for (const id of pickArticleIds) {
+    const article = byId.get(id);
+    if (!article) continue;
+    const primary = primaryLangOf(article.lang);
+    const resolvedLocale = locale === primary || langStarted(article, locale) ? locale : primary;
+    const content = langContentOf(article, resolvedLocale);
+    if (!content.title.trim() || !content.slug.trim()) continue; // nothing real to link to
+    picks.push({
+      title: content.title,
+      excerpt: content.excerpt,
+      url: `${PUBLIC_SITE_URL}/${resolvedLocale.toLowerCase()}/journal/${content.slug}`,
+      imageUrl: article.leadImage?.url,
+      imageAlt: article.leadImage?.alt || content.title,
+    });
+  }
+  return picks;
 }

@@ -16,11 +16,15 @@ import {
   saveIssue,
   watchBridgeLog,
   appendLogEntry,
+  resolvePicks,
+  DEFAULT_ISSUE_SECTIONS,
   type AudienceId,
   type Issue,
+  type IssueSections,
   type ScheduleAction,
   type ScheduleEvent,
 } from "@/lib/bridge-issues";
+import { buildBridgeEmail } from "@/lib/bridge-email-template";
 import {
   DEFAULT_ZONE,
   ZONES,
@@ -176,6 +180,27 @@ export function IssuesView({ articles }: { articles: Article[] }) {
   const audLabel = composing ? AUDIENCE_LABEL[composing.audienceId] : "";
   const audCount = composing ? audienceCounts[composing.audienceId] : 0;
 
+  /** Real titles/excerpts/links/images for the letter's included pieces, in feature-first order — see resolvePicks() in lib/bridge-issues.ts. What the preview below renders and what "Send test" sends are built from this same array, so neither can drift from what a real send produces. */
+  const resolvedPicks = useMemo(
+    () => (composing ? resolvePicks(articles, composing.pickArticleIds, composing.audienceId) : []),
+    [composing, articles],
+  );
+
+  const [previewWidth, setPreviewWidth] = useState<"desktop" | "mobile">("desktop");
+
+  const preview = useMemo(() => {
+    if (!composing) return null;
+    return buildBridgeEmail({
+      subject: composing.subject || "(No subject yet)",
+      preheader: composing.preheader,
+      issueNo: composing.no,
+      issueDate: composing.date,
+      picks: resolvedPicks,
+      sections: composing.sections,
+      test: false,
+    });
+  }, [composing, resolvedPicks]);
+
   /** Holds the slot an issue had before "Reschedule" was pressed, for the diff and for undo. */
   const [rescheduling, setRescheduling] = useState<{ date: string | null; time: string | null; zone: string } | null>(
     null,
@@ -227,6 +252,7 @@ export function IssuesView({ articles }: { articles: Article[] }) {
       zone: DEFAULT_ZONE,
       audienceId: "all",
       pickArticleIds: [],
+      sections: DEFAULT_ISSUE_SECTIONS,
       status: "Draft",
       sendAt: null,
       recipients: null,
@@ -251,6 +277,17 @@ export function IssuesView({ articles }: { articles: Article[] }) {
     });
   }
 
+  /** Moves an included piece to the front — it becomes the letter's Feature; everything else runs under "Also from the desk", in the order they were picked. */
+  function setFeature(id: string) {
+    if (!composing) return;
+    patch(composing.id, { pickArticleIds: [id, ...composing.pickArticleIds.filter((p) => p !== id)] });
+  }
+
+  function patchSections(next: Partial<IssueSections>) {
+    if (!composing) return;
+    patch(composing.id, { sections: { ...composing.sections, ...next } });
+  }
+
   async function saveDraft() {
     if (!composing) return;
     try {
@@ -269,20 +306,32 @@ export function IssuesView({ articles }: { articles: Article[] }) {
   /**
    * Calls sendBridgeTest (functions/src/index.ts), which re-checks the
    * sendNewsletter capability server-side and emails one real copy to the
-   * caller's own address via Resend.
+   * caller's own address via Resend. Sends exactly what the preview shows —
+   * same resolvedPicks, same sections — so a test copy never looks
+   * different from what a real send would produce.
    */
   async function sendTest() {
     if (!composing) return;
     setSendingTest(true);
     try {
-      const send = httpsCallable<{ subject: string; preheader: string; picks: string[] }, { ok: true }>(
-        getFirebase().functions,
-        "sendBridgeTest",
-      );
+      const send = httpsCallable<
+        {
+          subject: string;
+          preheader: string;
+          issueNo: string;
+          issueDate: string | null;
+          picks: typeof resolvedPicks;
+          sections: IssueSections;
+        },
+        { ok: true }
+      >(getFirebase().functions, "sendBridgeTest");
       await send({
         subject: composing.subject,
         preheader: composing.preheader,
-        picks: composing.pickArticleIds.map((id) => publishedPicks.find((p) => p.id === id)?.title ?? id),
+        issueNo: composing.no,
+        issueDate: composing.date,
+        picks: resolvedPicks,
+        sections: composing.sections,
       });
       await logAction(composing, "Test sent", `Test copy sent to ${user?.email ?? "the desk"}`);
       say(`Sent — check ${user?.email ?? "your inbox"}.`);
@@ -567,28 +616,78 @@ export function IssuesView({ articles }: { articles: Article[] }) {
                       No published articles yet — publish something in the Journal to feature it here.
                     </div>
                   )}
-                  {publishedPicks.map((p) => (
-                    <label
-                      key={p.id}
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        alignItems: "flex-start",
-                        fontSize: "13.5px",
-                        color: "#3E4650",
-                        lineHeight: 1.5,
-                        cursor: "pointer",
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={composing.pickArticleIds.includes(p.id)}
-                        onChange={() => togglePick(p.id)}
-                        style={{ width: "16px", height: "16px", accentColor: "#002D62", marginTop: "2px", flex: "none" }}
-                      />
-                      {p.title}
-                    </label>
-                  ))}
+                  {publishedPicks.map((p) => {
+                    const included = composing.pickArticleIds.includes(p.id);
+                    const isFeature = composing.pickArticleIds[0] === p.id;
+                    return (
+                      <div key={p.id} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                        <label
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            alignItems: "flex-start",
+                            fontSize: "13.5px",
+                            color: "#3E4650",
+                            lineHeight: 1.5,
+                            cursor: "pointer",
+                            flex: 1,
+                            minWidth: 0,
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={included}
+                            onChange={() => togglePick(p.id)}
+                            style={{ width: "16px", height: "16px", accentColor: "#002D62", marginTop: "2px", flex: "none" }}
+                          />
+                          <span>{p.title}</span>
+                        </label>
+                        {included &&
+                          (isFeature ? (
+                            <span
+                              style={{
+                                ...MONO,
+                                fontSize: "10px",
+                                letterSpacing: "0.06em",
+                                textTransform: "uppercase",
+                                color: "#8F6135",
+                                border: "1px solid #E6D9C4",
+                                background: "#FBF3E7",
+                                borderRadius: "3px",
+                                padding: "3px 7px",
+                                flex: "none",
+                              }}
+                            >
+                              Feature
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setFeature(p.id)}
+                              style={{
+                                ...MONO,
+                                fontSize: "10px",
+                                letterSpacing: "0.04em",
+                                background: "transparent",
+                                border: "1px solid #D8D1C7",
+                                color: "#5A6472",
+                                borderRadius: "3px",
+                                padding: "3px 7px",
+                                cursor: "pointer",
+                                flex: "none",
+                              }}
+                            >
+                              Set as feature
+                            </button>
+                          ))}
+                      </div>
+                    );
+                  })}
+                  {composing.pickArticleIds.length > 0 && (
+                    <div style={{ fontSize: "11.5px", color: "#8A8378", lineHeight: 1.5 }}>
+                      The feature runs first with the header image; everything else follows under &ldquo;Also from the desk.&rdquo;
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
@@ -632,6 +731,79 @@ export function IssuesView({ articles }: { articles: Article[] }) {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Sections — which optional blocks the rendered letter shows */}
+              <div
+                style={{
+                  border: "1px solid #E6E0D8",
+                  background: "#F8F4EE",
+                  borderRadius: "6px",
+                  padding: "18px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                }}
+              >
+                <div style={MONO_LABEL}>Sections</div>
+
+                <label style={{ display: "flex", gap: "10px", alignItems: "flex-start", cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={composing.sections.showHero}
+                    onChange={(e) => patchSections({ showHero: e.target.checked })}
+                    style={{ width: "16px", height: "16px", accentColor: "#002D62", marginTop: "2px", flex: "none" }}
+                  />
+                  <span>
+                    <div style={{ fontSize: "13.5px", color: "#3E4650", fontWeight: 600 }}>Header image</div>
+                    <div style={{ fontSize: "12px", color: "#5A6472", lineHeight: 1.5, marginTop: "2px" }}>
+                      The feature piece&apos;s own photo, or a plain placeholder when it has none.
+                    </div>
+                  </span>
+                </label>
+
+                <label style={{ display: "flex", gap: "10px", alignItems: "flex-start", cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={composing.sections.showQuote}
+                    onChange={(e) => patchSections({ showQuote: e.target.checked })}
+                    style={{ width: "16px", height: "16px", accentColor: "#002D62", marginTop: "2px", flex: "none" }}
+                  />
+                  <span>
+                    <div style={{ fontSize: "13.5px", color: "#3E4650", fontWeight: 600 }}>Pull quote</div>
+                    <div style={{ fontSize: "12px", color: "#5A6472", lineHeight: 1.5, marginTop: "2px" }}>
+                      A short quote, set off in italics near the bottom of the letter.
+                    </div>
+                  </span>
+                </label>
+
+                {composing.sections.showQuote && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingInlineStart: "26px" }}>
+                    <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <span style={FIELD_LABEL}>Quote</span>
+                      <input
+                        value={composing.sections.quoteText}
+                        onChange={(e) => patchSections({ quoteText: e.target.value })}
+                        placeholder={`"We don't localize headlines — we re-report them."`}
+                        style={INPUT}
+                      />
+                    </label>
+                    <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <span style={FIELD_LABEL}>Attribution</span>
+                      <input
+                        value={composing.sections.quoteAttribution}
+                        onChange={(e) => patchSections({ quoteAttribution: e.target.value })}
+                        placeholder="Editorial team, StoryBridge"
+                        style={INPUT}
+                      />
+                    </label>
+                    {!composing.sections.quoteText.trim() && (
+                      <div style={{ fontSize: "11.5px", color: "#8A8378" }}>
+                        Empty for now — the quote block stays out of the letter until there&apos;s text.
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Send window */}
@@ -779,13 +951,87 @@ export function IssuesView({ articles }: { articles: Article[] }) {
               </div>
             </div>
 
+            {/* Preview — the exact HTML buildBridgeEmail() renders from the same subject/preheader/resolvedPicks/sections above, so nothing shown here can drift from what "Send test" or a real send produces. */}
+            <div style={{ ...CARD, padding: 0 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                  padding: "18px 22px",
+                  borderBottom: "1px solid #E6E0D8",
+                }}
+              >
+                <div>
+                  <div style={MONO_LABEL}>Preview</div>
+                  <div style={{ fontSize: "12.5px", color: "#5A6472", marginTop: "3px" }}>
+                    Subject: {preview?.subject || "(No subject yet)"}
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: "7px" }}>
+                  {(["desktop", "mobile"] as const).map((w) => {
+                    const on = previewWidth === w;
+                    return (
+                      <button
+                        key={w}
+                        type="button"
+                        onClick={() => setPreviewWidth(w)}
+                        style={{
+                          ...MONO,
+                          fontSize: "10.5px",
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          padding: "6px 10px",
+                          borderRadius: "3px",
+                          cursor: "pointer",
+                          background: on ? "#002D62" : "transparent",
+                          color: on ? "#FDF8F1" : "#5A6472",
+                          border: `1px solid ${on ? "#002D62" : "#D8D1C7"}`,
+                        }}
+                      >
+                        {w === "desktop" ? "Desktop" : "Mobile"}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div
+                style={{
+                  padding: "24px",
+                  background: "#EDE7DE",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <iframe
+                  title="The Bridge — preview"
+                  srcDoc={preview?.html ?? ""}
+                  style={{
+                    width: previewWidth === "desktop" ? "600px" : "375px",
+                    maxWidth: "100%",
+                    height: "680px",
+                    border: "1px solid #D8D1C7",
+                    background: "#FDF8F1",
+                    transition: "width .18s ease",
+                  }}
+                />
+              </div>
+            </div>
+
             <NotWiredNote>
               This is a real send pipeline: &ldquo;Schedule send&rdquo; saves the issue and sets its send instant;
               sendScheduledBridgeIssues (functions/src/index.ts) checks every 5 minutes for anything due and sends
-              it via Resend to the real subscriber list for the chosen audience, with a working unsubscribe link.
-              &ldquo;Send test&rdquo; sends one real copy to you. What&apos;s not built: open/click tracking (Resend
-              doesn&apos;t report those back to this project), and a stuck send after a failure just stays
-              Scheduled for the next tick to retry rather than surfacing an alert anywhere.
+              it via Resend to the real subscriber list for the chosen audience, with a working unsubscribe link —
+              &ldquo;Questions? Email us&rdquo; next to it is a real, working mailto to contact@storybridge.news (no
+              automated preference center exists yet). &ldquo;Send test&rdquo; sends one real copy to you, rendered
+              from the exact same content as the Preview above. Every article link and image above is real — the
+              picked pieces&apos; own title, excerpt, lead image, and published URL, resolved to the chosen
+              audience&apos;s language (falling back to the piece&apos;s own language, with a matching link, when it
+              hasn&apos;t been translated yet). What&apos;s not built: open/click tracking (Resend doesn&apos;t
+              report those back to this project), and a stuck send after a failure just stays Scheduled for the next
+              tick to retry rather than surfacing an alert anywhere.
             </NotWiredNote>
           </div>
           )}
