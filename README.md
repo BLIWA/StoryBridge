@@ -102,12 +102,14 @@ The `storybridge-eb71e` project is provisioned and in use:
 | Piece | State |
 | --- | --- |
 | Web app | Registered. Config committed in `apps/cms/.env.production` — public identifiers, not secrets |
-| Auth | Email/password **and** Google both enabled; TOTP-based 2FA is available (not yet enforced project-wide) — see `apps/cms/src/lib/mfa.ts` |
+| Auth | Email/password **and** Google both enabled; MFA is **on** (`mfa.state: ENABLED`, TOTP-only — no SMS/phone provider configured, matching `apps/cms/src/lib/mfa.ts`, which only ever implements the authenticator-app flow), opt-in per staff member rather than mandatory |
 | Authorised domains | `localhost`, `storybridge-eb71e.web.app`, `cma-storybridge.web.app`, `storybridge.news`, `cms.storybridge.news` (+ the two `.firebaseapp.com` forms) |
 | Firestore | Native mode, **`eur3`** (Europe multi-region) — permanent, chosen for Tunis/EU latency and keeping content in the EU. Two databases: `(default)` (production) and `test` (sample data, same rules) — see "Developing against sample data" above |
 | Firestore rules | Real for every collection in use (`staff`, `media`, `articles`, `siteContent`, `submissions`, `subscribers`); deny-by-default everywhere else |
 | Storage | Live, bucket `storybridge-eb71e.firebasestorage.app`, region `EU` — backs the CMS media library |
 | Cloud Functions | Live, `functions/`, region `europe-west1` (Blaze) — the Resend mail pipeline and server-side reCAPTCHA verification. See `functions/src/index.ts` |
+| Resend | `storybridge.news` verified as a sending domain (DKIM/SPF/MX/DMARC live in DNS) — real mail now goes out as `StoryBridge <contact@storybridge.news>`, not Resend's sandbox sender |
+| reCAPTCHA | Real v3 key pair registered for `storybridge.news`; the contact form sends a token on every submission, verified server-side |
 | Billing | **Blaze.** Cloud Functions and the MFA/Identity-Platform features above both need it |
 
 `cma-storybridge.web.app` had to be added to the authorised-domain list —
