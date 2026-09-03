@@ -36,10 +36,38 @@ import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions/v2";
 
 import { sendEmail, sendBatch } from "./resend";
-import { contactNotification, subscriberWelcome, bridgeIssue, contactReply, unsubscribePage } from "./templates";
+import {
+  contactNotification,
+  subscriberWelcome,
+  bridgeIssue,
+  contactReply,
+  unsubscribePage,
+  DEFAULT_BRIDGE_SECTIONS,
+  type BridgeArticlePick,
+  type BridgeIssueSections,
+} from "./templates";
 import { verifyRecaptcha } from "./recaptcha";
 import { isSendCapable, isActiveStaff } from "./staff";
 import { unsubscribeUrl, verifyUnsubscribeToken } from "./unsubscribe-token";
+import { resolveArticleContent, articleLeadImage, type LangCode } from "./locale-content";
+
+/** storybridge.news is also the article-URL host — see apps/website/src/i18n/metadata.ts's SITE_URL. */
+const SITE_URL = "https://storybridge.news";
+
+/** Issue.audienceId ("all"|"en"|"fr"|"ar") → the locale a Bridge pick should be resolved in. "all" reads as English. */
+function audienceLocale(audienceId: string): LangCode {
+  return audienceId === "fr" || audienceId === "ar" ? (audienceId.toUpperCase() as LangCode) : "EN";
+}
+
+function parseBridgeSections(data: unknown): BridgeIssueSections {
+  const d = (data ?? {}) as Partial<BridgeIssueSections>;
+  return {
+    showHero: typeof d.showHero === "boolean" ? d.showHero : DEFAULT_BRIDGE_SECTIONS.showHero,
+    showQuote: typeof d.showQuote === "boolean" ? d.showQuote : DEFAULT_BRIDGE_SECTIONS.showQuote,
+    quoteText: typeof d.quoteText === "string" ? d.quoteText : DEFAULT_BRIDGE_SECTIONS.quoteText,
+    quoteAttribution: typeof d.quoteAttribution === "string" ? d.quoteAttribution : DEFAULT_BRIDGE_SECTIONS.quoteAttribution,
+  };
+}
 
 export { enforceContributorGeoRestriction } from "./blocking";
 
@@ -193,13 +221,59 @@ export const submitContact = onCall({ secrets: [RECAPTCHA_SECRET_KEY] }, async (
 
 // ---------------------------------------------------------------------------
 
-type BridgeTestInput = { subject: string; preheader: string; picks: string[] };
+type BridgeTestInput = {
+  subject: string;
+  preheader: string;
+  issueNo: string;
+  issueDate: string | null;
+  picks: BridgeArticlePick[];
+  sections: BridgeIssueSections;
+};
+
+function isPick(v: unknown): v is BridgeArticlePick {
+  const d = v as Partial<BridgeArticlePick> | null;
+  return (
+    !!d &&
+    typeof d.title === "string" &&
+    typeof d.excerpt === "string" &&
+    typeof d.url === "string" &&
+    (d.imageUrl === undefined || typeof d.imageUrl === "string") &&
+    (d.imageAlt === undefined || typeof d.imageAlt === "string")
+  );
+}
+
+function isSections(v: unknown): v is BridgeIssueSections {
+  const d = v as Partial<BridgeIssueSections> | null;
+  return (
+    !!d &&
+    typeof d.showHero === "boolean" &&
+    typeof d.showQuote === "boolean" &&
+    typeof d.quoteText === "string" &&
+    typeof d.quoteAttribution === "string"
+  );
+}
 
 function isBridgeTestInput(v: unknown): v is BridgeTestInput {
   const d = v as Partial<BridgeTestInput> | null;
-  return !!d && typeof d.subject === "string" && typeof d.preheader === "string" && Array.isArray(d.picks);
+  return (
+    !!d &&
+    typeof d.subject === "string" &&
+    typeof d.preheader === "string" &&
+    typeof d.issueNo === "string" &&
+    (d.issueDate === null || typeof d.issueDate === "string") &&
+    Array.isArray(d.picks) &&
+    d.picks.every(isPick) &&
+    isSections(d.sections)
+  );
 }
 
+/**
+ * The client (apps/cms/src/components/views/issues.tsx) already has full
+ * Article data (translations, leadImage) in hand, so it resolves picks to
+ * the composer's audience locale itself and sends the same shape the
+ * scheduled send builds server-side — "Send test" and the real send produce
+ * byte-identical HTML for the same input.
+ */
 export const sendBridgeTest = onCall({ secrets: [RESEND_API_KEY] }, async (request) => {
   const callerEmail = request.auth?.token.email;
   if (!callerEmail) {
@@ -211,13 +285,16 @@ export const sendBridgeTest = onCall({ secrets: [RESEND_API_KEY] }, async (reque
 
   const input = request.data;
   if (!isBridgeTestInput(input)) {
-    throw new HttpsError("invalid-argument", "Missing subject, preview text, or picks.");
+    throw new HttpsError("invalid-argument", "Missing subject, preview text, issue number, picks, or sections.");
   }
 
   const { subject, html, text } = bridgeIssue({
     subject: input.subject,
     preheader: input.preheader,
-    picks: input.picks.filter((p): p is string => typeof p === "string"),
+    issueNo: input.issueNo,
+    issueDate: input.issueDate,
+    picks: input.picks,
+    sections: input.sections,
     test: true,
   });
 
@@ -312,19 +389,41 @@ export const sendScheduledBridgeIssues = onSchedule(
         const subsSnap = await subsQuery.get();
         const recipients = subsSnap.docs.map((d) => d.id);
 
+        // The locale a recipient in this audience reads the site in — see
+        // audienceLocale() above. resolveArticleContent() may still resolve
+        // an individual pick to a *different* locale (its own primary
+        // language) when it has no translation here — the link always
+        // follows whichever locale the content actually resolved to, or it
+        // 404s (apps/website's Journal has no cross-locale fallback).
+        const localeCode = audienceLocale(audienceId);
         const pickIds: string[] = Array.isArray(issue.pickArticleIds) ? issue.pickArticleIds : [];
-        const picks: string[] = [];
+        const picks: BridgeArticlePick[] = [];
         for (const id of pickIds) {
           const articleSnap = await db.collection("articles").doc(id).get();
-          if (articleSnap.exists) picks.push(String(articleSnap.data()?.title ?? id));
+          if (!articleSnap.exists) continue;
+          const data = articleSnap.data() ?? {};
+          const content = resolveArticleContent(data, localeCode);
+          if (!content.title || !content.slug) continue; // nothing real to link to
+          const image = articleLeadImage(data);
+          picks.push({
+            title: content.title,
+            excerpt: content.excerpt,
+            url: `${SITE_URL}/${content.locale.toLowerCase()}/journal/${content.slug}`,
+            imageUrl: image?.url,
+            imageAlt: image?.alt || content.title,
+          });
         }
+        const sections = parseBridgeSections(issue.sections);
 
         if (recipients.length > 0) {
           const messages = recipients.map((email) => {
             const built = bridgeIssue({
               subject,
               preheader: String(issue.preheader ?? ""),
+              issueNo,
+              issueDate: typeof issue.date === "string" ? issue.date : null,
               picks,
+              sections,
               test: false,
               unsubscribeUrl: unsubscribeUrl(UNSUBSCRIBE_SECRET.value(), email),
             });
