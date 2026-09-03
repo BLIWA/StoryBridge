@@ -255,18 +255,15 @@ export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) =
       subject: input.subject || "Re: your enquiry",
       html,
       text,
-      // contact@storybridge.news isn't a verified Resend sender yet (see
-      // resend.ts's DEFAULT_FROM) — routing replies there instead of
-      // making it the From address means at least the enquirer sees a
-      // real inbox to write back to, even while the send itself still
-      // comes from Resend's sandbox address.
-      replyTo: "contact@storybridge.news",
+      // No explicit replyTo needed anymore — DEFAULT_FROM (resend.ts) is
+      // already contact@storybridge.news now that the domain's verified,
+      // so a reply to the From address already lands in the right inbox.
     });
   } catch (err) {
     logger.error("sendReply: send failed", err);
     throw new HttpsError(
       "internal",
-      "Couldn't send that. If the recipient isn't the Resend account owner, this is almost certainly the sandbox-sender limit in resend.ts — storybridge.news needs to be a verified Resend domain first.",
+      "Couldn't send that. Check the Cloud Functions logs for the underlying Resend error.",
     );
   }
 

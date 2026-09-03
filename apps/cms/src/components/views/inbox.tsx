@@ -259,11 +259,10 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
                   </div>
                 </div>
                 <NotWiredNote>
-                  &ldquo;Send reply&rdquo; is real now — it calls the sendReply Cloud Function (functions/src/index.ts)
-                  via Resend. Until storybridge.news is a verified Resend sending domain, it can only actually deliver to
-                  the Resend account owner&apos;s own address (see functions/src/resend.ts) — every other recipient
-                  will show an error here rather than fail silently. &ldquo;Mark replied&rdquo; and
-                  &ldquo;Archive&rdquo; were already real, saved to Firestore.
+                  &ldquo;Send reply&rdquo; is real — it calls the sendReply Cloud Function (functions/src/index.ts)
+                  via Resend, sending as contact@storybridge.news now that the domain is verified (see
+                  functions/src/resend.ts). A send failure surfaces here as an error rather than failing silently.
+                  &ldquo;Mark replied&rdquo; and &ldquo;Archive&rdquo; were already real, saved to Firestore.
                 </NotWiredNote>
               </div>
             </div>

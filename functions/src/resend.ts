@@ -10,14 +10,15 @@
 
 const RESEND_API = "https://api.resend.com";
 
-// Resend's default test sender, verified out of the box, no domain setup
-// required. It works today; it should become `contact@storybridge.news` (or a
-// subdomain of it) the moment storybridge.news is added and verified as a
-// sending domain in the Resend dashboard (Domains → Add Domain → add the
-// DKIM/SPF/DMARC DNS records it gives you). Override without a redeploy via
-// the RESEND_FROM env var once that's done — do NOT flip this default before
-// then, or every send starts failing instead of reaching the sandbox owner.
-export const DEFAULT_FROM = process.env.RESEND_FROM || "StoryBridge <onboarding@resend.dev>";
+// storybridge.news is verified as a sending domain in Resend as of 3 Sep
+// 2026 (DKIM at resend._domainkey.storybridge.news, SPF/MX/bounce handling
+// on send.storybridge.news, DMARC at _dmarc.storybridge.news — all present
+// in DNS). Real sends now go out as StoryBridge <contact@storybridge.news>
+// instead of Resend's sandbox sender. Override via the RESEND_FROM env var
+// if that ever needs to change (e.g. a dedicated bridge@ sender) without a
+// code change — still needs a `firebase deploy --only functions` to pick up
+// a new functions/.env value, just not a source edit.
+export const DEFAULT_FROM = process.env.RESEND_FROM || "StoryBridge <contact@storybridge.news>";
 
 export type SendEmailInput = {
   to: string | string[];
