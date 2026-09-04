@@ -255,6 +255,14 @@ export type Message = {
   createdAtMs?: number;
   status: MessageStatus;
   body: string;
+  /**
+   * Who the enquiry was routed to at submission time — set by submitContact
+   * (functions/src/index.ts) per settings/contactForm's "Assign new
+   * enquiries to" (lib/contact-form-settings.ts). Absent on the dead
+   * `MESSAGES` seed array below and on any submission from before this
+   * existed.
+   */
+  assignedTo?: string;
 };
 
 /** Unused dead data — InboxView reads real submissions via lib/submissions.ts now. Kept as a board-copy reference. */

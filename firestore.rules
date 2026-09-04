@@ -226,7 +226,54 @@ service cloud.firestore {
     // decision.
     match /settings/{doc} {
       allow read: if isStaff();
-      allow write: if canManagePeople();
+      // 'contactForm' is excluded here (rather than left to the OR-together
+      // of this block and the dedicated one below) so that document's real
+      // schema check is the only path in — an owner writing to it doesn't
+      // get to skip wellFormedContactFormSettings() through this more
+      // permissive, schema-free rule the way sibling settings docs can.
+      allow write: if doc != 'contactForm' && canManagePeople();
+    }
+
+    // The public contact form's real config — see apps/cms/src/lib/contact-
+    // form-settings.ts (CMS write side), apps/website/src/lib/contact-form-
+    // settings.ts (the live form's read side) and functions/src/index.ts
+    // (submitContact/onSubmissionCreated, Admin SDK, bypasses this). Its own
+    // match block rather than folding into settings/{doc} above: unlike
+    // settings/security, the public site itself has to read this one, and
+    // Firestore rules OR matching blocks together, so this simply adds a
+    // public-read allowance for this one document without loosening
+    // settings/{doc}'s staff-only default for security or any future
+    // settings doc (that block explicitly excludes this doc id from its own
+    // write rule — see above — so this match is the only write path in,
+    // schema check included). Editing the form is page-copy-shaped, not
+    // access control, hence canEditPages() (owner/chief) rather than
+    // canManagePeople() (owner only) — 'owner' is itself one of
+    // canEditPages()'s roles, so an owner is still covered.
+    //
+    // The round-robin cursor for routing.assignMode == 'roundRobin' is
+    // deliberately NOT in this document — it lives in
+    // settings/contactFormRouting, written only by the Admin SDK, covered
+    // by the deny-by-default rule at the bottom of this file. Keeping it
+    // separate means a CMS save here can never race with, or overwrite, the
+    // Function's own bookkeeping.
+    match /settings/contactForm {
+      function wellFormedContactFormSettings() {
+        return request.resource.data.fields is map
+          && request.resource.data.fields.organisation.required is bool
+          && request.resource.data.fields.need.required is bool
+          && request.resource.data.fields.languages.required is bool
+          && request.resource.data.fields.deadline.required is bool
+          && request.resource.data.routing is map
+          && request.resource.data.routing.sendTo is string
+          && request.resource.data.routing.assignMode is string
+          && request.resource.data.protection is map
+          && request.resource.data.protection.honeypotEnabled is bool
+          && request.resource.data.protection.consentLine is string
+          && request.resource.data.protection.consentLine.size() <= 500;
+      }
+
+      allow read: if true;
+      allow write: if isStaff() && canEditPages() && wellFormedContactFormSettings();
     }
 
     // Contact-form submissions — see apps/website/src/lib/submissions.ts and
@@ -270,8 +317,13 @@ service cloud.firestore {
     // in-memory version this replaced). The scheduled-send Cloud Function
     // writes `status: 'Sent'`, `sentAt` and `stats` via the Admin SDK,
     // which bypasses this the same as every other privileged write here.
+    // A Sent issue is also public: the website reads it at build time
+    // (apps/website/src/lib/bridge-issues.ts) for the newsletter page's
+    // latest-issue card and archive, same "Published is public" shape as
+    // /articles above — every other status (Draft, Scheduled, Canceled)
+    // stays staff-only.
     match /bridgeIssues/{issueId} {
-      allow read: if isStaff();
+      allow read: if isStaff() || resource.data.status == 'Sent';
       allow create, update, delete: if isStaff() && canSendNewsletter();
     }
 

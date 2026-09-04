@@ -6,8 +6,10 @@
  * anything for real. Kept only as a reference for the board's original
  * sample content, same as apps/cms/src/content/seed.ts's `ARTICLES`.
  *
- * `NEWSLETTER_ISSUES` is unrelated (the newsletter archive, not the
- * Journal) and is still live — see app/[locale]/newsletter/page.tsx.
+ * The newsletter archive (`NEWSLETTER_ISSUES`) went through the same move
+ * and lived here too until it did — it now reads real Sent bridgeIssues
+ * from Firestore instead (see src/lib/bridge-issues.ts and
+ * app/[locale]/newsletter/page.tsx).
  */
 
 export type JournalEntry = {
@@ -57,6 +59,3 @@ export const FEATURED_POST = {
     { type: "para", key: "b8" },
   ] as const satisfies readonly BodyBlock[],
 };
-
-/** Newsletter archive. Numbering is structural; the month and title are not. */
-export const NEWSLETTER_ISSUES = ["06", "05", "04", "03", "02", "01"] as const;

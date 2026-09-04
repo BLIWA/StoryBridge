@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { submitEnquiry } from "@/lib/submissions";
+import { fetchContactFormSettings, DEFAULT_CONTACT_FORM_SETTINGS, type ContactFormSettings } from "@/lib/contact-form-settings";
 
 /**
  * Brief form from the board's Contact page.
@@ -65,6 +66,21 @@ type Status = "idle" | "sending" | "sent" | "error";
 export function ContactForm() {
   const t = useTranslations("ContactForm");
   const [status, setStatus] = useState<Status>("idle");
+  // Real config from settings/contactForm (see lib/contact-form-settings.ts)
+  // — which of the optional fields are required, whether the honeypot is
+  // on, and the consent line below. Starts at the same defaults the config
+  // doc itself defaults to, so there's nothing to flash once the fetch
+  // resolves for anyone who hasn't changed them from the CMS.
+  const [formSettings, setFormSettings] = useState<ContactFormSettings>(DEFAULT_CONTACT_FORM_SETTINGS);
+  useEffect(() => {
+    let cancelled = false;
+    fetchContactFormSettings().then((s) => {
+      if (!cancelled) setFormSettings(s);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (status === "sent") {
     return (
@@ -161,12 +177,24 @@ export function ContactForm() {
           <input name="email" type="email" required placeholder={t("emailPlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("organisation")}</span>
-          <input name="organisation" type="text" placeholder={t("organisationPlaceholder")} style={field} />
+          <span style={label}>
+            {t("organisation")}
+            {formSettings.fields.organisation ? " *" : ""}
+          </span>
+          <input
+            name="organisation"
+            type="text"
+            required={formSettings.fields.organisation}
+            placeholder={t("organisationPlaceholder")}
+            style={field}
+          />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("need")}</span>
-          <select name="need" style={field} defaultValue={NEEDS[0]}>
+          <span style={label}>
+            {t("need")}
+            {formSettings.fields.need ? " *" : ""}
+          </span>
+          <select name="need" required={formSettings.fields.need} style={field} defaultValue={NEEDS[0]}>
             {NEEDS.map((n) => (
               <option key={n} value={n}>
                 {t(`needs.${n}`)}
@@ -175,25 +203,48 @@ export function ContactForm() {
           </select>
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("languages")}</span>
-          <input name="languages" type="text" placeholder={t("languagesPlaceholder")} style={field} />
+          <span style={label}>
+            {t("languages")}
+            {formSettings.fields.languages ? " *" : ""}
+          </span>
+          <input
+            name="languages"
+            type="text"
+            required={formSettings.fields.languages}
+            placeholder={t("languagesPlaceholder")}
+            style={field}
+          />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("deadline")}</span>
-          <input name="deadline" type="text" placeholder={t("deadlinePlaceholder")} style={field} />
+          <span style={label}>
+            {t("deadline")}
+            {formSettings.fields.deadline ? " *" : ""}
+          </span>
+          <input
+            name="deadline"
+            type="text"
+            required={formSettings.fields.deadline}
+            placeholder={t("deadlinePlaceholder")}
+            style={field}
+          />
         </label>
       </div>
 
       {/* Honeypot: off-screen, never shown to a real visitor, no label a screen reader announces. A filled-in
-          value means whatever submitted this wasn't a person — see lib/submissions.ts. */}
-      <input
-        name="company_website"
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        style={{ position: "absolute", width: "1px", height: "1px", opacity: 0, pointerEvents: "none" }}
-      />
+          value means whatever submitted this wasn't a person — see lib/submissions.ts. Real toggle now
+          (settings/contactForm's "Honeypot" checkbox in the CMS) — when it's off, submitContact() skips the
+          check server-side too, so there's no point still rendering (and possibly tripping a form-filling
+          extension on) a field nothing reads. */}
+      {formSettings.honeypotEnabled && (
+        <input
+          name="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ position: "absolute", width: "1px", height: "1px", opacity: 0, pointerEvents: "none" }}
+        />
+      )}
 
       <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
         <span style={label}>{t("brief")}</span>
@@ -205,6 +256,13 @@ export function ContactForm() {
           style={{ ...field, resize: "vertical", fontFamily: "'IBM Plex Sans',sans-serif" }}
         />
       </label>
+
+      {/* Real now — settings/contactForm's "Consent line before submit" (CMS Inbox → Contact form fields).
+          Plain trust copy, not a checkbox: nothing here changes what the form does, same as the board's
+          original design. Falls back to the same line that used to be hardcoded until a save changes it. */}
+      {formSettings.consentLine && (
+        <div style={{ fontSize: "12.5px", lineHeight: 1.6, color: "#8A8378" }}>{formSettings.consentLine}</div>
+      )}
 
       <div style={{ display: "flex", gap: "18px", alignItems: "center", flexWrap: "wrap" }}>
         <button

@@ -86,8 +86,33 @@ const FALLBACK_NOTIFY_EMAIL = process.env.NOTIFY_FALLBACK_EMAIL || "contact@stor
 // secret replaces it (`firebase functions:secrets:set RECAPTCHA_SECRET_KEY`).
 const RECAPTCHA_NOT_CONFIGURED = "not-configured";
 
-/** Active owners/chiefs, or the fallback address if the roster is somehow empty. */
-async function notifyRecipients(): Promise<string[]> {
+// Real config for the contact form — see apps/cms/src/lib/contact-form-
+// settings.ts for the CMS write side and apps/website/src/lib/contact-form-
+// settings.ts for the live form's read side. These mirror the same defaults
+// so an unset document (nobody has ever saved the form) behaves exactly
+// like the old hardcoded version did.
+type ContactFormSettings = {
+  fields?: Partial<Record<"organisation" | "need" | "languages" | "deadline", { required?: boolean }>>;
+  routing?: { sendTo?: string; assignMode?: string };
+  protection?: { honeypotEnabled?: boolean; consentLine?: string };
+};
+
+const DEFAULT_FIELD_REQUIRED: Record<"organisation" | "need" | "languages" | "deadline", boolean> = {
+  organisation: false,
+  need: true,
+  languages: false,
+  deadline: false,
+};
+
+async function loadContactFormSettings(): Promise<ContactFormSettings> {
+  const snap = await getFirestore().collection("settings").doc("contactForm").get();
+  return (snap.data() as ContactFormSettings | undefined) ?? {};
+}
+
+/** The explicit override address if one's set, else the active owner/chief roster (or the fallback if that's empty). */
+async function notifyRecipients(settings: ContactFormSettings): Promise<string[]> {
+  const sendTo = settings.routing?.sendTo?.trim();
+  if (sendTo) return [sendTo];
   const snap = await getFirestore()
     .collection("staff")
     .where("active", "==", true)
@@ -97,6 +122,34 @@ async function notifyRecipients(): Promise<string[]> {
   return emails.length > 0 ? emails : [FALLBACK_NOTIFY_EMAIL];
 }
 
+/**
+ * Who a new enquiry is assigned to: the explicit staff email in
+ * `routing.assignMode`, if they're still active staff, otherwise (or for
+ * the literal "roundRobin") the next name in an active-staff round robin.
+ * The cursor lives in its own Function-only document, never exposed to
+ * either app's client SDK — see the comment on settings/contactForm in
+ * firestore.rules. Reading and incrementing it isn't wrapped in a
+ * transaction: two enquiries landing in the same instant could get the
+ * same cursor value and the same assignee, an occasional duplicate assign
+ * accepted the same way an occasional duplicate Bridge send already is
+ * elsewhere in this file, rather than adding transaction overhead to every
+ * single submission for it.
+ */
+async function resolveAssignee(assignMode: string): Promise<string | undefined> {
+  const staffSnap = await getFirestore().collection("staff").where("active", "==", true).get();
+  const roster = staffSnap.docs.map((d) => d.id).sort();
+  if (roster.length === 0) return undefined;
+
+  if (assignMode !== "roundRobin" && roster.includes(assignMode)) return assignMode;
+
+  const routingRef = getFirestore().collection("settings").doc("contactFormRouting");
+  const routingSnap = await routingRef.get();
+  const cursor = typeof routingSnap.data()?.roundRobinCursor === "number" ? routingSnap.data()!.roundRobinCursor : 0;
+  const assignee = roster[cursor % roster.length];
+  await routingRef.set({ roundRobinCursor: cursor + 1 }, { merge: true });
+  return assignee;
+}
+
 // ---------------------------------------------------------------------------
 
 export const onSubmissionCreated = onDocumentCreated(
@@ -104,7 +157,7 @@ export const onSubmissionCreated = onDocumentCreated(
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
-    const to = await notifyRecipients();
+    const to = await notifyRecipients(await loadContactFormSettings());
     const { subject, html, text } = contactNotification({
       name: String(data.name ?? ""),
       email: String(data.email ?? ""),
@@ -174,20 +227,53 @@ export const submitContact = onCall({ secrets: [RECAPTCHA_SECRET_KEY] }, async (
     throw new HttpsError("invalid-argument", "That form didn't come through right — please try again.");
   }
 
+  const settings = await loadContactFormSettings();
+  const honeypotEnabled = settings.protection?.honeypotEnabled ?? true;
+
   // Bot-filled honeypot: pretend success, write nothing. Matches the
-  // client's own honeypot handling in the pre-Function version of this form.
-  if (input.honeypot) {
+  // client's own honeypot handling in the pre-Function version of this
+  // form. Skipped entirely when the CMS has turned the honeypot off — the
+  // website then doesn't render the field either, see contact-form.tsx.
+  if (honeypotEnabled && input.honeypot) {
     return { ok: true };
   }
 
   const name = input.name.trim();
   const email = input.email.trim();
   const brief = input.brief.trim();
+  const organisation = String(input.organisation ?? "").trim();
+  const need = String(input.need ?? "").trim();
+  const languages = String(input.languages ?? "").trim();
+  const deadline = String(input.deadline ?? "").trim();
   if (!name || !email || !brief) {
     throw new HttpsError("invalid-argument", "Name, email and a brief are required.");
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new HttpsError("invalid-argument", "That doesn't look like an email address.");
+  }
+
+  // The client already enforces these as `required` per settings/contactForm
+  // (see contact-form.tsx), but a caller of this callable directly could
+  // skip that — re-check server-side, same reasoning as name/email/brief above.
+  const requiredFields = { ...DEFAULT_FIELD_REQUIRED, ...settings.fields } as Record<
+    "organisation" | "need" | "languages" | "deadline",
+    { required?: boolean } | boolean
+  >;
+  const isRequired = (key: "organisation" | "need" | "languages" | "deadline") => {
+    const v = requiredFields[key];
+    return typeof v === "boolean" ? v : (v?.required ?? DEFAULT_FIELD_REQUIRED[key]);
+  };
+  const FIELD_LABEL: Record<"organisation" | "need" | "languages" | "deadline", string> = {
+    organisation: "Organisation",
+    need: "What you need",
+    languages: "Languages",
+    deadline: "Deadline",
+  };
+  const values = { organisation, need, languages, deadline };
+  for (const key of ["organisation", "need", "languages", "deadline"] as const) {
+    if (isRequired(key) && !values[key]) {
+      throw new HttpsError("invalid-argument", `${FIELD_LABEL[key]} is required.`);
+    }
   }
 
   const secret = RECAPTCHA_SECRET_KEY.value();
@@ -204,18 +290,21 @@ export const submitContact = onCall({ secrets: [RECAPTCHA_SECRET_KEY] }, async (
     logger.warn("submitContact: RECAPTCHA_SECRET_KEY not set — skipping verification");
   }
 
+  const assignedTo = await resolveAssignee(settings.routing?.assignMode ?? "roundRobin");
+
   await getFirestore()
     .collection("submissions")
     .add({
       name: name.slice(0, 200),
       email: email.slice(0, 200),
-      org: input.organisation.trim().slice(0, 200),
-      need: input.need,
-      langs: input.languages.trim().slice(0, 200),
-      deadline: input.deadline.trim().slice(0, 100),
+      org: organisation.slice(0, 200),
+      need,
+      langs: languages.slice(0, 200),
+      deadline: deadline.slice(0, 100),
       body: brief.slice(0, 5000),
       status: "New",
       createdAt: new Date(),
+      ...(assignedTo ? { assignedTo } : {}),
     });
 
   // onSubmissionCreated picks up notification from here.

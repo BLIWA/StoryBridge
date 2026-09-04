@@ -12,10 +12,18 @@ import { subscribe } from "@/lib/subscribers";
  * real welcome email via Resend. What's still missing: an actual issue
  * send pipeline for The Bridge itself — see apps/cms/src/components/views/issues.tsx.
  */
+/** Language names are shown in their own language, not translated per UI locale — same convention as a language switcher. */
+const LANG_OPTIONS: Array<{ value: "en" | "fr" | "ar"; label: string }> = [
+  { value: "en", label: "English" },
+  { value: "fr", label: "Français" },
+  { value: "ar", label: "العربية" },
+];
+
 export function NewsletterSignup({ source = "Website" }: { source?: string }) {
   const t = useTranslations("NewsletterSignup");
   const locale = useLocale();
   const [email, setEmail] = useState("");
+  const [lang, setLang] = useState(locale);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
   return (
@@ -24,7 +32,7 @@ export function NewsletterSignup({ source = "Website" }: { source?: string }) {
         e.preventDefault();
         setStatus("sending");
         try {
-          await subscribe(email, { lang: locale, source });
+          await subscribe(email, { lang, source });
           setStatus("done");
         } catch {
           setStatus("error");
@@ -53,6 +61,25 @@ export function NewsletterSignup({ source = "Website" }: { source?: string }) {
             background: "#072448",
           }}
         />
+        <select
+          value={lang}
+          onChange={(e) => setLang(e.target.value)}
+          aria-label={t("langLabel")}
+          style={{
+            border: "1.5px solid rgba(253,248,241,0.24)",
+            borderRadius: "2px",
+            padding: "14px 15px",
+            fontSize: "15px",
+            color: "#FDF8F1",
+            background: "#072448",
+          }}
+        >
+          {LANG_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value} style={{ color: "#001838" }}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
           disabled={status === "sending"}
@@ -86,7 +113,7 @@ export function NewsletterSignup({ source = "Website" }: { source?: string }) {
       )}
       <div style={{ fontSize: "13px", lineHeight: "1.6", color: "rgba(253,248,241,0.55)" }}>
         {t("blurb")}{" "}
-        <Link href="/newsletter" style={{ color: "#B57D49", fontWeight: 500 }}>
+        <Link href="/newsletter#past-issues" style={{ color: "#B57D49", fontWeight: 500 }}>
           {t("pastIssues")}
         </Link>
       </div>

@@ -2,9 +2,18 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageHeroBackdrop } from "@/components/fx/backdrops";
 import { NewsletterSignup } from "@/components/newsletter-signup";
-import { NEWSLETTER_ISSUES } from "@/content/journal";
+import { listSentIssues, issueHeadline } from "@/lib/bridge-issues";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";
+
+const LOCALE_TO_LANG: Record<string, string> = { en: "en-US", fr: "fr-FR", ar: "ar-TN" };
+
+function issueMonth(sendAt: number | null, locale: string): string {
+  if (!sendAt) return "";
+  return new Intl.DateTimeFormat(LOCALE_TO_LANG[locale] ?? "en-US", { month: "long", year: "numeric" }).format(
+    new Date(sendAt),
+  );
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -24,6 +33,8 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Newsletter");
+  const issues = await listSentIssues(locale);
+  const [latestIssue, ...pastIssues] = issues;
 
   return (
     <>
@@ -121,41 +132,66 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
               >
                 The Bridge
               </div>
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>{t("latestLabel")}</div>
-            </div>
-            <div
-              style={{
-                fontFamily: "'Source Serif 4',serif",
-                fontSize: "28px",
-                fontWeight: 600,
-                lineHeight: "1.25",
-                color: "#002D62",
-              }}
-            >
-              {t("latestTitle")}
-            </div>
-            <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
-              {t("latestBody")}
-            </div>
-            <div style={{ height: "1px", background: "#E6E0D8" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>{t("alsoInIssue")}</div>
-              {[
-                "— Reading list: four pieces on Maghrebi media",
-                "— From the desk: how we scope a trilingual brief",
-                "— One question from a reader, answered",
-              ].map((l) => (
-                <div key={l} style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>
-                  {l}
+              {latestIssue && (
+                <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>
+                  {t("issueLabel", { no: latestIssue.no })} · {t("latestBadge")}
                 </div>
-              ))}
+              )}
             </div>
+            {latestIssue ? (
+              <>
+                <div
+                  style={{
+                    fontFamily: "'Source Serif 4',serif",
+                    fontSize: "28px",
+                    fontWeight: 600,
+                    lineHeight: "1.25",
+                    color: "#002D62",
+                  }}
+                >
+                  {issueHeadline(latestIssue.subject)}
+                </div>
+                <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
+                  {latestIssue.preheader}
+                </div>
+                {latestIssue.picks.length > 0 && (
+                  <>
+                    <div style={{ height: "1px", background: "#E6E0D8" }} />
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em" }}>{t("alsoInIssue")}</div>
+                      {latestIssue.picks.map((p) => (
+                        <div key={p.slug} style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#3E4650" }}>
+                          — {p.title}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    fontFamily: "'Source Serif 4',serif",
+                    fontSize: "28px",
+                    fontWeight: 600,
+                    lineHeight: "1.25",
+                    color: "#002D62",
+                  }}
+                >
+                  {t("noIssuesYetTitle")}
+                </div>
+                <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#3E4650" }}>
+                  {t("noIssuesYetBody")}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       {/* Past issues */}
-      <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
+      <div id="past-issues" style={{ maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)", scrollMarginTop: "24px" }}>
         <div
           style={{
             display: "flex",
@@ -183,35 +219,45 @@ export default async function NewsletterPage({ params }: { params: Promise<{ loc
             {t("pastIssuesNote")}
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "0 40px" }}>
-          {NEWSLETTER_ISSUES.map((iss) => (
-            <div
-              key={iss}
-              data-hover="background:#FDF8F1"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                padding: "22px 0",
-                borderTop: "1px solid #D8D1C7",
-                transition: "background .16s ease",
-              }}
-            >
-              <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>{t(`issues.${iss}.label`)}</div>
+        {pastIssues.length > 0 ? (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "0 40px" }}>
+            {pastIssues.map((iss) => (
               <div
+                key={iss.id}
+                data-hover="background:#FDF8F1"
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
-                  fontSize: "22px",
-                  fontWeight: 600,
-                  lineHeight: "1.25",
-                  color: "#002D62",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  padding: "22px 0",
+                  borderTop: "1px solid #D8D1C7",
+                  transition: "background .16s ease",
                 }}
               >
-                {t(`issues.${iss}.title`)}
+                <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>
+                  {t("issueLabel", { no: iss.no })}
+                  {issueMonth(iss.sendAt, locale) ? ` · ${issueMonth(iss.sendAt, locale)}` : ""}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Source Serif 4',serif",
+                    fontSize: "22px",
+                    fontWeight: 600,
+                    lineHeight: "1.25",
+                    color: "#002D62",
+                  }}
+                >
+                  {issueHeadline(iss.subject)}
+                </div>
+                {iss.preheader && (
+                  <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#5A6472" }}>{iss.preheader}</div>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: "15.5px", lineHeight: "1.7", color: "#5A6472" }}>{t("noPastIssues")}</div>
+        )}
       </div>
 
       {/* Newsletters as a service */}

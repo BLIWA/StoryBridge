@@ -520,7 +520,7 @@
   },
   "ContactForm": {
     "sentTitle": "Got it — thank you.",
-    "sentBody": "Your brief is saved and visible to the team. Nobody's notified automatically yet, so if it's urgent, email <mail>contact@storybridge.news</mail> directly too.",
+    "sentBody": "Your brief is saved and the team has been notified. If it's urgent, email <mail>contact@storybridge.news</mail> directly too.",
     "sending": "Sending…",
     "error": "Something went wrong on our end. Try again, or email contact@storybridge.news directly.",
     "backToForm": "Back to the form",
@@ -552,6 +552,7 @@
   "NewsletterSignup": {
     "placeholder": "you@company.com",
     "ariaLabel": "Your email address",
+    "langLabel": "Language",
     "submit": "Subscribe",
     "sending": "Subscribing…",
     "done": "You're on the list. The Bridge doesn't send yet — you'll be the first to know when it does.",
@@ -608,42 +609,18 @@
     "eyebrow": "The Bridge · monthly newsletter",
     "title": "One letter a month, worth the open.",
     "standfirst": "Language, media and the Maghreb — what we are reading, what we are arguing about on the desk, and one piece of craft you can use. Written by us, in the voice we write for clients.",
-    "latestLabel": "ISSUE 07",
-    "latestTitle": "The word that cost a campaign its audience",
-    "latestBody": "Three paragraphs on one translation decision, why it went wrong, and the twenty-second check that would have caught it.",
+    "issueLabel": "Issue {no}",
+    "latestBadge": "Latest",
+    "noIssuesYetTitle": "The first issue is being written.",
+    "noIssuesYetBody": "Subscribe and it lands in your inbox the day it goes out.",
     "alsoInIssue": "Also in this issue",
     "pastIssues": "Past issues",
     "pastIssuesNote": "Read a few before you subscribe. That is rather the point.",
+    "noPastIssues": "This is our first issue — the archive starts here.",
     "serviceEyebrow": "Newsletters as a service",
     "serviceTitle": "We can run yours too.",
     "serviceBody": "The Bridge is the demonstration. Newsletter writing and management is part of our Content & Editorial line — for companies who want a letter their subscribers actually read.",
-    "serviceCta": "Talk to us about it",
-    "issues": {
-      "06": {
-        "label": "ISSUE 06 · FEBRUARY",
-        "title": "When the client is also the source"
-      },
-      "05": {
-        "label": "ISSUE 05 · JANUARY",
-        "title": "A style guide is a business document"
-      },
-      "04": {
-        "label": "ISSUE 04 · DECEMBER",
-        "title": "The year in Maghrebi media"
-      },
-      "03": {
-        "label": "ISSUE 03 · NOVEMBER",
-        "title": "Interviews people actually finish"
-      },
-      "02": {
-        "label": "ISSUE 02 · OCTOBER",
-        "title": "Against the content calendar"
-      },
-      "01": {
-        "label": "ISSUE 01 · SEPTEMBER",
-        "title": "Why we started StoryBridge"
-      }
-    }
+    "serviceCta": "Talk to us about it"
   },
   "Meta": {
     "home": {
