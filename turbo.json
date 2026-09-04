@@ -10,6 +10,23 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
+    "@storybridge/website#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      // The website is a static export whose Journal/newsletter-archive pages
+      // read live Firestore content at build time (apps/website/src/lib/
+      // articles.ts) — content turbo's hash-based cache has no visibility
+      // into. Without this, publishing (or editing) an article in the CMS and
+      // then running the routine `pnpm build && firebase deploy` can hit a
+      // cache HIT (source unchanged) and silently redeploy the *previous*
+      // build's stale Journal — caught live 4 Sep 2026 (a fresh two-article
+      // publish built as the old "Journal is empty" sentinel page until
+      // `--force` was used). `cache: false` trades away turbo's normal
+      // rebuild-avoidance for this one task so a content-only publish is
+      // never silently missed; the CMS build (no such external read) keeps
+      // normal caching.
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
