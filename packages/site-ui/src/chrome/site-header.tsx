@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
-import { routing, type AppLocale } from "@/i18n/routing";
+import { Link, usePathname, routing, type AppLocale } from "../navigation";
 
 /**
  * Sticky masthead from "StoryBridge Website v2.dc.html".
@@ -24,7 +23,7 @@ const NAV = [
 ] as const;
 
 export function SiteHeader({ locale }: { locale: AppLocale }) {
-  // From @/i18n/navigation, not next/navigation: this one is locale-aware and
+  // From ../navigation, not next/navigation: this one is locale-aware and
   // returns "/services" rather than "/en/services", which is what the hrefs
   // below are written against.
   const pathname = usePathname();

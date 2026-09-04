@@ -2,6 +2,17 @@
 @import "../../../../packages/ui/src/tokens.css";
 
 /*
+ * Tailwind v4's zero-config content detection only scans this app's own
+ * directory tree — @storybridge/site-ui lives outside it (packages/site-ui),
+ * so the responsive grid-cols/etc. classes its components use (site-footer,
+ * home/hero, home/sections, home/arabic-home, who-we-are/body, contact/body)
+ * would otherwise never get generated, silently collapsing those grids to a
+ * single column. This makes the scan explicit rather than relying on
+ * whatever the default heuristic happens to reach.
+ */
+@source "../../../../packages/site-ui/src";
+
+/*
  * Chrome and motion ported verbatim from "StoryBridge Website v2.dc.html".
  * The design board is the spec — do not retune these values by eye.
  */

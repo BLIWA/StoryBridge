@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { NewsletterSignup } from "@/components/newsletter-signup";
+import { NewsletterSignup } from "@storybridge/site-ui/contact/newsletter-signup";
 import { JournalQuoteMark } from "@/components/journal-quote-mark";
 import { getPublishedArticle, listPublishedArticles } from "@/lib/articles";
 import { parseBody, tokenizeInline } from "@/lib/body-format";

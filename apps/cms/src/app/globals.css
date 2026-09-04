@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "../../../../packages/ui/src/tokens.css";
 
+/* See apps/website/src/app/globals.css's identical comment — same fix, same reason. */
+@source "../../../../packages/site-ui/src";
+
 /* Ported from "StoryBridge CMS.dc.html" — the board is the spec. */
 
 html,

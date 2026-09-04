@@ -1,23 +1,27 @@
-import { getTranslations } from "next-intl/server";
-import { isDraftLocale } from "@/i18n/status";
+"use client";
+
+import { useTranslations } from "next-intl";
+import { isDraftLocale } from "../status";
 
 /**
  * Says plainly, in the reader's own language, that they are looking at an
  * unreviewed translation. Rendered under the masthead on draft locales only —
- * see i18n/status.ts for why this exists rather than a silent ship.
+ * see ../status.ts for why this exists rather than a silent ship.
  *
  * It reuses the bronze band the board already draws under the Arabic masthead,
  * so it costs the design nothing.
+ *
+ * Client `useTranslations`, not server `getTranslations` — moved here so the
+ * CMS preview (a client tree, no next-intl/server request context) can mount
+ * it too; the website already wraps everything in a NextIntlClientProvider,
+ * so this resolves the same way there as it always did.
  */
-export async function TranslationNotice({ locale }: { locale: string }) {
+export function TranslationNotice({ locale }: { locale: string }) {
+  const t = useTranslations("Common");
   if (!isDraftLocale(locale)) return null;
-  const t = await getTranslations("Common");
 
   return (
-    <div
-      role="note"
-      style={{ background: "#EFE1D2", borderTop: "1px solid #DEC5A9" }}
-    >
+    <div role="note" style={{ background: "#EFE1D2", borderTop: "1px solid #DEC5A9" }}>
       <div
         style={{
           maxWidth: "1320px",

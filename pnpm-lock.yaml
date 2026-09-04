@@ -23,12 +23,18 @@ importers:
       '@storybridge/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@storybridge/site-ui':
+        specifier: workspace:*
+        version: link:../../packages/site-ui
       firebase:
         specifier: ^12.18.0
         version: 12.18.0
       next:
         specifier: 16.3.2
         version: 16.3.2(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next-intl:
+        specifier: ^4.13.7
+        version: 4.13.7(@swc/helpers@0.5.23)(next@16.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3)
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -72,6 +78,9 @@ importers:
       '@storybridge/content':
         specifier: workspace:*
         version: link:../../packages/content
+      '@storybridge/site-ui':
+        specifier: workspace:*
+        version: link:../../packages/site-ui
       firebase:
         specifier: ^12.18.0
         version: 12.18.0
@@ -80,7 +89,7 @@ importers:
         version: 16.3.2(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-intl:
         specifier: ^4.13.7
-        version: 4.13.7(@swc/helpers@0.5.23)(next@16.3.2(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3)
+        version: 4.13.7(@swc/helpers@0.5.23)(next@16.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3)
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -114,6 +123,34 @@ importers:
         version: 5.9.3
 
   packages/content: {}
+
+  packages/site-ui:
+    dependencies:
+      firebase:
+        specifier: ^12.18.0
+        version: 12.18.0
+      next:
+        specifier: 16.3.2
+        version: 16.3.2(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next-intl:
+        specifier: ^4.13.7
+        version: 4.13.7(@swc/helpers@0.5.23)(next@16.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3)
+      react:
+        specifier: 19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: 19.2.8
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: ^19
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.2.5(@types/react@19.2.18)
+      typescript:
+        specifier: ^5
+        version: 5.9.3
 
   packages/ui: {}
 
@@ -4982,7 +5019,7 @@ snapshots:
 
   next-intl-swc-plugin-extractor@4.13.7: {}
 
-  next-intl@4.13.7(@swc/helpers@0.5.23)(next@16.3.2(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3):
+  next-intl@4.13.7(@swc/helpers@0.5.23)(next@16.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3):
     dependencies:
       '@formatjs/intl-localematcher': 0.8.13
       '@parcel/watcher': 2.6.0

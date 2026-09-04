@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { ArcWeave, BridgeArcs } from "@/components/fx/backdrops";
+import { Link } from "../navigation";
+import { ArcWeave, BridgeArcs } from "../fx/backdrops";
+import { Editable } from "../preview/context";
 
 /**
  * Home hero from "StoryBridge Website v2.dc.html" (lines 128–208).
@@ -69,9 +70,9 @@ export function HomeHero() {
             color: "#8A8378",
           }}
         >
-          <div>{t("dateline.place")}</div>
-          <div>{t("dateline.disciplines")}</div>
-          <div>{t("dateline.languages")}</div>
+          <div><Editable path="Home.hero.dateline.place">{t("dateline.place")}</Editable></div>
+          <div><Editable path="Home.hero.dateline.disciplines">{t("dateline.disciplines")}</Editable></div>
+          <div><Editable path="Home.hero.dateline.languages">{t("dateline.languages")}</Editable></div>
         </div>
       </div>
 
@@ -108,7 +109,7 @@ export function HomeHero() {
               animation: "sb-rise .7s cubic-bezier(.2,.7,.2,1) .22s both",
             }}
           >
-            {t("eyebrow")}
+            <Editable path="Home.hero.eyebrow">{t("eyebrow")}</Editable>
           </div>
           <h1
             style={{
@@ -122,12 +123,14 @@ export function HomeHero() {
             }}
           >
             <div data-a style={{ animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .34s both" }}>
-              {t("titleLead")}
+              <Editable path="Home.hero.titleLead">{t("titleLead")}</Editable>
             </div>
             <div data-a style={{ animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .48s both" }}>
-              {t("titleApplied")}{" "}
+              <Editable path="Home.hero.titleApplied">{t("titleApplied")}</Editable>{" "}
               <span style={{ position: "relative", display: "inline-block" }}>
-                <span style={{ position: "relative", zIndex: 1 }}>{t("titleHighlight")}</span>
+                <span style={{ position: "relative", zIndex: 1 }}>
+                  <Editable path="Home.hero.titleHighlight">{t("titleHighlight")}</Editable>
+                </span>
                 <span
                   data-a
                   style={{
@@ -155,7 +158,7 @@ export function HomeHero() {
               animation: "sb-rise .8s cubic-bezier(.2,.7,.2,1) .62s both",
             }}
           >
-            {t("intro")}
+            <Editable path="Home.hero.intro" multiline>{t("intro")}</Editable>
           </div>
           <div
             data-a
@@ -181,7 +184,7 @@ export function HomeHero() {
                 transition: "all .16s ease",
               }}
             >
-              {t("ctaPrimary")}
+              <Editable path="Home.hero.ctaPrimary">{t("ctaPrimary")}</Editable>
             </Link>
             <Link
               href="/how-we-work"
@@ -197,7 +200,7 @@ export function HomeHero() {
                 transition: "all .16s ease",
               }}
             >
-              {t("ctaSecondary")}
+              <Editable path="Home.hero.ctaSecondary">{t("ctaSecondary")}</Editable>
             </Link>
           </div>
           <div
@@ -233,6 +236,10 @@ export function HomeHero() {
               }}
             />
             <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#5A6472" }}>
+              {/* Rich text with an embedded <Link> — not individually
+                  click-editable in the preview this phase (see
+                  packages/site-ui/src/preview/context.tsx's doc comment);
+                  still fully editable via the same Firestore field. */}
               {t.rich("foundedBy", {
                 founder: (chunks) => (
                   <Link
@@ -291,13 +298,15 @@ export function HomeHero() {
                 color: "#8F6135",
               }}
             >
-              {t("mastheadLabel")}
+              <Editable path="Home.hero.mastheadLabel">{t("mastheadLabel")}</Editable>
             </div>
             <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "21px", lineHeight: 1, color: "#B57D49" }}>
               &#182;
             </div>
           </div>
 
+          {/* Hand-authored, not from the message catalog — the board's own
+              three-language rotator; not editable from the CMS either way. */}
           {[
             {
               delay: "1.4s",
@@ -368,7 +377,7 @@ export function HomeHero() {
               paddingTop: "16px",
             }}
           >
-            {t("readInArabic")}
+            <Editable path="Home.hero.readInArabic">{t("readInArabic")}</Editable>
           </Link>
         </div>
       </div>
@@ -394,7 +403,7 @@ export function HomeHero() {
             animation: "sb-fade 1s ease 1.7s both",
           }}
         >
-          {t("scroll")}
+          <Editable path="Home.hero.scroll">{t("scroll")}</Editable>
         </div>
         <div
           data-a

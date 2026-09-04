@@ -38,6 +38,12 @@ export function Studio() {
   // ("Publishing…", "Couldn't save…") that isn't "All changes saved" but also
   // isn't unsaved local edits worth protecting from a snapshot refresh.
   const [dirty, setDirty] = useState(false);
+  // SiteContentView's own dirty flag, mirrored up here (same idea as
+  // `dirty` above, for the article editor) so leaving Site copy for another
+  // part of Studio while it has unsaved field edits gets the same warning
+  // SiteContentView itself shows for switching preview language — that one
+  // it can show a rich dialog for; this cross-view case is a plain confirm.
+  const [pagesDirty, setPagesDirty] = useState(false);
 
   // Read by the Firestore listener below without forcing it to resubscribe on
   // every keystroke (it only depends on [staff]) — see the effect for why.
@@ -126,7 +132,19 @@ export function Studio() {
   const hasSearchResults =
     searchResults.articles.length > 0 || searchResults.messages.length > 0 || searchResults.namespaces.length > 0;
 
+  // Site copy's own remount-on-jump trick (see pagesKey below) would wipe an
+  // in-progress edit just as surely as switching to a different view would —
+  // so every jump that isn't just staying put on the same page-copy edit
+  // checks here first, same guard either way.
+  function confirmLeavePagesIfDirty(): boolean {
+    if (view === "pages" && pagesDirty) {
+      return window.confirm("You have unsaved site-copy changes. Leave without saving?");
+    }
+    return true;
+  }
+
   function goToNamespace(namespace: string) {
+    if (!confirmLeavePagesIfDirty()) return;
     setPendingNamespace(namespace);
     setPagesKey((k) => k + 1);
     setView("pages");
@@ -135,6 +153,7 @@ export function Studio() {
   }
 
   function goToMessage(id: string) {
+    if (!confirmLeavePagesIfDirty()) return;
     setPendingMessageId(id);
     setInboxKey((k) => k + 1);
     setView("inbox");
@@ -143,6 +162,7 @@ export function Studio() {
   }
 
   function goToSearchedArticle(id: string) {
+    if (!confirmLeavePagesIfDirty()) return;
     // openArticle is declared further down in this component — a function
     // declaration, so it's hoisted and already callable by the time a click
     // actually invokes this (function declarations in the same scope are
@@ -168,6 +188,7 @@ export function Studio() {
   const draft = articles.find((a) => a.id === editingId) ?? null;
 
   function openArticle(id: string) {
+    if (!confirmLeavePagesIfDirty()) return;
     setEditingId(id);
     setView("article");
     setSavedLabel("All changes saved");
@@ -175,6 +196,7 @@ export function Studio() {
   }
 
   function newArticle() {
+    if (!confirmLeavePagesIfDirty()) return;
     const { db } = getFirebase();
     const blank: Article = {
       id: newArticleId(db),
@@ -237,7 +259,9 @@ export function Studio() {
     <div style={{ display: "flex", minHeight: "100vh", alignItems: "stretch" }}>
       <Sidebar
         view={view}
-        setView={setView}
+        setView={(next) => {
+          if (confirmLeavePagesIfDirty()) setView(next);
+        }}
         collapsed={collapsed}
         setCollapsed={setCollapsed}
         openCount={openCount}
@@ -447,7 +471,9 @@ export function Studio() {
               }
             />
           )}
-          {view === "pages" && <SiteContentView key={pagesKey} initialNamespace={pendingNamespace} />}
+          {view === "pages" && (
+            <SiteContentView key={pagesKey} initialNamespace={pendingNamespace} onDirtyChange={setPagesDirty} />
+          )}
           {view === "issues" && <IssuesView articles={articles} />}
           {view === "inbox" && <InboxView key={inboxKey} initialSelectedId={pendingMessageId} />}
           {view === "settings" && <SettingsView />}

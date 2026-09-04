@@ -2,15 +2,20 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { subscribe } from "@/lib/subscribers";
+import { Link } from "../navigation";
+import { subscribe } from "./subscribe";
+import { usePreview } from "../preview/context";
 
 /**
  * "The Bridge" signup, from the board's navy CTA block.
  *
- * Submits straight to Firestore (see lib/subscribers.ts), which triggers a
- * real welcome email via Resend. What's still missing: an actual issue
- * send pipeline for The Bridge itself — see apps/cms/src/components/views/issues.tsx.
+ * Submits straight to Firestore (see ./subscribe.ts), which triggers a real
+ * welcome email via Resend. What's still missing: an actual issue send
+ * pipeline for The Bridge itself — see apps/cms/src/components/views/issues.tsx.
+ *
+ * Inside the CMS preview (usePreview() is non-null) the form still renders
+ * for real — that's part of what "high fidelity" means here — but submit is
+ * intercepted rather than actually writing a subscriber row.
  */
 /** Language names are shown in their own language, not translated per UI locale — same convention as a language switcher. */
 const LANG_OPTIONS: Array<{ value: "en" | "fr" | "ar"; label: string }> = [
@@ -22,14 +27,19 @@ const LANG_OPTIONS: Array<{ value: "en" | "fr" | "ar"; label: string }> = [
 export function NewsletterSignup({ source = "Website" }: { source?: string }) {
   const t = useTranslations("NewsletterSignup");
   const locale = useLocale();
+  const preview = usePreview();
   const [email, setEmail] = useState("");
   const [lang, setLang] = useState(locale);
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error" | "preview">("idle");
 
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        if (preview) {
+          setStatus("preview");
+          return;
+        }
         setStatus("sending");
         try {
           await subscribe(email, { lang, source });
@@ -109,6 +119,11 @@ export function NewsletterSignup({ source = "Website" }: { source?: string }) {
       {status === "error" && (
         <div role="alert" style={{ fontSize: "14px", color: "#E39A93", fontWeight: 500 }}>
           {t("error")}
+        </div>
+      )}
+      {status === "preview" && (
+        <div role="status" style={{ fontSize: "13px", color: "#DEC5A9", fontWeight: 500 }}>
+          Preview — submissions are disabled here.
         </div>
       )}
       <div style={{ fontSize: "13px", lineHeight: "1.6", color: "rgba(253,248,241,0.55)" }}>
