@@ -520,7 +520,7 @@
   },
   "ContactForm": {
     "sentTitle": "Got it — thank you.",
-    "sentBody": "Your brief is saved and visible to the team. Nobody's notified automatically yet, so if it's urgent, email <mail>contact@storybridge.news</mail> directly too.",
+    "sentBody": "Your brief is saved and the team has been notified. If it's urgent, email <mail>contact@storybridge.news</mail> directly too.",
     "sending": "Sending…",
     "error": "Something went wrong on our end. Try again, or email contact@storybridge.news directly.",
     "backToForm": "Back to the form",

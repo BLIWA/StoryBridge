@@ -520,7 +520,7 @@
   },
   "ContactForm": {
     "sentTitle": "وصلنا — شكرًا لك.",
-    "sentBody": "موجزك محفوظ ومرئي للفريق. لا أحد يُخطَر تلقائيًّا بعد، فإن كان الأمر عاجلًا راسل أيضًا <mail>contact@storybridge.news</mail> مباشرةً.",
+    "sentBody": "موجزك محفوظ وتم إخطار الفريق. إن كان الأمر عاجلًا، راسل أيضًا <mail>contact@storybridge.news</mail> مباشرةً.",
     "sending": "جارٍ الإرسال…",
     "error": "حدث خطأ من جهتنا. أعد المحاولة، أو راسل contact@storybridge.news مباشرةً.",
     "backToForm": "العودة إلى النموذج",

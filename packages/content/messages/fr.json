@@ -520,7 +520,7 @@
   },
   "ContactForm": {
     "sentTitle": "C'est reçu — merci.",
-    "sentBody": "Votre brief est enregistré et visible par l'équipe. Personne n'est notifié automatiquement pour l'instant — si c'est urgent, écrivez aussi directement à <mail>contact@storybridge.news</mail>.",
+    "sentBody": "Votre brief est enregistré et l'équipe a été notifiée. Si c'est urgent, écrivez aussi directement à <mail>contact@storybridge.news</mail>.",
     "sending": "Envoi…",
     "error": "Une erreur s'est produite de notre côté. Réessayez, ou écrivez directement à contact@storybridge.news.",
     "backToForm": "Revenir au formulaire",

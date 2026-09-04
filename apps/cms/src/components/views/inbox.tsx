@@ -1,11 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { CARD, FIELD_LABEL, INPUT, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
 import { pill, type Message } from "@/content/seed";
 import { watchSubmissions, setSubmissionStatus } from "@/lib/submissions";
 import { getFirebase } from "@/lib/firebase";
+import { useAuth } from "@/lib/auth-context";
+import { watchStaff, type StaffMember } from "@/lib/staff";
+import {
+  watchContactFormSettings,
+  saveContactFormSettings,
+  DEFAULT_CONTACT_FORM_SETTINGS,
+  type ContactFormSettings,
+} from "@/lib/contact-form-settings";
 
 /** Contact inbox + form settings, from "StoryBridge CMS.dc.html" (484–577). */
 
@@ -24,6 +32,67 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
   const [sending, setSending] = useState(false);
   const [replyError, setReplyError] = useState<string | null>(null);
   const [replySent, setReplySent] = useState(false);
+
+  const { can } = useAuth();
+  const manages = can("editPages");
+
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchStaff(
+      db,
+      (list) => setStaff(list),
+      () => setStaff([]),
+    );
+  }, []);
+  const activeStaff = useMemo(() => staff.filter((s) => s.active), [staff]);
+  const nameFor = (email: string) => staff.find((s) => s.email === email)?.name ?? email;
+
+  // Real config for the public form — see lib/contact-form-settings.ts.
+  // `formDraft` is what the CMS screen below edits, seeded from whatever's
+  // actually saved and kept in sync with it unless the person has unsaved
+  // edits in progress (formDirtyRef), so a change from another tab doesn't
+  // clobber something half-typed here.
+  const [formDraft, setFormDraft] = useState<ContactFormSettings>(DEFAULT_CONTACT_FORM_SETTINGS);
+  const [formDirty, setFormDirty] = useState(false);
+  const formDirtyRef = useRef(false);
+  const [formSaving, setFormSaving] = useState(false);
+  const [formSaved, setFormSaved] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchContactFormSettings(
+      db,
+      (s) => {
+        if (!formDirtyRef.current) setFormDraft(s);
+      },
+      () => {},
+    );
+  }, []);
+
+  function editDraft(patch: (d: ContactFormSettings) => ContactFormSettings) {
+    formDirtyRef.current = true;
+    setFormDirty(true);
+    setFormSaved(false);
+    setFormDraft(patch);
+  }
+
+  async function saveForm() {
+    if (!manages) return;
+    setFormSaving(true);
+    setFormError(null);
+    try {
+      await saveContactFormSettings(getFirebase().db, formDraft);
+      formDirtyRef.current = false;
+      setFormDirty(false);
+      setFormSaved(true);
+    } catch {
+      setFormError("Couldn't save that. Check your connection and try again.");
+    } finally {
+      setFormSaving(false);
+    }
+  }
 
   useEffect(() => {
     const { db } = getFirebase();
@@ -197,7 +266,7 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
                   <Pill {...pill(sel.status)}>{sel.status}</Pill>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3"
+                <div className="grid grid-cols-1 md:grid-cols-4"
                   style={{
                     display: "grid",
                     gap: "12px",
@@ -209,6 +278,7 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
                     ["Service", sel.need],
                     ["Languages", sel.langs],
                     ["Deadline", sel.deadline],
+                    ["Assigned to", sel.assignedTo ? nameFor(sel.assignedTo) : "Unassigned"],
                   ].map(([k, v]) => (
                     <div key={k}>
                       <div style={MONO_LABEL}>{k}</div>
@@ -279,20 +349,22 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px]" style={{ gap: "20px", alignItems: "start" }}>
           <div style={{ ...CARD, gap: "14px" }}>
             <div style={MONO_LABEL}>Contact form fields</div>
-            {[
-              { label: "Full name", type: "Text", req: "Required" },
-              { label: "Work email", type: "Email", req: "Required" },
-              { label: "Organisation", type: "Text", req: "Optional" },
-              { label: "What do you need?", type: "Select", req: "Required" },
-              { label: "Languages", type: "Text", req: "Optional" },
-              { label: "Deadline", type: "Date", req: "Optional" },
-              { label: "The brief", type: "Long text", req: "Required" },
-            ].map((f, i) => (
+            {(
+              [
+                { label: "Full name", type: "Text", key: null },
+                { label: "Work email", type: "Email", key: null },
+                { label: "Organisation", type: "Text", key: "organisation" },
+                { label: "What do you need?", type: "Select", key: "need" },
+                { label: "Languages", type: "Text", key: "languages" },
+                { label: "Deadline", type: "Date", key: "deadline" },
+                { label: "The brief", type: "Long text", key: null },
+              ] as const
+            ).map((f, i) => (
               <div
                 key={f.label}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "minmax(0,1fr) 110px 100px",
+                  gridTemplateColumns: "minmax(0,1fr) 110px 130px",
                   gap: "12px",
                   alignItems: "center",
                   paddingTop: i === 0 ? 0 : "12px",
@@ -303,12 +375,61 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
                 <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#8A8378" }}>
                   {f.type}
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#8F6135" }}>
-                  {f.req}
-                </div>
+                {f.key === null ? (
+                  <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#8F6135" }}>
+                    Always required
+                  </div>
+                ) : (
+                  <label
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      alignItems: "center",
+                      fontFamily: "'IBM Plex Mono',monospace",
+                      fontSize: "11px",
+                      color: "#8F6135",
+                      opacity: manages ? 1 : 0.6,
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formDraft.fields[f.key].required}
+                      disabled={!manages}
+                      onChange={(e) =>
+                        editDraft((d) => ({
+                          ...d,
+                          fields: { ...d.fields, [f.key]: { required: e.target.checked } },
+                        }))
+                      }
+                      style={{ width: "14px", height: "14px", accentColor: "#002D62" }}
+                    />
+                    Required
+                  </label>
+                )}
               </div>
             ))}
-            <PrimaryButton style={{ alignSelf: "flex-start", marginTop: "6px" }}>Save form</PrimaryButton>
+            <div style={{ display: "flex", gap: "12px", alignItems: "center", marginTop: "6px" }}>
+              <PrimaryButton
+                style={{ alignSelf: "flex-start" }}
+                onClick={() => void saveForm()}
+                disabled={!manages || !formDirty || formSaving}
+              >
+                {formSaving ? "Saving…" : "Save form"}
+              </PrimaryButton>
+              {formSaved && (
+                <span role="status" style={{ fontSize: "12.5px", color: "#2F6B4F" }}>
+                  Saved.
+                </span>
+              )}
+              {formError && (
+                <span role="alert" style={{ fontSize: "12.5px", color: "#A5342E" }}>
+                  {formError}
+                </span>
+              )}
+            </div>
+            {!manages && (
+              <div style={{ fontSize: "12.5px", color: "#8A8378" }}>Only an owner or chief can edit the contact form.</div>
+            )}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -316,41 +437,87 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
               <div style={MONO_LABEL}>Routing</div>
               <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span style={FIELD_LABEL}>Send submissions to</span>
-                <input defaultValue="contact@storybridge.news" style={INPUT} />
+                <input
+                  value={formDraft.routing.sendTo}
+                  disabled={!manages}
+                  placeholder="Active owners & chiefs (default)"
+                  onChange={(e) =>
+                    editDraft((d) => ({ ...d, routing: { ...d.routing, sendTo: e.target.value } }))
+                  }
+                  style={INPUT}
+                />
+                {!formDraft.routing.sendTo && (
+                  <span style={{ fontSize: "11.5px", color: "#8A8378" }}>
+                    Blank means every active owner/chief gets notified (contact@storybridge.news if that list is
+                    ever empty).
+                  </span>
+                )}
               </label>
               <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span style={FIELD_LABEL}>Assign new enquiries to</span>
-                <select style={INPUT} defaultValue="Round robin">
-                  <option>Round robin</option>
-                  <option>Assia Touati</option>
-                  <option>Imen Bliwa</option>
+                <select
+                  value={formDraft.routing.assignMode}
+                  disabled={!manages}
+                  onChange={(e) =>
+                    editDraft((d) => ({ ...d, routing: { ...d.routing, assignMode: e.target.value } }))
+                  }
+                  style={INPUT}
+                >
+                  <option value="roundRobin">Round robin</option>
+                  {activeStaff.map((s) => (
+                    <option key={s.email} value={s.email}>
+                      {s.name}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
 
             <div style={CARD}>
               <div style={MONO_LABEL}>Protection &amp; consent</div>
-              <label style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}>
-                <input type="checkbox" defaultChecked style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
-                Honeypot and rate limiting
+              <label
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  fontSize: "13.5px",
+                  color: "#3E4650",
+                  opacity: manages ? 1 : 0.6,
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={formDraft.protection.honeypotEnabled}
+                  disabled={!manages}
+                  onChange={(e) =>
+                    editDraft((d) => ({ ...d, protection: { ...d.protection, honeypotEnabled: e.target.checked } }))
+                  }
+                  style={{ width: "16px", height: "16px", accentColor: "#002D62" }}
+                />
+                Honeypot
               </label>
               <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span style={FIELD_LABEL}>Consent line before submit</span>
                 <textarea
                   rows={3}
-                  defaultValue="We use what you send only to answer your enquiry. We never sell or share it."
+                  value={formDraft.protection.consentLine}
+                  disabled={!manages}
+                  onChange={(e) =>
+                    editDraft((d) => ({ ...d, protection: { ...d.protection, consentLine: e.target.value } }))
+                  }
                   style={INPUT}
                 />
               </label>
             </div>
 
             <NotWiredNote>
-              The live contact form now goes through the submitContact Cloud Function (functions/src/index.ts):
-              it checks a reCAPTCHA v3 token — once one is registered, see .env.production — before writing to
-              Firestore, and every new submission emails the active owner/chief roster via Resend. What&apos;s
-              still the board&apos;s static presentation: the fields list, the routing address (in practice it&apos;s
-              &ldquo;every active owner and chief,&rdquo; with contact@storybridge.news as the fallback if that list
-              is ever empty) and the consent line below.
+              This screen is real now — everything on it lives in `settings/contactForm` (one document,
+              public-read/staff-write per firestore.rules) and the live contact form, submitContact and
+              onSubmissionCreated (functions/src/index.ts) all read it. Not editable here, by design: the field
+              list itself (adding/removing/reordering, or changing a field&apos;s type) — that would mean the
+              website form renders from an open-ended schema instead of fixed JSX, a bigger rewrite than this
+              pass. There&apos;s also no real rate limiting anywhere in this project yet — the old &ldquo;Honeypot
+              and rate limiting&rdquo; checkbox overstated what exists, so it&apos;s just &ldquo;Honeypot&rdquo; now.
             </NotWiredNote>
           </div>
         </div>
