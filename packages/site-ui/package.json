@@ -40,6 +40,10 @@
     "./services/body": "./src/services/body.tsx",
     "./packages-page/body": "./src/packages-page/body.tsx",
     "./work/body": "./src/work/body.tsx",
-    "./legal/body": "./src/legal/body.tsx"
+    "./legal/body": "./src/legal/body.tsx",
+    "./journal/body": "./src/journal/body.tsx",
+    "./journal/types": "./src/journal/types.ts",
+    "./newsletter/body": "./src/newsletter/body.tsx",
+    "./newsletter/types": "./src/newsletter/types.ts"
   }
 }

@@ -23,6 +23,10 @@ import { HowWeWorkBody } from "@storybridge/site-ui/how-we-work/body";
 import { ServicesBody } from "@storybridge/site-ui/services/body";
 import { PackagesBody } from "@storybridge/site-ui/packages-page/body";
 import { WorkBody } from "@storybridge/site-ui/work/body";
+import { JournalBody } from "@storybridge/site-ui/journal/body";
+import type { PublishedArticle } from "@storybridge/site-ui/journal/types";
+import { NewsletterBody } from "@storybridge/site-ui/newsletter/body";
+import type { SentIssue } from "@storybridge/site-ui/newsletter/types";
 import { ContactBody } from "@storybridge/site-ui/contact/body";
 import { LegalPageBody } from "@storybridge/site-ui/legal/body";
 import type { Locale } from "@/lib/site-content";
@@ -53,7 +57,19 @@ const SITE_WIDE_NOTE: Record<"header" | "footer", string> = {
   footer: "The footer below appears on every page — this chip is just a shortcut to it. Toggle edit mode and click into it directly.",
 };
 
-function LiveBody({ kind, locale, images }: { kind: LiveKind; locale: Locale; images: Record<string, SiteImage> }) {
+function LiveBody({
+  kind,
+  locale,
+  images,
+  articles,
+  issues,
+}: {
+  kind: LiveKind;
+  locale: Locale;
+  images: Record<string, SiteImage>;
+  articles: PublishedArticle[];
+  issues: SentIssue[];
+}) {
   switch (kind) {
     case "home":
       if (locale === "ar") return <ArabicHome />;
@@ -87,6 +103,10 @@ function LiveBody({ kind, locale, images }: { kind: LiveKind; locale: Locale; im
       return <PackagesBody />;
     case "work":
       return <WorkBody />;
+    case "journal":
+      return <JournalBody articles={articles} />;
+    case "newsletter":
+      return <NewsletterBody issues={issues} locale={locale} />;
     case "contact":
       return <ContactBody />;
     case "privacy":
@@ -122,6 +142,8 @@ export function LivePreview({
   onChange,
   imageSlots,
   images,
+  articles,
+  issues,
 }: {
   kind: LiveKind;
   locale: Locale;
@@ -130,6 +152,8 @@ export function LivePreview({
   onChange: (path: string, value: string) => void;
   imageSlots: SiteImageSlot[];
   images: Record<string, SiteImage>;
+  articles: PublishedArticle[];
+  issues: SentIssue[];
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const rtl = RTL_LOCALES.includes(locale);
@@ -173,7 +197,7 @@ export function LivePreview({
           <DesignFx />
           <SiteHeader locale={locale} />
           <main>
-            <LiveBody kind={kind} locale={locale} images={images} />
+            <LiveBody kind={kind} locale={locale} images={images} articles={articles} issues={issues} />
           </main>
           <SiteFooter />
         </PreviewProvider>
