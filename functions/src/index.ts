@@ -132,12 +132,15 @@ export const onSubmissionCreated = onDocumentCreated(
 );
 
 export const onSubscriberCreated = onDocumentCreated(
-  { document: "subscribers/{email}", secrets: [RESEND_API_KEY] },
+  { document: "subscribers/{email}", secrets: [RESEND_API_KEY, UNSUBSCRIBE_SECRET] },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
     const email = event.params.email;
-    const { subject, html, text } = subscriberWelcome(String(data.lang ?? "EN"));
+    const { subject, html, text } = subscriberWelcome(
+      String(data.lang ?? "EN"),
+      unsubscribeUrl(UNSUBSCRIBE_SECRET.value(), email),
+    );
     try {
       await sendEmail(RESEND_API_KEY.value(), { to: email, subject, html, text });
     } catch (err) {
@@ -296,6 +299,7 @@ export const sendBridgeTest = onCall({ secrets: [RESEND_API_KEY] }, async (reque
     picks: input.picks,
     sections: input.sections,
     test: true,
+    requesterEmail: callerEmail,
   });
 
   await sendEmail(RESEND_API_KEY.value(), { to: callerEmail, subject, html, text });
@@ -304,11 +308,27 @@ export const sendBridgeTest = onCall({ secrets: [RESEND_API_KEY] }, async (reque
 
 // ---------------------------------------------------------------------------
 
-type ReplyInput = { to: string; name: string; subject: string; body: string };
+type ReplyInput = {
+  to: string;
+  name: string;
+  subject: string;
+  body: string;
+  /** The enquirer's original message and when they sent it, for the reply's quoted-original block (contactReply in templates.ts). Optional — inbox.tsx always has both to hand, but the reply still sends sensibly without them. */
+  originalMessage?: string;
+  submittedDate?: string;
+};
 
 function isReplyInput(v: unknown): v is ReplyInput {
   const d = v as Partial<ReplyInput> | null;
-  return !!d && typeof d.to === "string" && typeof d.name === "string" && typeof d.subject === "string" && typeof d.body === "string";
+  return (
+    !!d &&
+    typeof d.to === "string" &&
+    typeof d.name === "string" &&
+    typeof d.subject === "string" &&
+    typeof d.body === "string" &&
+    (d.originalMessage === undefined || typeof d.originalMessage === "string") &&
+    (d.submittedDate === undefined || typeof d.submittedDate === "string")
+  );
 }
 
 export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) => {
@@ -325,7 +345,12 @@ export const sendReply = onCall({ secrets: [RESEND_API_KEY] }, async (request) =
     throw new HttpsError("invalid-argument", "Missing recipient or reply text.");
   }
 
-  const { html, text } = contactReply({ name: input.name, body: input.body });
+  const { html, text } = contactReply({
+    name: input.name,
+    body: input.body,
+    originalMessage: input.originalMessage,
+    submittedDate: input.submittedDate,
+  });
   try {
     await sendEmail(RESEND_API_KEY.value(), {
       to: input.to,

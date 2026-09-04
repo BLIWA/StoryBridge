@@ -39,6 +39,7 @@ function toMessage(id: string, data: Record<string, unknown>): Message {
     langs: typeof data.langs === "string" ? data.langs : "",
     deadline: typeof data.deadline === "string" ? data.deadline : "",
     when: formatWhen(data.createdAt),
+    createdAtMs: (data.createdAt as Timestamp | undefined)?.toMillis?.() ?? 0,
     status: status === "Replied" || status === "Archived" ? status : "New",
     body: typeof data.body === "string" ? data.body : "",
   };

@@ -547,23 +547,6 @@ export function ArticleEditor({
           </div>
 
           <div style={CARD}>
-            <div style={MONO_LABEL}>Placement</div>
-            {[
-              { label: "Feature on the Journal index", def: true },
-              { label: "Show in the home page teaser", def: true },
-              { label: "Include in the next Bridge issue", def: false },
-            ].map((c) => (
-              <label
-                key={c.label}
-                style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "13.5px", color: "#3E4650" }}
-              >
-                <input type="checkbox" defaultChecked={c.def} style={{ width: "16px", height: "16px", accentColor: "#002D62" }} />
-                {c.label}
-              </label>
-            ))}
-          </div>
-
-          <div style={CARD}>
             <div style={MONO_LABEL}>Search appearance</div>
             <div
               style={{
