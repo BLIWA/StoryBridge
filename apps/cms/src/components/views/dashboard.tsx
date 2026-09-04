@@ -1,15 +1,22 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CARD, MONO_LABEL, Pill, PrimaryButton, GhostButton, NotWiredNote } from "@/components/ui";
-import { ACTIVITY, pill, type Article } from "@/content/seed";
+import { CARD, MONO_LABEL, Pill, PrimaryButton, GhostButton } from "@/components/ui";
+import { pill, type Article, type Message } from "@/content/seed";
 import type { View } from "@/lib/view";
 import { getFirebase } from "@/lib/firebase";
 import { watchSubscribers, type Subscriber } from "@/lib/subscribers";
-import { watchIssues, type Issue } from "@/lib/bridge-issues";
-import { formatDate } from "@/lib/schedule";
+import { watchIssues, watchBridgeLog, type Issue, type ScheduleAction, type ScheduleEvent } from "@/lib/bridge-issues";
+import { watchSubmissions } from "@/lib/submissions";
+import { formatDate, formatStamp } from "@/lib/schedule";
 
-/** Overview from "StoryBridge CMS.dc.html" (lines 161–223). */
+/**
+ * Overview from "StoryBridge CMS.dc.html" (lines 161–223) — every panel is a
+ * real Firestore read now. The stat row and Bridge-progress card were the
+ * first to go real; "Needs a decision" and "Recent activity" below them
+ * (previously the board's fixed sample rows) are built the same way, from
+ * live articles, submissions, subscribers and the Bridge scheduling log.
+ */
 
 const statNumber = {
   fontFamily: "'Source Serif 4',serif",
@@ -19,29 +26,65 @@ const statNumber = {
   fontWeight: 600,
 } as const;
 
+/** "20 Aug 2026" → a UTC ms value, for sorting only — the field itself stays a display string everywhere else. Unparseable dates sort last. */
+const MONTH_INDEX: Record<string, number> = {
+  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+};
+function parseBoardDate(date: string): number {
+  const m = /^(\d{1,2}) (\w{3}) (\d{4})$/.exec(date);
+  if (!m) return Infinity;
+  const month = MONTH_INDEX[m[2]];
+  if (month === undefined) return Infinity;
+  return Date.UTC(Number(m[3]), month, Number(m[1]));
+}
+
+const BRIDGE_LOG_VERB: Record<ScheduleAction, string> = {
+  Scheduled: "scheduled",
+  Rescheduled: "rescheduled",
+  Canceled: "canceled",
+  Sent: "sent",
+  "Test sent": "sent a test of",
+  "Draft saved": "saved a draft of",
+};
+
+type DecisionItem = {
+  key: string;
+  kind: "Review" | "Enquiry";
+  title: string;
+  meta: string;
+  cta: string;
+  act: () => void;
+  sortAt: number;
+};
+
+type ActivityItem = { key: string; when: string; text: string; atMs: number };
+
 export function Dashboard({
   articles,
   openCount,
   newCount,
   setView,
   openArticle,
+  goToMessage,
 }: {
   articles: Article[];
   openCount: number;
   newCount: number;
   setView: (v: View) => void;
   openArticle: (id: string) => void;
+  goToMessage: (id: string) => void;
 }) {
   const published = articles.filter((a) => a.status === "Published").length;
   const drafts = articles.filter((a) => a.status === "Draft").length;
   const inReview = articles.filter((a) => a.status === "In review").length;
   const scheduled = articles.filter((a) => a.status === "Scheduled").length;
 
-  // Real Bridge subscriber/issue data — replaces the board's fixed "1,904"
-  // and its fabricated "No. 08, 72% ready" progress card. Subscribed here so
-  // the dashboard doesn't depend on the Bridge view having mounted first.
+  // Subscribed here (not read off Studio's own state) so the dashboard
+  // doesn't depend on the Bridge or Inbox view having mounted first.
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [log, setLog] = useState<ScheduleEvent[]>([]);
   useEffect(() => {
     const { db } = getFirebase();
     const unsubA = watchSubscribers(
@@ -54,9 +97,21 @@ export function Dashboard({
       (list) => setIssues(list),
       () => setIssues([]),
     );
+    const unsubC = watchSubmissions(
+      db,
+      (list) => setMessages(list),
+      () => setMessages([]),
+    );
+    const unsubD = watchBridgeLog(
+      db,
+      (list) => setLog(list),
+      () => setLog([]),
+    );
     return () => {
       unsubA();
       unsubB();
+      unsubC();
+      unsubD();
     };
   }, []);
 
@@ -83,36 +138,85 @@ export function Dashboard({
     return activeSubscribers.filter((s) => s.lang.toLowerCase() === currentIssue.audienceId).length;
   }, [currentIssue, activeSubscribers]);
 
-  const queue = [
-    {
-      kind: "Review",
-      title: "Le brief, ce document qu'on saute trop souvent",
-      meta: "Imen Bliwa · submitted 20 Aug · FR · 980 words",
-      cta: "Read and decide",
-      act: () => openArticle("a3"),
-    },
-    {
-      kind: "Enquiry",
-      title: "MedTech Tunisie — three-language relaunch",
-      meta: "Unanswered for two days · FR → AR, EN · deadline 15 Sep",
-      cta: "Reply",
-      act: () => setView("inbox"),
-    },
-    {
-      kind: "Letter",
-      title: "The Bridge No. 08 — one section still missing",
-      meta: "Scheduled for 01 Sep · 1,904 recipients",
-      cta: "Continue",
-      act: () => setView("issues"),
-    },
-    {
-      kind: "Page",
-      title: "Packages — price bands still hidden",
-      meta: "Section off since 15 Jul · waiting on the autumn rate card",
-      cta: "Open page",
-      act: () => setView("pages"),
-    },
-  ];
+  /**
+   * What actually needs a human decision, oldest first: articles waiting on
+   * a publish/return call, and enquiries nobody has replied to yet. The
+   * Bridge issue above already gets its own card, and the board's old
+   * "Page" row had no real backing state (site copy has no per-section
+   * "waiting on a decision" field) — dropped rather than faked.
+   */
+  const needsDecision = useMemo<DecisionItem[]>(() => {
+    const fromArticles: DecisionItem[] = articles
+      .filter((a) => a.status === "In review")
+      .map((a) => ({
+        key: `article:${a.id}`,
+        kind: "Review",
+        title: a.title || "Untitled piece",
+        meta: `${a.author} · submitted ${a.date} · ${a.lang} · ${a.words} words`,
+        cta: "Read and decide",
+        act: () => openArticle(a.id),
+        sortAt: parseBoardDate(a.date),
+      }));
+
+    const fromMessages: DecisionItem[] = messages
+      .filter((m) => m.status === "New")
+      .map((m) => ({
+        key: `message:${m.id}`,
+        kind: "Enquiry",
+        title: m.org ? `${m.org} — ${m.subject}` : `${m.name || "Unknown sender"} — ${m.subject}`,
+        meta: `Unanswered since ${m.when || "an unknown date"}${m.langs ? ` · ${m.langs}` : ""}${
+          m.deadline ? ` · deadline ${m.deadline}` : ""
+        }`,
+        cta: "Reply",
+        act: () => goToMessage(m.id),
+        sortAt: m.createdAtMs ?? Infinity,
+      }));
+
+    return [...fromArticles, ...fromMessages].sort((a, b) => a.sortAt - b.sortAt).slice(0, 6);
+  }, [articles, messages, openArticle, goToMessage]);
+
+  /**
+   * A real cross-collection feed: the Bridge scheduling log (every entry
+   * already a record of something that happened, see issues.tsx), plus new
+   * submissions and new subscribers as they land — merged and sorted by
+   * their actual timestamps, not a fixed board list.
+   */
+  const activity = useMemo<ActivityItem[]>(() => {
+    const items: ActivityItem[] = [];
+
+    for (const e of log) {
+      const atMs = Date.parse(e.at);
+      if (Number.isNaN(atMs)) continue;
+      items.push({
+        key: `log:${e.id}`,
+        atMs,
+        when: formatStamp(e.at),
+        text: `${e.actor} ${BRIDGE_LOG_VERB[e.action]} The Bridge No. ${e.issueNo} — ${e.detail}`,
+      });
+    }
+
+    for (const m of messages) {
+      if (!m.createdAtMs) continue;
+      items.push({
+        key: `message:${m.id}`,
+        atMs: m.createdAtMs,
+        when: formatStamp(new Date(m.createdAtMs).toISOString()),
+        text: `${m.name || "Someone"}${m.org ? ` (${m.org})` : ""} submitted an enquiry — ${m.subject}.`,
+      });
+    }
+
+    for (const s of subscribers) {
+      if (!s.joinedAtMs) continue;
+      items.push({
+        key: `subscriber:${s.email}`,
+        atMs: s.joinedAtMs,
+        when: formatStamp(new Date(s.joinedAtMs).toISOString()),
+        text: `${s.email} subscribed to The Bridge${s.source ? ` — ${s.source}` : ""}.`,
+      });
+    }
+
+    return items.sort((a, b) => b.atMs - a.atMs).slice(0, 8);
+  }, [log, messages, subscribers]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "26px", animation: "cms-fade .3s ease both" }}>
@@ -171,9 +275,14 @@ export function Dashboard({
             <div style={MONO_LABEL}>Needs a decision</div>
             <div style={{ fontSize: "12.5px", color: "#8A8378" }}>Oldest first</div>
           </div>
-          {queue.map((q, i) => (
+          {needsDecision.length === 0 && (
+            <div style={{ padding: "28px 22px", fontSize: "13.5px", color: "#5A6472", lineHeight: 1.6 }}>
+              Nothing waiting on a decision right now.
+            </div>
+          )}
+          {needsDecision.map((q, i) => (
             <div
-              key={q.title}
+              key={q.key}
               style={{
                 display: "grid",
                 gridTemplateColumns: "92px 1fr auto",
@@ -183,9 +292,7 @@ export function Dashboard({
                 borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
               }}
             >
-              <Pill {...pill(q.kind === "Letter" ? "Scheduled" : q.kind === "Page" ? "Draft" : "In review")}>
-                {q.kind}
-              </Pill>
+              <Pill {...pill(q.kind === "Review" ? "In review" : "New")}>{q.kind}</Pill>
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontSize: "14.5px", fontWeight: 600, color: "#002D62", lineHeight: 1.35 }}>
                   {q.title}
@@ -198,7 +305,7 @@ export function Dashboard({
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-          {/* Bridge progress — real (see currentIssue above), no fake readiness % */}
+          {/* Bridge progress */}
           <div style={{ ...CARD, background: "#002D62", border: "none", gap: "14px" }}>
             {currentIssue ? (
               <>
@@ -251,12 +358,17 @@ export function Dashboard({
               <div style={MONO_LABEL}>Recent activity</div>
             </div>
             <div style={{ padding: "6px 22px 18px" }}>
-              {ACTIVITY.map((a, i) => (
+              {activity.length === 0 && (
+                <div style={{ padding: "12px 0", fontSize: "13.5px", color: "#5A6472", lineHeight: 1.6 }}>
+                  Nothing yet — this fills in as issues get scheduled, enquiries arrive and people subscribe.
+                </div>
+              )}
+              {activity.map((a, i) => (
                 <div
-                  key={a.text}
+                  key={a.key}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "56px 1fr",
+                    gridTemplateColumns: "108px 1fr",
                     gap: "12px",
                     padding: "12px 0",
                     borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
@@ -276,13 +388,6 @@ export function Dashboard({
               ))}
             </div>
           </div>
-
-          <NotWiredNote>
-            The stat row, Bridge subscribers/progress card above are real (Firestore-backed articles, submissions,
-            subscribers, Bridge issues). &ldquo;Needs a decision&rdquo; and &ldquo;Recent activity&rdquo; below are
-            still sample data from the design board — they&apos;d need a real cross-collection query this slice
-            didn&apos;t build.
-          </NotWiredNote>
         </div>
       </div>
     </div>

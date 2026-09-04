@@ -246,6 +246,13 @@ export type Message = {
   langs: string;
   deadline: string;
   when: string;
+  /**
+   * `when` as milliseconds since epoch, for sorting against other
+   * collections' timestamps (see components/views/dashboard.tsx). Real
+   * submissions always carry it (lib/submissions.ts); absent on the dead
+   * `MESSAGES` seed array below, which predates the field.
+   */
+  createdAtMs?: number;
   status: MessageStatus;
   body: string;
 };
@@ -430,6 +437,7 @@ export const SUBSCRIBERS = [
 // the Firestore `staff` collection and the role table is CAPABILITIES in
 // lib/staff.ts, which firestore.rules enforces. See components/views/settings.tsx.
 
+/** Unused dead data — Dashboard builds a real activity feed now (Bridge log, submissions, subscribers — see components/views/dashboard.tsx). Kept as a board-copy reference. */
 export const ACTIVITY = [
   { when: "09:12", text: "Assia published “What a newsroom taught us about client work”." },
   { when: "08:50", text: "Journal index reordered — featured piece pinned." },

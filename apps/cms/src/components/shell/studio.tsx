@@ -404,6 +404,7 @@ export function Studio() {
               newCount={newCount}
               setView={setView}
               openArticle={openArticle}
+              goToMessage={goToMessage}
             />
           )}
           {view === "articles" && (
@@ -433,7 +434,7 @@ export function Studio() {
                   { status: "Published" },
                   {
                     pending: "Publishing…",
-                    done: "Published — saved, but the live site doesn't read Firestore yet",
+                    done: "Published — it appears on the live site after the next deploy",
                     failed: "Couldn't publish — check your connection",
                   },
                 )

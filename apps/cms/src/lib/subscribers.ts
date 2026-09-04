@@ -13,6 +13,8 @@ export type Subscriber = {
   lang: string;
   source: string;
   joined: string;
+  /** `joined` as milliseconds since epoch, for sorting against other collections' timestamps (see components/views/dashboard.tsx). */
+  joinedAtMs: number;
 };
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -39,6 +41,7 @@ export function watchSubscribers(
             lang: typeof data.lang === "string" ? data.lang : "",
             source: typeof data.source === "string" ? data.source : "",
             joined: formatJoined(data.subscribedAt),
+            joinedAtMs: (data.subscribedAt as Timestamp | undefined)?.toMillis?.() ?? 0,
           };
         }),
       ),
