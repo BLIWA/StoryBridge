@@ -317,8 +317,13 @@ service cloud.firestore {
     // in-memory version this replaced). The scheduled-send Cloud Function
     // writes `status: 'Sent'`, `sentAt` and `stats` via the Admin SDK,
     // which bypasses this the same as every other privileged write here.
+    // A Sent issue is also public: the website reads it at build time
+    // (apps/website/src/lib/bridge-issues.ts) for the newsletter page's
+    // latest-issue card and archive, same "Published is public" shape as
+    // /articles above — every other status (Draft, Scheduled, Canceled)
+    // stays staff-only.
     match /bridgeIssues/{issueId} {
-      allow read: if isStaff();
+      allow read: if isStaff() || resource.data.status == 'Sent';
       allow create, update, delete: if isStaff() && canSendNewsletter();
     }
 

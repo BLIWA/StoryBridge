@@ -552,6 +552,7 @@
   "NewsletterSignup": {
     "placeholder": "vous@entreprise.com",
     "ariaLabel": "Votre adresse e-mail",
+    "langLabel": "Langue",
     "submit": "S'abonner",
     "sending": "Abonnement…",
     "done": "Vous êtes inscrit·e. The Bridge ne part pas encore — vous serez averti·e en premier au lancement.",
@@ -608,42 +609,18 @@
     "eyebrow": "The Bridge · newsletter mensuelle",
     "title": "Une lettre par mois, qui mérite d'être ouverte.",
     "standfirst": "La langue, les médias et le Maghreb — ce que nous lisons, ce dont nous débattons au bureau, et un point de métier utilisable. Écrite par nous, dans la voix que nous écrivons pour nos clients.",
-    "latestLabel": "NUMÉRO 07",
-    "latestTitle": "Le mot qui a coûté son public à une campagne",
-    "latestBody": "Trois paragraphes sur une décision de traduction, pourquoi elle a échoué, et la vérification de vingt secondes qui l'aurait évitée.",
+    "issueLabel": "Numéro {no}",
+    "latestBadge": "Dernier numéro",
+    "noIssuesYetTitle": "Le premier numéro est en cours d'écriture.",
+    "noIssuesYetBody": "Abonnez-vous et il arrivera dans votre boîte le jour de sa sortie.",
     "alsoInIssue": "Également dans ce numéro",
     "pastIssues": "Numéros précédents",
     "pastIssuesNote": "Lisez-en quelques-uns avant de vous abonner. C'est un peu l'idée.",
+    "noPastIssues": "C'est notre premier numéro — l'archive commence ici.",
     "serviceEyebrow": "La newsletter comme service",
     "serviceTitle": "Nous pouvons aussi gérer la vôtre.",
     "serviceBody": "The Bridge en est la démonstration. La rédaction et la gestion de newsletters font partie de notre offre Contenu & Édition — pour les entreprises qui veulent une lettre que leurs abonnés lisent vraiment.",
-    "serviceCta": "Parlons-en",
-    "issues": {
-      "06": {
-        "label": "NUMÉRO 06 · FÉVRIER",
-        "title": "Quand le client est aussi la source"
-      },
-      "05": {
-        "label": "NUMÉRO 05 · JANVIER",
-        "title": "Une charte de style est un document d'entreprise"
-      },
-      "04": {
-        "label": "NUMÉRO 04 · DÉCEMBRE",
-        "title": "L'année dans les médias maghrébins"
-      },
-      "03": {
-        "label": "NUMÉRO 03 · NOVEMBRE",
-        "title": "Des entretiens que les gens finissent"
-      },
-      "02": {
-        "label": "NUMÉRO 02 · OCTOBRE",
-        "title": "Contre le calendrier éditorial"
-      },
-      "01": {
-        "label": "NUMÉRO 01 · SEPTEMBRE",
-        "title": "Pourquoi nous avons lancé StoryBridge"
-      }
-    }
+    "serviceCta": "Parlons-en"
   },
   "Meta": {
     "home": {
