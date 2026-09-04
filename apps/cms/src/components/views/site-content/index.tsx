@@ -5,6 +5,10 @@ import { CARD, MONO_LABEL, GhostButton, NotWiredNote } from "@/components/ui";
 import { getFirebase } from "@/lib/firebase";
 import { fetchNamespaceOverrides, saveNamespaceOverride, type Locale } from "@/lib/site-content";
 import { watchSiteImages, SITE_IMAGE_SLOTS, type SiteImage } from "@/lib/site-images";
+import { watchArticles } from "@/lib/articles";
+import { watchIssues, type Issue } from "@/lib/bridge-issues";
+import { publishedArticlesFor, sentIssuesFor } from "@/lib/public-content";
+import type { Article } from "@/content/seed";
 import { flatten, unflatten, type JSONObject, type JSONValue } from "@storybridge/content/merge";
 import enDefaults from "@storybridge/content/messages/en.json";
 import frDefaults from "@storybridge/content/messages/fr.json";
@@ -70,6 +74,8 @@ export function SiteContentView({
   const [overridesByNs, setOverridesByNs] = useState<Record<string, Partial<Record<Locale, JSONValue>>>>({});
   const [overridesLoaded, setOverridesLoaded] = useState(false);
   const [images, setImages] = useState<Record<string, SiteImage>>({});
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
 
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [savedLabel, setSavedLabel] = useState("All changes saved");
@@ -100,6 +106,23 @@ export function SiteContentView({
       () => setImages({}),
     );
   }, []);
+
+  // Feeds the Journal/Newsletter chips' live preview — see
+  // ./live-preview.tsx and lib/public-content.ts. A second, independent
+  // subscription from Studio's own (unlifted) Articles/Issues state, same
+  // trade-off as this view's other self-contained subscriptions above.
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchArticles(db, setArticles, () => setArticles([]));
+  }, []);
+
+  useEffect(() => {
+    const { db } = getFirebase();
+    return watchIssues(db, setIssues, () => setIssues([]));
+  }, []);
+
+  const journalArticles = useMemo(() => publishedArticlesFor(articles, locale), [articles, locale]);
+  const newsletterIssues = useMemo(() => sentIssuesFor(issues, articles, locale), [issues, articles, locale]);
 
   const defaultFlat = useMemo(() => flatten(DEFAULTS[locale]), [locale]);
   const overrideFlat = useMemo(() => {
@@ -247,6 +270,8 @@ export function SiteContentView({
             onChange={editPath}
             imageSlots={imageSlots}
             images={images}
+            articles={journalArticles}
+            issues={newsletterIssues}
           />
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <GhostButton onClick={() => setShowAllFields((v) => !v)}>

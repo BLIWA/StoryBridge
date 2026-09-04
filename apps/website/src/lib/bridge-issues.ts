@@ -63,9 +63,3 @@ export async function listSentIssues(locale: string): Promise<SentIssue[]> {
   issues.sort((a, b) => Number(b.no) - Number(a.no));
   return issues;
 }
-
-/** The subject line's part after "Issue NN: ", which is what actually varies issue to issue — falls back to the whole subject if it isn't in that shape. */
-export function issueHeadline(subject: string): string {
-  const i = subject.indexOf(": ");
-  return i === -1 ? subject : subject.slice(i + 2);
-}
