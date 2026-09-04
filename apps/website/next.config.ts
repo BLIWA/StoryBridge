@@ -12,10 +12,11 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "firebasestorage.googleapis.com" }],
   },
-  // @storybridge/content ships raw TS, same as every other internal workspace
-  // package here — Next only transpiles node_modules-linked packages it's
-  // told to.
-  transpilePackages: ["@storybridge/content"],
+  // @storybridge/content and @storybridge/site-ui ship raw TS — Next only
+  // transpiles node_modules-linked packages it's told to. site-ui is the
+  // shared page bodies + chrome also rendered live by apps/cms's preview —
+  // see packages/site-ui/package.json.
+  transpilePackages: ["@storybridge/content", "@storybridge/site-ui"],
 };
 
 export default withNextIntl(nextConfig);

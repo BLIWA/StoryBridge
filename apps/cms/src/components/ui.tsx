@@ -54,6 +54,43 @@ export function Pill({ bg, fg, children }: { bg: string; fg: string; children: R
   );
 }
 
+/** A selectable chip — the page-picker top bar in Site copy, modeled on Pill but clickable/toggleable. */
+export function Chip({
+  active,
+  onClick,
+  children,
+  style,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+  style?: CSSProperties;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      data-hover={active ? undefined : "background:#F1EBE3"}
+      style={{
+        border: `1px solid ${active ? "#002D62" : "#D8D1C7"}`,
+        background: active ? "#002D62" : "#FDF8F1",
+        color: active ? "#FDF8F1" : "#3E4650",
+        borderRadius: "999px",
+        padding: "7px 14px",
+        fontSize: "13px",
+        fontWeight: active ? 600 : 500,
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+        transition: "all .14s ease",
+        ...style,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function SectionCard({
   title,
   action,

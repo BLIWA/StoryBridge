@@ -1,5 +1,5 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { LegalPage } from "@/components/legal-page";
+import { setRequestLocale } from "next-intl/server";
+import { LegalPageBody } from "@storybridge/site-ui/legal/body";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";
 
@@ -12,16 +12,6 @@ export const generateMetadata = metadataFor("terms");
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("TermsPage");
 
-  return (
-    <LegalPage
-      backdropId="wpgTerms"
-      eyebrow={t("eyebrow")}
-      title={t("title")}
-      standfirst={t("standfirst")}
-      updated={t("updated")}
-      sections={t.raw("sections")}
-    />
-  );
+  return <LegalPageBody namespace="TermsPage" backdropId="wpgTerms" />;
 }

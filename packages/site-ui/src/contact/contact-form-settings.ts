@@ -1,18 +1,18 @@
 /**
  * Read-only copy of the contact form's real config, `settings/contactForm`
  * — written from the CMS (apps/cms/src/lib/contact-form-settings.ts, same
- * normalize logic, kept separate rather than shared since the two apps
- * don't share a Firestore-model package). Public read, per firestore.rules.
+ * normalize logic, kept separate rather than shared since the CMS's own
+ * settings screen doesn't otherwise depend on this package). Public read,
+ * per firestore.rules.
  *
  * Fetched once on mount rather than watched live: the form doesn't need to
  * react to a mid-session config change, and a plain read means one fewer
- * open listener on a page that's mostly a static export. A read failure (or
- * the doc not existing yet) falls back to defaults rather than blocking the
- * form — same reasoning as reCAPTCHA's site key being unset.
+ * open listener. A read failure (or the doc not existing yet) falls back to
+ * defaults rather than blocking the form.
  */
 
 import { doc, getDoc } from "firebase/firestore";
-import { getDb } from "./firebase";
+import { getDb } from "./firebase-client";
 
 export type ContactFormSettings = {
   /** Required flags for the fields that are configurable — name/email/brief always stay required. */

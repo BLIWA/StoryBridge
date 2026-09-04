@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { PageHeroBackdrop } from "@/components/fx/backdrops";
+import { PageHeroBackdrop } from "../fx/backdrops";
 
 /**
  * The inner-page hero shared by Who We Are, Founders, How We Work, Services,
@@ -19,7 +19,7 @@ export function PageHero({
   backdropId: string;
   variant?: "arcs" | "quotes";
   glyph?: string;
-  eyebrow: string;
+  eyebrow: ReactNode;
   title: ReactNode;
   standfirst?: ReactNode;
   titleMaxWidth?: string;

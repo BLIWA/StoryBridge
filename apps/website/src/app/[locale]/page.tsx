@@ -1,5 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
-import { HomeHero } from "@/components/home/hero";
+import { HomeHero } from "@storybridge/site-ui/home/hero";
 import {
   TrustStrip,
   WhatWeDo,
@@ -7,8 +7,8 @@ import {
   WhyStoryBridge,
   FromTheJournal,
   NewsletterCta,
-} from "@/components/home/sections";
-import { ArabicHome } from "@/components/home/arabic-home";
+} from "@storybridge/site-ui/home/sections";
+import { ArabicHome } from "@storybridge/site-ui/home/arabic-home";
 import { metadataFor } from "@/i18n/metadata";
 
 export const generateMetadata = metadataFor("home");

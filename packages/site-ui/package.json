@@ -1,0 +1,45 @@
+{
+  "name": "@storybridge/site-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Presentational website page bodies + shared chrome, reused unmodified by apps/website (renders them for real) and apps/cms (renders them live, fed by in-progress edits, for the Site copy editor's high-fidelity preview) — see src/preview/context.tsx for how the two modes coexist in one component tree.",
+  "dependencies": {
+    "firebase": "^12.18.0",
+    "next": "16.3.2",
+    "next-intl": "^4.13.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  },
+  "exports": {
+    "./navigation": "./src/navigation.ts",
+    "./status": "./src/status.ts",
+    "./preview": "./src/preview/context.tsx",
+    "./preview-css": "./src/preview-css.ts",
+    "./fx/backdrops": "./src/fx/backdrops.tsx",
+    "./fx/design-fx": "./src/fx/design-fx.tsx",
+    "./chrome/page-hero": "./src/chrome/page-hero.tsx",
+    "./chrome/site-header": "./src/chrome/site-header.tsx",
+    "./chrome/site-footer": "./src/chrome/site-footer.tsx",
+    "./chrome/translation-notice": "./src/chrome/translation-notice.tsx",
+    "./content": "./src/content.ts",
+    "./services-content": "./src/services-content.ts",
+    "./home/hero": "./src/home/hero.tsx",
+    "./home/sections": "./src/home/sections.tsx",
+    "./home/arabic-home": "./src/home/arabic-home.tsx",
+    "./who-we-are/body": "./src/who-we-are/body.tsx",
+    "./contact/contact-form": "./src/contact/contact-form.tsx",
+    "./contact/newsletter-signup": "./src/contact/newsletter-signup.tsx",
+    "./contact/body": "./src/contact/body.tsx",
+    "./founders/body": "./src/founders/body.tsx",
+    "./how-we-work/body": "./src/how-we-work/body.tsx",
+    "./services/body": "./src/services/body.tsx",
+    "./packages-page/body": "./src/packages-page/body.tsx",
+    "./work/body": "./src/work/body.tsx",
+    "./legal/body": "./src/legal/body.tsx"
+  }
+}

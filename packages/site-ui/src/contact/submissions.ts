@@ -1,21 +1,13 @@
 /**
- * Contact-form submissions.
- *
- * Used to be a direct, unauthenticated Firestore write with firestore.rules
- * as the only gate. Now it goes through submitContact() — a Cloud Function
- * (functions/src/index.ts) that checks the reCAPTCHA v3 token before writing
- * anything, so firestore.rules denies public `create` on /submissions
- * outright (the Function's Admin SDK write bypasses rules, same as every
- * other privileged write in this project). See recaptcha in
- * components/contact-form.tsx for the client half.
- *
- * A successful write triggers onSubmissionCreated, which emails the active
- * owner/chief roster via Resend — the enquiry no longer sits unnoticed until
- * someone opens the CMS inbox.
+ * Contact-form submissions — goes through submitContact() (a Cloud Function
+ * that checks the reCAPTCHA v3 token before writing anything); firestore.rules
+ * denies a public `create` on /submissions outright. A successful write
+ * triggers onSubmissionCreated, which emails the active owner/chief roster
+ * via Resend. See ./contact-form.tsx for the client half.
  */
 
 import { httpsCallable, type HttpsCallableResult } from "firebase/functions";
-import { getFn } from "./firebase";
+import { getFn } from "./firebase-client";
 
 export type EnquiryInput = {
   name: string;

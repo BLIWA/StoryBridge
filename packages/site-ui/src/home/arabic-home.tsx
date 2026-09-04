@@ -1,5 +1,5 @@
-import { Link } from "@/i18n/navigation";
-import { ArcWeave, BridgeArcs, QuoteTile } from "@/components/fx/backdrops";
+import { Link } from "../navigation";
+import { ArcWeave, BridgeArcs, QuoteTile } from "../fx/backdrops";
 
 /**
  * Arabic home, ported from "StoryBridge Website v2.dc.html" (lines 78–125).
@@ -8,6 +8,12 @@ import { ArcWeave, BridgeArcs, QuoteTile } from "@/components/fx/backdrops";
  * display, its own copy, RTL scrim direction, and a four-pillar band that
  * uses the same typographic marks. The board's Arabic build covers the home
  * page only — the inner pages are English-only on the board.
+ *
+ * Every string here is a hardcoded Arabic literal, not a `t()` call — same
+ * as the live website today — so, unlike every other page this package
+ * exports, nothing in this one is individually editable from the CMS
+ * preview; see apps/cms/src/components/views/site-content for the notice
+ * shown alongside it there.
  */
 export function ArabicHome() {
   return (

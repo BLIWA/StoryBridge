@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import Script from "next/script";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { submitEnquiry } from "@/lib/submissions";
-import { fetchContactFormSettings, DEFAULT_CONTACT_FORM_SETTINGS, type ContactFormSettings } from "@/lib/contact-form-settings";
+import { Link } from "../navigation";
+import { submitEnquiry } from "./submissions";
+import { fetchContactFormSettings, DEFAULT_CONTACT_FORM_SETTINGS, type ContactFormSettings } from "./contact-form-settings";
+import { Editable, usePreview } from "../preview/context";
 
 /**
  * Brief form from the board's Contact page.
  *
- * Goes through submitContact() (see lib/submissions.ts) — a Cloud Function
+ * Goes through submitContact() (see ./submissions.ts) — a Cloud Function
  * that verifies a reCAPTCHA v3 token before writing anything and, once
  * written, emails the desk via Resend. Real spam protection, real routing.
  *
@@ -20,6 +21,10 @@ import { fetchContactFormSettings, DEFAULT_CONTACT_FORM_SETTINGS, type ContactFo
  * in submitContact() (functions/src/recaptcha.ts). If that env var is ever
  * unset again, the script just doesn't load and verification skips itself
  * rather than blocking every enquiry.
+ *
+ * Inside the CMS preview (usePreview() non-null) the reCAPTCHA script never
+ * loads and a submit is intercepted rather than actually sent — see the
+ * "preview" status branch below.
  */
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
@@ -61,12 +66,13 @@ const field = {
 /** Ids only — the visible options are translated. */
 const NEEDS = ["editorial", "translation", "editing", "media", "launch", "unsure"] as const;
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "sent" | "error" | "preview";
 
 export function ContactForm() {
   const t = useTranslations("ContactForm");
+  const preview = usePreview();
   const [status, setStatus] = useState<Status>("idle");
-  // Real config from settings/contactForm (see lib/contact-form-settings.ts)
+  // Real config from settings/contactForm (see ./contact-form-settings.ts)
   // — which of the optional fields are required, whether the honeypot is
   // on, and the consent line below. Starts at the same defaults the config
   // doc itself defaults to, so there's nothing to flash once the fetch
@@ -139,12 +145,16 @@ export function ContactForm() {
 
   return (
     <>
-      {RECAPTCHA_SITE_KEY && (
+      {RECAPTCHA_SITE_KEY && !preview && (
         <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
       )}
       <form
       onSubmit={async (e) => {
         e.preventDefault();
+        if (preview) {
+          setStatus("preview");
+          return;
+        }
         const data = new FormData(e.currentTarget);
         setStatus("sending");
         try {
@@ -169,11 +179,11 @@ export function ContactForm() {
     >
       <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "22px" }}>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("name")}</span>
+          <span style={label}><Editable path="ContactForm.name">{t("name")}</Editable></span>
           <input name="name" type="text" required placeholder={t("namePlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <span style={label}>{t("email")}</span>
+          <span style={label}><Editable path="ContactForm.email">{t("email")}</Editable></span>
           <input name="email" type="email" required placeholder={t("emailPlaceholder")} style={field} />
         </label>
         <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
@@ -231,7 +241,7 @@ export function ContactForm() {
       </div>
 
       {/* Honeypot: off-screen, never shown to a real visitor, no label a screen reader announces. A filled-in
-          value means whatever submitted this wasn't a person — see lib/submissions.ts. Real toggle now
+          value means whatever submitted this wasn't a person — see ./submissions.ts. Real toggle now
           (settings/contactForm's "Honeypot" checkbox in the CMS) — when it's off, submitContact() skips the
           check server-side too, so there's no point still rendering (and possibly tripping a form-filling
           extension on) a field nothing reads. */}
@@ -247,7 +257,7 @@ export function ContactForm() {
       )}
 
       <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-        <span style={label}>{t("brief")}</span>
+        <span style={label}><Editable path="ContactForm.brief">{t("brief")}</Editable></span>
         <textarea
           name="brief"
           required
@@ -285,13 +295,19 @@ export function ContactForm() {
           {status === "sending" ? t("sending") : t("submit")}
         </button>
         <div style={{ fontSize: "13.5px", lineHeight: "1.6", color: "#5A6472", maxWidth: "340px" }}>
-          {t("reassurance")}
+          <Editable path="ContactForm.reassurance" multiline>{t("reassurance")}</Editable>
         </div>
       </div>
 
       {status === "error" && (
         <div role="alert" style={{ fontSize: "14px", color: "#A5342E" }}>
           {t("error")}
+        </div>
+      )}
+
+      {status === "preview" && (
+        <div role="status" style={{ fontSize: "13px", color: "#8A8378" }}>
+          Preview — submissions are disabled here.
         </div>
       )}
 

@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { PageHeroBackdrop } from "@/components/fx/backdrops";
+import { PageHeroBackdrop } from "@storybridge/site-ui/fx/backdrops";
 import { listPublishedArticles } from "@/lib/articles";
 import { routing } from "@/i18n/routing";
 import { metadataFor } from "@/i18n/metadata";

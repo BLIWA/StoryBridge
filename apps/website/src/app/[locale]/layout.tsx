@@ -10,12 +10,12 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, isRtl, type AppLocale } from "@/i18n/routing";
-import { SiteHeader } from "@/components/chrome/site-header";
-import { SiteFooter } from "@/components/chrome/site-footer";
-import { TranslationNotice } from "@/components/chrome/translation-notice";
+import { SiteHeader } from "@storybridge/site-ui/chrome/site-header";
+import { SiteFooter } from "@storybridge/site-ui/chrome/site-footer";
+import { TranslationNotice } from "@storybridge/site-ui/chrome/translation-notice";
 import { Analytics } from "@/components/chrome/analytics";
 import { CookieBanner } from "@/components/chrome/cookie-banner";
-import { DesignFx } from "@/components/fx/design-fx";
+import { DesignFx } from "@storybridge/site-ui/fx/design-fx";
 import "../globals.css";
 
 const sourceSerif = Source_Serif_4({

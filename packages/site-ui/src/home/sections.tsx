@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { ArcWeaveDark, QuoteTile } from "@/components/fx/backdrops";
-import { PILLARS, TRUST_SIGNALS, DESK_STAGES, JOURNAL_POSTS } from "@/content/site";
-import { NewsletterSignup } from "@/components/newsletter-signup";
+import { Link } from "../navigation";
+import { ArcWeaveDark, QuoteTile } from "../fx/backdrops";
+import { PILLARS, TRUST_SIGNALS, DESK_STAGES, JOURNAL_POSTS } from "../content";
+import { NewsletterSignup } from "../contact/newsletter-signup";
+import { Editable } from "../preview/context";
 
 const mono = {
   fontFamily: "'IBM Plex Mono',monospace",
@@ -47,8 +49,10 @@ export function TrustStrip() {
               gap: "8px",
             }}
           >
-            <div style={mono}>{t(`${id}.label`)}</div>
-            <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#3E4650" }}>{t(`${id}.body`)}</div>
+            <div style={mono}><Editable path={`Home.trust.${id}.label`}>{t(`${id}.label`)}</Editable></div>
+            <div style={{ fontSize: "15px", lineHeight: "1.6", color: "#3E4650" }}>
+              <Editable path={`Home.trust.${id}.body`} multiline>{t(`${id}.body`)}</Editable>
+            </div>
           </div>
         ))}
       </div>
@@ -66,10 +70,10 @@ export function SectionHead({
   fontSize = "40px",
 }: {
   n?: string;
-  title: string;
-  note?: string;
+  title: ReactNode;
+  note?: ReactNode;
   linkHref?: string;
-  linkLabel?: string;
+  linkLabel?: ReactNode;
   fontSize?: string;
 }) {
   return (
@@ -128,7 +132,12 @@ export function WhatWeDo() {
 
   return (
     <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "88px var(--sb-gutter)" }}>
-      <SectionHead n="01" title={t("title")} linkHref="/services" linkLabel={t("allServices")} />
+      <SectionHead
+        n="01"
+        title={<Editable path="Home.whatWeDo.title">{t("title")}</Editable>}
+        linkHref="/services"
+        linkLabel={<Editable path="Home.whatWeDo.allServices">{t("allServices")}</Editable>}
+      />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: "28px" }}>
         {PILLARS.map((pillar) => (
           <Link
@@ -170,13 +179,13 @@ export function WhatWeDo() {
                 lineHeight: "1.25",
               }}
             >
-              {p(`${pillar.id}.title`)}
+              <Editable path={`Pillars.${pillar.id}.title`}>{p(`${pillar.id}.title`)}</Editable>
             </div>
             <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>
-              {p(`${pillar.id}.short`)}
+              <Editable path={`Pillars.${pillar.id}.short`} multiline>{p(`${pillar.id}.short`)}</Editable>
             </div>
             <div style={{ fontSize: "14px", fontWeight: 600, color: "#8F6135", marginTop: "auto" }}>
-              {t("learnMore")}
+              <Editable path="Home.whatWeDo.learnMore">{t("learnMore")}</Editable>
             </div>
           </Link>
         ))}
@@ -210,7 +219,7 @@ export function DeskProcess() {
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em", color: "#B57D49" }}>
-            {t("eyebrow")}
+            <Editable path="Home.desk.eyebrow">{t("eyebrow")}</Editable>
           </div>
           <div
             style={{
@@ -221,10 +230,10 @@ export function DeskProcess() {
               letterSpacing: "-0.015em",
             }}
           >
-            {t("title")}
+            <Editable path="Home.desk.title">{t("title")}</Editable>
           </div>
           <div style={{ fontSize: "16px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-            {t("body")}
+            <Editable path="Home.desk.body" multiline>{t("body")}</Editable>
           </div>
           <Link
             href="/how-we-work"
@@ -238,7 +247,7 @@ export function DeskProcess() {
               transition: "all .16s ease",
             }}
           >
-            {t("link")}
+            <Editable path="Home.desk.link">{t("link")}</Editable>
           </Link>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "16px" }}>
@@ -257,10 +266,10 @@ export function DeskProcess() {
             >
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", color: "#B57D49" }}>{stage.n}</div>
               <div style={{ fontFamily: "'Source Serif 4',serif", fontSize: "19px", color: "#FDF8F1" }}>
-                {t(`stages.${stage.id}.title`)}
+                <Editable path={`Home.desk.stages.${stage.id}.title`}>{t(`stages.${stage.id}.title`)}</Editable>
               </div>
               <div style={{ fontSize: "13.5px", lineHeight: "1.6", color: "rgba(253,248,241,0.7)" }}>
-                {t(`stages.${stage.id}.body`)}
+                <Editable path={`Home.desk.stages.${stage.id}.body`} multiline>{t(`stages.${stage.id}.body`)}</Editable>
               </div>
             </div>
           ))}
@@ -296,7 +305,9 @@ export function WhyStoryBridge() {
       <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "88px var(--sb-gutter)" }}>
         <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]" style={{ gap: "clamp(28px,5vw,72px)", alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-            <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em" }}>{t("eyebrow")}</div>
+            <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em" }}>
+              <Editable path="Home.why.eyebrow">{t("eyebrow")}</Editable>
+            </div>
             <div
               style={{
                 fontFamily: "'Source Serif 4',serif",
@@ -306,14 +317,14 @@ export function WhyStoryBridge() {
                 letterSpacing: "-0.015em",
               }}
             >
-              {t("title")}
+              <Editable path="Home.why.title">{t("title")}</Editable>
             </div>
             <Link
               href="/who-we-are"
               data-hover="color:#002D62"
               style={{ fontSize: "14.5px", fontWeight: 600, color: "#8F6135", alignSelf: "flex-start" }}
             >
-              {t("link")}
+              <Editable path="Home.why.link">{t("link")}</Editable>
             </Link>
           </div>
           <div
@@ -334,7 +345,7 @@ export function WhyStoryBridge() {
                 textWrap: "pretty",
               }}
             >
-              {t("quote")}
+              <Editable path="Home.why.quote" multiline>{t("quote")}</Editable>
             </div>
             <div
               style={{
@@ -346,7 +357,7 @@ export function WhyStoryBridge() {
                 color: "#002D62",
               }}
             >
-              {t("quoteEmphasis")}
+              <Editable path="Home.why.quoteEmphasis" multiline>{t("quoteEmphasis")}</Editable>
             </div>
           </div>
         </div>
@@ -371,11 +382,11 @@ export function FromTheJournal() {
       <div style={{ position: "relative", maxWidth: "1320px", margin: "0 auto", padding: "80px var(--sb-gutter)" }}>
         <SectionHead
           n="04"
-          title={t("title")}
+          title={<Editable path="Home.journal.title">{t("title")}</Editable>}
           fontSize="38px"
-          note={t("note")}
+          note={<Editable path="Home.journal.note" multiline>{t("note")}</Editable>}
           linkHref="/journal"
-          linkLabel={t("all")}
+          linkLabel={<Editable path="Home.journal.all">{t("all")}</Editable>}
         />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(290px,1fr))", gap: "32px" }}>
           {JOURNAL_POSTS.map((p) => (
@@ -406,11 +417,11 @@ export function FromTheJournal() {
                     color: "#5A6472",
                   }}
                 >
-                  {t("imagePlaceholder")}
+                  <Editable path="Home.journal.imagePlaceholder">{t("imagePlaceholder")}</Editable>
                 </div>
               </div>
               <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em" }}>
-                {post(`${p.slug}.kicker`)}
+                <Editable path={`JournalPosts.${p.slug}.kicker`}>{post(`${p.slug}.kicker`)}</Editable>
               </div>
               <div
                 style={{
@@ -421,10 +432,10 @@ export function FromTheJournal() {
                   color: "#002D62",
                 }}
               >
-                {post(`${p.slug}.title`)}
+                <Editable path={`JournalPosts.${p.slug}.title`}>{post(`${p.slug}.title`)}</Editable>
               </div>
               <div style={{ fontSize: "14.5px", lineHeight: "1.65", color: "#3E4650" }}>
-                {post(`${p.slug}.standfirst`)}
+                <Editable path={`JournalPosts.${p.slug}.standfirst`} multiline>{post(`${p.slug}.standfirst`)}</Editable>
               </div>
             </Link>
           ))}
@@ -452,7 +463,7 @@ export function NewsletterCta() {
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ ...mono, fontSize: "11.5px", letterSpacing: "0.18em", color: "#B57D49" }}>
-            {t("eyebrow")}
+            <Editable path="Home.newsletterCta.eyebrow">{t("eyebrow")}</Editable>
           </div>
           <div
             style={{
@@ -463,10 +474,10 @@ export function NewsletterCta() {
               letterSpacing: "-0.015em",
             }}
           >
-            {t("title")}
+            <Editable path="Home.newsletterCta.title">{t("title")}</Editable>
           </div>
           <div style={{ fontSize: "16px", lineHeight: "1.7", color: "rgba(253,248,241,0.78)" }}>
-            {t("body")}
+            <Editable path="Home.newsletterCta.body" multiline>{t("body")}</Editable>
           </div>
         </div>
         <NewsletterSignup source="Home page" />

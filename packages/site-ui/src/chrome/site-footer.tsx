@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link } from "../navigation";
 
 /** Footer from "StoryBridge Website v2.dc.html" — dark navy, bronze weave behind. */
 

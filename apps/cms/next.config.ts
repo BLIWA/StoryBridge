@@ -7,8 +7,12 @@ const nextConfig: NextConfig = {
   // require revisiting this — see the root README.
   output: "export",
   images: { unoptimized: true },
-  // @storybridge/content ships raw TS — see apps/website/next.config.ts.
-  transpilePackages: ["@storybridge/content"],
+  // @storybridge/content and @storybridge/site-ui ship raw TS — see
+  // apps/website/next.config.ts. site-ui is the real website page bodies +
+  // chrome, rendered here live (fed by in-progress edits) for the Site copy
+  // editor's high-fidelity preview — see
+  // src/components/views/site-content/live-preview.tsx.
+  transpilePackages: ["@storybridge/content", "@storybridge/site-ui"],
 };
 
 export default nextConfig;
