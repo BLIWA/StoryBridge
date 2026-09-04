@@ -43,11 +43,18 @@ export function InboxView({ initialSelectedId }: { initialSelectedId?: string } 
     setReplyError(null);
     setReplySent(false);
     try {
-      const call = httpsCallable<{ to: string; name: string; subject: string; body: string }, { ok: true }>(
-        getFirebase().functions,
-        "sendReply",
-      );
-      await call({ to: sel.email, name: sel.name, subject: `Re: ${sel.subject}`, body: reply.trim() });
+      const call = httpsCallable<
+        { to: string; name: string; subject: string; body: string; originalMessage: string; submittedDate: string },
+        { ok: true }
+      >(getFirebase().functions, "sendReply");
+      await call({
+        to: sel.email,
+        name: sel.name,
+        subject: `Re: ${sel.subject}`,
+        body: reply.trim(),
+        originalMessage: sel.body,
+        submittedDate: sel.when,
+      });
       await setSubmissionStatus(getFirebase().db, sel.id, "Replied");
       setReply("");
       setReplySent(true);
