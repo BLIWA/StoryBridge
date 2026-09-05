@@ -9,7 +9,7 @@
  * collections land with the rest of Phase 05–06.
  */
 
-export type ArticleStatus = "Draft" | "In review" | "Scheduled" | "Published";
+export type ArticleStatus = "Draft" | "In review" | "Scheduled" | "Published" | "Archived";
 
 /** The three language versions a piece can carry — see lib/languages.ts. */
 export type LangCode = "EN" | "FR" | "AR";
@@ -477,6 +477,8 @@ export function pill(status: string): { bg: string; fg: string } {
       return { bg: "#F6EADB", fg: "#8F6135" };
     case "Canceled":
       return { bg: "#F3E3E3", fg: "#8A3B3B" };
+    case "Archived":
+      return { bg: "#EDE9E2", fg: "#5A6472" };
     default:
       return { bg: "#EDE9E2", fg: "#5A6472" };
   }

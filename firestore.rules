@@ -125,7 +125,7 @@ service cloud.firestore {
     // document is just a display name, not proof of anything.
     match /articles/{articleId} {
       function validStatus(s) {
-        return s in ['Draft', 'In review', 'Scheduled', 'Published'];
+        return s in ['Draft', 'In review', 'Scheduled', 'Published', 'Archived'];
       }
 
       function wellFormedArticle() {
@@ -170,9 +170,13 @@ service cloud.firestore {
         && (canEditAnyDraft() || isOwnDraft())
         && statusChangeAllowed();
 
-      // Not exposed in the UI yet — kept consistent with the roles that can
-      // already touch any draft, rather than left to fall through to deny.
-      allow delete: if canEditAnyDraft();
+      // Wired to Studio's "Delete draft" action (owner/chief/journalist,
+      // same roles as canEditAnyDraft — a contributor may write their own
+      // draft but not remove it outright). Deleting a live Published piece
+      // is deliberately not allowed here: taking something off the site is
+      // "Archive" (a status transition, see statusChangeAllowed() above),
+      // which keeps the document and its history instead of destroying it.
+      allow delete: if canEditAnyDraft() && resource.data.status != 'Published';
     }
 
     // Site copy overrides — see packages/content/src/merge.ts and

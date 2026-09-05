@@ -6,7 +6,7 @@ import { pill, type Article, type ArticleStatus } from "@/content/seed";
 /** Journal list from "StoryBridge CMS.dc.html" (lines 224–251). */
 
 /** The status filter's options, and the type Studio holds the selection in. */
-export const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published"] as const;
+export const STATUSES = ["All", "Draft", "In review", "Scheduled", "Published", "Archived"] as const;
 export type Filter = (typeof STATUSES)[number];
 
 const headCell = {
@@ -17,7 +17,7 @@ const headCell = {
   color: "#8A8378",
 } as const;
 
-const GRID = "minmax(0,1fr) 92px 150px 118px 108px";
+const GRID = "minmax(0,1fr) 92px 150px 118px 108px 32px";
 
 export function ArticlesView({
   articles,
@@ -25,12 +25,17 @@ export function ArticlesView({
   setFilter,
   openArticle,
   newArticle,
+  canDelete,
+  onDelete,
 }: {
   articles: Article[];
   filter: Filter;
   setFilter: (f: Filter) => void;
   openArticle: (id: string) => void;
   newArticle: () => void;
+  /** Same roles firestore.rules' `canEditAnyDraft()` allows to delete — see lib/staff.ts. */
+  canDelete: boolean;
+  onDelete: (id: string) => void;
 }) {
   const counts = Object.fromEntries(
     STATUSES.map((s) => [
@@ -95,7 +100,7 @@ export function ArticlesView({
             padding: "14px 22px",
             borderBottom: "1px solid #E6E0D8",
             background: "#F8F4EE",
-            minWidth: "620px",
+            minWidth: "652px",
           }}
         >
           <div style={headCell}>Title</div>
@@ -103,15 +108,31 @@ export function ArticlesView({
           <div style={headCell}>Author</div>
           <div style={headCell}>Status</div>
           <div style={headCell}>Date</div>
+          <div style={headCell} aria-hidden="true" />
         </div>
 
         {visible.map((a, i) => {
           const c = pill(a.status);
+          // A live piece only comes down through Archive (see the editor's
+          // Publishing card) — mirrors firestore.rules' `allow delete`, which
+          // refuses a Published document outright.
+          const deletable = canDelete && a.status !== "Published";
           return (
-            <button
+            // A plain div, not a <button> — a real "delete" button lives inside
+            // this row too, and a button can't contain another button. Click
+            // anywhere in the row to open the article; the delete button stops
+            // its own click from bubbling up into that.
+            <div
               key={a.id}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => openArticle(a.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openArticle(a.id);
+                }
+              }}
               data-hover="background:#F8F4EE"
               style={{
                 display: "grid",
@@ -120,11 +141,7 @@ export function ArticlesView({
                 alignItems: "center",
                 padding: "16px 22px",
                 borderTop: i === 0 ? undefined : "1px solid #EDE7DE",
-                background: "transparent",
-                border: "none",
-                width: "100%",
-                minWidth: "620px",
-                textAlign: "start",
+                minWidth: "652px",
                 cursor: "pointer",
                 transition: "background .16s ease",
               }}
@@ -162,7 +179,34 @@ export function ArticlesView({
                 <Pill {...c}>{a.status}</Pill>
               </div>
               <div style={{ fontSize: "12.5px", color: "#5A6472" }}>{a.date}</div>
-            </button>
+              <div>
+                {deletable && (
+                  <button
+                    type="button"
+                    title={`Delete “${a.title}”`}
+                    aria-label={`Delete ${a.title}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm(`Delete “${a.title}”? This can't be undone.`)) onDelete(a.id);
+                    }}
+                    data-hover="background:#F3E3E3"
+                    style={{
+                      background: "none",
+                      border: "1px solid #E6E0D8",
+                      borderRadius: "4px",
+                      width: "28px",
+                      height: "28px",
+                      color: "#A5342E",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      transition: "background .16s ease",
+                    }}
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
           );
         })}
 

@@ -33,20 +33,31 @@ export function ArticleEditor({
   draft,
   setDraft,
   canPublish,
+  canDelete,
   onBack,
   savedLabel,
   onSaveDraft,
   onPublish,
   onSendToReview,
+  onArchive,
+  onRepublish,
+  onDelete,
 }: {
   draft: Article;
   setDraft: (patch: Partial<Article>) => void;
   canPublish: boolean;
+  /** Same roles firestore.rules' `canEditAnyDraft()` allows to delete. */
+  canDelete: boolean;
   onBack: () => void;
   savedLabel: string;
   onSaveDraft: () => void;
   onPublish: () => void;
   onSendToReview: () => void;
+  /** Takes a Published piece off the live site without deleting its record. */
+  onArchive: () => void;
+  /** Puts an Archived piece back on the live site. */
+  onRepublish: () => void;
+  onDelete: () => void;
 }) {
   const { user } = useAuth();
   const primaryLang = primaryLangOf(draft.lang);
@@ -55,7 +66,10 @@ export function ArticleEditor({
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
-  const [showPublishConfirm, setShowPublishConfirm] = useState(false);
+  // "Archive" and "Republish" reuse the same reauth dialog as Publish (see
+  // publish-confirm-dialog.tsx) under different copy, so there is one state
+  // slot for which of the three is currently open rather than three booleans.
+  const [confirming, setConfirming] = useState<"publish" | "archive" | "republish" | null>(null);
   const [picker, setPicker] = useState<"lead" | "toolbar" | null>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const leadImageInput = useRef<HTMLInputElement>(null);
@@ -169,10 +183,20 @@ export function ArticleEditor({
         </button>
         <div style={{ fontSize: "12.5px", color: "#8A8378", marginInlineStart: "12px" }}>{savedLabel}</div>
         <div style={{ display: "flex", gap: "10px", marginInlineStart: "auto", flexWrap: "wrap" }}>
+          {canDelete && draft.status !== "Published" && (
+            <GhostButton
+              onClick={() => {
+                if (window.confirm(`Delete “${draft.title}”? This can't be undone.`)) onDelete();
+              }}
+              style={{ color: "#A5342E", borderColor: "#E3B8B4" }}
+            >
+              Delete draft
+            </GhostButton>
+          )}
           <GhostButton onClick={onSaveDraft}>Save draft</GhostButton>
           <GhostButton onClick={() => setShowPreview(true)}>Preview</GhostButton>
-          {canPublish ? (
-            <PrimaryButton onClick={() => setShowPublishConfirm(true)}>Publish now</PrimaryButton>
+          {draft.status === "Published" || draft.status === "Archived" ? null : canPublish ? (
+            <PrimaryButton onClick={() => setConfirming("publish")}>Publish now</PrimaryButton>
           ) : (
             <PrimaryButton onClick={onSendToReview} style={{ background: "#8F6135" }}>
               Send to review
@@ -481,6 +505,16 @@ export function ArticleEditor({
                 ? "You can publish directly to the live site."
                 : "Publishing goes through review — an editor-in-chief signs off."}
             </div>
+            {canPublish && draft.status === "Published" && (
+              <GhostButton onClick={() => setConfirming("archive")} style={{ alignSelf: "flex-start" }}>
+                Archive — hide from site
+              </GhostButton>
+            )}
+            {canPublish && draft.status === "Archived" && (
+              <GhostButton onClick={() => setConfirming("republish")} style={{ alignSelf: "flex-start" }}>
+                Republish
+              </GhostButton>
+            )}
           </div>
 
           <div style={CARD}>
@@ -578,13 +612,43 @@ export function ArticleEditor({
         />
       )}
 
-      {showPublishConfirm && (
+      {confirming === "publish" && (
         <PublishConfirmDialog
           articleTitle={draft.title}
-          onClose={() => setShowPublishConfirm(false)}
+          onClose={() => setConfirming(null)}
           onConfirmed={() => {
-            setShowPublishConfirm(false);
+            setConfirming(null);
             onPublish();
+          }}
+        />
+      )}
+
+      {confirming === "archive" && (
+        <PublishConfirmDialog
+          articleTitle={draft.title}
+          monoLabel="Confirm to archive"
+          heading={`Taking down: “${draft.title}”`}
+          blurb="This comes off the live site immediately, but stays here — you can republish it later."
+          confirmLabel="Confirm & archive"
+          onClose={() => setConfirming(null)}
+          onConfirmed={() => {
+            setConfirming(null);
+            onArchive();
+          }}
+        />
+      )}
+
+      {confirming === "republish" && (
+        <PublishConfirmDialog
+          articleTitle={draft.title}
+          monoLabel="Confirm to republish"
+          heading={`Back on the site: “${draft.title}”`}
+          blurb="This puts it back on the live site under its current title, slug and body."
+          confirmLabel="Confirm & republish"
+          onClose={() => setConfirming(null)}
+          onConfirmed={() => {
+            setConfirming(null);
+            onRepublish();
           }}
         />
       )}
