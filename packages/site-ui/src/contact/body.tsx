@@ -64,18 +64,11 @@ export function ContactBody() {
             <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#5A6472" }}>
               <Editable path="Contact.location" multiline>{t("location")}</Editable>
             </div>
-            <div
-              style={{
-                fontFamily: "'IBM Plex Mono',monospace",
-                fontSize: "10.5px",
-                color: "#B57D49",
-                border: "1px dashed #DEC5A9",
-                borderRadius: "2px",
-                padding: "5px 8px",
-                alignSelf: "flex-start",
-              }}
-            >
-              <Editable path="Contact.detailsPending">{t("detailsPending")}</Editable>
+            <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "#5A6472" }}>
+              <Editable path="Contact.address">{t("address")}</Editable>
+            </div>
+            <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: "13px", color: "#8F6135" }}>
+              <Editable path="Contact.phone">{t("phone")}</Editable>
             </div>
           </div>
 

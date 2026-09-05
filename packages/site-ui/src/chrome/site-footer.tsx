@@ -156,21 +156,19 @@ export function SiteFooter() {
             contact@storybridge.news
           </div>
           <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
+            {t("address")}
+          </div>
+          <div style={{ fontSize: "14.5px", lineHeight: "1.7", color: "rgba(253,248,241,0.8)" }}>
             {t("city")}
           </div>
           <div
             style={{
               fontFamily: "'IBM Plex Mono',monospace",
-              fontSize: "10.5px",
-              letterSpacing: "0.06em",
-              color: "#B57D49",
-              border: "1px dashed rgba(181,125,73,0.5)",
-              borderRadius: "2px",
-              padding: "6px 9px",
-              alignSelf: "flex-start",
+              fontSize: "13px",
+              color: "rgba(253,248,241,0.8)",
             }}
           >
-            {t("detailsPending")}
+            {t("phone")}
           </div>
         </div>
       </div>
