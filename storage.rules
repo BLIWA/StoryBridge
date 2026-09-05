@@ -1,9 +1,20 @@
 rules_version = '2';
 
-// Mirrors firestore.rules' staff gate, cross-service: a Storage rule can call
-// firestore.get()/exists() directly, so "is this person on the team" has one
-// answer instead of two. Everything outside /media stays denied — that skeleton
-// is still correct for paths nothing writes to yet.
+// isStaff() used to mirror firestore.rules' staff gate via a cross-service
+// firestore.get()/exists() call. Real incident, 5 Sep 2026: that call
+// denied a genuinely active owner (staff/mohamedbliwa@gmail.com, active:
+// true, confirmed by a direct Admin SDK read) on every image upload in
+// production — bisected live by dropping the staff check entirely (upload
+// then succeeded), which isolated the failure to Storage's cross-service
+// Firestore call itself, not this project's data or rule logic (the exact
+// same check against the exact same data passes cleanly in the emulator).
+// isStaff() now reads an `active_staff` custom claim instead — no
+// cross-service call, no staleness. The claim is stamped on every sign-in
+// by functions/src/blocking.ts (see its file comment for the trade-off:
+// the claim is only as fresh as the user's last sign-in, unlike Firestore's
+// own same-service checks, which stay live). Everything outside /media
+// stays denied — that skeleton is still correct for paths nothing writes
+// to yet.
 service firebase.storage {
   match /b/{bucket}/o {
 
@@ -11,14 +22,8 @@ service firebase.storage {
       return request.auth != null && request.auth.token.email != null;
     }
 
-    function staffDoc() {
-      return firestore.get(/databases/(default)/documents/staff/$(request.auth.token.email.lower()));
-    }
-
     function isStaff() {
-      return signedIn()
-        && firestore.exists(/databases/(default)/documents/staff/$(request.auth.token.email.lower()))
-        && staffDoc().data.active == true;
+      return signedIn() && request.auth.token.active_staff == true;
     }
 
     // Lead images and in-body media: publicly readable (the website embeds
