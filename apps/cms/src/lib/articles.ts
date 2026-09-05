@@ -83,7 +83,12 @@ export async function saveArticle(db: Firestore, article: Article): Promise<void
   await setDoc(doc(db, COLLECTION, id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
 }
 
-/** Not wired to any button yet — kept for parity with lib/staff.ts's CRUD shape. */
+/**
+ * Deletes an article outright. Wired to Studio's "Delete draft" action —
+ * firestore.rules refuses this for a Published piece (see its comment on
+ * `allow delete`), so a live article can only come down via a status change
+ * to "Archived", never this.
+ */
 export async function deleteArticle(db: Firestore, id: string): Promise<void> {
   await deleteDoc(doc(db, COLLECTION, id));
 }

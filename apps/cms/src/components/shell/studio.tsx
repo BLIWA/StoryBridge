@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useIdleSignOut } from "@/lib/idle-signout";
 import { ROLE_LABEL, normalizeEmail } from "@/lib/staff";
 import { getFirebase } from "@/lib/firebase";
-import { watchArticles, createArticle, saveArticle, newArticleId } from "@/lib/articles";
+import { watchArticles, createArticle, saveArticle, deleteArticle, newArticleId } from "@/lib/articles";
 import { watchSubmissions } from "@/lib/submissions";
 import { type Article, type Message } from "@/content/seed";
 import { Dashboard } from "@/components/views/dashboard";
@@ -181,8 +181,13 @@ export function Studio() {
   const userName = staff?.name || user?.displayName || user?.email?.split("@")[0] || "Signed in";
   const userRole = role ? ROLE_LABEL[role] : "Signed in";
   const canPublish = can("publish");
+  // Mirrors firestore.rules' `canEditAnyDraft()` — the same roles that rule
+  // lets touch anyone's draft are the only ones its `allow delete` accepts.
+  const canDelete = can("editAnyDraft");
 
-  const openCount = articles.filter((a) => a.status !== "Published").length;
+  // "Open" work still headed toward publication — an Archived piece is
+  // retired, not outstanding, so it doesn't belong in this count either.
+  const openCount = articles.filter((a) => a.status !== "Published" && a.status !== "Archived").length;
   const newCount = messages.filter((m) => m.status === "New").length;
 
   const draft = articles.find((a) => a.id === editingId) ?? null;
@@ -235,7 +240,11 @@ export function Studio() {
     setDirty(true);
   }
 
-  /** Writes `draft` (with `statusPatch` applied) to Firestore; used by all three editor actions. */
+  /**
+   * Writes `draft` (with `statusPatch` applied) to Firestore; used by Save
+   * draft, Publish now, Send to review, Archive and Republish alike — they
+   * differ only in what `status` the caller has already patched on.
+   */
   async function persistDraft(statusPatch: Partial<Article>, labels: { pending: string; done: string; failed: string }) {
     if (!draft) return;
     const next = { ...draft, ...statusPatch };
@@ -248,6 +257,23 @@ export function Studio() {
     } catch {
       setSavedLabel(labels.failed);
     }
+  }
+
+  /**
+   * Deletes an article outright — offered in the list (a stray/test draft)
+   * and in the editor (leaving back to the list once it's gone). Optimistic,
+   * same spirit as newArticle(): the row disappears immediately, and if the
+   * write is actually denied (not staff, or trying to delete a Published
+   * piece — see firestore.rules) the live listener's next snapshot brings it
+   * right back, which is as much of a "failed" signal as this needs.
+   */
+  function onDeleteArticle(id: string) {
+    setArticles((prev) => prev.filter((a) => a.id !== id));
+    if (editingId === id) {
+      setEditingId(null);
+      setView("articles");
+    }
+    void deleteArticle(getFirebase().db, id);
   }
 
   const meta =
@@ -438,6 +464,8 @@ export function Studio() {
               setFilter={setFilter}
               openArticle={openArticle}
               newArticle={newArticle}
+              canDelete={canDelete}
+              onDelete={onDeleteArticle}
             />
           )}
           {view === "article" && draft && (
@@ -445,6 +473,7 @@ export function Studio() {
               draft={draft}
               setDraft={patchDraft}
               canPublish={canPublish}
+              canDelete={canDelete}
               savedLabel={savedLabel}
               onBack={() => setView("articles")}
               onSaveDraft={() =>
@@ -469,6 +498,27 @@ export function Studio() {
                   { pending: "Sending to review…", done: "Sent to review", failed: "Couldn't send to review — check your connection" },
                 )
               }
+              onArchive={() =>
+                void persistDraft(
+                  { status: "Archived" },
+                  {
+                    pending: "Archiving…",
+                    done: "Archived — it comes off the live site after the next deploy",
+                    failed: "Couldn't archive — check your connection",
+                  },
+                )
+              }
+              onRepublish={() =>
+                void persistDraft(
+                  { status: "Published" },
+                  {
+                    pending: "Republishing…",
+                    done: "Republished — it's back on the live site after the next deploy",
+                    failed: "Couldn't republish — check your connection",
+                  },
+                )
+              }
+              onDelete={() => onDeleteArticle(draft.id)}
             />
           )}
           {view === "pages" && (

@@ -21,15 +21,31 @@ import { useAuth } from "@/lib/auth-context";
  * Branches on how the signed-in user actually authenticates — a
  * password-account user re-enters their password; a Google-only user has no
  * password to check, so they get an interactive Google reauth prompt instead.
+ *
+ * Also reused, under different copy (see the `monoLabel`/`heading`/`blurb`/
+ * `confirmLabel` props), for Archive and Republish in article-editor.tsx —
+ * taking a piece off the live site or putting it back is exactly as
+ * consequential as publishing it the first time.
  */
 export function PublishConfirmDialog({
   articleTitle,
   onClose,
   onConfirmed,
+  monoLabel = "Confirm to publish",
+  heading = `Going live: “${articleTitle}”`,
+  blurb = "Prove it's still you before this reaches the site.",
+  confirmLabel = "Confirm & publish",
 }: {
   articleTitle: string;
   onClose: () => void;
   onConfirmed: () => void;
+  /** Lets Archive/Republish (see article-editor.tsx) reuse this same reauth
+   * step under different copy — taking a piece off the site is as
+   * consequential as putting it there. */
+  monoLabel?: string;
+  heading?: string;
+  blurb?: string;
+  confirmLabel?: string;
 }) {
   const { user } = useAuth();
   const hasPassword = (user?.providerData ?? []).some((p) => p.providerId === "password");
@@ -90,7 +106,7 @@ export function PublishConfirmDialog({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Confirm publish"
+      aria-label={monoLabel}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -121,7 +137,7 @@ export function PublishConfirmDialog({
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-          <div style={MONO_LABEL}>Confirm to publish</div>
+          <div style={MONO_LABEL}>{monoLabel}</div>
           <h2
             style={{
               fontFamily: "'Source Serif 4',serif",
@@ -133,11 +149,9 @@ export function PublishConfirmDialog({
               margin: 0,
             }}
           >
-            Going live: “{articleTitle}”
+            {heading}
           </h2>
-          <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#5A6472", margin: 0 }}>
-            Prove it&rsquo;s still you before this reaches the site.
-          </p>
+          <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#5A6472", margin: 0 }}>{blurb}</p>
         </div>
 
         {hasPassword ? (
@@ -166,7 +180,7 @@ export function PublishConfirmDialog({
                 Cancel
               </GhostButton>
               <PrimaryButton type="submit" style={{ opacity: pending ? 0.65 : 1 }}>
-                {pending ? "Checking…" : "Confirm & publish"}
+                {pending ? "Checking…" : confirmLabel}
               </PrimaryButton>
             </div>
           </form>
